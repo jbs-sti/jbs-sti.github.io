@@ -1,0 +1,57 @@
+---
+title: "Titre à préciser"
+description: "À compléter : résumer la ressource en une phrase."
+type: cours
+domaine: reseaux
+chapitre: "00 — À préciser"
+categories: [cours, reseaux]
+mots-cles: [à préciser]
+objectifs:
+  - "À compléter : formuler un objectif observable."
+prerequis: []
+duree: "À préciser"
+order: 10
+date-modified: 2026-10-14
+draft: true
+lang: fr
+format:
+  vintage-typst:
+    include-in-header:
+      text: |
+        // Assurer le contraste des cellules d’en-tête du tableau PDF.
+        #show table.cell.where(y: 0): set text(fill: rgb("#F8F3EE"), weight: "bold")
+---
+
+<!-- Remplacer les indications à compléter ; conserver draft: true jusqu’à la
+relecture de l’enseignant. Les exemples de code utilisent un langage simple
+(python, bash, sql, text) et ne doivent pas être exécutés au rendu.
+Images : SVG lisible en noir et blanc, avec fig-alt ; fichiers dans fichiers/.
+Tout bloc HTML seul doit avoir un équivalent imprimable adjacent au même niveau. -->
+
+## Objectifs et prérequis
+
+<!-- Présenter les compétences attendues et rappeler les connaissances nécessaires. -->
+
+## Situation de départ
+
+<!-- Introduire un problème concret adapté à la formation ; ajouter un schéma si utile. -->
+
+## Comprendre le mécanisme
+
+<!-- Expliquer progressivement les notions, avec exemples, tableau et encadré à retenir. -->
+
+## Observer et appliquer
+
+<!-- Proposer une observation guidée. Préciser la plateforme de toute commande ou configuration. -->
+
+## Exercices de vérification
+
+<!-- Énoncer des questions puis un corrigé commun aux sorties HTML et PDF. -->
+
+## Synthèse
+
+<!-- Rassembler les idées essentielles et les limites du modèle étudié. -->
+
+## Pour aller plus loin
+
+<!-- Citer des sources fiables et proposer des prolongements accessibles. -->
