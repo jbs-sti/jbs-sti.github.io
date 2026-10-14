@@ -9,6 +9,8 @@ $gris: #A1A1AA;
 // Encadrés (callouts) : distingués par icône + libellé, pas seulement
 // par la couleur. L'or est trop clair sur fond crème pour servir de
 // repère de contraste fiable, donc on reste sur vert-profond / gris.
+// Ces couleurs s'appliquent sur la surface crème du callout (voir plus
+// bas), pas sur le fond sombre de la page.
 $callout-color-note: $gris;
 $callout-color-tip: $vert-profond;
 $callout-color-caution: $vert-profond;
@@ -17,8 +19,35 @@ $callout-color-important: $vert-profond;
 
 /*-- scss:rules --*/
 
+// Thème unique volontairement sombre (voir _quarto.yml) : le bouton de
+// bascule clair/sombre n'a pas d'utilité puisque les deux états sont
+// identiques.
+.quarto-color-scheme-toggle {
+  display: none;
+}
+
+// Thème sombre : la page (brand.yml) a un fond vert-profond et un texte
+// crème. Les blocs de contenu "encaissés" (callouts, tableaux, blocs de
+// code, barre latérale, cartes de listing) restent des surfaces claires
+// crème avec texte vert-profond, comme dans la version précédente du
+// thème — seul le fond général bascule. Les liens dans ces surfaces sont
+// donc recolorés en vert-profond : le lien "or" du thème général (bon
+// contraste sur fond sombre, ≈ 7,3:1) serait illisible sur une surface
+// crème (or/crème ≈ 1,7:1).
+
+// Titres : Playfair Display gras en or, filet discret or sous les H2.
+h1, h2, h3, h4, h5, h6 {
+  color: $or;
+}
+
+h2 {
+  border-bottom: 1px solid $or;
+  padding-bottom: 0.3em;
+}
+
 // Barre de navigation : fond vert profond, texte crème, lien actif
-// souligné d'un filet or (contraste or/vert-profond ≈ 7:1).
+// souligné d'un filet or. Couleur identique au fond de page : la barre
+// se fond dans l'en-tête sombre.
 .navbar {
   background-color: $vert-profond;
 
@@ -42,7 +71,7 @@ $callout-color-important: $vert-profond;
   }
 }
 
-// Barre latérale : fond crème, texte vert profond, item actif marqué
+// Barre latérale : surface crème, texte vert profond, item actif marqué
 // par une bordure gauche vert profond (l'or est trop pâle sur crème).
 #quarto-sidebar.sidebar-navigation {
   background-color: $creme;
@@ -64,17 +93,18 @@ $callout-color-important: $vert-profond;
   }
 }
 
-// Titres : Libre Baskerville gras, filet discret sous les H2.
-h1, h2, h3, h4, h5, h6 {
+// Encadrés : surface claire (comme avant la bascule en thème sombre),
+// renforcer visuellement "important" sans ajouter de teinte.
+.callout {
+  background-color: $creme;
   color: $vert-profond;
+
+  a {
+    color: $vert-profond;
+    text-decoration: underline;
+  }
 }
 
-h2 {
-  border-bottom: 1px solid $vert-profond;
-  padding-bottom: 0.3em;
-}
-
-// Encadrés : renforcer visuellement "important" sans ajouter de teinte.
 div.callout-important {
   border-left-width: 6px;
 
@@ -84,6 +114,8 @@ div.callout-important {
 }
 
 // Blocs de code : fond légèrement grisé, bordure fine, coins arrondis.
+// Reste clair quel que soit le thème : la coloration syntaxique suppose
+// un texte sombre sur fond clair.
 div.sourceCode {
   background-color: #F2F2F0;
   border: 1px solid $gris;
@@ -91,8 +123,16 @@ div.sourceCode {
   padding: 0.75em;
 }
 
-// Tableaux : en-tête vert profond, zébrage très léger.
+// Tableaux : surface claire, en-tête vert profond, zébrage très léger.
 .table {
+  background-color: $creme;
+  color: $vert-profond;
+
+  a {
+    color: $vert-profond;
+    text-decoration: underline;
+  }
+
   thead th {
     background-color: $vert-profond;
     color: $creme;
@@ -110,8 +150,12 @@ div.sourceCode {
   background-color: $creme;
   border: 1px solid rgba($vert-profond, 0.25);
 
+  a {
+    color: $vert-profond;
+  }
+
   .card-title.listing-title {
-    font-family: "Libre Baskerville", serif;
+    font-family: "Playfair Display", serif;
     font-weight: 700;
     color: $vert-profond;
   }
@@ -139,17 +183,18 @@ div.sourceCode {
 // Filtre par catégorie des pages de listing (même traitement que les
 // badges de catégorie, pour une interface cohérente).
 .quarto-listing-category-title {
-  font-family: "Libre Baskerville", serif;
+  font-family: "Playfair Display", serif;
   font-weight: 700;
-  color: $vert-profond;
+  color: $or;
 }
 
 .quarto-listing-category {
   font-family: "Inter", sans-serif;
   font-weight: 600;
+  color: $creme;
 }
 
 .quarto-listing-category.category-selected {
-  color: $vert-profond;
+  color: $or;
   font-weight: 700;
 }

@@ -8,33 +8,40 @@ color:
     dore: "#EBB552"
     rose-poudre: "#F1CDBE"
     gris: "#A1A1AA"
-  foreground: vert-profond
-  background: creme
-  primary: vert-profond
+  # Thème sombre : fond vert-profond, texte crème. Les blocs "surface"
+  # (encadrés, tableaux, blocs de code, barre latérale, cartes de listing)
+  # restent en crème avec texte vert-profond, comme avant — seul le fond
+  # général de la page bascule. Contrastes recalculés : vert-profond/crème
+  # ≈ 12,3:1, vert-profond/dore ≈ 7,3:1 (texte large/titres), vert-profond/
+  # rose-poudre ≈ 9,2:1, vert-profond/gris ≈ 5,3:1. Le PDF (gabarit Typst)
+  # n'est pas concerné : il reste sur fond clair, imprimable normalement.
+  foreground: creme
+  background: vert-profond
+  primary: dore
   secondary: rose-poudre
   tertiary: gris
-  success: vert-profond
-  info: gris
+  success: dore
+  info: rose-poudre
   warning: dore
-  danger: vert-profond
+  danger: rose-poudre
   light: creme
   dark: vert-profond
 
 typography:
   fonts:
-    - family: "Libre Baskerville"
+    - family: "Playfair Display"
       source: file
       files:
-        - path: _extensions/vintage/fonts/LibreBaskerville-Regular.ttf
+        - path: _extensions/vintage/fonts/PlayfairDisplay-Regular.ttf
           weight: 400
           style: normal
-        - path: _extensions/vintage/fonts/LibreBaskerville-Bold.ttf
+        - path: _extensions/vintage/fonts/PlayfairDisplay-Bold.ttf
           weight: 700
           style: normal
-        - path: _extensions/vintage/fonts/LibreBaskerville-Italic.ttf
+        - path: _extensions/vintage/fonts/PlayfairDisplay-Italic.ttf
           weight: 400
           style: italic
-        - path: _extensions/vintage/fonts/LibreBaskerville-BoldItalic.ttf
+        - path: _extensions/vintage/fonts/PlayfairDisplay-BoldItalic.ttf
           weight: 700
           style: italic
     - family: "Inter"
@@ -44,11 +51,11 @@ typography:
           weight: 600
           style: normal
   base:
-    family: "Libre Baskerville"
+    family: "Playfair Display"
     size: "1.05em"
     line-height: 1.65
   headings:
-    family: "Libre Baskerville"
+    family: "Playfair Display"
     weight: 700
   monospace:
     size: "0.9em"

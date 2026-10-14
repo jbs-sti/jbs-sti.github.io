@@ -27,8 +27,15 @@ website:
 
 format:
   html:
+    # Un seul thème volontairement sombre : on fixe light et dark au même
+    # jeu de fichiers pour empêcher Quarto de générer automatiquement un
+    # second thème par inversion des couleurs de _brand.yml (non maîtrisé,
+    # jamais demandé). Le bouton de bascule clair/sombre est masqué dans
+    # theme.scss puisque les deux états seraient identiques.
     theme:
-      - cosmo
-      - brand
-      - _extensions/vintage/theme.scss
+      light: &theme-vintage
+        - cosmo
+        - brand
+        - _extensions/vintage/theme.scss
+      dark: *theme-vintage
     toc: true
