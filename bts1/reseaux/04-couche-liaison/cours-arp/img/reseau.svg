@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="280" viewBox="0 0 760 280" role="img" aria-labelledby="title desc">
+<title id="title">Réseau local de l’exemple ARP</title>
+<desc id="desc">Deux postes A et B et la passerelle G sont reliés à un commutateur sur le réseau 192.168.10.0/24.</desc>
+<rect width="760" height="280" fill="white"/>
+<g fill="none" stroke="#222" stroke-width="2">
+<rect x="20" y="25" width="210" height="75" rx="6"/>
+<rect x="280" y="25" width="200" height="75" rx="6"/>
+<rect x="530" y="25" width="210" height="75" rx="6"/>
+<rect x="270" y="160" width="220" height="65" rx="6"/>
+<path d="M125 100 V192 H270 M380 100 V160 M635 100 V192 H490"/>
+</g>
+<g font-family="sans-serif" font-size="18" fill="#111" text-anchor="middle">
+<text x="125" y="55">Poste A</text><text x="125" y="82">192.168.10.10/24</text>
+<text x="380" y="55">Poste B</text><text x="380" y="82">192.168.10.20/24</text>
+<text x="635" y="55">Passerelle G</text><text x="635" y="82">192.168.10.1/24</text>
+<text x="380" y="188">Commutateur</text><text x="380" y="213">Même VLAN</text>
+<text x="380" y="263">Réseau local Ethernet : 192.168.10.0/24</text>
+</g></svg>

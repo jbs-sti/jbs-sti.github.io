@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="430" viewBox="0 0 800 430" role="img" aria-labelledby="title desc">
+<title id="title">DORA : première attribution DHCP</title>
+<desc id="desc">Le client diffuse Discover et Request. Le serveur envoie Offer et ACK, en diffusion ou en unicast selon les conditions.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#222"/></marker></defs>
+<rect width="800" height="430" fill="white"/>
+<g font-family="sans-serif" font-size="20" text-anchor="middle" fill="#111">
+<text x="135" y="35">Client A</text><text x="665" y="35">Serveur S</text>
+</g>
+<g stroke="#777" stroke-width="2" stroke-dasharray="5 5"><path d="M135 55 V345 M665 55 V345"/></g>
+<g fill="none" stroke="#222" stroke-width="2" marker-end="url(#arrow)">
+<path d="M135 110 H665"/><path d="M665 185 H135" stroke-dasharray="8 4"/>
+<path d="M135 260 H665"/><path d="M665 335 H135" stroke-dasharray="8 4"/>
+</g>
+<g font-family="sans-serif" font-size="18" text-anchor="middle" fill="#111">
+<text x="400" y="79">1. DHCPDISCOVER — découverte</text><text x="400" y="101">Client : diffusion</text>
+<text x="400" y="154">2. DHCPOFFER — proposition</text><text x="400" y="176">Serveur : diffusion ou unicast</text>
+<text x="400" y="229">3. DHCPREQUEST — choix de l’offre</text><text x="400" y="251">Client : diffusion en sélection initiale</text>
+<text x="400" y="304">4. DHCPACK — confirmation</text><text x="400" y="326">Serveur : diffusion ou unicast</text>
+<text x="400" y="381">Cas représenté : client sans bail, serveur sur le réseau local.</text>
+<text x="400" y="408">Trait plein : demande du client ; pointillés : réponse du serveur.</text>
+</g></svg>

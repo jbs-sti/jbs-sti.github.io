@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="270" viewBox="0 0 800 270" role="img" aria-labelledby="title desc">
+<title id="title">Bail de huit heures : T1, T2 et expiration</title>
+<desc id="desc">Bail acquis à 8 h, T1 à 12 h, T2 à 15 h, expiration à 16 h en l’absence de renouvellement réussi.</desc>
+<rect width="800" height="270" fill="white"/>
+<g stroke="#222" stroke-width="2"><path d="M60 100 H700 M60 88 V112 M380 88 V112 M620 88 V112 M700 88 V112"/></g>
+<g font-family="sans-serif" text-anchor="middle" fill="#111" font-size="20">
+<text x="60" y="72">8 h</text><text x="380" y="72">12 h</text><text x="620" y="72">15 h</text><text x="700" y="72">16 h</text>
+<text x="75" y="145">Acquisition</text><text x="380" y="145">T1 : 50 %</text><text x="615" y="145">T2 : 87,5 %</text>
+<text x="380" y="176">Unicast au serveur</text><text x="615" y="206">Demande diffusée</text>
+<text x="710" y="36">Expiration</text>
+<text x="400" y="252" font-size="18">Sans renouvellement réussi ; T1 et T2 non imposés par le serveur.</text>
+</g></svg>

@@ -1,0 +1,57 @@
+---
+title: "Titre à préciser"
+description: "À compléter : résumer la ressource en une phrase."
+type: fiche
+domaine: reseaux
+chapitre: "00 — À préciser"
+categories: [fiche, reseaux]
+mots-cles: [à préciser]
+objectifs:
+  - "À compléter : formuler un objectif observable."
+prerequis: []
+duree: "À préciser"
+order: 10
+date-modified: 2026-10-14
+draft: true
+lang: fr
+format:
+  vintage-typst:
+    include-in-header:
+      text: |
+        // Assurer le contraste des cellules d’en-tête du tableau PDF.
+        #show table.cell.where(y: 0): set text(fill: rgb("#F8F3EE"), weight: "bold")
+---
+
+<!-- Remplacer les indications à compléter ; conserver draft: true jusqu’à la
+relecture de l’enseignant. Les exemples de code utilisent un langage simple
+(python, bash, sql, text) et ne doivent pas être exécutés au rendu.
+Images : SVG lisible en noir et blanc, avec fig-alt ; fichiers dans fichiers/.
+Tout bloc HTML seul doit avoir un équivalent imprimable adjacent au même niveau. -->
+
+## Objectifs et prérequis
+
+<!-- Indiquer à quoi sert la fiche et quand l’utiliser. -->
+
+## Situation de départ
+
+<!-- Décrire brièvement le besoin ou le contexte d’utilisation. -->
+
+## Notions essentielles
+
+<!-- Résumer les définitions et relations utiles sans développement de cours complet. -->
+
+## Méthode et exemple
+
+<!-- Présenter une procédure courte et un exemple ; préciser la plateforme des commandes. -->
+
+## Points de vigilance
+
+<!-- Lister les erreurs fréquentes et les contrôles à effectuer. -->
+
+## Synthèse
+
+<!-- Proposer un aide-mémoire concis. -->
+
+## Pour aller plus loin
+
+<!-- Renvoyer vers des ressources et sources fiables. -->

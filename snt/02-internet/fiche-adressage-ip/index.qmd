@@ -1,0 +1,122 @@
+---
+title: "L'adressage IPv4"
+description: "Lire une adresse IPv4 et son masque pour identifier le réseau et la machine."
+type: fiche
+domaine: snt
+chapitre: 02 — Internet
+categories:
+- fiche
+- snt
+mots-cles:
+- adresse ip
+- adressage ip
+- masque de sous-réseau
+- ipv4
+objectifs:
+- "Décrire la structure d'une adresse IPv4."
+- "Distinguer la partie réseau et la partie machine d'une adresse grâce au masque."
+- "Afficher l'adresse IP de sa machine sous Windows et sous Linux."
+prerequis:
+- "Thème Internet : notion de réseau et de machine connectée."
+duree: "20 min"
+order: 10
+date-modified: '2026-10-14'
+draft: true
+lang: fr
+format:
+  vintage-typst:
+    include-in-header:
+      text: '// Assurer le contraste des cellules d’en-tête du tableau PDF.
+
+        #show table.cell.where(y: 0): set text(fill: rgb("#F8F3EE"), weight: "bold")'
+---
+
+## Objectifs et prérequis
+
+Cette fiche sert à relire rapidement comment une adresse IPv4 est construite et
+comment elle permet de repérer une machine sur un réseau. Elle suppose connue
+la notion de réseau informatique vue dans le thème Internet.
+
+## Situation de départ
+
+Pour qu'une lettre arrive à destination, il faut une adresse postale complète :
+une rue identifie un ensemble de maisons, un numéro identifie une maison précise
+dans cette rue. Sur un réseau informatique, l'**adresse IPv4** joue ce rôle :
+elle permet à une machine d'en identifier une autre pour lui envoyer des
+données.
+
+## Notions essentielles
+
+- Une adresse IPv4 est composée de **4 nombres entiers entre 0 et 255**,
+  séparés par des points : c'est la *notation décimale pointée*
+  (exemple : `192.168.1.10`).
+- Le **masque de sous-réseau** (exemple : `255.255.255.0`) indique quelle
+  partie de l'adresse désigne le réseau et quelle partie désigne la machine :
+  un octet à `255` dans le masque correspond à la partie réseau, un octet à
+  `0` correspond à la partie machine.
+- Deux machines sont sur le **même réseau local** si leur partie réseau est
+  identique.
+- Certaines adresses sont **privées** : elles ne sont utilisées qu'à
+  l'intérieur d'un réseau local (maison, établissement) et ne circulent pas
+  directement sur Internet. Les plages réservées à cet usage sont :
+  `10.0.0.0` à `10.255.255.255`, `172.16.0.0` à `172.31.255.255` et
+  `192.168.0.0` à `192.168.255.255`. Les autres adresses sont **publiques** et
+  identifient une machine sur Internet.
+
+## Méthode et exemple
+
+Pour retrouver l'adresse du réseau à partir d'une adresse et de son masque :
+recopier les octets de l'adresse là où le masque vaut `255`, et mettre `0`
+ailleurs.
+
+**Exemple** : adresse `192.168.1.10`, masque `255.255.255.0`.
+
+- Partie réseau (masque à `255`) : `192.168.1`
+- Partie machine (masque à `0`) : `10`
+- Adresse du réseau : `192.168.1.0`
+
+Pour afficher l'adresse IP de sa propre machine :
+
+Sous **Windows**, dans une invite de commandes :
+
+```text
+ipconfig
+```
+
+Sous **Linux**, dans un terminal :
+
+```bash
+ip addr
+```
+
+## Points de vigilance
+
+- Ne pas confondre l'**adresse IP** (identifie une machine sur un réseau,
+  peut changer) et l'**adresse MAC** (identifie une carte réseau de façon
+  quasi permanente).
+- Le masque change le sens de « même réseau » : deux machines peuvent avoir
+  des adresses qui se ressemblent sans être sur le même réseau si le masque
+  diffère.
+- Dans un réseau, l'adresse dont la partie machine est entièrement à `0`
+  (ici `192.168.1.0`) désigne le **réseau lui-même**, et celle dont la partie
+  machine est entièrement à `255` (ici `192.168.1.255`) est l'adresse de
+  **diffusion générale** : ce ne sont pas des adresses attribuables à une
+  machine.
+
+## Synthèse
+
+| Notion | À retenir |
+|---|---|
+| Format d'une adresse IPv4 | 4 nombres de 0 à 255 séparés par des points |
+| Masque de sous-réseau | `255` = partie réseau, `0` = partie machine |
+| Adresses privées | `10.0.0.0`–`10.255.255.255`, `172.16.0.0`–`172.31.255.255`, `192.168.0.0`–`192.168.255.255` |
+| Adresse réseau | partie machine à `0` (non attribuable) |
+| Adresse de diffusion | partie machine à `255` (non attribuable) |
+| Voir sa propre IP | Windows : `ipconfig` — Linux : `ip addr` |
+
+## Pour aller plus loin
+
+<!-- Point ouvert, signalé dans la description de la pull request : ajouter un
+renvoi vers une ressource de référence (par exemple une page de vulgarisation
+sur l'adressage IP) une fois une source fiable identifiée et validée par
+l'enseignant. -->

@@ -1,0 +1,57 @@
+---
+title: "Titre à préciser"
+description: "À compléter : résumer la ressource en une phrase."
+type: tp
+domaine: reseaux
+chapitre: "00 — À préciser"
+categories: [tp, reseaux]
+mots-cles: [à préciser]
+objectifs:
+  - "À compléter : formuler un objectif observable."
+prerequis: []
+duree: "À préciser"
+order: 10
+date-modified: 2026-10-14
+draft: true
+lang: fr
+format:
+  vintage-typst:
+    include-in-header:
+      text: |
+        // Assurer le contraste des cellules d’en-tête du tableau PDF.
+        #show table.cell.where(y: 0): set text(fill: rgb("#F8F3EE"), weight: "bold")
+---
+
+<!-- Remplacer les indications à compléter ; conserver draft: true jusqu’à la
+relecture de l’enseignant. Les exemples de code utilisent un langage simple
+(python, bash, sql, text) et ne doivent pas être exécutés au rendu.
+Images : SVG lisible en noir et blanc, avec fig-alt ; fichiers dans fichiers/.
+Tout bloc HTML seul doit avoir un équivalent imprimable adjacent au même niveau. -->
+
+## Objectifs et prérequis
+
+<!-- Présenter les compétences à pratiquer et les connaissances nécessaires. -->
+
+## Situation de départ
+
+<!-- Décrire la mission et le résultat attendu. -->
+
+## Matériel et environnement
+
+<!-- Préciser matériel, fichiers fournis, plateforme et versions utiles. -->
+
+## Travail à réaliser
+
+<!-- Découper le travail en étapes ; donner les consignes et les observations à consigner. -->
+
+## Vérification et compte rendu
+
+<!-- Indiquer les critères de réussite et les livrables à remettre. -->
+
+## Synthèse
+
+<!-- Faire expliciter ce qui a été observé et les difficultés rencontrées. -->
+
+## Pour aller plus loin
+
+<!-- Proposer une extension de la manipulation et citer les sources. -->
