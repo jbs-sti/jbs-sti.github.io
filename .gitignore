@@ -2,3 +2,8 @@
 
 /.quarto/
 **/*.quarto_ipynb
+
+# Environnements et caches Python des scripts
+.venv/
+__pycache__/
+*.py[cod]
