@@ -6,8 +6,24 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - about.qmd
+        text: Accueil
+      - href: snt/index.qmd
+        text: SNT
+      - href: bts1/index.qmd
+        text: BTS CIEL 1
+      - href: bts2/index.qmd
+        text: BTS CIEL 2
+    search: true
+  sidebar:
+    - id: snt
+      title: "SNT"
+      contents: snt
+    - id: bts1
+      title: "BTS CIEL 1"
+      contents: bts1
+    - id: bts2
+      title: "BTS CIEL 2"
+      contents: bts2
 
 format:
   html:

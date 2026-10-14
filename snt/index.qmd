@@ -1,0 +1,10 @@
+---
+title: "SNT"
+description: "Ressources de cours, TP, exercices et fiches pour Sciences numériques et technologie."
+listing:
+  contents: "."
+  type: default
+  categories: true
+  sort: "order"
+  fields: [title, description, categories]
+---
