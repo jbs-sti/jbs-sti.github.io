@@ -7,7 +7,7 @@ avant de contribuer, et [l’architecture](docs/architecture.md) pour les choix 
 ## Installer les outils des scripts
 
 Python 3.10 ou supérieur et Quarto sont nécessaires. Dans un environnement Python
-isolé, installer la seule dépendance :
+isolé, installer les dépendances figées :
 
 ```bash
 python3 -m venv .venv
@@ -109,4 +109,74 @@ placés dans un dossier commençant par `_`, ne sont pas des pages du site.
 Ne jamais versionner `_site/`, `.quarto/` ni les caches Python.
 Une tâche correspond à une branche et une PR : `cours/<formation>-<sujet>` pour
 le contenu, `infra/<sujet>` pour les outils. Ne pas pousser sur `main` ni fusionner
-les PR. Le branchement du vérificateur dans la CI est une tâche séparée.
+les PR. Les contrôles de publication sont décrits ci-dessous.
+
+## Contrôler les sorties et la publication
+
+Après le rendu, lancer :
+
+```bash
+.venv/bin/python scripts/verifier_site.py
+```
+
+Le script reprend les métadonnées du schéma commun. Pour chaque ressource avec
+`draft: false`, il exige `_site/<chemin-de-la-ressource>/index.html` et `index.pdf`.
+La page HTML doit avoir du contenu dans son corps ; le PDF doit être lisible en
+mode strict, non chiffré, avec au moins une page et des dimensions valides.
+Les flux de contenu des pages sont décodés. Les métadonnées invalides font
+échouer le contrôle ; les sorties des brouillons ne sont pas exigées.
+Le retour est `0` si tout est valide, `1` sinon (`2` pour un usage invalide).
+Pour un autre dépôt ou dossier de sortie :
+
+```bash
+.venv/bin/python scripts/verifier_site.py --racine /chemin/depot --site /chemin/rendu
+```
+
+La dépendance `pypdf` est nécessaire : la bibliothèque standard ne permet pas
+une lecture fiable de la structure et des pages PDF. Une recherche de `%PDF`
+ou de `/Page` dans les octets serait insuffisante. Le contrôle vérifie la
+lisibilité structurelle et les pages ; il ne remplace pas la relecture du contenu,
+la vérification visuelle ni une certification de conformité à toutes les normes PDF.
+
+Sur chaque PR, `.github/workflows/verifier.yml` lance les tests, le contrôle des
+sources, `quarto render --no-execute`, puis le contrôle des sorties. Le job porte
+le nom stable **Vérifier les ressources**, à sélectionner dans la protection de
+branche. Les PDF sont joints dans l’artefact `pdf-relecture-pr-<numéro>`, conservé
+14 jours. Les PDF déjà produits restent récupérables après un échec de contrôle
+ou de rendu ; leur présence en artefact ne signifie pas que le contrôle a réussi.
+Ce workflow possède seulement la permission `contents: read` et ne déploie rien.
+
+Le workflow de publication suit les mêmes contrôles. Il envoie l’artefact Pages
+uniquement si toutes les étapes réussissent ; le job de déploiement dépend du
+succès du job de construction. Un lancement manuel hors `main` ne publie rien.
+Les permissions `pages: write` et `id-token: write` sont limitées au déploiement.
+
+Versions fixées : Quarto **1.10.19**, Python **3.12.15**, PyYAML **6.0.3** et
+pypdf **6.20.1**. Typst est fourni par cette version de Quarto. Toutes les actions
+GitHub sont épinglées par SHA ; les deux workflows utilisent `ubuntu-24.04`.
+L’image Ubuntu hébergée reçoit encore les mises à jour de GitHub : ces réglages
+fixent les outils principaux, sans garantir une image système immuable.
+Toute mise à jour des versions doit être proposée dans une PR et validée par
+les tests et le rendu.
+
+## Protéger main sur GitHub (réglages manuels)
+
+Après intégration des workflows dans `main` et une exécution réussie du contrôle,
+ouvrir **Settings → Branches → Add classic branch protection rule**, avec le
+motif **main**. Régler :
+
+- **Require a pull request before merging**.
+- **Require status checks to pass before merging** : choisir **Vérifier les ressources**,
+  avec **GitHub Actions** comme application attendue lorsque l’interface le propose.
+- **Require branches to be up to date before merging**.
+- **Do not allow bypassing the above settings**, pour appliquer la règle aussi
+  aux administrateurs ; ne pas ajouter d’exception de contournement.
+- Laisser **Allow force pushes** et **Allow deletions** désactivés, puis enregistrer.
+
+Le contrôle doit avoir été exécuté récemment pour apparaître dans la liste.
+Une approbation humaine peut être ajoutée si un autre enseignant peut relire les
+PR ; elle n’est pas nécessaire au verrou automatique demandé ici.
+Voir la [documentation officielle GitHub sur les protections de branche](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule).
+
+Dans **Settings → Pages**, conserver **GitHub Actions** comme source. Ces
+réglages ne sont pas modifiés automatiquement par les scripts ou workflows.
