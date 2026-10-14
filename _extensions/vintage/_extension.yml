@@ -1,0 +1,8 @@
+title: Vintage
+author: JBS STI
+version: 1.0.0
+quarto-required: ">=1.4.0"
+contributes:
+  formats:
+    html:
+      theme: theme.scss

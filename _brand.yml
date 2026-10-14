@@ -1,0 +1,54 @@
+meta:
+  name: "JBS STI"
+
+color:
+  palette:
+    vert-profond: "#1C322D"
+    creme: "#F8F3EE"
+    dore: "#EBB552"
+    rose-poudre: "#F1CDBE"
+    gris: "#A1A1AA"
+  foreground: vert-profond
+  background: creme
+  primary: vert-profond
+  secondary: rose-poudre
+  tertiary: gris
+  success: vert-profond
+  info: gris
+  warning: dore
+  danger: vert-profond
+  light: creme
+  dark: vert-profond
+
+typography:
+  fonts:
+    - family: "Libre Baskerville"
+      source: file
+      files:
+        - path: _extensions/vintage/fonts/LibreBaskerville-Regular.ttf
+          weight: 400
+          style: normal
+        - path: _extensions/vintage/fonts/LibreBaskerville-Bold.ttf
+          weight: 700
+          style: normal
+        - path: _extensions/vintage/fonts/LibreBaskerville-Italic.ttf
+          weight: 400
+          style: italic
+        - path: _extensions/vintage/fonts/LibreBaskerville-BoldItalic.ttf
+          weight: 700
+          style: italic
+    - family: "Inter"
+      source: file
+      files:
+        - path: _extensions/vintage/fonts/Inter-SemiBold.ttf
+          weight: 600
+          style: normal
+  base:
+    family: "Libre Baskerville"
+    size: "1.05em"
+    line-height: 1.65
+  headings:
+    family: "Libre Baskerville"
+    weight: 700
+  monospace:
+    size: "0.9em"

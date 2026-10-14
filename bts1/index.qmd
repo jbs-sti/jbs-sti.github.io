@@ -3,7 +3,7 @@ title: "BTS CIEL 1"
 description: "Ressources de cours, TP, exercices et fiches pour la première année de BTS CIEL."
 listing:
   contents: "."
-  type: default
+  type: grid
   categories: true
   sort: "order"
   fields: [title, description, categories]

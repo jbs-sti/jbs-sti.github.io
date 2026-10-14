@@ -1,0 +1,155 @@
+/*-- scss:defaults --*/
+
+$vert-profond: #1C322D;
+$creme: #F8F3EE;
+$or: #EBB552;
+$rose-poudre: #F1CDBE;
+$gris: #A1A1AA;
+
+// Encadrés (callouts) : distingués par icône + libellé, pas seulement
+// par la couleur. L'or est trop clair sur fond crème pour servir de
+// repère de contraste fiable, donc on reste sur vert-profond / gris.
+$callout-color-note: $gris;
+$callout-color-tip: $vert-profond;
+$callout-color-caution: $vert-profond;
+$callout-color-warning: $vert-profond;
+$callout-color-important: $vert-profond;
+
+/*-- scss:rules --*/
+
+// Barre de navigation : fond vert profond, texte crème, lien actif
+// souligné d'un filet or (contraste or/vert-profond ≈ 7:1).
+.navbar {
+  background-color: $vert-profond;
+
+  .navbar-brand,
+  .navbar-title,
+  .nav-link {
+    color: $creme;
+  }
+
+  .nav-link:hover {
+    color: $or;
+  }
+
+  .nav-link.active {
+    color: $creme;
+    border-bottom: 2px solid $or;
+  }
+
+  .navbar-toggler-icon {
+    filter: invert(1) grayscale(1) brightness(2);
+  }
+}
+
+// Barre latérale : fond crème, texte vert profond, item actif marqué
+// par une bordure gauche vert profond (l'or est trop pâle sur crème).
+#quarto-sidebar.sidebar-navigation {
+  background-color: $creme;
+
+  .sidebar-link {
+    color: $vert-profond;
+  }
+
+  .sidebar-link:hover {
+    color: $vert-profond;
+    text-decoration: underline;
+  }
+
+  .sidebar-item-text.sidebar-link.active,
+  .sidebar-item-text.sidebar-link.active:hover {
+    font-weight: 700;
+    border-left: 3px solid $vert-profond;
+    padding-left: calc(0.5em - 3px);
+  }
+}
+
+// Titres : Libre Baskerville gras, filet discret sous les H2.
+h1, h2, h3, h4, h5, h6 {
+  color: $vert-profond;
+}
+
+h2 {
+  border-bottom: 1px solid $vert-profond;
+  padding-bottom: 0.3em;
+}
+
+// Encadrés : renforcer visuellement "important" sans ajouter de teinte.
+div.callout-important {
+  border-left-width: 6px;
+
+  .callout-title-container {
+    font-weight: 700;
+  }
+}
+
+// Blocs de code : fond légèrement grisé, bordure fine, coins arrondis.
+div.sourceCode {
+  background-color: #F2F2F0;
+  border: 1px solid $gris;
+  border-radius: 4px;
+  padding: 0.75em;
+}
+
+// Tableaux : en-tête vert profond, zébrage très léger.
+.table {
+  thead th {
+    background-color: $vert-profond;
+    color: $creme;
+    border-color: $vert-profond;
+  }
+
+  tr.even,
+  tbody tr:nth-child(even) {
+    background-color: rgba($gris, 0.12);
+  }
+}
+
+// Cartes des pages de listing.
+.quarto-grid-item.card {
+  background-color: $creme;
+  border: 1px solid rgba($vert-profond, 0.25);
+
+  .card-title.listing-title {
+    font-family: "Libre Baskerville", serif;
+    font-weight: 700;
+    color: $vert-profond;
+  }
+
+  // Pas de vignette par défaut : les ressources n'ont pas d'image de
+  // couverture, un bandeau vide alourdirait les cartes sans rien dire.
+  .listing-item-img-placeholder {
+    display: none;
+  }
+
+  .listing-categories .listing-category {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    background-color: $vert-profond;
+    color: $creme;
+    border: 1px solid $or;
+    border-radius: 3px;
+    padding: 0.15em 0.5em;
+  }
+}
+
+// Filtre par catégorie des pages de listing (même traitement que les
+// badges de catégorie, pour une interface cohérente).
+.quarto-listing-category-title {
+  font-family: "Libre Baskerville", serif;
+  font-weight: 700;
+  color: $vert-profond;
+}
+
+.quarto-listing-category {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
+
+.quarto-listing-category.category-selected {
+  color: $vert-profond;
+  font-weight: 700;
+}
