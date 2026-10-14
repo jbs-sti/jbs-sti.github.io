@@ -1,0 +1,24 @@
+---
+title: "Ressource de démonstration — TP"
+description: "Ressource factice servant à vérifier le peuplement automatique de la navigation."
+type: tp
+domaine: reseaux
+chapitre: "04 — Couche liaison"
+categories: [tp, reseaux]
+mots-cles: [démonstration]
+objectifs:
+  - "Vérifier que la ressource apparaît automatiquement dans la navigation."
+prerequis: []
+duree: "0 h"
+order: 10
+date-modified: 2026-10-14
+draft: false
+format:
+  html: default
+  typst: default
+---
+
+Ceci est une ressource factice créée pour vérifier que la barre latérale et la
+page de listing de BTS CIEL 1 se remplissent automatiquement, sans édition
+manuelle d'un menu, et dans un chapitre différent de l'autre ressource de
+démonstration. À supprimer une fois la vérification effectuée.
