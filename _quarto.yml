@@ -1,5 +1,12 @@
 project:
   type: website
+  # Seuls les .qmd sont des pages du site : ça exclut automatiquement
+  # docs/ (documentation interne) et tout fichier .md égaré ailleurs
+  # dans le dépôt (par exemple un fichier sans rapport trouvé dans
+  # design/reference/, qui autrement casse le rendu PDF du site entier).
+  render:
+    - "*.qmd"
+    - "**/*.qmd"
 
 website:
   title: "Informatique"
@@ -39,3 +46,9 @@ format:
         - _extensions/vintage/theme.scss
       dark: *theme-vintage
     toc: true
+  vintage-typst: default
+
+format-links:
+  - format: vintage-typst
+    text: "Télécharger le PDF"
+    icon: file-pdf

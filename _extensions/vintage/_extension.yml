@@ -6,3 +6,14 @@ contributes:
   formats:
     html:
       theme: theme.scss
+    typst:
+      template-partials:
+        - typst-template.typ
+        - typst-show.typ
+      papersize: a4
+      margin:
+        top: 2.5cm
+        bottom: 2.5cm
+        left: 2.5cm
+        right: 2cm
+      page-numbering: "1"

@@ -1,6 +1,8 @@
 ---
 title: "SNT"
 description: "Ressources de cours, TP, exercices et fiches pour Sciences numériques et technologie."
+format:
+  html: default
 listing:
   contents: "."
   type: grid

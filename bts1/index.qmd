@@ -1,6 +1,8 @@
 ---
 title: "BTS CIEL 1"
 description: "Ressources de cours, TP, exercices et fiches pour la première année de BTS CIEL."
+format:
+  html: default
 listing:
   contents: "."
   type: grid
