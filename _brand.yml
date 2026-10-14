@@ -1,0 +1,61 @@
+meta:
+  name: "JBS STI"
+
+color:
+  palette:
+    vert-profond: "#1C322D"
+    creme: "#F8F3EE"
+    dore: "#EBB552"
+    rose-poudre: "#F1CDBE"
+    gris: "#A1A1AA"
+  # Thème sombre : fond vert-profond, texte crème. Les blocs "surface"
+  # (encadrés, tableaux, blocs de code, barre latérale, cartes de listing)
+  # restent en crème avec texte vert-profond, comme avant — seul le fond
+  # général de la page bascule. Contrastes recalculés : vert-profond/crème
+  # ≈ 12,3:1, vert-profond/dore ≈ 7,3:1 (texte large/titres), vert-profond/
+  # rose-poudre ≈ 9,2:1, vert-profond/gris ≈ 5,3:1. Le PDF (gabarit Typst)
+  # n'est pas concerné : il reste sur fond clair, imprimable normalement.
+  foreground: creme
+  background: vert-profond
+  primary: dore
+  secondary: rose-poudre
+  tertiary: gris
+  success: dore
+  info: rose-poudre
+  warning: dore
+  danger: rose-poudre
+  light: creme
+  dark: vert-profond
+
+typography:
+  fonts:
+    - family: "Playfair Display"
+      source: file
+      files:
+        - path: _extensions/vintage/fonts/PlayfairDisplay-Regular.ttf
+          weight: 400
+          style: normal
+        - path: _extensions/vintage/fonts/PlayfairDisplay-Bold.ttf
+          weight: 700
+          style: normal
+        - path: _extensions/vintage/fonts/PlayfairDisplay-Italic.ttf
+          weight: 400
+          style: italic
+        - path: _extensions/vintage/fonts/PlayfairDisplay-BoldItalic.ttf
+          weight: 700
+          style: italic
+    - family: "Inter"
+      source: file
+      files:
+        - path: _extensions/vintage/fonts/Inter-SemiBold.ttf
+          weight: 600
+          style: normal
+  base:
+    family: "Playfair Display"
+    size: "1.05em"
+    line-height: 1.65
+  headings:
+    family: "Playfair Display"
+    weight: 700
+  monospace:
+    size: "0.9em"

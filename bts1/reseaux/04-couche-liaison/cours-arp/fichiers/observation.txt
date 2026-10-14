@@ -1,0 +1,11 @@
+Fiche d’observation ARP — Debian GNU/Linux (iproute2)
+
+Commande de consultation : ip -4 neigh show
+
+Interface locale :
+Adresse IPv4 du voisin :
+Adresse MAC du voisin :
+État affiché :
+Destination locale ou distante :
+Prochain saut utilisé :
+Explication de la correspondance observée :

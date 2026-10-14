@@ -1,5 +1,7 @@
 ---
 title: "Informatique"
+format:
+  html: default
 ---
 
 Ce site rassemble les ressources de cours pour trois formations.

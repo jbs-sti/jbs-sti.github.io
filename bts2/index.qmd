@@ -1,9 +1,11 @@
 ---
 title: "BTS CIEL 2"
 description: "Ressources de cours, TP, exercices et fiches pour la deuxième année de BTS CIEL."
+format:
+  html: default
 listing:
   contents: "."
-  type: default
+  type: grid
   categories: true
   sort: "order"
   fields: [title, description, categories]

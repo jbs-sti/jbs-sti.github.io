@@ -13,9 +13,6 @@ duree: "0 h"
 order: 10
 date-modified: 2026-10-14
 draft: false
-format:
-  html: default
-  typst: default
 ---
 
 Ceci est une ressource factice créée pour vérifier que la barre latérale et la
