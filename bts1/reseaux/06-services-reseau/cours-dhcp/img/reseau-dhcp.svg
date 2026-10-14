@@ -13,7 +13,7 @@
 <text x="335" y="55">Client B</text><text x="335" y="87">Adresse à obtenir</text>
 <text x="555" y="52">Serveur S</text><text x="555" y="78">DHCP / DNS</text><text x="555" y="103">192.168.10.2/24</text>
 <text x="780" y="55">Passerelle G</text><text x="780" y="87">192.168.10.1/24</text>
-<text x="450" y="214">Commutateur — même VLAN</text>
+<text x="450" y="202">Commutateur</text><text x="450" y="226">Même VLAN</text>
 <text x="450" y="273">Réseau : 192.168.10.0/24</text>
 <text x="450" y="301">Plage DHCP : 192.168.10.100 à 192.168.10.119</text>
 </g></svg>
