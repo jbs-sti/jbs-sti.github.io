@@ -1,0 +1,12 @@
+---
+title: "02 — Adressage IP"
+description: "Ressources du chapitre : adressage IPv4, masques et plans d'adressage."
+format:
+  html: default
+listing:
+  contents: "*/index.qmd"
+  type: grid
+  categories: true
+  sort: "order"
+  fields: [title, description, categories]
+---

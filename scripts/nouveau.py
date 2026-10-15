@@ -8,6 +8,39 @@ import sys
 
 from commun import ROOT, load_schema, read_source, validate, yaml
 
+# Page d'index d'un domaine ou d'un chapitre. Elle ne porte aucun contenu :
+# elle donne son titre français à la section dans la barre latérale (sans
+# elle, Quarto affiche le nom du dossier, sans accent et mal capitalisé) et
+# liste les ressources qu'elle contient.
+SECTION = '''---
+title: "{titre}"
+description: "{description}"
+format:
+  html: default
+listing:
+  # Seules les ressources, pas les index de domaine ni de chapitre.
+  contents: "{contenu}"
+  type: grid
+  categories: true
+  sort: "order"
+  fields: [title, description, categories]
+---
+'''
+
+
+def creer_index(dossier, titre, description, contenu):
+    """Créer l'index d'une section s'il manque ; renvoyer son chemin ou None."""
+    index = dossier / 'index.qmd'
+    dossier.mkdir(parents=True, exist_ok=True)
+    try:
+        # 'x' rend le refus d'écrasement atomique : un index déjà relu par
+        # l'enseignant n'est jamais remplacé.
+        with index.open('x', encoding='utf-8') as fichier:
+            fichier.write(SECTION.format(titre=titre, description=description, contenu=contenu))
+    except FileExistsError:
+        return None
+    return index
+
 
 def main(argv=None):
     schema = load_schema()
@@ -39,8 +72,9 @@ def main(argv=None):
         parser.error('Le chemin sort du dépôt')
     template = ROOT / '_templates' / f'{args.type}.qmd'
     metadata, body, _ = read_source(template)
+    titre_chapitre = chapitre[:2] + ' — ' + chapitre[3:].replace('-', ' ').capitalize()
     metadata.update(title=sujet.replace('-', ' ').capitalize(),
-                    domaine=domaine, chapitre=chapitre[:2] + ' — ' + chapitre[3:].replace('-', ' ').capitalize(),
+                    domaine=domaine, chapitre=titre_chapitre,
                     categories=[args.type, domaine], **{'mots-cles':[sujet.replace('-', ' ')],
                     'date-modified':date.today().isoformat(), 'draft':True})
     errors = validate(metadata, schema)
@@ -53,6 +87,19 @@ def main(argv=None):
     (target / 'fichiers').mkdir()
     (target / 'index.qmd').write_text(content, encoding='utf-8')
     print(f'Ressource créée : {target.relative_to(ROOT)}/index.qmd (draft: true)')
+    # Index des sections traversées : la navigation reste automatique, mais
+    # les titres sont déduits des noms de dossiers, donc sans accents.
+    sections = []
+    if args.formation != 'snt':
+        sections.append((base, domaine.capitalize(),
+                         f'Ressources du domaine {domaine} de la formation.', '*/*/index.qmd'))
+    sections.append((base / chapitre, titre_chapitre,
+                     f'Ressources du chapitre « {titre_chapitre} ».', '*/index.qmd'))
+    for dossier, titre, description, contenu in sections:
+        index = creer_index(dossier, titre, description, contenu)
+        if index:
+            print(f'Index de section créé : {index.relative_to(ROOT)} '
+                  f'(titre « {titre} » : à relire, accents compris)')
     return 0
 
 if __name__ == '__main__':

@@ -4,7 +4,8 @@ description: "Ressources de cours, TP, exercices et fiches pour la deuxième ann
 format:
   html: default
 listing:
-  contents: "."
+  # Seules les ressources, pas les index de domaine ni de chapitre.
+  contents: "*/*/*/index.qmd"
   type: grid
   categories: true
   sort: "order"

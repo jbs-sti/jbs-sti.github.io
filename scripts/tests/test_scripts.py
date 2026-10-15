@@ -58,6 +58,23 @@ class ScriptsTests(unittest.TestCase):
         (moved / 'index.qmd').unlink()
         self.assertIn('index.qmd absent', self.check().stdout)
 
+    def test_section_indexes_created_then_preserved(self):
+        self.create()
+        domaine = self.root / 'bts1' / 'reseaux' / 'index.qmd'
+        chapitre = self.root / 'bts1' / 'reseaux' / '04-couche-liaison' / 'index.qmd'
+        for index, titre in ((domaine, 'Reseaux'), (chapitre, '04 — Couche liaison')):
+            metadata, _, _ = read_source(index)
+            self.assertEqual(metadata['title'], titre)
+        # Un index relu par l'enseignant n'est jamais réécrit.
+        chapitre.write_text('---\ntitle: "04 — Couche liaison"\n---\n', encoding='utf-8')
+        result = self.run_script('nouveau.py', 'bts1', 'reseaux', '04-couche-liaison', 'dhcp', '--type', 'tp')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn('listing', chapitre.read_text())
+        # Les index de section ne sont pas comptés comme des ressources.
+        result = self.check()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn('2 ressource(s)', result.stdout)
+
     def test_existing_resource_unchanged(self):
         path = self.create()
         path.write_text('contenu à préserver')

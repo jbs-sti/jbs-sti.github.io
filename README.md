@@ -43,6 +43,11 @@ et `<formation>/<NN-theme>/<type>-<sujet>/index.qmd` pour SNT,
 ainsi que les dossiers `img/` et `fichiers/`.
 Un dossier de ressource existant provoque un échec, sans écrasement.
 
+Si le domaine ou le chapitre n’a pas encore d’`index.qmd`, le script en crée un :
+cette page sans contenu liste les ressources de la section et lui donne son titre
+dans la barre latérale. Son titre est déduit du nom du dossier, donc sans accents :
+il est à relire. Un index déjà présent n’est jamais réécrit.
+
 Le titre, chapitre, catégories, mot-clé, date et type sont préremplis. La
 description, les objectifs et la durée restent à préciser ; le titre généré
 est à relire. `draft: true` est systématique. Seul l’enseignant publie le

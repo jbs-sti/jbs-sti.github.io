@@ -1,0 +1,12 @@
+---
+title: "02 — Internet"
+description: "Ressources du thème Internet du programme de SNT."
+format:
+  html: default
+listing:
+  contents: "*/index.qmd"
+  type: grid
+  categories: true
+  sort: "order"
+  fields: [title, description, categories]
+---
