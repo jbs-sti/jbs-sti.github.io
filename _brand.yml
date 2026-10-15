@@ -8,22 +8,41 @@ color:
     dore: "#EBB552"
     rose-poudre: "#F1CDBE"
     gris: "#A1A1AA"
-  # Thème sombre : fond vert-profond, texte crème. Les blocs "surface"
-  # (encadrés, tableaux, blocs de code, barre latérale, cartes de listing)
-  # restent en crème avec texte vert-profond, comme avant — seul le fond
-  # général de la page bascule. Contrastes recalculés : vert-profond/crème
-  # ≈ 12,3:1, vert-profond/dore ≈ 7,3:1 (texte large/titres), vert-profond/
-  # rose-poudre ≈ 9,2:1, vert-profond/gris ≈ 5,3:1. Le PDF (gabarit Typst)
-  # n'est pas concerné : il reste sur fond clair, imprimable normalement.
-  foreground: creme
-  background: vert-profond
-  primary: dore
-  secondary: rose-poudre
+  # Deux thèmes, une seule palette : chaque rôle de couleur donne sa valeur
+  # claire et sa valeur sombre. Quarto en déduit automatiquement les deux
+  # feuilles de style et le bouton de bascule dans la barre de navigation
+  # (voir `theme` dans `_quarto.yml`).
+  #
+  #   clair  : fond crème, texte vert-profond — contraste ≈ 12,3:1
+  #   sombre : fond vert-profond, texte crème — contraste ≈ 12,3:1
+  #
+  # L'or ne sert de couleur de texte que sur fond sombre (≈ 7,3:1) ; sur
+  # crème il reste décoratif (filets, bordures), jamais du texte courant.
+  foreground:
+    light: vert-profond
+    dark: creme
+  background:
+    light: creme
+    dark: vert-profond
+  primary:
+    light: vert-profond
+    dark: dore
+  secondary:
+    light: gris
+    dark: rose-poudre
   tertiary: gris
-  success: dore
-  info: rose-poudre
-  warning: dore
-  danger: rose-poudre
+  success:
+    light: vert-profond
+    dark: dore
+  info:
+    light: vert-profond
+    dark: rose-poudre
+  warning:
+    light: vert-profond
+    dark: dore
+  danger:
+    light: vert-profond
+    dark: rose-poudre
   light: creme
   dark: vert-profond
 

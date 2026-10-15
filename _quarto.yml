@@ -8,6 +8,12 @@ project:
     - "*.qmd"
     - "**/*.qmd"
 
+# Langue de toute l'interface : Quarto traduit en français ses propres
+# libellés (« Sur cette page », « Retour au sommet », « Catégories »,
+# « Toutes », titres des encadrés, boutons de recherche…), en HTML comme
+# dans le PDF.
+lang: fr
+
 website:
   title: "Informatique"
   navbar:
@@ -34,17 +40,25 @@ website:
 
 format:
   html:
-    # Un seul thème volontairement sombre : on fixe light et dark au même
-    # jeu de fichiers pour empêcher Quarto de générer automatiquement un
-    # second thème par inversion des couleurs de _brand.yml (non maîtrisé,
-    # jamais demandé). Le bouton de bascule clair/sombre est masqué dans
-    # theme.scss puisque les deux états seraient identiques.
+    # Deux thèmes, un bouton de bascule dans la barre de navigation. Les
+    # couleurs de chaque thème viennent de `_brand.yml` (valeurs `light`
+    # et `dark` de chaque rôle), les surfaces et les filets des deux
+    # fichiers theme-clair.scss / theme-sombre.scss.
     theme:
-      light: &theme-vintage
+      light:
         - cosmo
         - brand
         - _extensions/vintage/theme.scss
-      dark: *theme-vintage
+        - _extensions/vintage/theme-clair.scss
+      dark:
+        - cosmo
+        - brand
+        - _extensions/vintage/theme.scss
+        - _extensions/vintage/theme-sombre.scss
+    # À la première visite, le site suit le réglage clair/sombre du
+    # système ; le bouton de la barre de navigation permet de choisir
+    # l'autre thème, et ce choix est mémorisé par le navigateur.
+    respect-user-color-scheme: true
     toc: true
   vintage-typst: default
 

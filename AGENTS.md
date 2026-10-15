@@ -42,6 +42,13 @@ Chaque dossier de ressource contient :
 - `img/` : images et schémas (SVG de préférence) ;
 - `fichiers/` : fichiers téléchargeables (.py, .pkt, .csv…).
 
+Chaque dossier de domaine et de chapitre contient aussi un `index.qmd` sans
+contenu : il donne son titre français à la section dans la barre latérale
+(sinon Quarto affiche le nom du dossier, sans accents) et liste les ressources
+de la section. `scripts/nouveau.py` le crée s'il manque, avec un titre déduit
+du nom du dossier : **relis ce titre et corrige-le** (accents, sigles). Un
+index déjà présent n'est jamais réécrit.
+
 ## Métadonnées obligatoires d'une ressource
 
 ```yaml
@@ -99,6 +106,8 @@ Le contenu doit être identique dans les deux formats. Tout bloc réservé au we
 - Format SVG, lisible **en noir et blanc** : contraste par la luminosité, traits
   pleins ou pointillés, motifs, étiquettes textuelles. Jamais d'information portée
   par la seule couleur.
+- Dessine pour un fond clair (c'est aussi le fond du PDF) : le thème sombre du
+  site pose automatiquement une surface crème sous les images.
 - Mermaid autorisé pour les diagrammes de séquence et les organigrammes simples.
 - Texte alternatif obligatoire sur chaque image (`fig-alt`).
 
@@ -113,7 +122,9 @@ Le contenu doit être identique dans les deux formats. Tout bloc réservé au we
 - Une tâche = une branche = une pull request. Jamais de commit direct sur `main`.
 - Noms de branches : `cours/<formation>-<sujet>` pour le contenu,
   `infra/<sujet>` pour la configuration, le thème, les scripts ou la CI.
-- **Une tâche de contenu ne modifie que le dossier de sa ressource.** Elle ne touche
+- **Une tâche de contenu ne modifie que le dossier de sa ressource**, plus, le cas
+  échéant, l'index de son domaine et de son chapitre créés par `scripts/nouveau.py`
+  (titre à relire). Elle ne touche
   jamais : `_quarto.yml`, `_brand.yml`, `_extensions/`, `_templates/`, `_schemas/`,
   `scripts/`, `.github/`, `AGENTS.md`, `docs/`.
 - Ces fichiers partagés ne changent que dans une branche `infra/…`.

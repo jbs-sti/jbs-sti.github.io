@@ -186,9 +186,14 @@ def main(argv=None):
                     and not (folder / 'index.qmd').is_file()):
                 print(f'ERREUR {folder.relative_to(root)} : index.qmd absent')
                 failures += 1
-        # Les index de formation ne sont pas des ressources.
         for path in sorted(base.rglob('index.qmd')):
-            if path.parent == base:
+            # Les index de formation, de domaine et de chapitre sont des pages
+            # de navigation, pas des ressources. Une ressource est toujours au
+            # fond de l'arborescence, dans un dossier <type>-<sujet> : un
+            # dossier mal placé reste donc contrôlé.
+            parts = path.relative_to(base).parts
+            if len(parts) <= depth and not any(path.parent.name.startswith(kind + '-')
+                                               for kind in kinds):
                 continue
             count += 1
             errors = check_resource(path, root, schema)

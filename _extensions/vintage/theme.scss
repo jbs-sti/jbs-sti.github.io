@@ -1,106 +1,87 @@
 /*-- scss:defaults --*/
 
+// Règles communes aux deux thèmes (clair et sombre). Les valeurs propres
+// à chaque thème sont dans theme-clair.scss et theme-sombre.scss, qui
+// sont assemblés avec ce fichier par `theme` dans `_quarto.yml`.
+
+// Palette de référence, identique dans les deux thèmes.
 $vert-profond: #1C322D;
 $creme: #F8F3EE;
 $or: #EBB552;
 $rose-poudre: #F1CDBE;
 $gris: #A1A1AA;
 
-// Encadrés (callouts) : distingués par icône + libellé, pas seulement
-// par la couleur. L'or est trop clair sur fond crème pour servir de
-// repère de contraste fiable, donc on reste sur vert-profond / gris.
-// Ces couleurs s'appliquent sur la surface crème du callout (voir plus
-// bas), pas sur le fond sombre de la page.
-$callout-color-note: $gris;
-$callout-color-tip: $vert-profond;
-$callout-color-caution: $vert-profond;
-$callout-color-warning: $vert-profond;
-$callout-color-important: $vert-profond;
+// Barre de navigation : toujours vert profond, texte crème, dans les
+// deux thèmes. C'est le seul aplat de couleur de la page ; il tient lieu
+// de bandeau d'en-tête et donne au site son identité.
+$navbar-bg: $vert-profond;
+$navbar-fg: $creme;
+$navbar-hl: $or;   // survol et lien actif, ≈ 7,3:1 sur le vert profond
+
+// Barre latérale : pas d'aplat, un simple filet de séparation. Par défaut
+// Quarto lui donne le fond `$light` (ici le crème), ce qui dessinait une
+// large bande claire sur toute la hauteur de la page.
+$sidebar-bg: transparent;
+$sidebar-border: true;
+
+// Variables d'ambiance. Les deux fichiers de thème les redéfinissent par
+// une affectation simple, qui l'emporte sur ces valeurs de repli quel que
+// soit l'ordre d'assemblage des couches Sass. Ces replis servent au
+// format `vintage-html` utilisé seul, hors du site.
+$surface: #FFFDFB !default;              // encadrés, tableaux, cartes
+$surface-texte: $vert-profond !default;
+$surface-bordure: rgba(28, 50, 45, 0.15) !default;
+$accent: $vert-profond !default;         // titres, liens, item actif
 
 /*-- scss:rules --*/
 
-// Thème unique volontairement sombre (voir _quarto.yml) : le bouton de
-// bascule clair/sombre n'a pas d'utilité puisque les deux états sont
-// identiques.
-.quarto-color-scheme-toggle {
-  display: none;
-}
-
-// Thème sombre : la page (brand.yml) a un fond vert-profond et un texte
-// crème. Les blocs de contenu "encaissés" (callouts, tableaux, blocs de
-// code, barre latérale, cartes de listing) restent des surfaces claires
-// crème avec texte vert-profond, comme dans la version précédente du
-// thème — seul le fond général bascule. Les liens dans ces surfaces sont
-// donc recolorés en vert-profond : le lien "or" du thème général (bon
-// contraste sur fond sombre, ≈ 7,3:1) serait illisible sur une surface
-// crème (or/crème ≈ 1,7:1).
-
-// Titres : Playfair Display gras en or, filet discret or sous les H2.
+// Titres : Playfair Display gras dans la couleur d'accent, filet or
+// sous les H2. L'or n'est ici que décoratif : l'information est portée
+// par la taille et la graisse, jamais par la seule couleur.
 h1, h2, h3, h4, h5, h6 {
-  color: $or;
+  color: $accent;
 }
 
 h2 {
-  border-bottom: 1px solid $or;
+  border-bottom: 1px solid rgba($or, 0.55);
   padding-bottom: 0.3em;
 }
 
-// Barre de navigation : fond vert profond, texte crème, lien actif
-// souligné d'un filet or. Couleur identique au fond de page : la barre
-// se fond dans l'en-tête sombre.
-.navbar {
-  background-color: $vert-profond;
-
-  .navbar-brand,
-  .navbar-title,
-  .nav-link {
-    color: $creme;
-  }
-
-  .nav-link:hover {
-    color: $or;
-  }
-
-  .nav-link.active {
-    color: $creme;
-    border-bottom: 2px solid $or;
-  }
-
-  .navbar-toggler-icon {
-    filter: invert(1) grayscale(1) brightness(2);
-  }
+// Barre de navigation : lien actif souligné d'un filet or.
+.navbar .nav-link.active {
+  color: $creme;
+  border-bottom: 2px solid $or;
 }
 
-// Barre latérale : surface crème, texte vert profond, item actif marqué
-// par une bordure gauche vert profond (l'or est trop pâle sur crème).
+// Barre latérale : texte dans la couleur du corps de page, item actif
+// marqué par la graisse et un filet vertical dans la couleur d'accent.
 #quarto-sidebar.sidebar-navigation {
-  background-color: $creme;
-
   .sidebar-link {
-    color: $vert-profond;
+    color: inherit;
   }
 
   .sidebar-link:hover {
-    color: $vert-profond;
     text-decoration: underline;
   }
 
   .sidebar-item-text.sidebar-link.active,
   .sidebar-item-text.sidebar-link.active:hover {
+    color: $accent;
     font-weight: 700;
-    border-left: 3px solid $vert-profond;
-    padding-left: calc(0.5em - 3px);
+    border-left: 2px solid $accent;
+    padding-left: calc(0.5em - 2px);
   }
 }
 
-// Encadrés : surface claire (comme avant la bascule en thème sombre),
-// renforcer visuellement "important" sans ajouter de teinte.
+// Encadrés : surface légèrement détachée du fond, distingués par leur
+// icône et leur libellé autant que par leur couleur.
 .callout {
-  background-color: $creme;
-  color: $vert-profond;
+  background-color: $surface;
+  color: $surface-texte;
+  border: 1px solid $surface-bordure;
 
   a {
-    color: $vert-profond;
+    color: $surface-texte;
     text-decoration: underline;
   }
 }
@@ -113,25 +94,18 @@ div.callout-important {
   }
 }
 
-// Blocs de code : fond légèrement grisé, bordure fine, coins arrondis.
-// Reste clair quel que soit le thème : la coloration syntaxique suppose
-// un texte sombre sur fond clair.
+// Blocs de code : même surface que les encadrés, bordure fine. La
+// coloration syntaxique suit le thème : Quarto fournit une variante
+// claire et une variante sombre.
 div.sourceCode {
-  background-color: #F2F2F0;
-  border: 1px solid $gris;
+  border: 1px solid $surface-bordure;
   border-radius: 4px;
   padding: 0.75em;
 }
 
-// Tableaux : surface claire, en-tête vert profond, zébrage très léger.
+// Tableaux : en-tête contrasté, zébrage très léger.
 .table {
-  background-color: $creme;
-  color: $vert-profond;
-
-  a {
-    color: $vert-profond;
-    text-decoration: underline;
-  }
+  color: inherit;
 
   thead th {
     background-color: $vert-profond;
@@ -147,17 +121,17 @@ div.sourceCode {
 
 // Cartes des pages de listing.
 .quarto-grid-item.card {
-  background-color: $creme;
-  border: 1px solid rgba($vert-profond, 0.25);
+  background-color: $surface;
+  border: 1px solid $surface-bordure;
 
-  a {
-    color: $vert-profond;
+  a,
+  .card-title.listing-title {
+    color: $surface-texte;
   }
 
   .card-title.listing-title {
     font-family: "Playfair Display", serif;
     font-weight: 700;
-    color: $vert-profond;
   }
 
   // Pas de vignette par défaut : les ressources n'ont pas d'image de
@@ -185,16 +159,15 @@ div.sourceCode {
 .quarto-listing-category-title {
   font-family: "Playfair Display", serif;
   font-weight: 700;
-  color: $or;
+  color: $accent;
 }
 
 .quarto-listing-category {
   font-family: "Inter", sans-serif;
   font-weight: 600;
-  color: $creme;
 }
 
 .quarto-listing-category.category-selected {
-  color: $or;
+  color: $accent;
   font-weight: 700;
 }

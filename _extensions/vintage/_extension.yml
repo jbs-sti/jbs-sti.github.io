@@ -1,11 +1,19 @@
 title: Vintage
 author: JBS STI
-version: 1.0.0
-quarto-required: ">=1.4.0"
+version: 1.1.0
+# Thèmes clair et sombre dérivés de `_brand.yml` : vérifié avec Quarto
+# 1.10. La borne basse n'a pas été testée sur une version plus ancienne.
+quarto-required: ">=1.7.0"
 contributes:
   formats:
     html:
-      theme: theme.scss
+      theme:
+        light:
+          - theme.scss
+          - theme-clair.scss
+        dark:
+          - theme.scss
+          - theme-sombre.scss
     typst:
       template-partials:
         - typst-template.typ

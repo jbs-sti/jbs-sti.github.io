@@ -1,0 +1,12 @@
+---
+title: "04 — Couche liaison"
+description: "Ressources du chapitre : trames, adresses MAC et commutation."
+format:
+  html: default
+listing:
+  contents: "*/index.qmd"
+  type: grid
+  categories: true
+  sort: "order"
+  fields: [title, description, categories]
+---

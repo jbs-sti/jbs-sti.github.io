@@ -1,0 +1,45 @@
+/*-- scss:defaults --*/
+
+// Thème sombre : fond vert profond, texte crème (contraste ≈ 12,3:1).
+// Les couleurs du corps de page viennent de `_brand.yml` ; ce fichier ne
+// règle que l'ambiance des surfaces et des filets. Les valeurs sont
+// écrites en clair (et non via les variables de palette) parce que ce
+// fichier peut être assemblé avant theme.scss par Quarto.
+
+// Surfaces détachées du fond : encadrés, blocs de code, tableaux, cartes.
+// Vert profond éclairci, pas de bloc crème : une surface claire sur fond
+// sombre ferait une tache lumineuse en pleine page.
+$surface: #24403A;                          // vert profond éclairci
+$surface-texte: #F8F3EE;                    // crème, ≈ 10,2:1 sur la surface
+$surface-bordure: rgba(248, 243, 238, 0.14);
+$code-block-bg: #24403A;
+
+// Titres, liens, item actif de la barre latérale : or sur fond sombre,
+// ≈ 7,3:1 sur le fond de page et ≈ 6:1 sur les surfaces.
+$accent: #EBB552;
+
+// Filets : séparateur de la barre latérale et bordures de tableau.
+$table-border-color: rgba(248, 243, 238, 0.14);
+
+// Encadrés : repérés par leur icône et leur libellé, la couleur n'est
+// qu'un renfort.
+$callout-color-note: #F8F3EE;
+$callout-color-tip: #EBB552;
+$callout-color-caution: #F1CDBE;
+$callout-color-warning: #EBB552;
+$callout-color-important: #F1CDBE;
+
+/*-- scss:rules --*/
+
+// Les schémas sont dessinés pour le papier : traits sombres sur fond
+// transparent. Sur le fond vert profond du thème sombre ils deviendraient
+// illisibles ; on leur donne donc une surface crème, comme en PDF. Les
+// photos et les images opaques ne sont pas affectées : le fond reste
+// caché derrière elles, seule la marge se voit.
+.quarto-figure img,
+figure img,
+p > img {
+  background-color: #F8F3EE;
+  padding: 0.5em;
+  border-radius: 4px;
+}

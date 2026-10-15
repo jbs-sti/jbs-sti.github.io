@@ -1,0 +1,31 @@
+/*-- scss:defaults --*/
+
+// Thème clair : fond crème, texte vert profond (contraste ≈ 12,3:1).
+// Les couleurs du corps de page viennent de `_brand.yml` ; ce fichier ne
+// règle que l'ambiance des surfaces et des filets. Les valeurs sont
+// écrites en clair (et non via les variables de palette) parce que ce
+// fichier peut être assemblé avant theme.scss par Quarto.
+
+// Surfaces détachées du fond : encadrés, blocs de code, tableaux, cartes.
+// Blanc cassé sur crème : la séparation tient à la bordure, pas à un
+// contraste de couleur fort.
+$surface: #FFFDFB;                        // blanc cassé
+$surface-texte: #1C322D;                  // vert profond, ≈ 13:1 sur la surface
+$surface-bordure: rgba(28, 50, 45, 0.15);
+$code-block-bg: #FFFDFB;
+
+// Titres, liens, item actif de la barre latérale. L'or est trop clair
+// sur crème pour du texte (≈ 1,7:1) : il reste décoratif.
+$accent: #1C322D;
+
+// Filets : séparateur de la barre latérale et bordures de tableau.
+$table-border-color: rgba(28, 50, 45, 0.12);
+
+// Encadrés : repérés par leur icône et leur libellé, la couleur n'est
+// qu'un renfort. Gris et vert profond sont les deux seules teintes de la
+// palette lisibles sur une surface claire.
+$callout-color-note: #A1A1AA;
+$callout-color-tip: #1C322D;
+$callout-color-caution: #1C322D;
+$callout-color-warning: #1C322D;
+$callout-color-important: #1C322D;
