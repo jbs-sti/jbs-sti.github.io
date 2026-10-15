@@ -7,7 +7,7 @@ import re
 import sys
 from urllib.parse import unquote, urlsplit
 
-from commun import ROOT, load_schema, read_source, validate, yaml
+from commun import ROOT, index_de_section, load_schema, read_source, validate, yaml
 
 MAX_SIZE = 5_000_000
 
@@ -187,13 +187,7 @@ def main(argv=None):
                 print(f'ERREUR {folder.relative_to(root)} : index.qmd absent')
                 failures += 1
         for path in sorted(base.rglob('index.qmd')):
-            # Les index de formation, de domaine et de chapitre sont des pages
-            # de navigation, pas des ressources. Une ressource est toujours au
-            # fond de l'arborescence, dans un dossier <type>-<sujet> : un
-            # dossier mal placé reste donc contrôlé.
-            parts = path.relative_to(base).parts
-            if len(parts) <= depth and not any(path.parent.name.startswith(kind + '-')
-                                               for kind in kinds):
+            if index_de_section(path, base, schema):
                 continue
             count += 1
             errors = check_resource(path, root, schema)
