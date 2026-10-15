@@ -5,7 +5,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 import sys
 
-from commun import ROOT, load_schema, read_source, validate, yaml
+from commun import ROOT, index_de_section, load_schema, read_source, validate, yaml
 
 try:
     from pypdf import PdfReader
@@ -94,7 +94,9 @@ def main(argv=None):
     for formation in schema['x-formations']:
         base = root / formation
         for source in sorted(base.rglob('index.qmd')):
-            if source.parent == base:
+            # Les index de formation, de domaine et de chapitre sont des pages
+            # de navigation : ni métadonnées de ressource, ni PDF attendu.
+            if index_de_section(source, base, schema):
                 continue
             relative = source.relative_to(root)
             try:

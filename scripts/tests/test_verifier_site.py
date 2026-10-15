@@ -101,6 +101,23 @@ class SiteTests(unittest.TestCase):
         self.source.write_text(self.source.read_text().replace('draft: true', 'draft: inconnu'))
         self.assertEqual(self.run_check().returncode, 1)
 
+    def test_section_indexes_ignored_but_not_misplaced_resource(self):
+        # Index de formation, de domaine et de chapitre : pages de navigation,
+        # sans métadonnées de ressource et sans PDF attendu.
+        section = '---\ntitle: "Section"\nformat:\n  html: default\n---\n'
+        for folder in ('bts1', 'bts1/reseaux', 'bts1/reseaux/04-couche-liaison'):
+            (self.root / folder / 'index.qmd').write_text(section)
+        result = self.run_check()
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn('1 ressource(s) publiable(s)', result.stdout)
+        # Un dossier de ressource mal placé reste contrôlé.
+        egare = self.root / 'bts1' / 'cours-egare'
+        egare.mkdir()
+        (egare / 'index.qmd').write_text(section)
+        result = self.run_check()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('cours-egare', result.stdout)
+
     def test_snt_and_external_site_directory(self):
         snt = self.root / 'snt/01-internet/fiche-ip'
         snt.mkdir(parents=True)

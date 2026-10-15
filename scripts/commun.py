@@ -110,3 +110,16 @@ def read_source(path):
         raise ValueError('En-tête YAML absent ou non fermé')
     metadata = yaml.load(match.group(1), Loader=Loader)
     return metadata, text[match.end():], text[:match.end()].count('\n') + 1
+
+def index_de_section(path, base, schema):
+    """Vrai si cet index.qmd est une page de navigation, pas une ressource.
+
+    Les index de formation, de domaine et de chapitre ne portent que le titre
+    et le listing de leur section. Une ressource est toujours au fond de
+    l'arborescence, dans un dossier <type>-<sujet> : un dossier de ressource
+    mal placé reste donc contrôlé comme une ressource.
+    """
+    depth = 2 if base.name == 'snt' else 3
+    kinds = schema['properties']['type']['enum']
+    return (len(path.relative_to(base).parts) <= depth
+            and not any(path.parent.name.startswith(kind + '-') for kind in kinds))
