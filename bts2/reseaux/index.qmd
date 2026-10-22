@@ -1,0 +1,13 @@
+---
+title: "Réseaux"
+description: "Ressources du domaine réseaux pour la deuxième année de BTS CIEL."
+format:
+  html: default
+listing:
+  # Seules les ressources, pas les index de domaine ni de chapitre.
+  contents: "*/*/index.qmd"
+  type: grid
+  categories: true
+  sort: "order"
+  fields: [title, description, categories]
+---

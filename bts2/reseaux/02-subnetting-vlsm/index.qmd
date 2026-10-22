@@ -1,0 +1,13 @@
+---
+title: "02 — Subnetting et VLSM"
+description: "Ressources du chapitre : binaire, masque, taille de bloc, découpage en sous-réseaux et VLSM."
+format:
+  html: default
+listing:
+  # Seules les ressources, pas les index de domaine ni de chapitre.
+  contents: "*/index.qmd"
+  type: grid
+  categories: true
+  sort: "order"
+  fields: [title, description, categories]
+---

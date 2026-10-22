@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="150" viewBox="0 0 700 150" role="img" aria-labelledby="title desc">
+<title id="title">Les quatre adresses du réseau 192.168.10.224/30</title>
+<desc id="desc">L'adresse .224 est l'adresse du réseau, .225 est attribuée à R1 G0/1, .226 est attribuée à R2 G0/0 et .227 est l'adresse de diffusion. Seules .225 et .226 sont utilisables.</desc>
+<rect width="700" height="150" fill="white"/>
+<g stroke="#222" stroke-width="2">
+<rect x="20" y="25" width="150" height="55" rx="6" fill="white"/>
+<rect x="190" y="25" width="150" height="55" rx="6" fill="#1C322D"/>
+<rect x="360" y="25" width="150" height="55" rx="6" fill="#1C322D"/>
+<rect x="530" y="25" width="150" height="55" rx="6" fill="white" stroke-dasharray="6 4"/>
+</g>
+<g font-family="sans-serif" text-anchor="middle">
+<text x="95" y="60" font-size="22" font-weight="bold" fill="#111">.224</text>
+<text x="265" y="60" font-size="22" font-weight="bold" fill="white">.225</text>
+<text x="435" y="60" font-size="22" font-weight="bold" fill="white">.226</text>
+<text x="605" y="60" font-size="22" font-weight="bold" fill="#111">.227</text>
+<text x="95" y="108" font-size="16" fill="#111">réseau</text>
+<text x="265" y="108" font-size="16" fill="#111">R1 G0/1</text>
+<text x="435" y="108" font-size="16" fill="#111">R2 G0/0</text>
+<text x="605" y="108" font-size="16" fill="#111">diffusion</text>
+<text x="350" y="138" font-size="15" fill="#111">Cases foncées : adresses utilisables ; cases claires : adresses réservées</text>
+</g></svg>
