@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="440" viewBox="0 0 820 440" role="img" aria-labelledby="title desc">
+<title id="title">Topologie du TP 3</title>
+<desc id="desc">Internet, simulé par la Loopback0 203.0.113.1/32 de FW, est derrière le pare-feu FW. FW G0/0 est relié à R2 G0/1 par 192.168.10.228/30 ; R2 G0/0 est relié à R1 G0/1 par 192.168.10.224/30. R1 G0/0 est relié en trunk à SW1 G0/1 ; SW1 G0/2 est relié en trunk 802.1Q à SW2 G0/1. Sur SW2 : PC-P2 sur F0/2 en VLAN 10 et PC-I1 sur F0/21 en VLAN 30. Sur SW1 : PC-P1 sur F0/1 en VLAN 10 et PC-ADM sur F0/11 en VLAN 20.</desc>
+<rect width="820" height="440" fill="white"/>
+<g fill="none" stroke="#222" stroke-width="2">
+<ellipse cx="90" cy="38" rx="65" ry="26" stroke-dasharray="6 4"/>
+<path d="M90 64 V110" stroke-dasharray="6 4"/>
+<rect x="40" y="110" width="100" height="50" rx="6"/>
+<rect x="310" y="110" width="100" height="50" rx="6"/>
+<rect x="580" y="110" width="100" height="50" rx="6"/>
+<rect x="580" y="225" width="100" height="50" rx="6"/>
+<rect x="250" y="225" width="100" height="50" rx="6"/>
+<path d="M140 135 H310 M410 135 H580"/>
+<path d="M625 160 V225 M635 160 V225"/>
+<path d="M350 245 H580 M350 255 H580"/>
+<rect x="155" y="350" width="110" height="44" rx="4"/>
+<rect x="335" y="350" width="110" height="44" rx="4"/>
+<rect x="505" y="350" width="110" height="44" rx="4"/>
+<rect x="665" y="350" width="110" height="44" rx="4"/>
+<path d="M280 275 L210 350 M320 275 L390 350 M610 275 L560 350 M650 275 L720 350"/>
+</g>
+<g font-family="sans-serif" fill="#111" text-anchor="middle">
+<text x="90" y="44" font-size="16">Internet</text>
+<text x="165" y="32" font-size="14" text-anchor="start">Lo0 de FW : 203.0.113.1/32</text>
+<text x="90" y="141" font-size="18" font-weight="bold">FW</text>
+<text x="360" y="141" font-size="18" font-weight="bold">R2</text>
+<text x="630" y="141" font-size="18" font-weight="bold">R1</text>
+<text x="630" y="256" font-size="18" font-weight="bold">SW1</text>
+<text x="300" y="256" font-size="18" font-weight="bold">SW2</text>
+<g font-size="13">
+<text x="165" y="127">G0/0</text><text x="285" y="127">G0/1</text>
+<text x="435" y="127">G0/0</text><text x="555" y="127">G0/1</text>
+<text x="660" y="178">G0/0</text><text x="660" y="218">G0/1</text>
+<text x="375" y="238">G0/1</text><text x="555" y="238">G0/2</text>
+<text x="230" y="318" text-anchor="end">F0/2</text>
+<text x="370" y="318" text-anchor="start">F0/21</text>
+<text x="575" y="318" text-anchor="end">F0/1</text>
+<text x="700" y="318" text-anchor="start">F0/11</text>
+</g>
+<text x="225" y="158" font-size="15">192.168.10.228/30</text>
+<text x="495" y="158" font-size="15">192.168.10.224/30</text>
+<text x="465" y="278" font-size="14">trunk 802.1Q</text>
+<g font-size="15" font-weight="bold">
+<text x="210" y="377">PC-P2</text><text x="390" y="377">PC-I1</text>
+<text x="560" y="377">PC-P1</text><text x="720" y="377">PC-ADM</text>
+</g>
+<g font-size="14">
+<text x="210" y="414">VLAN 10</text><text x="390" y="414">VLAN 30</text>
+<text x="560" y="414">VLAN 10</text><text x="720" y="414">VLAN 20</text>
+</g>
+<text x="410" y="436" font-size="13">Trait double : trunk 802.1Q · tirets : lien vers Internet simulé</text>
+</g></svg>
