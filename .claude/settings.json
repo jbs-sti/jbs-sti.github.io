@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(codex exec -s workspace-write -o .review/codex.md:*)",
+      "Bash(quarto render:*)",
+      "Bash(git diff:*)",
+      "Bash(git status:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push -u origin cours/:*)",
+      "Bash(git push -u origin infra/:*)",
+      "Bash(gh pr create:*)",
+      "Bash(mkdir -p .review)",
+      "Bash(python3 scripts/:*)",
+      "Bash(.venv/bin/python scripts/:*)",
+      "Bash(.venv/bin/python -m unittest:*)"
+    ],
+    "deny": [
+      "Bash(git push origin main:*)",
+      "Bash(git push -u origin main:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git merge:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(codex exec --dangerously-bypass-approvals-and-sandbox:*)",
+      "Bash(codex exec -s danger-full-access:*)"
+    ]
+  }
+}
