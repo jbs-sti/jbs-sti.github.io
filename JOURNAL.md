@@ -20,6 +20,10 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Entrée `infra/ci-latex` : numéro de pull request à renseigner.
 - Décider d'un garde-fou côté PR sur les ancres (CODEOWNERS ou contrôle CI
   des chemins), branche `infra/` par l'enseignant.
+- `bts2/reseaux/03-routage-dynamique/cours-ospf` (brouillon) : relire le PDF
+  de la CI ; confirmer dans Packet Tracer les sorties `show` (reconstituées).
+- Suite de la progression BTS2 : fiche de rappel VLAN/inter-VLAN (chapitre
+  01), puis TP OSPF, ACL, NAT/PAT, pare-feu et DMZ.
 
 **Décisions durables**
 
@@ -30,6 +34,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   projet contrôle ses changements dans `git diff`.
 - Les ancres (tests, schéma, scripts de vérification, CI) ne sont jamais
   modifiées par un agent.
+- Progression BTS2 réseaux, validée par l'enseignant : 01 VLAN et inter-VLAN
+  (fait en classe), 02 VLSM, 03 routage dynamique (OSPF monozone), 04 ACL,
+  05 NAT/PAT, 06 pare-feu et DMZ, 07 VPN, 08 redondance, 09 supervision,
+  10 IPv6. Le routage statique est fait en classe. Plateforme : Packet Tracer.
+- Les commandes IOS se vérifient dans la référence de Packet Tracer :
+  `C:\Program Files\Cisco Packet Tracer 9.0.1\help\default\commandReference\`
+  (2911 : `2900_universal_base_15.1.html`).
 
 ## Historique
 
@@ -46,6 +57,18 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-23 — cours/bts2-ospf
+
+- Ressource : bts2/reseaux/03-routage-dynamique/cours-ospf/index.qmd (référence imitée : bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm), avec 3 SVG et l'index du nouveau chapitre 03
+- Commandes IOS du cours confirmées dans la référence de Packet Tracer 9.0.1 (2911, IOS 15.1), ainsi que le module HWIC-2T ; sorties `show` reconstituées, non capturées
+- Vérificateur : CONFORME au 1er passage (6 points À CORRIGER traités) ; CONFORME après chaque relecture Codex
+- Codex (1re relecture) : 4 constats A (dont 1 BLOQUANT), 1 réécriture ; tous corrigés par le rédacteur, lien Cisco Design Guide supprimé
+- Codex (relance) : 4 constats A (dont 1 BLOQUANT), 1 réécriture ; tous corrigés par le rédacteur
+- Réécritures gardées : R1 (1re), R1 (relance) ; annulées : aucune
+- Relance Codex : oui (correction de fond sur la distance administrative et la métrique)
+- Pull request : #26
+- Points à relire par l'enseignant : rendu PDF, sorties `show` à confirmer dans Packet Tracer, rôles DR/BDR dépendant de l'ordre de démarrage
 
 ### 2026-10-23 — cours/bts1-tcp-udp-publier
 

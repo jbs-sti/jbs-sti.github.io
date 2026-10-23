@@ -1,0 +1,776 @@
+---
+title: "Le routage dynamique avec OSPF"
+description: "Comprendre pourquoi le routage dynamique remplace les routes statiques, puis configurer et vérifier OSPF en une seule zone sous Cisco Packet Tracer."
+type: cours
+domaine: reseaux
+chapitre: "03 — Routage dynamique"
+categories: [cours, reseaux]
+mots-cles: [routage dynamique, OSPF, RIP, distance administrative, état de lien, Hello, LSA, LSDB, SPF, coût, router-id, DR, BDR, masque générique, Packet Tracer]
+objectifs:
+  - "Expliquer les limites du routage statique et l’intérêt d’un protocole de routage dynamique."
+  - "Distinguer un protocole à vecteur de distance d’un protocole à état de lien."
+  - "Décrire la formation d’un voisinage OSPF et le rôle des LSA, de la LSDB et de l’algorithme SPF."
+  - "Calculer le coût OSPF d’une interface et d’un chemin, puis en déduire la route choisie."
+  - "Configurer OSPF en zone 0 sur un routeur Cisco dans Packet Tracer, avec router-id, interfaces passives et route par défaut."
+  - "Vérifier le fonctionnement d’OSPF et diagnostiquer un voisinage qui ne se forme pas."
+prerequis:
+  - "Routage statique : table de routage, commande ip route"
+  - "Routage inter-VLAN"
+  - "Sous-réseaux et VLSM"
+duree: "2 h"
+order: 10
+date-modified: '2026-10-23'
+draft: true
+lang: fr
+---
+
+## Objectifs et prérequis
+
+À l’issue du cours, vous saurez expliquer comment des routeurs construisent
+seuls leur table de routage. Vous saurez configurer **OSPF** dans une seule
+zone, puis vérifier son fonctionnement. Vous saurez enfin chercher pourquoi
+deux routeurs refusent de devenir voisins.
+
+Vous devez connaître le routage statique, le routage inter-VLAN et le
+découpage VLSM.
+
+Les configurations utilisent **Cisco Packet Tracer**, avec des routeurs
+**Cisco 2911** sous **IOS 15**. Les commandes sont celles d’IOS, saisies dans
+l’onglet CLI de chaque routeur.
+
+## Situation de départ
+
+L’entreprise fil rouge ouvre deux nouveaux sites. Chaque site possède un
+routeur et un réseau local. Les trois routeurs sont reliés en triangle. Le
+routeur R1 du siège donne aussi accès à Internet, par le fournisseur d’accès
+(FAI).
+
+![Topologie du fil rouge : trois routeurs en triangle, un LAN derrière chacun et un accès Internet par R1.](img/topologie.svg){fig-alt="Trois routeurs en triangle. R1, router-id 1.1.1.1, en haut ; R2, router-id 2.2.2.2, en bas à gauche ; R3, router-id 3.3.3.3, en bas à droite. Liaison R1–R2 : réseau 10.0.0.0/30, R1 G0/1 point 1, R2 G0/1 point 2. Liaison R2–R3 : réseau 10.0.0.4/30, R2 G0/2 point 5, R3 G0/1 point 6. Liaison R1–R3 : réseau 10.0.0.8/30, R1 G0/2 point 9, R3 G0/2 point 10. LAN1 192.168.1.0/24 sur R1 G0/0, LAN2 192.168.2.0/24 sur R2 G0/0, LAN3 192.168.3.0/24 sur R3 G0/0 ; chaque routeur a l’adresse point 1 dans son LAN et chaque PC l’adresse point 10. R1 est relié au FAI, 203.0.113.1, par une liaison série 203.0.113.0/30 sur son interface S0/0/0, adresse point 2."}
+
+Sous chaque routeur figure son **router-id** : l’identifiant qu’il utilise
+dans OSPF. Vous verrez plus bas comment il est choisi.
+
+Le plan d’adressage applique le VLSM : un /24 par LAN, un /30 par liaison
+entre deux routeurs.
+
+| Réseau | Sous-réseau | Adresses des routeurs |
+|:---|:---|:---|
+| LAN1 | `192.168.1.0/24` | R1 G0/0 : `.1` |
+| LAN2 | `192.168.2.0/24` | R2 G0/0 : `.1` |
+| LAN3 | `192.168.3.0/24` | R3 G0/0 : `.1` |
+| R1–R2 | `10.0.0.0/30` | R1 G0/1 : `.1` ; R2 G0/1 : `.2` |
+| R2–R3 | `10.0.0.4/30` | R2 G0/2 : `.5` ; R3 G0/1 : `.6` |
+| R1–R3 | `10.0.0.8/30` | R1 G0/2 : `.9` ; R3 G0/2 : `.10` |
+| R1–FAI | `203.0.113.0/30` | R1 S0/0/0 : `.2` ; FAI : `.1` |
+
+Le 2911 n’a que trois interfaces Gigabit Ethernet intégrées. Pour la liaison
+vers le FAI, ajoutez à R1 un module **HWIC-2T** dans le logement 0, routeur éteint. Il
+apporte l’interface série `Serial0/0/0`. Le routeur du FAI est déjà configuré.
+La traduction d’adresses (NAT) sur R1 et les routes de retour du FAI ne sont
+pas traitées ici.
+
+Avec des routes statiques, il faudrait écrire chaque route à la main, sur
+chaque routeur. Et si la liaison R1–R3 tombe, qui préviendra les routeurs ?
+Ce cours vous montre comment OSPF règle ces deux problèmes.
+
+## Comprendre le mécanisme
+
+### Rappel : la table de routage
+
+Un paquet arrive sur R2 à destination de `192.168.3.10`. R2 consulte sa
+**table de routage** : la liste des réseaux connus, avec, pour chacun, le
+prochain saut et l’interface de sortie. Il retient l’entrée la plus précise
+qui contient l’adresse : c’est la règle du **préfixe le plus long**.
+
+Une même destination peut être apprise de plusieurs façons. Le routeur
+départage alors les sources par leur **distance administrative** (AD). C’est
+un indice de confiance : plus il est petit, plus la source est crue.
+
+| Source de la route | Code dans la table | Distance administrative |
+|:---|:-:|:-:|
+| Réseau directement connecté | C | 0 |
+| Route statique | S | 1 |
+| EIGRP (interne), protocole propriétaire Cisco, non traité ici | D | 90 |
+| OSPF | O | 110 |
+| RIP | R | 120 |
+
+Entre deux routes apprises par le même protocole, c’est la **métrique** qui
+départage. Dans la table, les deux valeurs s’écrivent entre crochets :
+`[110/2]` signifie AD 110, métrique 2.
+
+::: {.callout-note}
+## Ordre de décision
+
+1. **Construction de la table.** Pour un même préfixe proposé par plusieurs
+   sources, la distance administrative la plus petite l’emporte. Au sein
+   d’un même protocole, la métrique la plus petite l’emporte.
+2. **Acheminement d’un paquet.** Le routeur choisit l’entrée de la table dont
+   le préfixe est le plus long.
+:::
+
+### Pourquoi le routage dynamique ?
+
+Comptez les routes statiques du fil rouge. Chaque routeur doit joindre deux
+LAN distants et la liaison qui ne le touche pas. Cela fait trois routes par
+routeur, neuf au total, plus une route par défaut sur chacun. Ajoutez un
+quatrième site, et chaque routeur doit être reconfiguré.
+
+Le routage statique a trois limites :
+
+- **l’échelle** : le nombre de routes grandit avec le nombre de réseaux et de
+  routeurs ; chaque ajout se répercute partout, à la main ;
+- **la panne** : un routeur ne sait pas qu’un lien lointain est tombé ; il
+  continue d’envoyer les paquets vers une impasse ;
+- **le reroutage** : un chemin de secours existe parfois, ici par le troisième
+  côté du triangle ; une route statique ne le trouve pas seule.
+
+On peut prévoir des secours avec des **routes statiques flottantes**, à
+distance administrative plus élevée. Mais il faut les écrire, elles aussi.
+
+Un **protocole de routage dynamique** automatise ce travail. Les routeurs
+échangent des informations sur les réseaux qu’ils connaissent. Chacun calcule
+ses routes et les met à jour après une panne. Le temps nécessaire pour que
+tous les routeurs aient une vue juste s’appelle la **convergence**.
+
+### Deux familles de protocoles
+
+Imaginez deux façons de trouver votre chemin dans une ville. Dans la
+première, vous demandez à chaque carrefour : « Le stade, c’est loin ? » On
+vous répond « 3 rues par là ». Dans la seconde, chacun possède le plan
+complet et calcule lui-même son trajet.
+
+La première méthode est celle des protocoles à **vecteur de distance**. Un
+routeur ne connaît que ce que ses voisins lui disent : une direction et une
+distance. La seconde est celle des protocoles à **état de lien**. Chaque
+routeur reçoit la description de tous les liens et construit une carte.
+
+Le tableau emploie deux termes expliqués plus loin. Un **LSA** est la
+description d’un lien. **SPF** est l’algorithme qui calcule les plus courts
+chemins sur la carte.
+
+| Critère | Vecteur de distance (RIP) | État de lien (OSPF) |
+|:---|:---|:---|
+| Ce que sait un routeur | ce que disent ses voisins | la carte complète de la zone |
+| Ce qui est envoyé | sa table de routage | la description de ses liens (LSA) |
+| Quand | périodiquement | à chaque changement, plus un rafraîchissement lent |
+| Métrique | nombre de sauts | coût, lié à la bande passante |
+| Calcul | addition des distances reçues | algorithme SPF de Dijkstra |
+| Convergence | lente | rapide |
+
+### RIPv2 en survol
+
+**RIP** (*Routing Information Protocol*) est le protocole à vecteur de
+distance le plus simple. Sa version 2, RIPv2, transmet le masque avec chaque
+réseau : elle accepte donc le VLSM.
+
+- Sa métrique est le **nombre de sauts**, c’est-à-dire de routeurs à traverser.
+- Une route compte **15 sauts au plus**. La valeur **16 signifie
+  « injoignable »**.
+- Chaque routeur envoie sa table à ses voisins **toutes les 30 secondes**,
+  même sans changement.
+
+Le nombre de sauts ignore le débit. Prenez deux chemins : un saut sur un lien
+à 100 Mb/s, ou deux sauts sur des liens à 1 Gb/s. RIP choisit le premier,
+même s’il est dix fois plus lent. C’est une des raisons qui font préférer
+OSPF en entreprise.
+
+### OSPF : un protocole à état de lien
+
+**OSPF** (*Open Shortest Path First*) est un protocole ouvert, décrit par la
+RFC 2328 pour IPv4. Ses messages sont placés directement dans des paquets IP,
+avec le numéro de protocole 89. Ils n’utilisent donc ni TCP ni UDP.
+
+Un grand réseau OSPF se découpe en **zones** (*areas*). Dans ce cours, tous
+les routeurs sont dans une seule zone, la **zone 0**, dite zone fédératrice
+(*backbone*). On parle d’OSPF **monozone**.
+
+### Voisins et paquets Hello
+
+Branchez le câble entre R1 et R2. Toutes les 10 secondes, chacun envoie sur
+ce lien un petit message : « Je suis 1.1.1.1, zone 0, et voici les voisins
+que j’entends. » Ce message s’appelle un **Hello**. Il est envoyé à l’adresse
+de multidiffusion `224.0.0.5`, qui désigne tous les routeurs OSPF du lien.
+
+Le Hello sert à découvrir les voisins et à vérifier qu’ils sont toujours là.
+Deux minuteries le règlent, par interface :
+
+| Minuterie | Rôle | Valeur par défaut sur Ethernet |
+|:---|:---|:-:|
+| Intervalle Hello | délai entre deux Hello | 10 s |
+| Intervalle Dead | délai sans Hello au bout duquel le voisin est déclaré perdu | 40 s |
+
+Deux routeurs ne deviennent voisins que s’ils s’accordent. Leurs Hello
+doivent annoncer :
+
+- la même zone ;
+- les mêmes intervalles Hello et Dead ;
+- le même sous-réseau, avec le même masque, sur un lien Ethernet ;
+- la même authentification, si elle est activée.
+
+Leurs router-id doivent aussi être différents.
+
+Une fois d’accord, les deux routeurs passent par plusieurs **états**. Le
+schéma emploie des termes détaillés ensuite :
+
+- **LSA** : description d’un lien ; **LSDB** : base qui range tous les LSA
+  connus (voir la section suivante) ;
+- **DBD**, **LSR**, **LSU**, **LSAck** : paquets qui résument la base,
+  demandent des LSA, les envoient, puis en accusent réception ;
+- **DR** et **BDR** : routeur désigné et son remplaçant, élus sur un réseau
+  multi-accès (voir plus bas).
+
+![Établissement d’un voisinage OSPF entre R1 et R2, avec l’état du voisin de chaque côté.](img/voisinage.svg){fig-alt="Diagramme de séquence entre R1, router-id 1.1.1.1, et R2, router-id 2.2.2.2. Au départ, chacun voit l’autre Down. R1 envoie un Hello sans voisin vu : R2 passe à Init. R2 répond par un Hello qui cite 1.1.1.1 : R1 passe à 2-Way. R1 renvoie un Hello qui cite 2.2.2.2 : R2 passe à 2-Way. Sur un réseau multi-accès, le DR et le BDR sont élus. Les deux routeurs échangent des DBD, résumés de leur LSDB : états ExStart puis Exchange. R1 envoie un LSR pour demander les LSA manquants, R2 répond par un LSU, R1 acquitte par un LSAck : état Loading. Enfin, les deux routeurs sont Full."}
+
+| État | Ce qui s’est passé |
+|:---|:---|
+| Down | aucun Hello reçu de ce voisin |
+| Init | un Hello reçu, mais il ne me cite pas encore |
+| 2-Way | le Hello du voisin me cite : la communication marche dans les deux sens |
+| ExStart, Exchange | échange de résumés des bases de données (paquets DBD) |
+| Loading | demande (LSR) et réception (LSU) des informations manquantes |
+| Full | les deux bases sont identiques : les routeurs sont **adjacents** |
+
+Un voisinage bloqué dans un état donne un indice de panne. Retenez surtout
+qu’un état **Full** est l’état normal entre deux routeurs adjacents.
+
+### LSA, LSDB et algorithme SPF
+
+En état Full, R1 a reçu de R2 tout ce que R2 sait. Que contient ce savoir ?
+Chaque routeur décrit ses propres liens : « J’ai une interface dans
+`192.168.2.0/24`, de coût 1, et un voisin 1.1.1.1 sur `10.0.0.0/30`. »
+
+Cette description s’appelle un **LSA** (*Link-State Advertisement*, annonce
+d’état de lien). Les routeurs relaient chaque LSA de proche en proche à toute la zone :
+c’est l’**inondation** (*flooding*). Un nouveau LSA n’est émis qu’en cas de
+changement, plus un rafraîchissement toutes les 30 minutes.
+
+Chaque routeur range les LSA reçus dans sa **LSDB** (*Link-State Database*,
+base de données d’état de lien). Dans une zone, tous les routeurs ont la même
+LSDB : c’est la carte commune.
+
+À partir de cette carte, chaque routeur lance l’algorithme **SPF** (*Shortest
+Path First*), dû à Edsger Dijkstra. Il se place à la racine et calcule
+l’**arbre des plus courts chemins** vers chaque réseau. Les meilleures routes
+entrent alors dans sa table de routage.
+
+![Arbre des plus courts chemins calculé par R1 dans le fil rouge.](img/arbre-spf.svg){fig-alt="Arbre dont R1 est la racine. Branches épaisses : R1 vers LAN1, coût 1 ; R1 vers R2, coût 1 ; R1 vers R3, coût 1 ; R2 vers LAN2, coût total 2 ; R3 vers LAN3, coût total 2. Le lien entre R2 et R3, de coût 1, est dessiné en tirets : R1 le connaît mais ne l’utilise pas pour joindre R2, R3 ou leurs LAN."}
+
+Tous les routeurs ont la même carte, mais chacun obtient un arbre différent :
+il en est la racine.
+
+::: {.callout-note}
+## À retenir
+
+- **Hello** : découvrir les voisins et vérifier qu’ils sont vivants.
+- **LSA** : décrire ses liens à toute la zone.
+- **LSDB** : la carte, identique dans tous les routeurs de la zone.
+- **SPF** : calcul, par chaque routeur, de ses plus courts chemins.
+:::
+
+### Le coût OSPF
+
+Pour comparer deux chemins, OSPF additionne des **coûts**. Chaque interface a
+un coût, calculé à partir de sa bande passante :
+
+**coût = bande passante de référence ÷ bande passante de l’interface**
+
+Le résultat est arrondi à l’entier inférieur, avec un minimum de 1. La bande
+passante de référence vaut **100 Mb/s** par défaut.
+
+| Interface | Bande passante | Calcul avec 100 Mb/s | Coût |
+|:---|:-:|:-:|:-:|
+| Ethernet | 10 Mb/s | 100 ÷ 10 | 10 |
+| FastEthernet | 100 Mb/s | 100 ÷ 100 | 1 |
+| GigabitEthernet | 1 000 Mb/s | 100 ÷ 1 000 = 0,1 | 1 (minimum) |
+| Série (défaut IOS) | 1 544 kb/s | 100 000 ÷ 1 544 ≈ 64,8 | 64 |
+
+Le **coût d’une route** est la somme des coûts des interfaces de sortie, de
+la source jusqu’au réseau de destination inclus. Par exemple, R1 joint LAN3
+par R3 : coût de R1 G0/2 (1) plus coût de R3 G0/0 (1), soit **2**.
+
+::: {.callout-warning}
+## FastEthernet et GigabitEthernet ont le même coût
+
+Avec la référence par défaut, un lien à 100 Mb/s et un lien à 1 Gb/s coûtent
+tous deux 1. OSPF ne les distingue plus. Relevez la référence à 1 000 Mb/s
+sur **tous** les routeurs de la zone :
+
+```text
+! Packet Tracer, IOS : mode de configuration du processus OSPF
+router ospf 1
+ auto-cost reference-bandwidth 1000
+! la valeur est en Mb/s : GigabitEthernet = 1, FastEthernet = 10
+```
+
+Une référence différente d’un routeur à l’autre fausse les calculs.
+:::
+
+Vous pouvez aussi imposer le coût d’une interface avec `ip ospf cost`. Cette
+valeur remplace le calcul automatique sur cette interface seulement.
+
+### Le router-id
+
+Dans les Hello et les LSA, chaque routeur signe avec son **router-id** (RID).
+C’est un nombre de 32 bits écrit comme une adresse IPv4, par exemple
+`1.1.1.1`. Il doit être unique dans tout le domaine OSPF.
+
+Une interface **loopback** est une interface virtuelle du routeur.
+Le routeur choisit son RID au démarrage du processus OSPF, dans cet ordre :
+
+1. la valeur donnée par la commande `router-id` ;
+2. sinon, la plus haute adresse IPv4 de ses interfaces **loopback** actives ;
+3. sinon, la plus haute adresse IPv4 de ses autres interfaces actives.
+
+Fixez-le toujours vous-même avec `router-id` : il devient lisible et stable.
+Fixez-le avant les instructions `network`, tant qu’aucun voisin n’existe.
+Sinon, un RID déjà choisi ne change pas tout seul : il faut relancer le
+processus avec `clear ip ospf process`.
+
+### DR et BDR sur un réseau multi-accès
+
+Reliez six routeurs au même commutateur. Si chacun devient adjacent avec
+chacun, il faut 6 × 5 ÷ 2 = **15 adjacences**. Chaque routeur devrait
+synchroniser sa base avec cinq voisins, soit 15 adjacences à entretenir sur
+le segment.
+
+OSPF élit plutôt un **routeur désigné**, le **DR** (*Designated Router*), et
+un **remplaçant**, le **BDR** (*Backup Designated Router*). Les autres
+routeurs, appelés DROTHER, ne deviennent adjacents qu’avec le DR et le BDR.
+On passe à 4 × 2 + 1 = **9 adjacences**. Entre deux DROTHER, le voisinage
+reste à l’état 2-Way : c’est normal.
+
+L’élection se fait par lien, selon deux critères :
+
+1. la **priorité** OSPF de l’interface la plus haute (de 0 à 255, 1 par
+   défaut ; 0 interdit de devenir DR ou BDR) ;
+2. à égalité, le **router-id** le plus haut.
+
+L’élection n’est pas préemptive. Un routeur plus prioritaire qui arrive plus
+tard ne prend pas la place du DR en fonction. Le résultat dépend donc aussi
+de l’ordre de démarrage.
+
+::: {.callout-tip}
+## Point à point ou multi-accès ?
+
+Une liaison série (HDLC, PPP) est de type **point à point** : il n’y a ni DR
+ni BDR. En revanche, une interface Ethernet est **multi-accès** par défaut,
+même si elle ne relie que deux routeurs. La commande
+`ip ospf network point-to-point` change ce type. Dans le fil rouge,
+chaque liaison Ethernet en /30 a donc son DR et son BDR.
+:::
+
+## Observer et appliquer
+
+### Configurer OSPF sur R1
+
+**Plateforme : Cisco Packet Tracer, routeur 2911, IOS 15.** Les adresses des
+interfaces sont supposées déjà configurées et les interfaces activées
+(`no shutdown`).
+
+Trois réglages précèdent les instructions `network` :
+
+- le **numéro de processus** de `router ospf` est local au routeur ; il n’a
+  pas besoin d’être identique sur les voisins ;
+- le **router-id** se fixe avant les instructions `network`, tant qu’aucun
+  voisin n’existe ; sinon, il faut `clear ip ospf process` ;
+- la **route par défaut statique** doit exister avant d’être annoncée.
+
+```text
+! Packet Tracer, R1, mode de configuration globale
+ip route 0.0.0.0 0.0.0.0 203.0.113.1
+! route par défaut statique vers le FAI
+router ospf 1
+! processus OSPF numéro 1, local à R1
+ router-id 1.1.1.1
+ network 192.168.1.0 0.0.0.255 area 0
+ network 10.0.0.0 0.0.0.3 area 0
+ network 10.0.0.8 0.0.0.3 area 0
+! active OSPF sur G0/0, G0/1 et G0/2, en zone 0
+ passive-interface GigabitEthernet0/0
+! aucun Hello vers LAN1, mais le réseau reste annoncé
+ default-information originate
+! annonce la route par défaut aux autres routeurs OSPF
+```
+
+La liaison série vers le FAI ne figure dans aucune instruction `network`.
+R1 n’envoie donc aucun Hello au FAI et n’annonce pas `203.0.113.0/30`.
+
+### L’instruction `network` et le masque générique
+
+L’instruction `network` n’annonce pas directement un réseau. Elle **active
+OSPF sur les interfaces** dont l’adresse correspond. OSPF annonce ensuite le
+sous-réseau de chacune de ces interfaces.
+
+La correspondance utilise un **masque générique** (*wildcard*). Un bit à 0
+impose l’égalité, un bit à 1 accepte n’importe quelle valeur. Pour un
+sous-réseau, il se calcule simplement :
+
+**masque générique = 255.255.255.255 − masque**
+
+| Sous-réseau | Masque | Masque générique |
+|:---|:---|:---|
+| `192.168.1.0/24` | `255.255.255.0` | `0.0.0.255` |
+| `10.0.0.0/30` | `255.255.255.252` | `0.0.0.3` |
+| `172.16.32.0/20` | `255.255.240.0` | `0.0.15.255` |
+| une seule adresse, `10.0.0.9` | — | `0.0.0.0` |
+
+La dernière ligne active OSPF sur la seule interface d’adresse `10.0.0.9`.
+C’est la forme la plus précise.
+
+### L’interface passive
+
+R1 n’a aucun voisin OSPF dans LAN1, seulement des PC. Lui envoyer des Hello
+gaspille de la bande passante. Surtout, un poste malveillant pourrait se
+faire passer pour un routeur et injecter de fausses routes.
+
+`passive-interface` supprime l’envoi de Hello sur une interface. Le réseau de
+cette interface reste annoncé aux autres routeurs. Déclarez passive toute
+interface tournée vers des utilisateurs.
+
+### Configurer R2 et R3
+
+**Plateforme : Cisco Packet Tracer, routeurs 2911, IOS 15.**
+
+```text
+! Packet Tracer, R2, mode de configuration globale
+router ospf 1
+ router-id 2.2.2.2
+ network 192.168.2.0 0.0.0.255 area 0
+ network 10.0.0.0 0.0.0.3 area 0
+ network 10.0.0.4 0.0.0.3 area 0
+ passive-interface GigabitEthernet0/0
+```
+
+```text
+! Packet Tracer, R3, mode de configuration globale
+router ospf 1
+ router-id 3.3.3.3
+ network 192.168.3.0 0.0.0.255 area 0
+ network 10.0.0.4 0.0.0.3 area 0
+ network 10.0.0.8 0.0.0.3 area 0
+ passive-interface GigabitEthernet0/0
+```
+
+Ni R2 ni R3 n’ont de route statique : la route par défaut leur vient de R1.
+
+### Vérifier les voisins
+
+Les commandes suivantes se tapent en mode privilégié (`R1#`). Les sorties
+sont des **extraits simplifiés** : des lignes ont été retirées, et les
+compteurs varient d’une capture à l’autre.
+
+```text
+R1# show ip ospf neighbor
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+2.2.2.2           1   FULL/DR         00:00:34    10.0.0.2        GigabitEthernet0/1
+3.3.3.3           1   FULL/DR         00:00:37    10.0.0.10       GigabitEthernet0/2
+```
+
+- **Neighbor ID** est le router-id du voisin, **Address** son adresse sur le
+  lien.
+- **State** donne l’état, puis le rôle **du voisin** sur ce lien. Ici, R2 et
+  R3 ont un RID plus haut que R1 : ils sont DR, R1 est BDR.
+- **Dead Time** décompte : il repart de 40 s à chaque Hello reçu.
+
+Si les routeurs ont démarré dans un autre ordre, les rôles DR et BDR peuvent
+être différents. L’état FULL, lui, doit apparaître.
+
+### Lire la table de routage
+
+```text
+R2# show ip route
+Codes: L - local, C - connected, S - static, R - RIP, O - OSPF,
+       E2 - OSPF external type 2, * - candidate default
+Gateway of last resort is 10.0.0.1 to network 0.0.0.0
+
+     10.0.0.0/8 is variably subnetted, 5 subnets, 2 masks
+C       10.0.0.0/30 is directly connected, GigabitEthernet0/1
+L       10.0.0.2/32 is directly connected, GigabitEthernet0/1
+C       10.0.0.4/30 is directly connected, GigabitEthernet0/2
+L       10.0.0.5/32 is directly connected, GigabitEthernet0/2
+O       10.0.0.8/30 [110/2] via 10.0.0.1, 00:03:12, GigabitEthernet0/1
+                    [110/2] via 10.0.0.6, 00:03:12, GigabitEthernet0/2
+O    192.168.1.0/24 [110/2] via 10.0.0.1, 00:03:12, GigabitEthernet0/1
+O    192.168.3.0/24 [110/2] via 10.0.0.6, 00:03:12, GigabitEthernet0/2
+O*E2 0.0.0.0/0 [110/1] via 10.0.0.1, 00:03:02, GigabitEthernet0/1
+```
+
+Lisez les lignes qui commencent par `O` :
+
+- `192.168.1.0/24 [110/2] via 10.0.0.1` : LAN1 est appris par OSPF (AD 110),
+  coût 2, prochain saut R1 ;
+- `10.0.0.8/30` a **deux** prochains sauts de même coût 2. OSPF garde les
+  deux et partage le trafic entre eux : c’est le **partage de charge à coût
+  égal** ;
+- `O*E2 0.0.0.0/0` est la route par défaut annoncée par R1. `E2` signifie
+  route **externe** : elle vient d’une source extérieure à OSPF, ici la route
+  statique de R1. Sa métrique vaut 1 par défaut et ne grandit pas en route.
+
+Pour n’afficher que les routes OSPF, tapez `show ip route ospf`.
+
+### Contrôler le processus et les interfaces
+
+```text
+R1# show ip protocols
+Routing Protocol is "ospf 1"
+  Router ID 1.1.1.1
+  It is an autonomous system boundary router
+  Number of areas in this router is 1. 1 normal 0 stub 0 nssa
+  Routing for Networks:
+    192.168.1.0 0.0.0.255 area 0
+    10.0.0.0 0.0.0.3 area 0
+    10.0.0.8 0.0.0.3 area 0
+  Passive Interface(s):
+    GigabitEthernet0/0
+  Routing Information Sources:
+    Gateway         Distance      Last Update
+    2.2.2.2              110      00:04:10
+    3.3.3.3              110      00:04:10
+  Distance: (default is 110)
+```
+
+Cette commande résume la configuration : RID, instructions `network`,
+interfaces passives et voisins qui fournissent des routes. R1 annonce une
+route externe : il se déclare donc routeur de frontière (*ASBR*).
+
+```text
+R1# show ip ospf interface GigabitEthernet0/1
+GigabitEthernet0/1 is up, line protocol is up
+  Internet address is 10.0.0.1/30, Area 0
+  Process ID 1, Router ID 1.1.1.1, Network Type BROADCAST, Cost: 1
+  Transmit Delay is 1 sec, State BDR, Priority 1
+  Designated Router (ID) 2.2.2.2, Interface address 10.0.0.2
+  Backup Designated Router (ID) 1.1.1.1, Interface address 10.0.0.1
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+  Neighbor Count is 1, Adjacent neighbor count is 1
+```
+
+Elle détaille une interface : zone, masque, type de réseau (`BROADCAST` pour
+Ethernet), coût, rôle, priorité et minuteries. C’est la commande clé du
+diagnostic d’un voisinage.
+
+| Commande (mode privilégié) | Ce qu’elle permet de vérifier |
+|:---|:---|
+| `show ip ospf neighbor` | voisins présents, état FULL, rôle DR ou BDR |
+| `show ip route` | routes `O` et `O*E2`, coût, prochain saut |
+| `show ip protocols` | router-id, instructions `network`, interfaces passives |
+| `show ip ospf interface` | zone, masque, coût, priorité, minuteries Hello et Dead |
+
+### Observer la convergence
+
+**Plateforme : Cisco Packet Tracer.** Donnez à PC1 l’adresse
+`192.168.1.10/24`, passerelle `192.168.1.1`. Donnez à PC3 l’adresse
+`192.168.3.10/24`, passerelle `192.168.3.1`.
+
+1. Sur PC1, onglet *Desktop*, *Command Prompt*, tapez `tracert 192.168.3.10`.
+   Le chemin passe par R1 puis R3 : `192.168.1.1`, `10.0.0.10`,
+   `192.168.3.10`.
+2. Sur R1, relevez la route de LAN3 : `192.168.3.0/24 [110/2] via 10.0.0.10`.
+3. Coupez la liaison R1–R3 : sur R1, `interface GigabitEthernet0/2` puis
+   `shutdown`.
+4. Relancez `show ip route` sur R1 : `192.168.3.0/24 [110/3] via 10.0.0.2`.
+   Le coût vaut 1 + 1 + 1 = 3, par R2.
+5. Relancez `tracert 192.168.3.10` sur PC1 : `192.168.1.1`, `10.0.0.2`,
+   `10.0.0.6`, `192.168.3.10`.
+
+Que s’est-il passé ? L’interface est tombée : R1 a supprimé son voisin R3
+aussitôt. R1 et R3 ont émis de nouveaux LSA, inondés dans la zone. Chaque
+routeur a relancé SPF et mis à jour sa table.
+
+::: {.callout-warning}
+## Une panne invisible prend plus de temps
+
+Ici, l’interface passe à l’état down : la panne est détectée à l’instant.
+Le `shutdown` coupe toujours l’interface locale de R1. Mais si un commutateur
+sépare R1 et R3, l’interface de R3 reste up. R3 attend alors l’expiration de
+l’intervalle Dead, 40 s comptées depuis le dernier Hello reçu, avant de
+déclarer R1 perdu.
+:::
+
+Rétablissez le lien avec `no shutdown` : la route par R3, de coût 2, revient.
+
+### Vérifier sa compréhension
+
+::: {.content-visible when-format="html"}
+<details>
+<summary>Sans commande router-id ni interface loopback, quel router-id R1 choisirait-il ?</summary>
+<p>La plus haute adresse de ses interfaces actives : 203.0.113.2, l’adresse de S0/0/0. En effet, 203 est plus grand que 192 et que 10, en comparant le premier octet.</p>
+</details>
+
+<details>
+<summary>Sur R2, pourquoi la route par défaut porte-t-elle le code O*E2 et non S* ?</summary>
+<p>R2 n’a aucune route statique. Il a appris la route par défaut par OSPF (O), comme route externe de type 2 (E2), annoncée par R1 grâce à default-information originate. L’étoile indique la route candidate par défaut.</p>
+</details>
+:::
+
+::: {.content-visible unless-format="html"}
+**Question 1.** Sans commande `router-id` ni interface loopback, quel
+router-id R1 choisirait-il ?
+
+**Réponse.** La plus haute adresse de ses interfaces actives :
+`203.0.113.2`, l’adresse de S0/0/0. En effet, 203 est plus grand que 192 et
+que 10, en comparant le premier octet.
+
+**Question 2.** Sur R2, pourquoi la route par défaut porte-t-elle le code
+`O*E2` et non `S*` ?
+
+**Réponse.** R2 n’a aucune route statique. Il a appris la route par défaut
+par OSPF (`O`), comme route externe de type 2 (`E2`), annoncée par R1 grâce à
+`default-information originate`. L’étoile indique la route candidate par
+défaut.
+:::
+
+## Exercices de vérification
+
+1. **Coût et choix du chemin.** Trois routeurs A, B et C forment un triangle.
+   A–C est une liaison FastEthernet (100 Mb/s). A–B et B–C sont des liaisons
+   GigabitEthernet. Le LAN de C est sur une interface GigabitEthernet.
+
+   a. Avec la référence par défaut, calculez le coût des deux chemins de A
+      vers le LAN de C. Lequel A choisit-il ?
+   b. Même question après `auto-cost reference-bandwidth 1000` sur les trois
+      routeurs.
+   c. Que vaut, dans les deux cas, le coût d’une interface série de
+      1 544 kb/s ?
+   d. Avec la référence par défaut, quelle commande, sur quelle interface de
+      A, ferait passer le trafic par B ?
+2. **Masque générique.** Écrivez l’instruction `network`, en zone 0, pour
+   chaque cas :
+
+   a. `192.168.20.0/24` ;
+   b. `10.1.1.4/30` ;
+   c. `192.168.10.128/26` ;
+   d. `172.16.32.0/20` ;
+   e. la seule interface d’adresse `10.0.0.9`.
+
+   Enfin, `network 10.0.0.0 0.0.0.15 area 0` active-t-elle OSPF sur les trois
+   liaisons du fil rouge ? Justifiez.
+3. **Lecture d’une table de routage.** Voici un extrait simplifié de la table
+   de R3 dans le fil rouge, liaison R1–R3 active :
+
+   ```text
+   Gateway of last resort is 10.0.0.9 to network 0.0.0.0
+   O       10.0.0.0/30 [110/2] via 10.0.0.9, 00:05:40, GigabitEthernet0/2
+                       [110/2] via 10.0.0.5, 00:05:40, GigabitEthernet0/1
+   O    192.168.1.0/24 [110/2] via 10.0.0.9, 00:05:40, GigabitEthernet0/2
+   O    192.168.2.0/24 [110/2] via 10.0.0.5, 00:05:40, GigabitEthernet0/1
+   O*E2 0.0.0.0/0 [110/1] via 10.0.0.9, 00:05:30, GigabitEthernet0/2
+   ```
+
+   a. Que signifient les deux nombres de `[110/2]` ?
+   b. Par quel routeur passe un paquet vers `192.168.1.10` ? Et vers
+      `192.168.2.10` ?
+   c. Pourquoi `10.0.0.0/30` a-t-il deux lignes ?
+   d. Un paquet part vers `8.8.8.8`. Quelle ligne s’applique, et vers quel
+      prochain saut ?
+   e. `203.0.113.0/30` n’apparaît pas. Pourquoi ? Un paquet vers
+      `203.0.113.1` est-il perdu ?
+4. **Diagnostic d’un voisinage.** Dans chaque cas, le voisinage ne se forme
+   pas. Trouvez la cause et la commande `show` qui la révèle. Pour les cas a
+   à c, dites aussi si LAN3 reste joignable depuis R2.
+
+   a. Sur R2 : `network 10.0.0.4 0.0.0.3 area 1`. Sur R3 :
+      `network 10.0.0.4 0.0.0.3 area 0`.
+   b. Sur R3 : `passive-interface GigabitEthernet0/1`.
+   c. Sur R2, interface G0/2 : `ip ospf hello-interval 5` et
+      `ip ospf dead-interval 20`. R3 garde les valeurs par défaut.
+   d. Deux routeurs X et Y sont reliés par Ethernet. X : `172.16.0.1
+      255.255.255.248`. Y : `172.16.0.2 255.255.255.252`. Leurs instructions
+      `network` couvrent bien ces interfaces, en zone 0.
+
+### Corrigé
+
+1. Coût et choix du chemin :
+
+   | Interface | Référence 100 Mb/s | Référence 1 000 Mb/s |
+   |:---|:-:|:-:|
+   | FastEthernet | 1 | 10 |
+   | GigabitEthernet | 1 | 1 |
+   | Série 1 544 kb/s | 64 | 647 |
+
+   a. Direct : A–C (1) + LAN de C (1) = **2**. Par B : 1 + 1 + 1 = **3**.
+      A choisit le lien direct, pourtant dix fois plus lent.
+   b. Direct : 10 + 1 = **11**. Par B : 1 + 1 + 1 = **3**. A passe par B.
+   c. 100 000 ÷ 1 544 ≈ 64,8, soit **64**. Puis 1 000 000 ÷ 1 544 ≈ 647,7,
+      soit **647**.
+   d. Sur l’interface FastEthernet de A, vers C : `ip ospf cost 3`, par
+      exemple. Le chemin direct coûte alors 3 + 1 = 4, plus que les 3 du
+      chemin par B. Toute valeur supérieure ou égale à 3 convient.
+2. Masque générique = 255.255.255.255 − masque :
+
+   a. `network 192.168.20.0 0.0.0.255 area 0`.
+   b. `network 10.1.1.4 0.0.0.3 area 0`.
+   c. /26 donne `255.255.255.192`, donc `network 192.168.10.128 0.0.0.63
+      area 0`.
+   d. /20 donne `255.255.240.0`, donc `network 172.16.32.0 0.0.15.255 area 0`.
+   e. `network 10.0.0.9 0.0.0.0 area 0`.
+
+   Oui. `0.0.0.15` laisse libres les 4 derniers bits : l’instruction couvre
+   `10.0.0.0` à `10.0.0.15`. Elle contient `10.0.0.0/30`, `10.0.0.4/30` et
+   `10.0.0.8/30`.
+3. Lecture de la table de R3 :
+
+   a. 110 est la distance administrative d’OSPF. 2 est le coût de la route.
+   b. Vers `192.168.1.10` : par `10.0.0.9`, donc R1. Vers `192.168.2.10` :
+      par `10.0.0.5`, donc R2.
+   c. R3 atteint ce réseau par R1 ou par R2, avec le même coût 1 + 1 = 2.
+      OSPF garde les deux chemins et partage la charge.
+   d. Aucune route plus précise ne contient `8.8.8.8` : la route par défaut
+      `O*E2 0.0.0.0/0` s’applique. Le paquet part vers `10.0.0.9`, R1.
+   e. Aucune instruction `network` de R1 ne couvre S0/0/0 : ce réseau n’est
+      pas annoncé. Le paquet n’est pas perdu. Il suit la route par défaut
+      jusqu’à R1, pour qui `203.0.113.0/30` est directement connecté.
+4. Diagnostic :
+
+   a. **Zones différentes** : les Hello annoncent la zone 1 d’un côté, la
+      zone 0 de l’autre. `show ip ospf interface GigabitEthernet0/2` sur R2
+      affiche `Area 1`. `show ip protocols` le montre aussi.
+   b. **Interface passive** : R3 n’envoie plus de Hello sur G0/1. `show ip
+      protocols` sur R3 cite G0/1 parmi les interfaces passives. `show ip
+      ospf interface GigabitEthernet0/1` le signale aussi.
+   c. **Minuteries différentes** : Hello 5 et Dead 20 chez R2, 10 et 40
+      chez R3. `show ip ospf interface` des deux côtés révèle l’écart.
+   d. **Masques différents** : /29 chez X, /30 chez Y. Sur un lien Ethernet,
+      le masque annoncé dans les Hello doit être identique. `show ip ospf
+      interface` affiche `172.16.0.1/29` d’un côté, `172.16.0.2/30` de
+      l’autre.
+
+   Dans les cas a à c, LAN3 reste joignable depuis R2, par R1. Le coût passe
+   de 2 à 1 + 1 + 1 = 3. La panne est discrète : la table ne montre qu’un
+   chemin plus long ; `show ip ospf neighbor` révèle le voisin manquant.
+
+## Synthèse
+
+- Le routage statique s’adapte mal à la taille du réseau et ne réagit pas
+  seul aux pannes. Un protocole dynamique calcule et met à jour les routes.
+- Vecteur de distance (RIP) : chaque routeur croit ses voisins ; métrique en
+  sauts, 15 au plus, 16 = injoignable ; envoi périodique toutes les 30 s.
+- État de lien (OSPF) : Hello pour les voisins, LSA pour décrire les liens,
+  LSDB commune à la zone, SPF de Dijkstra sur chaque routeur.
+- Hello toutes les 10 s, Dead 40 s sur Ethernet. Zone, minuteries, masque et
+  authentification doivent concorder. L’état normal d’une adjacence est FULL.
+- Coût = référence ÷ bande passante, 100 Mb/s par défaut : FastEthernet et
+  GigabitEthernet coûtent 1. Relevez la référence partout, ou utilisez
+  `ip ospf cost`.
+- Router-id : commande `router-id`, sinon plus haute loopback, sinon plus
+  haute interface active.
+- DR et BDR sur Ethernet, élus par priorité puis router-id ; aucun sur une
+  liaison série point à point.
+- Configuration : `router ospf`, `router-id`, `network … area 0`,
+  `passive-interface`, `default-information originate`.
+- Limites de ce cours : OSPF multizone, authentification et OSPFv3 pour IPv6
+  ne sont pas traités. La NAT sur R1 et les routes de retour du FAI non plus :
+  le routeur du FAI est préconfiguré.
+
+## Pour aller plus loin
+
+- [RFC 2328 — OSPF Version 2](https://www.rfc-editor.org/rfc/rfc2328.html),
+  la spécification d’OSPF pour IPv4.
+- [RFC 2453 — RIP Version 2](https://www.rfc-editor.org/rfc/rfc2453.html),
+  pour comparer avec un protocole à vecteur de distance.
+- [RFC 5737 — plages IPv4 de documentation](https://www.rfc-editor.org/rfc/rfc5737.html),
+  dont `203.0.113.0/24`, utilisée pour la liaison vers le FAI.
+- Prolongement dans Packet Tracer : ajoutez un quatrième routeur relié à R2 et
+  R3. Observez que vous ne touchez qu’à sa configuration et à celle de ses
+  voisins.
