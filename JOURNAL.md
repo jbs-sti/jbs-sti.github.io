@@ -67,7 +67,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex (relance) : 4 constats A (dont 1 BLOQUANT), 1 réécriture ; tous corrigés par le rédacteur
 - Réécritures gardées : R1 (1re), R1 (relance) ; annulées : aucune
 - Relance Codex : oui (correction de fond sur la distance administrative et la métrique)
-- Pull request : #<numéro>
+- Pull request : #26
 - Points à relire par l'enseignant : rendu PDF, sorties `show` à confirmer dans Packet Tracer, rôles DR/BDR dépendant de l'ordre de démarrage
 
 ### 2026-10-23 — cours/bts1-tcp-udp-publier
