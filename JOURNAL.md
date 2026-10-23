@@ -17,6 +17,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+## 2026-10-23 — cours/bts2-subnetting-format
+
+- Ressource : bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm/index.qmd
+- Cause : bloc `format: vintage-typst` recopié de cours-dhcp ; une page qui déclare `format:` ne produit que les formats listés, d'où l'absence du HTML et l'échec de la publication après la PR #17
+- Correctif : suppression du bloc ; le cours hérite des formats du projet (html, vintage-pdf), comme le TP 3
+- Vérificateur, Codex : sans objet (métadonnées de format seulement)
+- Pull request : à renseigner
+- Points à relire par l'enseignant : cours-dhcp et cours-arp (brouillons) portent le même bloc et auront le même problème à leur publication
+
 ## 2026-10-23 — cours/bts2-subnetting
 
 - Ressource : bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm/index.qmd (référence imitée : bts1/reseaux/06-services-reseau/cours-dhcp)
