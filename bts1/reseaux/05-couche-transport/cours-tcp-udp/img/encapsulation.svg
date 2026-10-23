@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400" role="img" aria-labelledby="title desc">
+<title id="title">Encapsulation d’une requête HTTP</title>
+<desc id="desc">Chaque couche ajoute son en-tête : en-tête TCP pour former le segment, en-tête IP pour former le paquet, en-tête et queue Ethernet pour former la trame.</desc>
+<rect width="800" height="400" fill="white"/>
+<g stroke="#222" stroke-width="2">
+<rect x="500" y="30" width="200" height="50" fill="white"/>
+<rect x="400" y="110" width="100" height="50" fill="#bbbbbb"/><rect x="500" y="110" width="200" height="50" fill="white"/>
+<rect x="300" y="190" width="100" height="50" fill="#dddddd"/><rect x="400" y="190" width="100" height="50" fill="#bbbbbb"/><rect x="500" y="190" width="200" height="50" fill="white"/>
+<rect x="200" y="270" width="100" height="50" fill="#eeeeee"/><rect x="300" y="270" width="100" height="50" fill="#dddddd"/><rect x="400" y="270" width="100" height="50" fill="#bbbbbb"/><rect x="500" y="270" width="200" height="50" fill="white"/><rect x="700" y="270" width="80" height="50" fill="#eeeeee"/>
+</g>
+<g font-family="sans-serif" font-size="15" fill="#111" text-anchor="middle">
+<text x="600" y="61">Données HTTP</text>
+<text x="450" y="141">En-tête TCP</text><text x="600" y="141">Données HTTP</text>
+<text x="350" y="221">En-tête IP</text><text x="450" y="221">En-tête TCP</text><text x="600" y="221">Données HTTP</text>
+<text x="250" y="292">En-tête</text><text x="250" y="312">Ethernet</text><text x="350" y="301">En-tête IP</text><text x="450" y="301">En-tête TCP</text><text x="600" y="301">Données HTTP</text><text x="740" y="301">FCS</text>
+</g>
+<g font-family="sans-serif" font-size="17" fill="#111">
+<text x="15" y="52" font-weight="bold">Application</text><text x="15" y="72">message</text>
+<text x="15" y="132" font-weight="bold">Transport</text><text x="15" y="152">segment TCP</text>
+<text x="15" y="212" font-weight="bold">Internet</text><text x="15" y="232">paquet IP</text>
+<text x="15" y="292" font-weight="bold">Accès réseau</text><text x="15" y="312">trame Ethernet</text>
+</g>
+<g font-family="sans-serif" font-size="16" fill="#111" text-anchor="middle">
+<text x="400" y="360">À l’émission, on descend les couches : chaque couche ajoute son en-tête.</text>
+<text x="400" y="384">Avec UDP, l’en-tête UDP remplace l’en-tête TCP : on parle alors de datagramme.</text>
+</g></svg>

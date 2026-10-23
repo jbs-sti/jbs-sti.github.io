@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="440" viewBox="0 0 800 440" role="img" aria-labelledby="title desc">
+<title id="title">En-tête TCP</title>
+<desc id="desc">Cinq lignes fixes de 32 bits : ports, numéro de séquence, numéro d’acquittement, longueur d’en-tête, réservé, drapeaux et fenêtre, puis somme de contrôle et pointeur urgent. Viennent ensuite les options facultatives et les données.</desc>
+<rect width="800" height="440" fill="white"/>
+<g font-family="sans-serif" font-size="15" fill="#111">
+<text x="120" y="30">bit 0</text><text x="200" y="30" text-anchor="middle">4</text><text x="280" y="30" text-anchor="middle">8</text><text x="440" y="30" text-anchor="middle">16</text><text x="760" y="30" text-anchor="end">31</text>
+<text x="20" y="30">Octet</text>
+<g text-anchor="middle"><text x="60" y="75">0</text><text x="60" y="125">4</text><text x="60" y="175">8</text><text x="60" y="225">12</text><text x="60" y="275">16</text><text x="60" y="325">20</text></g>
+</g>
+<g fill="none" stroke="#222" stroke-width="2">
+<rect x="120" y="45" width="320" height="50"/><rect x="440" y="45" width="320" height="50"/>
+<rect x="120" y="95" width="640" height="50"/>
+<rect x="120" y="145" width="640" height="50"/>
+<rect x="120" y="195" width="80" height="50"/><rect x="200" y="195" width="80" height="50"/><rect x="280" y="195" width="160" height="50"/><rect x="440" y="195" width="320" height="50"/>
+<rect x="120" y="245" width="320" height="50"/><rect x="440" y="245" width="320" height="50"/>
+<rect x="120" y="295" width="640" height="50" stroke-dasharray="8 5"/>
+<rect x="120" y="345" width="640" height="50" stroke-dasharray="3 4"/>
+</g>
+<g font-family="sans-serif" font-size="18" fill="#111" text-anchor="middle">
+<text x="280" y="76">Port source</text><text x="600" y="76">Port destination</text>
+<text x="440" y="126">Numéro de séquence (32 bits)</text>
+<text x="440" y="176">Numéro d’acquittement (32 bits)</text>
+<text x="360" y="226">Drapeaux</text><text x="600" y="226">Fenêtre</text>
+<text x="280" y="276">Somme de contrôle</text><text x="600" y="276">Pointeur urgent</text>
+<text x="440" y="326">Options (0 à 40 octets)</text>
+<text x="440" y="376">Données</text>
+</g>
+<g font-family="sans-serif" font-size="14" fill="#111" text-anchor="middle">
+<text x="160" y="216">Long.</text><text x="160" y="234">en-tête</text>
+<text x="240" y="226">Réservé</text>
+</g>
+<g font-family="sans-serif" font-size="16" fill="#111" text-anchor="middle">
+<text x="400" y="425">Partie fixe : 5 lignes de 32 bits = 20 octets ; avec les options, 60 octets au plus.</text>
+</g></svg>

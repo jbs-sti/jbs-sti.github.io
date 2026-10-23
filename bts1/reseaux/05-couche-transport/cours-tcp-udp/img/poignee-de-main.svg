@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="420" viewBox="0 0 800 420" role="img" aria-labelledby="title desc">
+<title id="title">Poignée de main TCP en trois temps</title>
+<desc id="desc">Le client envoie SYN seq 1000, le serveur répond SYN ACK seq 5000 ack 1001, le client confirme par ACK seq 1001 ack 5001.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#222"/></marker></defs>
+<rect width="800" height="420" fill="white"/>
+<g font-family="sans-serif" font-size="19" text-anchor="middle" fill="#111">
+<text x="135" y="30">Client A</text><text x="665" y="30">Serveur S</text>
+</g>
+<g font-family="sans-serif" font-size="16" text-anchor="middle" fill="#111">
+<text x="135" y="52">192.168.10.50:51514</text><text x="665" y="52">192.168.10.2:80</text>
+</g>
+<g stroke="#777" stroke-width="2" stroke-dasharray="5 5"><path d="M135 65 V330 M665 65 V330"/></g>
+<g fill="none" stroke="#222" stroke-width="2" marker-end="url(#arrow)">
+<path d="M135 120 H665"/><path d="M665 200 H135" stroke-dasharray="8 4"/><path d="M135 280 H665"/>
+</g>
+<g font-family="sans-serif" font-size="18" text-anchor="middle" fill="#111">
+<text x="400" y="88">1. SYN</text><text x="400" y="110">seq = 1000</text>
+<text x="400" y="168">2. SYN, ACK</text><text x="400" y="190">seq = 5000, ack = 1001</text>
+<text x="400" y="248">3. ACK</text><text x="400" y="270">seq = 1001, ack = 5001</text>
+</g>
+<g font-family="sans-serif" font-size="16" text-anchor="middle" fill="#111">
+<text x="400" y="320">Connexion établie : les données peuvent circuler dans les deux sens.</text>
+<text x="400" y="370">Numéros initiaux choisis pour l’exemple ; en réalité, ils sont aléatoires.</text>
+<text x="400" y="394">Trait plein : segment du client ; pointillés : segment du serveur.</text>
+</g></svg>
