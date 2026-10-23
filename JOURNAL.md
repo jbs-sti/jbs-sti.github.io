@@ -20,8 +20,6 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Entrée `infra/ci-latex` : numéro de pull request à renseigner.
 - Décider d'un garde-fou côté PR sur les ancres (CODEOWNERS ou contrôle CI
   des chemins), branche `infra/` par l'enseignant.
-- `bts1/reseaux/05-couche-transport/cours-tcp-udp` (brouillon) : relire le PDF
-  produit par la CI (tableaux larges, exercice 6).
 
 **Décisions durables**
 
@@ -48,6 +46,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-23 — cours/bts1-tcp-udp-publier
+
+- Ressource : bts1/reseaux/05-couche-transport/cours-tcp-udp/index.qmd
+- Fait : `draft: false`, par l'enseignant (commit, push et PR lancés par lui)
+- Vérificateur, Codex : sans objet (métadonnée de publication)
+- Pull request : #24
+- Points à relire par l'enseignant : la page en ligne (tableaux larges, exercice 6, légende de la poignée de main)
 
 ### 2026-10-23 — infra/gitignore-zone-identifier
 
