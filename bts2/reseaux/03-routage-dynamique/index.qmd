@@ -1,0 +1,13 @@
+---
+title: "03 — Routage dynamique"
+description: "Ressources du chapitre : routage dynamique, RIP en survol et OSPF en une seule zone."
+format:
+  html: default
+listing:
+  # Seules les ressources, pas les index de domaine ni de chapitre.
+  contents: "*/index.qmd"
+  type: grid
+  categories: true
+  sort: "order"
+  fields: [title, description, categories]
+---

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="640" viewBox="0 0 800 640" role="img" aria-labelledby="title desc">
+<title id="title">Établissement d’un voisinage OSPF entre R1 et R2</title>
+<desc id="desc">Échange de Hello, puis de descriptions de base de données, puis de LSA, avec l’état du voisin de chaque côté : Down, Init, 2-Way, ExStart et Exchange, Loading, Full.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#222"/></marker></defs>
+<rect width="800" height="640" fill="white"/>
+<g font-family="sans-serif" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">
+<text x="220" y="30">R1 (1.1.1.1)</text><text x="580" y="30">R2 (2.2.2.2)</text>
+</g>
+<g stroke="#777" stroke-width="2" stroke-dasharray="5 5"><path d="M220 45 V575 M580 45 V575"/></g>
+<!-- Messages de R1 : trait plein ; messages de R2 : pointillés -->
+<g fill="none" stroke="#222" stroke-width="2" marker-end="url(#arrow)">
+<path d="M220 110 H580"/>
+<path d="M580 170 H220" stroke-dasharray="8 4"/>
+<path d="M220 230 H580"/>
+<path d="M220 320 H580"/>
+<path d="M580 370 H220" stroke-dasharray="8 4"/>
+<path d="M220 430 H580"/>
+<path d="M580 480 H220" stroke-dasharray="8 4"/>
+<path d="M220 530 H580"/>
+</g>
+<g font-family="sans-serif" font-size="14" text-anchor="middle" fill="#111">
+<text x="400" y="100">Hello : je suis 1.1.1.1 ; voisins vus : aucun</text>
+<text x="400" y="160">Hello : je suis 2.2.2.2 ; voisins vus : 1.1.1.1</text>
+<text x="400" y="220">Hello : je suis 1.1.1.1 ; voisins vus : 2.2.2.2</text>
+<text x="400" y="275" font-style="italic">Réseau multi-accès : élection du DR et du BDR</text>
+<text x="400" y="310">DBD : résumé de ma LSDB</text>
+<text x="400" y="360">DBD : résumé de ma LSDB</text>
+<text x="400" y="420">LSR : envoie-moi les LSA qui me manquent</text>
+<text x="400" y="470">LSU : voici ces LSA</text>
+<text x="400" y="520">LSAck : LSA bien reçus</text>
+</g>
+<!-- États vus par R1 (à gauche) et par R2 (à droite) -->
+<g font-family="sans-serif" font-size="16" fill="#111" font-weight="bold">
+<g text-anchor="end">
+<text x="205" y="75">Down</text>
+<text x="205" y="190">2-Way</text>
+<text x="205" y="350">ExStart</text>
+<text x="205" y="370">puis Exchange</text>
+<text x="205" y="455">Loading</text>
+<text x="205" y="565">Full</text>
+</g>
+<g text-anchor="start">
+<text x="595" y="75">Down</text>
+<text x="595" y="130">Init</text>
+<text x="595" y="250">2-Way</text>
+<text x="595" y="350">ExStart</text>
+<text x="595" y="370">puis Exchange</text>
+<text x="595" y="455">Loading</text>
+<text x="595" y="565">Full</text>
+</g>
+</g>
+<g font-family="sans-serif" font-size="14" text-anchor="middle" fill="#111">
+<text x="400" y="605">Trait plein : message de R1 ; pointillés : message de R2. En gras : état du voisin.</text>
+<text x="400" y="627">LSR, LSU et LSAck circulent dans les deux sens ; un seul sens est dessiné.</text>
+</g>
+</svg>
