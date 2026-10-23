@@ -32,7 +32,8 @@ format:
 ## Objectifs et prérequis
 
 À l’issue du cours, vous saurez calculer vite et sans erreur un sous-réseau
-IPv4. Vous saurez aussi bâtir un plan d’adressage VLSM, comme à l’épreuve E4.
+IPv4. Vous saurez aussi bâtir un plan d’adressage VLSM, avec des sous-réseaux
+de tailles différentes, comme à l’épreuve E4.
 Vous devez connaître la notation pointée et convertir un octet en binaire.
 
 ## Situation de départ
@@ -65,7 +66,8 @@ pour obtenir le plan utilisé au TP 3 :
 ### Partie réseau, partie hôte
 
 Dans `192.168.10.0/24`, le **/24** indique que les 24 premiers bits désignent
-le réseau. Les 8 bits restants désignent l’hôte. Ce nombre s’appelle le
+le réseau. Les 8 bits restants désignent l’hôte. La longueur de la partie
+réseau, ici 24 bits, s’appelle la **longueur de préfixe**, ou simplement le
 **préfixe**.
 
 Le **masque** écrit la même information en notation pointée : des 1 pour la
@@ -75,7 +77,8 @@ partie réseau, des 0 pour la partie hôte. Ainsi, /26 donne
 ::: {.callout-note}
 ## Adresse ET masque = adresse réseau
 
-Prenez `192.168.10.150/26`. Seul le dernier octet change :
+Prenez `192.168.10.150/26` et appliquez le ET logique bit à bit : le résultat
+vaut 1 seulement si les deux bits valent 1. Seul le dernier octet change :
 
 ```text
 150  = 1001 0110
@@ -108,8 +111,8 @@ le masque passe des 1 aux 0. Calculez ensuite :
 
 **taille de bloc = 256 − octet significatif**
 
-Les adresses réseau sont les multiples de cette taille, dans cet octet ; les
-octets suivants valent 0. Pour
+Les adresses réseau sont les multiples de cette taille, dans cet octet.
+Les octets suivants valent 0. Pour
 /26, le bloc vaut 256 − 192 = 64. Les réseaux commencent en .0, .64, .128 et
 .192.
 
@@ -132,8 +135,10 @@ L’octet significatif n’est pas toujours le dernier. Prenez `172.20.37.10/20`
 | /29 | `255.255.255.248` | 8 | 8 | 6 |
 | /30 | `255.255.255.252` | 4 | 4 | 2 |
 
-Le même mémo vaut un octet plus tôt : /20 donne `255.255.240.0`, comme /28
-donne `255.255.255.240`.
+Un octet plus tôt, seuls le masque et la taille de bloc se transposent : /20
+donne `255.255.240.0` et un bloc de 16 dans le 3^e^ octet, comme /28 donne
+`255.255.255.240`. Le nombre d’adresses, lui, change : un /20 compte
+2^12^ = 4 096 adresses, soit 4 094 hôtes.
 
 ### Découper en sous-réseaux égaux
 
@@ -237,17 +242,19 @@ Le poste est dans `192.168.10.192/27`, le réseau du Wi-Fi invité.
 
 ## Exercices de vérification
 
-1. **Sous-réseaux égaux** (d’après E4 2023). On découpe `172.16.88.0/24` en 64
+1. **Sous-réseaux égaux** (d’après BTS SN IR, E4 2023). On découpe `172.16.88.0/24` en 64
    sous-réseaux de même taille. Donner le préfixe, le masque et le nombre
    d’hôtes par sous-réseau. Pour le premier, le deuxième et le dernier
    sous-réseau, donner l’adresse réseau, la première et la dernière adresse
    utilisables, et la diffusion.
-2. **Octet significatif au 3^e^ rang** (d’après E4 2024). On découpe
+2. **Octet significatif au 3^e^ rang** (d’après BTS SN IR, E4 2024). On découpe
    `172.20.0.0/16` en 16 sous-réseaux. Combien de bits faut-il emprunter ?
    Donner le préfixe, le masque et le nombre d’hôtes. Donner l’adresse réseau
    et la diffusion du premier, du deuxième et du dernier sous-réseau.
-3. **VLAN et DHCP** (d’après E4 2026). La plage `192.168.69.0/24` est découpée
-   en sous-réseaux égaux d’au plus 30 machines, passerelle comprise. Les VLAN
+3. **VLAN et DHCP** (d’après BTS CIEL IR, E4 2026). La plage `192.168.69.0/24` est découpée
+   en sous-réseaux égaux. Chaque sous-réseau doit pouvoir accueillir 30
+   machines, passerelle comprise, et pas davantage : on choisit le plus petit
+   sous-réseau qui convient. Les VLAN
    10 et 20 prennent les deux premiers sous-réseaux, le VLAN 99 le dernier.
    La passerelle est la dernière adresse utilisable. La plage DHCP contient
    toutes les autres adresses utilisables. Pour chaque VLAN, donner le réseau,
@@ -279,7 +286,8 @@ Le poste est dans `192.168.10.192/27`, le réseau du Wi-Fi invité.
    | 16^e^ | `172.20.240.0/20` | `172.20.255.255` |
 
    Le dernier commence en 15 × 16 = 240.
-3. Il faut 2^h^ − 2 ≥ 30, donc h = 5 : **/27**, masque `255.255.255.224`,
+3. On cherche le plus petit h tel que 2^h^ − 2 ≥ 30. h = 4 donne 14 hôtes,
+   trop peu ; h = 5 donne 30 hôtes : **/27**, masque `255.255.255.224`,
    bloc de 32, 8 sous-réseaux. Le dernier commence en 7 × 32 = 224.
 
    | VLAN | Réseau | Plage DHCP | Passerelle | Diffusion |
