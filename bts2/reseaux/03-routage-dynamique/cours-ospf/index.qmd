@@ -64,8 +64,8 @@ entre deux routeurs.
 | R1–FAI | `203.0.113.0/30` | R1 S0/0/0 : `.2` ; FAI : `.1` |
 
 Le 2911 n’a que trois interfaces Gigabit Ethernet intégrées. Pour la liaison
-vers le FAI, ajoutez à R1 un module **HWIC-2T**, routeur éteint. Il apporte
-l’interface série `Serial0/0/0`. Le routeur du FAI est déjà configuré.
+vers le FAI, ajoutez à R1 un module **HWIC-2T** dans le logement 0, routeur éteint. Il
+apporte l’interface série `Serial0/0/0`. Le routeur du FAI est déjà configuré.
 La traduction d’adresses (NAT) sur R1 et les routes de retour du FAI ne sont
 pas traitées ici.
 
@@ -101,9 +101,11 @@ départage. Dans la table, les deux valeurs s’écrivent entre crochets :
 ::: {.callout-note}
 ## Ordre de décision
 
-1. Préfixe le plus long.
-2. À préfixe égal, distance administrative la plus petite.
-3. À source égale, métrique la plus petite.
+1. **Construction de la table.** Pour un même préfixe proposé par plusieurs
+   sources, la distance administrative la plus petite l’emporte. Au sein
+   d’un même protocole, la métrique la plus petite l’emporte.
+2. **Acheminement d’un paquet.** Le routeur choisit l’entrée de la table dont
+   le préfixe est le plus long.
 :::
 
 ### Pourquoi le routage dynamique ?
@@ -312,7 +314,8 @@ Dans les Hello et les LSA, chaque routeur signe avec son **router-id** (RID).
 C’est un nombre de 32 bits écrit comme une adresse IPv4, par exemple
 `1.1.1.1`. Il doit être unique dans tout le domaine OSPF.
 
-Le routeur le choisit au démarrage du processus OSPF, dans cet ordre :
+Une interface **loopback** est une interface virtuelle du routeur.
+Le routeur choisit son RID au démarrage du processus OSPF, dans cet ordre :
 
 1. la valeur donnée par la commande `router-id` ;
 2. sinon, la plus haute adresse IPv4 de ses interfaces **loopback** actives ;
@@ -326,8 +329,9 @@ processus avec `clear ip ospf process`.
 ### DR et BDR sur un réseau multi-accès
 
 Reliez six routeurs au même commutateur. Si chacun devient adjacent avec
-chacun, il faut 6 × 5 ÷ 2 = **15 adjacences**. Chaque changement serait
-répété quinze fois.
+chacun, il faut 6 × 5 ÷ 2 = **15 adjacences**. Chaque routeur devrait
+synchroniser sa base avec cinq voisins, soit 15 adjacences à entretenir sur
+le segment.
 
 OSPF élit plutôt un **routeur désigné**, le **DR** (*Designated Router*), et
 un **remplaçant**, le **BDR** (*Backup Designated Router*). Les autres
@@ -578,8 +582,10 @@ routeur a relancé SPF et mis à jour sa table.
 ## Une panne invisible prend plus de temps
 
 Ici, l’interface passe à l’état down : la panne est détectée à l’instant.
-Si un commutateur sépare les deux routeurs, l’interface reste up. Le routeur
-attend alors l’intervalle Dead, 40 s, avant de déclarer le voisin perdu.
+Le `shutdown` coupe toujours l’interface locale de R1. Mais si un commutateur
+sépare R1 et R3, l’interface de R3 reste up. R3 attend alors l’expiration de
+l’intervalle Dead, 40 s comptées depuis le dernier Hello reçu, avant de
+déclarer R1 perdu.
 :::
 
 Rétablissez le lien avec `no shutdown` : la route par R3, de coût 2, revient.
