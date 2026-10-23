@@ -27,7 +27,7 @@ lang: fr
 
 À l’issue du cours, vous saurez expliquer comment un paquet arrive au bon
 programme. Vous saurez aussi décrire comment TCP rend l’échange fiable,
-par des acquittements et des retransmissions. Enfin, vous saurez choisir entre TCP et UDP et observer ces deux
+par des acquittements (accusés de réception) et des retransmissions. Enfin, vous saurez choisir entre TCP et UDP et observer ces deux
 protocoles sur une machine réelle.
 
 Vous devez connaître l’adressage IPv4 et le fonctionnement de la couche
@@ -313,15 +313,16 @@ du même coup tous les octets précédents : on dit que l’acquittement est
 ::: {.callout-note}
 ## La règle de calcul
 
-Quand le segment reçu est celui attendu, dans l’ordre :
+**ack = premier octet que le destinataire n’a pas encore reçu**
 
-**ack = seq reçu + nombre d’octets de données reçus**
-
-Ajoutez 1 si le segment reçu porte SYN ou FIN. Un segment sans données, sans
-SYN ni FIN, ne fait pas avancer le numéro de séquence.
+Dans le cas simple, le segment reçu est celui attendu et rien n’est conservé
+au-delà. On calcule alors : **ack = seq reçu + nombre d’octets de données**.
+Ajoutez 1 si le segment porte SYN ou FIN. Un segment sans données, sans SYN ni
+FIN, ne fait pas avancer le numéro de séquence.
 
 Si un segment arrive hors ordre, après un trou, l’ack ne bouge pas. Il reste
-sur le premier octet manquant : vous le verrez dans la section suivante.
+sur le premier octet manquant. Quand le trou est comblé, l’ack saute après les
+données déjà conservées : vous le verrez dans la section suivante.
 :::
 
 ### La retransmission
@@ -458,8 +459,9 @@ tcp   LISTEN 0      511          0.0.0.0:80        0.0.0.0:*
 Lisez-le colonne par colonne :
 
 - **Netid** donne le protocole : `udp` ou `tcp` ;
-- **State** vaut `LISTEN` pour un socket TCP en écoute. Un socket UDP n’a pas
-  de connexion : il apparaît `UNCONN` ;
+- **State** vaut `LISTEN` pour un socket TCP en écoute. UDP est sans
+  connexion : un socket UDP en attente, associé à aucun correspondant,
+  apparaît `UNCONN` ;
 - **Local Address:Port** est le socket local. `0.0.0.0` signifie « toutes les
   adresses IPv4 de la machine » ;
 - **Peer Address:Port** vaut `0.0.0.0:*` (adresse et port quelconques) tant
@@ -521,7 +523,7 @@ porte `seq = 0`. Les vraies valeurs, aléatoires, sont dans les champs
 
 ::: {.content-visible when-format="html"}
 <details>
-<summary>Un segment reçu porte seq = 8000 et 300 octets de données. Quel numéro d’acquittement renvoie le destinataire ?</summary>
+<summary>Un segment reçu dans l’ordre, celui qui était attendu, porte seq = 8000 et 300 octets de données, sans SYN ni FIN. Quel numéro d’acquittement renvoie le destinataire ?</summary>
 <p>ack = 8000 + 300 = 8300. Les octets reçus vont de 8000 à 8299 ; le prochain attendu est le 8300.</p>
 </details>
 
@@ -532,8 +534,9 @@ porte `seq = 0`. Les vraies valeurs, aléatoires, sont dans les champs
 :::
 
 ::: {.content-visible unless-format="html"}
-**Question 1.** Un segment reçu porte seq = 8000 et 300 octets de données.
-Quel numéro d’acquittement renvoie le destinataire ?
+**Question 1.** Un segment reçu dans l’ordre, celui qui était attendu, porte
+seq = 8000 et 300 octets de données, sans SYN ni FIN. Quel numéro
+d’acquittement renvoie le destinataire ?
 
 **Réponse.** ack = 8000 + 300 = 8300. Les octets reçus vont de 8000 à 8299 ;
 le prochain attendu est le 8300.
@@ -658,9 +661,9 @@ précises et ne permet pas la diffusion.
   trois temps, acquittements, retransmission, fenêtre, fermeture par FIN. En
   cas d’échec persistant, la connexion est abandonnée et l’application
   prévenue.
-- Pour un segment reçu dans l’ordre : **ack = seq + octets de données
-  reçus**, plus 1 pour SYN ou FIN. Hors ordre, l’ack reste sur le premier
-  octet manquant.
+- **ack = premier octet pas encore reçu**. Cas simple (segment attendu, rien
+  de conservé au-delà) : ack = seq + octets de données, plus 1 pour SYN ou
+  FIN. Hors ordre, l’ack reste sur le premier octet manquant.
 - Limites de ce cours : le contrôle de congestion et la retransmission rapide
   de TCP seront vus en deuxième année.
 
