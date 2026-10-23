@@ -59,7 +59,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : le `deny` ne couvre que les outils
   d'édition, pas le shell ni Codex ; garde-fou côté PR (CODEOWNERS ou
   contrôle CI des chemins) laissé à votre décision
-- Pull request : à renseigner
+- Pull request : #20
 
 ### 2026-10-23 — cours/bts2-subnetting-format
 
