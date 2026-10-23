@@ -55,7 +55,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Fait : « aléatoires » remplacé par « difficiles à prédire » (encadré Wireshark, légende du SVG), pour s'aligner sur l'encadré des numéros initiaux, à la demande de l'enseignant
 - Vérificateur : CONFORME en 1 passage
 - Codex : sans objet (changement de formulation sur deux lignes)
-- Pull request : #<numéro>
+- Pull request : #22
 - Points à relire par l'enseignant : aucun en dehors du PDF du cours
 
 ### 2026-10-23 — cours/bts1-tcp-udp
