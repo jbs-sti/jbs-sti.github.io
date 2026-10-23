@@ -14,12 +14,6 @@ order: 10
 date-modified: 2026-10-14
 draft: true
 lang: fr
-format:
-  vintage-typst:
-    include-in-header:
-      text: |
-        // Assurer le contraste des cellules d’en-tête du tableau PDF.
-        #show table.cell.where(y: 0): set text(fill: rgb("#F8F3EE"), weight: "bold")
 ---
 
 <!-- Remplacer les indications à compléter ; conserver draft: true jusqu’à la

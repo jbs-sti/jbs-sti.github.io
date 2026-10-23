@@ -1,6 +1,6 @@
 title: Vintage
 author: JBS STI
-version: 1.1.0
+version: 2.0.0
 # Thèmes clair et sombre dérivés de `_brand.yml` : vérifié avec Quarto
 # 1.10. La borne basse n'a pas été testée sur une version plus ancienne.
 quarto-required: ">=1.7.0"
@@ -14,14 +14,29 @@ contributes:
         dark:
           - theme.scss
           - theme-sombre.scss
-    typst:
-      template-partials:
-        - typst-template.typ
-        - typst-show.typ
+    # PDF en LaTeX classique (Latin Modern), compact et lisible en noir et
+    # blanc. Les schémas TikZ sont traités par le filtre tikz.lua, déclaré
+    # dans _quarto.yml pour servir aussi au HTML.
+    pdf:
+      documentclass: scrartcl
       papersize: a4
-      margin:
-        top: 2.5cm
-        bottom: 2.5cm
-        left: 2.5cm
-        right: 2cm
-      page-numbering: "1"
+      fontsize: 10pt
+      pdf-engine: lualatex
+      geometry:
+        - top=1.7cm
+        - bottom=1.7cm
+        - left=1.6cm
+        - right=1.6cm
+        - headsep=0.35cm
+        - footskip=0.75cm
+        - includeheadfoot
+      fig-pos: "htbp"
+      colorlinks: true
+      linkcolor: vertprofond
+      urlcolor: vertprofond
+      include-in-header:
+        - vintage.tex
+        - tikz-vintage.tex
+      template-partials:
+        - title.tex
+        - before-body.tex

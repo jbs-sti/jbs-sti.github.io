@@ -1,0 +1,14 @@
+$-- Bloc de titre compact, sans page de garde : le cours commence aussitôt.
+$if(title)$
+\thispagestyle{plain.scrheadings}
+{\footnotesize\color{vertprofond}\textsc{$formation$}$if(chapitre)$\enspace·\enspace $chapitre$$endif$\hfill $if(type)$\textsc{$type$}$endif$$if(duree)$\enspace·\enspace $duree$$endif$\par}
+\vspace{0.6ex}
+{\LARGE\bfseries\color{vertprofond}$title$\par}
+$if(description)$
+\vspace{0.5ex}
+{\itshape $description$\par}
+$endif$
+\vspace{0.3ex}
+{\color{vertprofond}\rule{\linewidth}{0.8pt}\par}
+\vspace{0.8ex}
+$endif$

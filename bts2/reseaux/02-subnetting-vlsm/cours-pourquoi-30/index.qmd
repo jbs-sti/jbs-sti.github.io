@@ -20,15 +20,6 @@ order: 10
 date-modified: 2026-10-22
 draft: false
 lang: fr
-format:
-  html: default
-  vintage-typst:
-    include-in-header:
-      text: |
-        // Assurer le contraste des cellules d’en-tête du tableau PDF.
-        #show table.cell.where(y: 0): set text(fill: rgb("#F8F3EE"), weight: "bold")
-        // Les tableaux courts du cours restent sur une même page.
-        #show table: it => block(breakable: false, it)
 ---
 
 ## Objectifs et prérequis
