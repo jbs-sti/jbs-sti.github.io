@@ -14,6 +14,11 @@ project:
 # dans le PDF.
 lang: fr
 
+# Schémas TikZ : code natif dans le PDF, SVG compilé par dvisvgm dans le
+# HTML (voir _extensions/vintage/tikz.lua).
+filters:
+  - _extensions/vintage/tikz.lua
+
 website:
   title: "Informatique"
   navbar:
@@ -60,9 +65,9 @@ format:
     # l'autre thème, et ce choix est mémorisé par le navigateur.
     respect-user-color-scheme: true
     toc: true
-  vintage-typst: default
+  vintage-pdf: default
 
 format-links:
-  - format: vintage-typst
+  - format: vintage-pdf
     text: "Télécharger le PDF"
     icon: file-pdf

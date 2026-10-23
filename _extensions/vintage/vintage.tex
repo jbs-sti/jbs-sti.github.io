@@ -1,0 +1,53 @@
+% Mise en page des PDF : LaTeX classique (Latin Modern), A4, compacte,
+% entièrement lisible en noir et blanc. Chargé après le préambule de Quarto.
+\usepackage{xcolor}
+\definecolor{vertprofond}{HTML}{1C322D}
+\definecolor{grisfilet}{HTML}{A1A1AA}
+
+% Paragraphes sans alinéa, séparés par un petit espace.
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5ex plus 0.2ex minus 0.1ex}
+
+% Titres resserrés, en vert profond (assez sombre pour l'impression N&B).
+\setkomafont{disposition}{\normalfont\bfseries\color{vertprofond}}
+\setkomafont{section}{\large}
+\setkomafont{subsection}{\normalsize}
+\setkomafont{subsubsection}{\normalsize\itshape}
+\RedeclareSectionCommand[beforeskip=-1.6ex plus -0.4ex minus -0.2ex,
+  afterskip=0.6ex plus 0.1ex]{section}
+\RedeclareSectionCommand[beforeskip=-1.2ex plus -0.3ex minus -0.2ex,
+  afterskip=0.4ex plus 0.1ex]{subsection}
+\RedeclareSectionCommand[beforeskip=-1ex plus -0.2ex,
+  afterskip=0.3ex]{subsubsection}
+
+% Listes serrées.
+\usepackage{enumitem}
+\setlist{topsep=0.3ex, itemsep=0.15ex, parsep=0pt, partopsep=0pt}
+
+% Figures et tableaux : peu d'espace autour, images plafonnées en hauteur
+% pour qu'un schéma n'occupe jamais une demi-page.
+\setlength{\textfloatsep}{1.2ex plus 0.4ex minus 0.4ex}
+\setlength{\floatsep}{1ex plus 0.4ex minus 0.4ex}
+\setlength{\intextsep}{1ex plus 0.4ex minus 0.4ex}
+\setlength{\abovecaptionskip}{0.4ex}
+\setlength{\belowcaptionskip}{0pt}
+\setkomafont{caption}{\small\itshape}
+\setkomafont{captionlabel}{\small\itshape}
+\setkeys{Gin}{width=\linewidth, height=0.28\textheight, keepaspectratio}
+\renewcommand{\arraystretch}{1.15}
+
+% En-tête et pied de page : formation et chapitre en haut, titre et
+% numéro de page en bas. Les valeurs viennent du partial title.tex.
+\usepackage{lastpage}
+\usepackage[headsepline=0.4pt, footsepline=0.4pt]{scrlayer-scrpage}
+\clearpairofpagestyles
+\setkomafont{pageheadfoot}{\footnotesize\color{vertprofond}}
+\setkomafont{pagenumber}{}
+\ihead{\vintageformation}
+\ohead{\vintagechapitre}
+\ifoot*{\vintagetitre}
+\ofoot*{\thepage\,/\,\pageref*{LastPage}}
+\pagestyle{scrheadings}
+
+% Schémas TikZ : les styles communs suivent dans tikz-vintage.tex.
+\usepackage{tikz}

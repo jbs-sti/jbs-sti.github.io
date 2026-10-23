@@ -1,0 +1,196 @@
+.
+├── AGENTS.md
+├── Architecture.txt
+├── _brand.yml
+├── bts1
+│   ├── index.qmd
+│   ├── _metadata.yml
+│   └── reseaux
+│       ├── 02-adressage-ip
+│       │   ├── cours-exemple
+│       │   │   └── index.qmd
+│       │   └── index.qmd
+│       ├── 04-couche-liaison
+│       │   ├── cours-arp
+│       │   │   ├── fichiers
+│       │   │   │   └── observation.txt
+│       │   │   ├── img
+│       │   │   │   └── reseau.svg
+│       │   │   └── index.qmd
+│       │   ├── index.qmd
+│       │   └── tp-exemple
+│       │       └── index.qmd
+│       ├── 06-services-reseau
+│       │   ├── cours-dhcp
+│       │   │   ├── fichiers
+│       │   │   │   └── observation-dhcp.csv
+│       │   │   ├── img
+│       │   │   │   ├── bail.svg
+│       │   │   │   ├── dora.svg
+│       │   │   │   └── reseau-dhcp.svg
+│       │   │   └── index.qmd
+│       │   └── index.qmd
+│       └── index.qmd
+├── bts2
+│   ├── index.qmd
+│   ├── _metadata.yml
+│   └── reseaux
+│       ├── 02-subnetting-vlsm
+│       │   ├── cours-pourquoi-30
+│       │   │   ├── fichiers
+│       │   │   ├── img
+│       │   │   │   ├── bloc-30.svg
+│       │   │   │   └── fil-rouge.svg
+│       │   │   └── index.qmd
+│       │   ├── index.qmd
+│       │   └── tp-application-vlsm
+│       │       ├── fichiers
+│       │       ├── img
+│       │       │   └── topologie-tp3.svg
+│       │       └── index.qmd
+│       └── index.qmd
+├── CLAUDE.md
+├── docs
+│   └── architecture.md
+├── _extensions
+│   └── vintage
+│       ├── _extension.yml
+│       ├── fonts
+│       │   ├── Inter-SemiBold.ttf
+│       │   ├── OFL-Inter.txt
+│       │   ├── OFL-PlayfairDisplay.txt
+│       │   ├── PlayfairDisplay-BoldItalic.ttf
+│       │   ├── PlayfairDisplay-Bold.ttf
+│       │   ├── PlayfairDisplay-Italic.ttf
+│       │   └── PlayfairDisplay-Regular.ttf
+│       ├── theme-clair.scss
+│       ├── theme.scss
+│       ├── theme-sombre.scss
+│       ├── typst-show.typ
+│       └── typst-template.typ
+├── index.qmd
+├── _quarto.yml
+├── README.md
+├── _schemas
+│   └── ressource.schema.json
+├── scripts
+│   ├── commun.py
+│   ├── nouveau.py
+│   ├── __pycache__
+│   │   ├── commun.cpython-313.pyc
+│   │   └── verifier_sources.cpython-313.pyc
+│   ├── requirements.txt
+│   ├── tests
+│   │   ├── __pycache__
+│   │   │   ├── test_scripts.cpython-313.pyc
+│   │   │   ├── test_verifier_site.cpython-313.pyc
+│   │   │   └── test_workflows.cpython-313.pyc
+│   │   ├── test_scripts.py
+│   │   ├── test_verifier_site.py
+│   │   └── test_workflows.py
+│   ├── verifier_site.py
+│   └── verifier_sources.py
+├── _site
+│   ├── bts1
+│   │   ├── index.html
+│   │   └── reseaux
+│   │       ├── 02-adressage-ip
+│   │       │   ├── cours-exemple
+│   │       │   │   ├── index.html
+│   │       │   │   └── index.pdf
+│   │       │   └── index.html
+│   │       ├── 04-couche-liaison
+│   │       │   ├── cours-arp
+│   │       │   │   ├── img
+│   │       │   │   │   └── reseau.svg
+│   │       │   │   └── index.pdf
+│   │       │   ├── index.html
+│   │       │   └── tp-exemple
+│   │       │       ├── index.html
+│   │       │       └── index.pdf
+│   │       ├── 06-services-reseau
+│   │       │   ├── cours-dhcp
+│   │       │   │   ├── img
+│   │       │   │   │   ├── bail.svg
+│   │       │   │   │   ├── dora.svg
+│   │       │   │   │   └── reseau-dhcp.svg
+│   │       │   │   └── index.pdf
+│   │       │   └── index.html
+│   │       └── index.html
+│   ├── bts2
+│   │   ├── index.html
+│   │   └── reseaux
+│   │       ├── 02-subnetting-vlsm
+│   │       │   ├── cours-pourquoi-30
+│   │       │   │   ├── img
+│   │       │   │   │   ├── bloc-30.svg
+│   │       │   │   │   └── fil-rouge.svg
+│   │       │   │   ├── index.html
+│   │       │   │   └── index.pdf
+│   │       │   ├── index.html
+│   │       │   └── tp-application-vlsm
+│   │       │       ├── img
+│   │       │       │   └── topologie-tp3.svg
+│   │       │       ├── index.html
+│   │       │       └── index.pdf
+│   │       └── index.html
+│   ├── index.html
+│   ├── listings.json
+│   ├── search.json
+│   ├── site_libs
+│   │   ├── bootstrap
+│   │   │   ├── bootstrap-03f0f7ac29283f59f1575b1fa749bf84.min.css
+│   │   │   ├── bootstrap-dark-c552d4c63db752b8d9f6b78e1ddf3051.min.css
+│   │   │   ├── bootstrap-icons.css
+│   │   │   ├── bootstrap-icons.woff
+│   │   │   ├── bootstrap.min.js
+│   │   │   └── _extensions
+│   │   │       └── vintage
+│   │   │           └── fonts
+│   │   │               ├── Inter-SemiBold.ttf
+│   │   │               ├── PlayfairDisplay-BoldItalic.ttf
+│   │   │               ├── PlayfairDisplay-Bold.ttf
+│   │   │               ├── PlayfairDisplay-Italic.ttf
+│   │   │               └── PlayfairDisplay-Regular.ttf
+│   │   ├── clipboard
+│   │   │   └── clipboard.min.js
+│   │   ├── quarto-html
+│   │   │   ├── anchor.min.js
+│   │   │   ├── popper.min.js
+│   │   │   ├── quarto.js
+│   │   │   ├── quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css
+│   │   │   ├── quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css
+│   │   │   ├── tabsets
+│   │   │   │   └── tabsets.js
+│   │   │   ├── tippy.css
+│   │   │   └── tippy.umd.min.js
+│   │   ├── quarto-listing
+│   │   │   ├── list.min.js
+│   │   │   └── quarto-listing.js
+│   │   ├── quarto-nav
+│   │   │   ├── headroom.min.js
+│   │   │   └── quarto-nav.js
+│   │   └── quarto-search
+│   │       ├── autocomplete.umd.js
+│   │       ├── fuse.min.js
+│   │       └── quarto-search.js
+│   └── snt
+│       ├── 02-internet
+│       │   ├── fiche-adressage-ip
+│       │   │   └── index.pdf
+│       │   └── index.html
+│       └── index.html
+├── snt
+│   ├── 02-internet
+│   │   ├── fiche-adressage-ip
+│   │   │   └── index.qmd
+│   │   └── index.qmd
+│   ├── index.qmd
+│   └── _metadata.yml
+└── _templates
+    ├── cours.qmd
+    ├── exercices.qmd
+    ├── fiche.qmd
+    └── tp.qmd
+
+69 directories, 125 files
