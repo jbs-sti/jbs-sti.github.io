@@ -28,6 +28,8 @@
       "Edit(_schemas/**)",
       "Edit(scripts/verifier_site.py)",
       "Edit(scripts/verifier_sources.py)",
+      "Edit(scripts/commun.py)",
+      "Edit(.claude/settings.json)",
       "Edit(.github/workflows/**)"
     ]
   }
