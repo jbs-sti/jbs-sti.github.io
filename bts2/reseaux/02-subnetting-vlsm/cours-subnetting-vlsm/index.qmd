@@ -1,0 +1,327 @@
+---
+title: "Sous-réseaux et VLSM : la méthode"
+description: "Calculer rapidement réseau, diffusion et plage d’une adresse IPv4, découper une plage en sous-réseaux égaux puis en VLSM."
+type: cours
+domaine: reseaux
+chapitre: "02 — Subnetting et VLSM"
+categories: [cours, reseaux]
+mots-cles: [IPv4, masque, préfixe, sous-réseau, taille de bloc, VLSM, diffusion]
+objectifs:
+  - "Convertir un préfixe /n en masque pointé et inversement."
+  - "Déterminer le réseau, la diffusion et la plage utilisable d’une adresse /n."
+  - "Découper une plage en N sous-réseaux égaux."
+  - "Construire un plan d’adressage VLSM à partir de besoins en postes."
+prerequis:
+  - "Adressage IPv4 : notation pointée, rôle de l’adresse et du masque"
+  - "Conversion binaire d’un octet"
+duree: "2 h"
+order: 10
+date-modified: 2026-10-23
+draft: true
+lang: fr
+format:
+  vintage-typst:
+    include-in-header:
+      text: |
+        // Assurer le contraste des cellules d’en-tête du tableau PDF.
+        #show table.cell.where(y: 0): set text(fill: rgb("#F8F3EE"), weight: "bold")
+        // Les tableaux courts du cours restent sur une même page.
+        #show table: it => block(breakable: false, it)
+---
+
+## Objectifs et prérequis
+
+À l’issue du cours, vous saurez calculer vite et sans erreur un sous-réseau
+IPv4. Vous saurez aussi bâtir un plan d’adressage VLSM, avec des sous-réseaux
+de tailles différentes, comme à l’épreuve E4.
+Vous devez connaître la notation pointée et convertir un octet en binaire.
+
+## Situation de départ
+
+L’entreprise fil rouge dispose de la plage `192.168.10.0/24`. Elle veut la
+partager entre cinq réseaux :
+
+| Réseau | Besoin |
+|:---|:---|
+| Production (VLAN 10) | 100 postes |
+| Administration (VLAN 20) | 50 postes |
+| Wi-Fi invité (VLAN 30) | 25 postes |
+| Liaison R1–R2 | 2 interfaces de routeur |
+| Liaison R2–FW | 2 interfaces de routeur |
+
+Découper en cinq parts égales ne convient pas : la production manquerait
+d’adresses et les liaisons en gaspilleraient. Ce cours vous donne la méthode
+pour obtenir le plan utilisé au TP 3 :
+
+| Réseau | Sous-réseau | Passerelle |
+|:---|:---|:---|
+| Production | `192.168.10.0/25` | `192.168.10.126` |
+| Administration | `192.168.10.128/26` | `192.168.10.190` |
+| Wi-Fi invité | `192.168.10.192/27` | `192.168.10.222` |
+| Liaison R1–R2 | `192.168.10.224/30` | — |
+| Liaison R2–FW | `192.168.10.228/30` | — |
+
+## Comprendre le mécanisme
+
+### Partie réseau, partie hôte
+
+Dans `192.168.10.0/24`, le **/24** indique que les 24 premiers bits désignent
+le réseau. Les 8 bits restants désignent l’hôte. La longueur de la partie
+réseau, ici 24 bits, s’appelle la **longueur de préfixe**, ou simplement le
+**préfixe**.
+
+Le **masque** écrit la même information en notation pointée : des 1 pour la
+partie réseau, des 0 pour la partie hôte. Ainsi, /26 donne
+`11111111.11111111.11111111.11000000`, soit `255.255.255.192`.
+
+::: {.callout-note}
+## Adresse ET masque = adresse réseau
+
+Prenez `192.168.10.150/26` et appliquez le ET logique bit à bit : le résultat
+vaut 1 seulement si les deux bits valent 1. Seul le dernier octet change :
+
+```text
+150  = 1001 0110
+192  = 1100 0000
+ET   = 1000 0000  = 128
+```
+
+Le poste appartient au réseau `192.168.10.128/26`.
+:::
+
+### Les quatre adresses d’un sous-réseau
+
+Avec h bits d’hôte (h = 32 − n), un sous-réseau contient **2^h^ adresses**.
+Deux sont réservées, il reste donc **2^h^ − 2 hôtes**.
+
+| Adresse | Bits d’hôte | Exemple `192.168.10.128/26` |
+|:---|:---|:---|
+| Réseau | tous à 0 | `192.168.10.128` |
+| Première utilisable | 0…01 | `192.168.10.129` |
+| Dernière utilisable | 1…10 | `192.168.10.190` |
+| Diffusion | tous à 1 | `192.168.10.191` |
+
+Ici h = 32 − 26 = 6 : 2^6^ = 64 adresses, 62 hôtes.
+
+### La taille de bloc
+
+Inutile de tout passer en binaire. Repérez l’**octet significatif** du masque :
+le premier octet, en partant de la gauche, qui n’est pas 255. C’est l’octet où
+le masque passe des 1 aux 0. Calculez ensuite :
+
+**taille de bloc = 256 − octet significatif**
+
+Les adresses réseau sont les multiples de cette taille, dans cet octet.
+Les octets suivants valent 0. Pour
+/26, le bloc vaut 256 − 192 = 64. Les réseaux commencent en .0, .64, .128 et
+.192.
+
+L’octet significatif n’est pas toujours le dernier. Prenez `172.20.37.10/20` :
+
+- /20 donne `255.255.240.0` : l’octet significatif est le **troisième** ;
+- bloc = 256 − 240 = 16, donc réseaux en 0, 16, 32, 48… dans le 3^e^ octet ;
+- 37 est entre 32 et 48 : réseau `172.20.32.0/20` ;
+- diffusion : `172.20.47.255`, juste avant le réseau suivant `172.20.48.0`.
+
+### Mémo /24 à /30
+
+| Préfixe | Masque | Bloc | Adresses | Hôtes utilisables |
+|:-:|:---|:-:|:-:|:-:|
+| /24 | `255.255.255.0` | 256 | 256 | 254 |
+| /25 | `255.255.255.128` | 128 | 128 | 126 |
+| /26 | `255.255.255.192` | 64 | 64 | 62 |
+| /27 | `255.255.255.224` | 32 | 32 | 30 |
+| /28 | `255.255.255.240` | 16 | 16 | 14 |
+| /29 | `255.255.255.248` | 8 | 8 | 6 |
+| /30 | `255.255.255.252` | 4 | 4 | 2 |
+
+Un octet plus tôt, seuls le masque et la taille de bloc se transposent : /20
+donne `255.255.240.0` et un bloc de 16 dans le 3^e^ octet, comme /28 donne
+`255.255.255.240`. Le nombre d’adresses, lui, change : un /20 compte
+2^12^ = 4 096 adresses, soit 4 094 hôtes.
+
+### Découper en sous-réseaux égaux
+
+Deux points de départ sont possibles.
+
+- **On connaît le nombre N de sous-réseaux.** Empruntez b bits à la partie
+  hôte, avec 2^b^ ≥ N. Exemple : 5 sous-réseaux dans un /24 donnent b = 3
+  (2^3^ = 8), donc des /27.
+- **On connaît le nombre d’hôtes par sous-réseau.** Cherchez le plus petit h
+  tel que 2^h^ − 2 ≥ besoin. Le préfixe vaut 32 − h.
+
+::: {.callout-warning}
+## Piège : la passerelle compte
+
+La passerelle occupe une adresse du sous-réseau. Lisez bien l’énoncé.
+« 30 postes, passerelle comprise » : 30 adresses, un /27 suffit.
+« 30 postes plus la passerelle » : 31 adresses, il faut un /26.
+:::
+
+### VLSM : des blocs de tailles différentes
+
+Le **VLSM** (*Variable Length Subnet Mask*) donne à chaque réseau la taille
+dont il a besoin. La méthode tient en trois règles :
+
+1. trier les besoins du plus grand au plus petit ;
+2. placer chaque bloc sur une adresse multiple de sa taille ;
+3. enchaîner : le bloc suivant commence juste après la diffusion du précédent.
+
+Appliquons-la au fil rouge. On compte une adresse de plus pour la passerelle.
+
+| Réseau | Adresses | h | Bloc | Sous-réseau |
+|:---|:-:|:-:|:-:|:---|
+| Production | 101 | 7 | 128 | `.0/25` |
+| Administration | 51 | 6 | 64 | `.128/26` |
+| Wi-Fi invité | 26 | 5 | 32 | `.192/27` |
+| R1–R2 | 2 | 2 | 4 | `.224/30` |
+| R2–FW | 2 | 2 | 4 | `.228/30` |
+
+Toutes les adresses commencent par `192.168.10`. Chaque début est bien un
+multiple de son bloc : 0, 128, 192, 224 et 228 (228 = 57 × 4). Chaque bloc
+commence juste après la fin du précédent. Masques, plages et diffusions sont à
+compléter au TP 3.
+
+::: {.callout-note}
+## À retenir
+
+- h = 32 − n ; 2^h^ adresses ; 2^h^ − 2 hôtes.
+- Bloc = 256 − octet significatif du masque ; réseaux = multiples du bloc.
+- Diffusion = réseau suivant − 1.
+- VLSM : du plus grand au plus petit, chaque bloc sur un multiple de sa taille.
+:::
+
+## Observer et appliquer
+
+### Trouver réseau, diffusion et plage
+
+Méthode, appliquée à `172.16.5.77/28` :
+
+1. **Masque.** /28 donne `255.255.255.240` ; octet significatif : le 4^e^.
+2. **Bloc.** 256 − 240 = 16.
+3. **Réseau.** Plus grand multiple de 16 inférieur ou égal à 77 : 64.
+   Réseau `172.16.5.64/28`.
+4. **Diffusion.** Réseau suivant 80, moins 1 : `172.16.5.79`.
+5. **Plage utilisable.** `172.16.5.65` à `172.16.5.78`, soit 14 hôtes.
+
+### Lire une configuration
+
+**Plateforme : Cisco IOS.** Voici l’extrait de configuration d’un routeur
+relié à un fournisseur d’accès :
+
+```text
+interface GigabitEthernet0/0
+ ip address 203.0.113.253 255.255.255.252
+```
+
+Le masque `255.255.255.252` correspond à /30, donc à un bloc de 4. Le multiple
+de 4 juste inférieur à 253 est 252. On obtient :
+
+- réseau `203.0.113.252/30` ;
+- diffusion `203.0.113.255` ;
+- adresses utilisables `.253` (ce routeur) et `.254` (l’équipement d’en face).
+
+La plage `203.0.113.0/24` est réservée à la documentation : elle ne sert que
+dans les exemples.
+
+### Vérifier sa compréhension
+
+::: {.content-visible when-format="html"}
+<details>
+<summary>Le poste 192.168.10.200/27 est-il dans le Wi-Fi invité ?</summary>
+<p>Oui. Le bloc vaut 32 ; le multiple de 32 inférieur à 200 est 192. Le poste est dans 192.168.10.192/27, le réseau du Wi-Fi invité.</p>
+</details>
+:::
+
+::: {.content-visible unless-format="html"}
+**Question.** Le poste `192.168.10.200/27` est-il dans le Wi-Fi invité ?
+
+**Réponse.** Oui. Le bloc vaut 32 ; le multiple de 32 inférieur à 200 est 192.
+Le poste est dans `192.168.10.192/27`, le réseau du Wi-Fi invité.
+:::
+
+## Exercices de vérification
+
+1. **Sous-réseaux égaux** (d’après BTS SN IR, E4 2023). On découpe `172.16.88.0/24` en 64
+   sous-réseaux de même taille. Donner le préfixe, le masque et le nombre
+   d’hôtes par sous-réseau. Pour le premier, le deuxième et le dernier
+   sous-réseau, donner l’adresse réseau, la première et la dernière adresse
+   utilisables, et la diffusion.
+2. **Octet significatif au 3^e^ rang** (d’après BTS SN IR, E4 2024). On découpe
+   `172.20.0.0/16` en 16 sous-réseaux. Combien de bits faut-il emprunter ?
+   Donner le préfixe, le masque et le nombre d’hôtes. Donner l’adresse réseau
+   et la diffusion du premier, du deuxième et du dernier sous-réseau.
+3. **VLAN et DHCP** (d’après BTS CIEL IR, E4 2026). La plage `192.168.69.0/24` est découpée
+   en sous-réseaux égaux. Chaque sous-réseau doit pouvoir accueillir 30
+   machines, passerelle comprise, et pas davantage : on choisit le plus petit
+   sous-réseau qui convient. Les VLAN
+   10 et 20 prennent les deux premiers sous-réseaux, le VLAN 99 le dernier.
+   La passerelle est la dernière adresse utilisable. La plage DHCP contient
+   toutes les autres adresses utilisables. Pour chaque VLAN, donner le réseau,
+   la plage DHCP, la passerelle et la diffusion.
+4. **VLSM.** Découper `10.0.0.0/24` pour trois services de 60, 28 et 12 postes,
+   passerelle non comprise, et une liaison entre deux routeurs. Donner pour
+   chacun le sous-réseau, la plage utilisable, la passerelle et la diffusion.
+
+### Corrigé
+
+1. 64 = 2^6^ : on emprunte 6 bits. 24 + 6 = **/30**, masque `255.255.255.252`,
+   **2 hôtes** (2^2^ − 2). Bloc de 4.
+
+   | Sous-réseau | Réseau | Première | Dernière | Diffusion |
+   |:---|:---|:---|:---|:---|
+   | 1^er^ | `172.16.88.0` | `.1` | `.2` | `.3` |
+   | 2^e^ | `172.16.88.4` | `.5` | `.6` | `.7` |
+   | 64^e^ | `172.16.88.252` | `.253` | `.254` | `.255` |
+
+   Le dernier commence en 63 × 4 = 252.
+2. 16 = 2^4^ : on emprunte **4 bits**. 16 + 4 = **/20**, masque
+   `255.255.240.0`. h = 12, soit 2^12^ − 2 = **4 094 hôtes**. Bloc de 16 dans
+   le 3^e^ octet.
+
+   | Sous-réseau | Réseau | Diffusion |
+   |:---|:---|:---|
+   | 1^er^ | `172.20.0.0/20` | `172.20.15.255` |
+   | 2^e^ | `172.20.16.0/20` | `172.20.31.255` |
+   | 16^e^ | `172.20.240.0/20` | `172.20.255.255` |
+
+   Le dernier commence en 15 × 16 = 240.
+3. On cherche le plus petit h tel que 2^h^ − 2 ≥ 30. h = 4 donne 14 hôtes,
+   trop peu ; h = 5 donne 30 hôtes : **/27**, masque `255.255.255.224`,
+   bloc de 32, 8 sous-réseaux. Le dernier commence en 7 × 32 = 224.
+
+   | VLAN | Réseau | Plage DHCP | Passerelle | Diffusion |
+   |:-:|:---|:---|:---|:---|
+   | 10 | `192.168.69.0/27` | `.1` à `.29` | `.30` | `.31` |
+   | 20 | `192.168.69.32/27` | `.33` à `.61` | `.62` | `.63` |
+   | 99 | `192.168.69.224/27` | `.225` à `.253` | `.254` | `.255` |
+4. On ajoute la passerelle à chaque service, puis on trie.
+
+   | Réseau | Adresses | Préfixe | Sous-réseau | Plage utilisable | Passerelle | Diffusion |
+   |:---|:-:|:-:|:---|:---|:---|:---|
+   | 60 postes | 61 | /26 | `10.0.0.0` | `.1` à `.62` | `.62` | `.63` |
+   | 28 postes | 29 | /27 | `10.0.0.64` | `.65` à `.94` | `.94` | `.95` |
+   | 12 postes | 13 | /28 | `10.0.0.96` | `.97` à `.110` | `.110` | `.111` |
+   | Liaison | 2 | /30 | `10.0.0.112` | `.113` à `.114` | — | `.115` |
+
+   Vérification : 64, 96 et 112 sont des multiples de 32, 16 et 4. Le plan
+   occupe 64 + 32 + 16 + 4 = 116 adresses ; il en reste 140 pour l’avenir.
+
+## Synthèse
+
+- Le préfixe /n fixe la partie réseau ; h = 32 − n bits restent pour les hôtes.
+- Un sous-réseau compte 2^h^ adresses, dont 2^h^ − 2 utilisables.
+- Bloc = 256 − octet significatif ; le réseau est le multiple du bloc qui
+  précède l’adresse, la diffusion est le réseau suivant moins 1.
+- L’octet significatif est le premier octet du masque différent de 255 ; il
+  peut être le 3^e^ : appliquez alors le même calcul un octet plus tôt.
+- En VLSM, placez les plus grands blocs d’abord, chacun sur un multiple de sa
+  taille.
+- Comptez toujours la passerelle avant de choisir le préfixe.
+
+## Pour aller plus loin
+
+- [RFC 4632 — CIDR](https://www.rfc-editor.org/rfc/rfc4632.html), qui définit
+  la notation /n.
+- [RFC 5737 — plages IPv4 de documentation](https://www.rfc-editor.org/rfc/rfc5737.html),
+  dont `203.0.113.0/24`.

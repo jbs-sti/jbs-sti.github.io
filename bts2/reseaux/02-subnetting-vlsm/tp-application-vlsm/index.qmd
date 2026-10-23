@@ -13,7 +13,7 @@ objectifs:
   - "Mettre en place un routage statique et une route par défaut."
   - "Valider le réseau par une recette de tests ping."
 prerequis:
-  - "Cours « Pourquoi /30 ? » : binaire, masque, taille de bloc"
+  - "Cours « Sous-réseaux et VLSM : la méthode »"
   - "VLAN, trunk 802.1Q, routage inter-VLAN et DHCP"
   - "Routage statique"
 duree: "4 h"

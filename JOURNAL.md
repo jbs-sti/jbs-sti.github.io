@@ -17,6 +17,18 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+## 2026-10-23 — cours/bts2-subnetting
+
+- Ressource : bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm/index.qmd (référence imitée : bts1/reseaux/06-services-reseau/cours-dhcp)
+- Supprimé à la demande de l'enseignant : cours-pourquoi-30 ; prérequis du TP 3 renommé
+- Sources : sujets E4 BTS SN IR 2023 et 2024, BTS CIEL IR 2026 (miroirs, Eduscol inaccessible) ; référentiel non consulté
+- Vérificateur : CONFORME après 2 passages (octet significatif mal défini au 1er) ; CONFORME après Codex
+- Codex : 5 constats A (dont 1 BLOQUANT), 3 réécritures appliquées
+- Réécritures gardées : R1, R2, R3 ; constats A1, A2, A3 corrigés, A5 en partie ; A4 (/31) refusé (hors périmètre)
+- Relance Codex : non (corrections de forme)
+- Pull request : #16
+- Points à relire par l'enseignant : rendu PDF (Quarto absent en local), mentions des sujets E4, absence du sujet 2025 et du référentiel
+
 ## 2026-10-23 — infra/ci-latex
 
 - Ressource : aucune (CI : .github/workflows/verifier.yml et publier.yml)
