@@ -3,9 +3,37 @@
 Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 `CLAUDE.md`.
 
+## État actuel
+
+À tenir à jour à la fin de chaque tâche. Relu au début de chaque session.
+
+**En cours**
+
+- (rien)
+
+**À faire**
+
+- `bts1/reseaux/06-services-reseau/cours-dhcp` et
+  `bts1/reseaux/04-couche-liaison/cours-arp` (brouillons) : supprimer le bloc
+  `format:` avant publication, sinon le HTML ne sera pas produit (voir PR #18).
+- `snt/02-internet/fiche-adressage-ip` : encore en `draft: true`.
+- Entrée `infra/ci-latex` : numéro de pull request à renseigner.
+
+**Décisions durables**
+
+- Le site vouvoie le lecteur.
+- Une ressource n'a pas de bloc `format:` : elle hérite des formats du
+  projet (html, vintage-pdf).
+- Codex relit en `workspace-write` après commit du premier jet ; le chef de
+  projet contrôle ses changements dans `git diff`.
+- Les ancres (tests, schéma, scripts de vérification, CI) ne sont jamais
+  modifiées par un agent.
+
+## Historique
+
 <!-- Modèle d'entrée :
 
-## AAAA-MM-JJ — <branche>
+### AAAA-MM-JJ — <branche>
 
 - Ressource : <chemin>/index.qmd (référence imitée : <chemin>)
 - Vérificateur : CONFORME après <n> passage(s)
@@ -17,7 +45,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
-## 2026-10-23 — cours/bts2-subnetting-format
+### 2026-10-23 — infra/ancres-memoire
+
+- Ressource : aucune (orchestration)
+- Fait : règles `deny` sur les ancres dans `.claude/settings.json` ; section
+  « Mémoire de session » et interdit sur les ancres dans `CLAUDE.md` ; délai
+  de 10 min pour Codex ; section « État actuel » dans ce journal
+- Vérificateur, Codex : sans objet
+- Pull request : à renseigner
+
+### 2026-10-23 — cours/bts2-subnetting-format
 
 - Ressource : bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm/index.qmd
 - Cause : bloc `format: vintage-typst` recopié de cours-dhcp ; une page qui déclare `format:` ne produit que les formats listés, d'où l'absence du HTML et l'échec de la publication après la PR #17
@@ -26,7 +63,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Pull request : #18
 - Points à relire par l'enseignant : cours-dhcp et cours-arp (brouillons) portent le même bloc et auront le même problème à leur publication
 
-## 2026-10-23 — cours/bts2-subnetting
+### 2026-10-23 — cours/bts2-subnetting
 
 - Ressource : bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm/index.qmd (référence imitée : bts1/reseaux/06-services-reseau/cours-dhcp)
 - Supprimé à la demande de l'enseignant : cours-pourquoi-30 ; prérequis du TP 3 renommé
@@ -38,7 +75,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Pull request : #16
 - Points à relire par l'enseignant : rendu PDF (Quarto absent en local), mentions des sujets E4, absence du sujet 2025 et du référentiel
 
-## 2026-10-23 — infra/ci-latex
+### 2026-10-23 — infra/ci-latex
 
 - Ressource : aucune (CI : .github/workflows/verifier.yml et publier.yml)
 - Cause : les PDF passent par lualatex depuis la PR #14, mais les runners n'avaient pas de TeX ; vérification de la PR #14 et publications #12 et #14 en échec
