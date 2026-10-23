@@ -26,6 +26,17 @@ jobs:
       - uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2
         with:
           version: '1.10.19'
+      - name: Installer TeX Live pour les PDF
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-luatex texlive-latex-recommended texlive-latex-extra \
+            texlive-pictures texlive-fonts-recommended texlive-lang-french
+          for f in scrartcl.cls scrlayer-scrpage.sty lastpage.sty enumitem.sty tikz.sty \
+                   bookmark.sty xurl.sty fontspec.sty unicode-math.sty babel-french.ldf \
+                   pgflibrarypatterns.code.tex; do
+            kpsewhich "$f" > /dev/null || { echo "Fichier TeX manquant : $f"; exit 1; }
+          done
       - name: Installer les dépendances figées
         run: python -m pip install -r scripts/requirements.txt
       - name: Tester les contrôles
