@@ -26,8 +26,8 @@ lang: fr
 ## Objectifs et prérequis
 
 À l’issue du cours, vous saurez expliquer comment un paquet arrive au bon
-programme. Vous saurez aussi décrire comment TCP garantit qu’aucun octet ne
-se perd. Enfin, vous saurez choisir entre TCP et UDP et observer ces deux
+programme. Vous saurez aussi décrire comment TCP rend l’échange fiable,
+par des acquittements et des retransmissions. Enfin, vous saurez choisir entre TCP et UDP et observer ces deux
 protocoles sur une machine réelle.
 
 Vous devez connaître l’adressage IPv4 et le fonctionnement de la couche
@@ -147,7 +147,8 @@ Les systèmes ne suivent pas tous cette dernière plage pour leurs ports
 éphémères. Windows utilise bien 49152 à 65535. Linux utilise par défaut 32768 à
 60999.
 
-Voici les ports à connaître pour le BTS. Ce sont les ports **côté serveur**.
+Voici les ports à connaître pour le BTS. Ce sont les ports **côté serveur**,
+sauf pour DHCP : 67 côté serveur, 68 côté client.
 
 | Service | Transport | Port(s) | Remarque |
 |:---|:-:|:-:|:---|
@@ -215,8 +216,8 @@ Vous téléchargez une image disque de 2 Go depuis S. Un seul octet perdu, et le
 fichier est inutilisable. Il faut que tout arrive, sans erreur et dans
 l’ordre.
 
-**TCP** (*Transmission Control Protocol*) apporte cette garantie. Il est
-**orienté connexion** : les deux extrémités s’accordent avant d’échanger. Il
+**TCP** (*Transmission Control Protocol*) répond à ce besoin. Il est
+**fiable** et **orienté connexion** : les deux extrémités s’accordent avant d’échanger. Il
 numérote chaque octet envoyé, attend des accusés de réception et retransmet
 ce qui manque. Son en-tête est donc plus riche que celui d’UDP.
 
@@ -269,7 +270,7 @@ machines échangent trois segments :
 Cet échange s’appelle la **poignée de main en trois temps** (*three-way
 handshake*). Chaque côté connaît alors le numéro de départ de l’autre.
 
-Le SYN ne transporte aucune donnée. Pourtant, il **consomme un numéro de
+Ici, le SYN ne transporte aucune donnée. Pourtant, il **consomme un numéro de
 séquence**. C’est pourquoi S répond `ack = 1001` et non `ack = 1000`. Le FIN
 consomme lui aussi un numéro.
 
@@ -277,11 +278,12 @@ Si aucun programme n’écoute sur le port demandé, S répond par un segment
 **RST**. La connexion est refusée.
 
 ::: {.callout-note}
-## Numéros initiaux aléatoires
+## Numéros initiaux difficiles à prédire
 
-Nous prenons 1000 et 5000 pour simplifier. En réalité, chaque côté tire son
-numéro initial au hasard. Cela empêche un attaquant de deviner les numéros et
-d’injecter de faux segments.
+Nous prenons 1000 et 5000 pour simplifier. En réalité, chaque côté calcule son
+numéro initial à partir d’une horloge et d’un secret propre à la machine. Le
+résultat est difficile à prédire. Un attaquant extérieur à la communication
+a ainsi plus de mal à deviner les numéros pour injecter de faux segments.
 :::
 
 ### Séquence et acquittement
@@ -311,10 +313,15 @@ du même coup tous les octets précédents : on dit que l’acquittement est
 ::: {.callout-note}
 ## La règle de calcul
 
+Quand le segment reçu est celui attendu, dans l’ordre :
+
 **ack = seq reçu + nombre d’octets de données reçus**
 
 Ajoutez 1 si le segment reçu porte SYN ou FIN. Un segment sans données, sans
 SYN ni FIN, ne fait pas avancer le numéro de séquence.
+
+Si un segment arrive hors ordre, après un trou, l’ack ne bouge pas. Il reste
+sur le premier octet manquant : vous le verrez dans la section suivante.
 :::
 
 ### La retransmission
@@ -330,12 +337,17 @@ se perd en route.
 S reçoit Y, mais il attend toujours l’octet 1201. Il répond donc encore
 `ack = 1201`. Il conserve Y de côté.
 
-À chaque envoi, A arme un **minuteur de retransmission**. Le temps s’écoule
-sans acquittement au-delà de 1201. A **retransmet** alors le segment X. S
+Quand A envoie des données, il démarre un **minuteur de retransmission**,
+s’il ne tourne pas déjà. Ici, le minuteur expire sans acquittement au-delà
+de 1201. A **retransmet** alors le segment X. S
 possède maintenant les octets 1201 à 2200 : il répond `ack = 2201`.
 
 Les acquittements en double peuvent aussi déclencher une retransmission plus
 rapide. Ce mécanisme sera détaillé en deuxième année.
+
+Si les retransmissions échouent trop longtemps, TCP abandonne la connexion. Il
+signale alors l’échec à l’application : la fiabilité n’est pas une garantie
+absolue de livraison.
 
 ### La fenêtre
 
@@ -390,7 +402,7 @@ Un segment **RST**, au contraire, coupe la connexion d’un coup, sans
 | Critère | TCP | UDP |
 |:---|:---|:---|
 | Connexion | oui : poignée de main en trois temps | non |
-| Livraison | garantie : acquittements et retransmissions | non garantie |
+| Livraison | fiable : acquittements et retransmissions ; en cas d’échec persistant, l’application est prévenue | non garantie, perte non signalée |
 | Ordre | rétabli à l’arrivée | non garanti |
 | Contrôle de flux | oui, par la fenêtre | non |
 | Taille de l’en-tête | 20 à 60 octets | 8 octets |
@@ -595,7 +607,7 @@ précises et ne permet pas la diffusion.
    c. TCP : 1 500 − 20 − 20 = **1 460 octets**. UDP : 1 500 − 20 − 8 =
       **1 472 octets**.
 
-3. Les numéros suivent la règle ack = seq + données (+ 1 pour SYN) :
+3. Les segments arrivent dans l’ordre : ack = seq + données (+ 1 pour SYN) :
 
    | N° | Sens | Drapeaux | seq | ack | Données |
    |:-:|:-:|:-:|:-:|:-:|:-:|
@@ -643,8 +655,12 @@ précises et ne permet pas la diffusion.
 - **UDP** : sans connexion, en-tête de 8 octets, aucune garantie ; idéal pour
   les échanges courts, le temps réel et la diffusion.
 - **TCP** : orienté connexion, en-tête de 20 octets au minimum ; ouverture en
-  trois temps, acquittements, retransmission, fenêtre, fermeture par FIN.
-- **ack = seq + octets de données reçus**, plus 1 pour SYN ou FIN.
+  trois temps, acquittements, retransmission, fenêtre, fermeture par FIN. En
+  cas d’échec persistant, la connexion est abandonnée et l’application
+  prévenue.
+- Pour un segment reçu dans l’ordre : **ack = seq + octets de données
+  reçus**, plus 1 pour SYN ou FIN. Hors ordre, l’ack reste sur le premier
+  octet manquant.
 - Limites de ce cours : le contrôle de congestion et la retransmission rapide
   de TCP seront vus en deuxième année.
 
