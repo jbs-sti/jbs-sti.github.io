@@ -20,6 +20,9 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Entrée `infra/ci-latex` : numéro de pull request à renseigner.
 - Décider d'un garde-fou côté PR sur les ancres (CODEOWNERS ou contrôle CI
   des chemins), branche `infra/` par l'enseignant.
+- `bts1/reseaux/05-couche-transport/cours-tcp-udp` (brouillon) : relire le PDF
+  produit par la CI (tableaux larges, exercice 6) ; trancher « aléatoires »
+  contre « difficiles à prédire » (encadré Wireshark, légende du SVG).
 
 **Décisions durables**
 
@@ -42,10 +45,21 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : <n> constats A (dont <n> BLOQUANT), <n> réécritures appliquées
 - Réécritures gardées : R1, R3… ; annulées : R2 (raison)…
 - Relance Codex : oui / non
-- Pull request : #<numéro>
+- Pull request : #21
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-23 — cours/bts1-tcp-udp
+
+- Ressource : bts1/reseaux/05-couche-transport/cours-tcp-udp/index.qmd (référence imitée : bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm), avec 4 SVG et l'index du nouveau chapitre 05
+- Vérificateur : CONFORME après 2 passages (6 constats de rédaction au 1er) ; CONFORME après chaque relecture Codex
+- Codex (1re relecture) : 6 constats A (dont 4 BLOQUANT), aucune réécriture ; tous corrigés par le rédacteur
+- Codex (relance) : 3 constats A (dont 1 BLOQUANT), 1 réécriture ; tous corrigés par le rédacteur
+- Réécritures gardées : R1 (relance) ; annulées : aucune
+- Relance Codex : oui (corrections de fond : règle de l'ack, fiabilité, numéros initiaux)
+- Pull request : #<numéro>
+- Points à relire par l'enseignant : rendu PDF (Quarto absent en local), encadré des numéros initiaux (simplification de la RFC 9293), sortie `ss -tuln` reconstituée, domaine fictif `intranet.lycee.lan`, « aléatoires » restant à deux endroits
 
 ### 2026-10-23 — infra/ancres-memoire
 
