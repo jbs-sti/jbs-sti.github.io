@@ -21,8 +21,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Décider d'un garde-fou côté PR sur les ancres (CODEOWNERS ou contrôle CI
   des chemins), branche `infra/` par l'enseignant.
 - `bts1/reseaux/05-couche-transport/cours-tcp-udp` (brouillon) : relire le PDF
-  produit par la CI (tableaux larges, exercice 6) ; trancher « aléatoires »
-  contre « difficiles à prédire » (encadré Wireshark, légende du SVG).
+  produit par la CI (tableaux larges, exercice 6).
 
 **Décisions durables**
 
@@ -49,6 +48,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-23 — cours/bts1-tcp-udp-relecture
+
+- Ressource : bts1/reseaux/05-couche-transport/cours-tcp-udp/index.qmd et img/poignee-de-main.svg
+- Fait : « aléatoires » remplacé par « difficiles à prédire » (encadré Wireshark, légende du SVG), pour s'aligner sur l'encadré des numéros initiaux, à la demande de l'enseignant
+- Vérificateur : CONFORME en 1 passage
+- Codex : sans objet (changement de formulation sur deux lignes)
+- Pull request : #22
+- Points à relire par l'enseignant : aucun en dehors du PDF du cours
 
 ### 2026-10-23 — cours/bts1-tcp-udp
 

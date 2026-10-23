@@ -515,7 +515,7 @@ Observation guidée, sur le poste A sous Debian 12 :
 ## Numéros relatifs
 
 Par défaut, Wireshark affiche des numéros de séquence **relatifs** : le SYN
-porte `seq = 0`. Les vraies valeurs, aléatoires, sont dans les champs
+porte `seq = 0`. Les vraies valeurs, difficiles à prédire, sont dans les champs
 `tcp.seq_raw` et `tcp.ack_raw`.
 :::
 
