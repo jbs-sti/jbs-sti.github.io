@@ -31,12 +31,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             texlive-luatex texlive-latex-recommended texlive-latex-extra \
-            texlive-pictures texlive-fonts-recommended texlive-lang-french
+            texlive-pictures texlive-fonts-recommended texlive-lang-french librsvg2-bin
           for f in scrartcl.cls scrlayer-scrpage.sty lastpage.sty enumitem.sty tikz.sty \
                    bookmark.sty xurl.sty fontspec.sty unicode-math.sty frenchb.ldf \
                    pgflibrarypatterns.code.tex; do
             kpsewhich "$f" > /dev/null || { echo "Fichier TeX manquant : $f"; exit 1; }
           done
+          command -v rsvg-convert dvisvgm > /dev/null || { echo "rsvg-convert ou dvisvgm manquant"; exit 1; }
       - name: Installer les dépendances figées
         run: python -m pip install -r scripts/requirements.txt
       - name: Tester les contrôles
