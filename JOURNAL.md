@@ -18,6 +18,8 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   `format:` avant publication, sinon le HTML ne sera pas produit (voir PR #18).
 - `snt/02-internet/fiche-adressage-ip` : encore en `draft: true`.
 - Entrée `infra/ci-latex` : numéro de pull request à renseigner.
+- Décider d'un garde-fou côté PR sur les ancres (CODEOWNERS ou contrôle CI
+  des chemins), branche `infra/` par l'enseignant.
 
 **Décisions durables**
 
@@ -50,8 +52,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Ressource : aucune (orchestration)
 - Fait : règles `deny` sur les ancres dans `.claude/settings.json` ; section
   « Mémoire de session » et interdit sur les ancres dans `CLAUDE.md` ; délai
-  de 10 min pour Codex ; section « État actuel » dans ce journal
+  de 10 min pour Codex ; section « État actuel » dans ce journal ;
+  `deny` étendu à `scripts/commun.py` (importé par les deux vérificateurs)
+  et à `.claude/settings.json` (un agent ne lève pas ses propres interdits)
 - Vérificateur, Codex : sans objet
+- Points à relire par l'enseignant : le `deny` ne couvre que les outils
+  d'édition, pas le shell ni Codex ; garde-fou côté PR (CODEOWNERS ou
+  contrôle CI des chemins) laissé à votre décision
 - Pull request : à renseigner
 
 ### 2026-10-23 — cours/bts2-subnetting-format
