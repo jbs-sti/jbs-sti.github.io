@@ -55,7 +55,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Fait : `*:Zone.Identifier` ignoré ; ces métadonnées Windows apparaissent sous WSL pour tout fichier téléchargé, et leur nom (avec `:`) casserait les clones sous Windows
 - `ancres-memoire.patch` non versionné : identique au commit 9bd9445, déjà dans `main` (PR #19 et #20)
 - Vérificateur, Codex : sans objet
-- Pull request : #<numéro>
+- Pull request : #23
 - Points à relire par l'enseignant : aucun
 
 ### 2026-10-23 — cours/bts1-tcp-udp-relecture
