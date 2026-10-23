@@ -23,7 +23,12 @@
       "Bash(git merge:*)",
       "Bash(gh pr merge:*)",
       "Bash(codex exec --dangerously-bypass-approvals-and-sandbox:*)",
-      "Bash(codex exec -s danger-full-access:*)"
+      "Bash(codex exec -s danger-full-access:*)",
+      "Edit(scripts/tests/**)",
+      "Edit(_schemas/**)",
+      "Edit(scripts/verifier_site.py)",
+      "Edit(scripts/verifier_sources.py)",
+      "Edit(.github/workflows/**)"
     ]
   }
 }

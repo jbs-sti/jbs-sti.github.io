@@ -6,6 +6,14 @@ Claude Code est chef de projet. Le sous-agent `redacteur` écrit, le
 sous-agent `verificateur` contrôle, Codex relit et réécrit, l'enseignant
 fusionne. Les consignes de Codex sont dans `docs/relecture-codex.md`.
 
+### Mémoire de session
+
+- **Au démarrage** : lire la section « État actuel » de `JOURNAL.md` et
+  lancer `git log --oneline -10`, puis résumer à l'enseignant, en trois
+  lignes, où en est le projet. Ne rien modifier avant ce résumé.
+- **En fin de tâche** : mettre à jour « État actuel » (en cours, à faire,
+  décisions durables) en plus de l'entrée d'historique, dans le même commit.
+
 ### Avant de commencer
 
 - Plan d'abord : si la tâche modifie plus de 3 fichiers, présenter le plan à
@@ -25,7 +33,8 @@ fusionne. Les consignes de Codex sont dans `docs/relecture-codex.md`.
 3. **Commit du premier jet** sur la branche de travail, pour que les
    modifications de Codex apparaissent seules dans `git diff`.
 4. **Relecture Codex** : créer `.review/` si besoin, puis lancer cette
-   commande seule, sans pipe ni `&&` :
+   commande seule, sans pipe ni `&&`, avec un délai d'exécution de
+   10 minutes (le délai par défaut coupe les relectures longues) :
 
    ```bash
    codex exec -s workspace-write -o .review/codex.md "Lis docs/relecture-codex.md et applique-le au diff de la branche courante par rapport à main."
@@ -61,3 +70,7 @@ fusionne. Les consignes de Codex sont dans `docs/relecture-codex.md`.
 - Jamais de fusion de pull request : l'enseignant fusionne.
 - Jamais de passage de `draft: true` à `false`.
 - Jamais de commande Codex en mode `danger-full-access` ou sans bac à sable.
+- Jamais de modification des ancres : tests (`scripts/tests/`), schéma
+  (`_schemas/`), scripts de vérification et workflows CI. Si un contrôle
+  échoue, c'est la ressource qu'on corrige, pas le contrôle. Une évolution
+  de ces fichiers se fait par l'enseignant, sur une branche `infra/`.
