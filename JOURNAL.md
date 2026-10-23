@@ -16,3 +16,12 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+## 2026-10-23 — infra/ci-latex
+
+- Ressource : aucune (CI : .github/workflows/verifier.yml et publier.yml)
+- Cause : les PDF passent par lualatex depuis la PR #14, mais les runners n'avaient pas de TeX ; vérification de la PR #14 et publications #12 et #14 en échec
+- Correctif : installation de TeX Live par apt, contrôle kpsewhich des fichiers requis
+- Vérificateur, Codex : sans objet (infrastructure)
+- Pull request : à renseigner
+- Points à relire par l'enseignant : liste des paquets TeX Live (non testée en local, la CI de la PR fait foi)
