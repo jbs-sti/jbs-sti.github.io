@@ -30,7 +30,7 @@ jobs:
             texlive-luatex texlive-latex-recommended texlive-latex-extra \
             texlive-pictures texlive-fonts-recommended texlive-lang-french
           for f in scrartcl.cls scrlayer-scrpage.sty lastpage.sty enumitem.sty tikz.sty \
-                   bookmark.sty xurl.sty fontspec.sty unicode-math.sty babel-french.ldf \
+                   bookmark.sty xurl.sty fontspec.sty unicode-math.sty frenchb.ldf \
                    pgflibrarypatterns.code.tex; do
             kpsewhich "$f" > /dev/null || { echo "Fichier TeX manquant : $f"; exit 1; }
           done
