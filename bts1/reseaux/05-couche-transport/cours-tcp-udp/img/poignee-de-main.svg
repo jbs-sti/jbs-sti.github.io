@@ -20,6 +20,6 @@
 </g>
 <g font-family="sans-serif" font-size="16" text-anchor="middle" fill="#111">
 <text x="400" y="320">Connexion établie : les données peuvent circuler dans les deux sens.</text>
-<text x="400" y="370">Numéros initiaux choisis pour l’exemple ; en réalité, ils sont aléatoires.</text>
+<text x="400" y="370">Numéros initiaux choisis pour l’exemple ; en réalité, difficiles à prédire.</text>
 <text x="400" y="394">Trait plein : segment du client ; pointillés : segment du serveur.</text>
 </g></svg>
