@@ -94,7 +94,7 @@ un indice de confiance : plus il est petit, plus la source est crue.
 | OSPF | O | 110 |
 | RIP | R | 120 |
 
-À distance administrative égale, c’est la **métrique** du protocole qui
+Entre deux routes apprises par le même protocole, c’est la **métrique** qui
 départage. Dans la table, les deux valeurs s’écrivent entre crochets :
 `[110/2]` signifie AD 110, métrique 2.
 
@@ -238,7 +238,7 @@ Chaque routeur décrit ses propres liens : « J’ai une interface dans
 `192.168.2.0/24`, de coût 1, et un voisin 1.1.1.1 sur `10.0.0.0/30`. »
 
 Cette description s’appelle un **LSA** (*Link-State Advertisement*, annonce
-d’état de lien). Chaque LSA est relayé de proche en proche à toute la zone :
+d’état de lien). Les routeurs relaient chaque LSA de proche en proche à toute la zone :
 c’est l’**inondation** (*flooding*). Un nouveau LSA n’est émis qu’en cas de
 changement, plus un rafraîchissement toutes les 30 minutes.
 
@@ -310,7 +310,7 @@ valeur remplace le calcul automatique sur cette interface seulement.
 
 Dans les Hello et les LSA, chaque routeur signe avec son **router-id** (RID).
 C’est un nombre de 32 bits écrit comme une adresse IPv4, par exemple
-`1.1.1.1`. Il doit être unique dans la zone.
+`1.1.1.1`. Il doit être unique dans tout le domaine OSPF.
 
 Le routeur le choisit au démarrage du processus OSPF, dans cet ordre :
 
@@ -349,8 +349,9 @@ de l’ordre de démarrage.
 ## Point à point ou multi-accès ?
 
 Une liaison série (HDLC, PPP) est de type **point à point** : il n’y a ni DR
-ni BDR. En revanche, OSPF traite toute interface Ethernet comme
-**multi-accès**, même si elle ne relie que deux routeurs. Dans le fil rouge,
+ni BDR. En revanche, une interface Ethernet est **multi-accès** par défaut,
+même si elle ne relie que deux routeurs. La commande
+`ip ospf network point-to-point` change ce type. Dans le fil rouge,
 chaque liaison Ethernet en /30 a donc son DR et son BDR.
 :::
 
@@ -762,8 +763,6 @@ défaut.
   la spécification d’OSPF pour IPv4.
 - [RFC 2453 — RIP Version 2](https://www.rfc-editor.org/rfc/rfc2453.html),
   pour comparer avec un protocole à vecteur de distance.
-- [Cisco — OSPF Design Guide](https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/7039-1.html),
-  qui détaille le coût, le DR et les types de réseaux.
 - [RFC 5737 — plages IPv4 de documentation](https://www.rfc-editor.org/rfc/rfc5737.html),
   dont `203.0.113.0/24`, utilisée pour la liaison vers le FAI.
 - Prolongement dans Packet Tracer : ajoutez un quatrième routeur relié à R2 et
