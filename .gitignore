@@ -11,3 +11,6 @@ __pycache__/
 # Rapports de relecture Codex et réglages Claude Code personnels
 .review/
 .claude/settings.local.json
+
+# Métadonnées Windows de provenance des téléchargements (vues depuis WSL)
+*:Zone.Identifier
