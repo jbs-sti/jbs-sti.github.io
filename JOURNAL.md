@@ -26,7 +26,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : 5 constats A (dont 1 BLOQUANT), 3 réécritures appliquées
 - Réécritures gardées : R1, R2, R3 ; constats A1, A2, A3 corrigés, A5 en partie ; A4 (/31) refusé (hors périmètre)
 - Relance Codex : non (corrections de forme)
-- Pull request : à renseigner
+- Pull request : #16
 - Points à relire par l'enseignant : rendu PDF (Quarto absent en local), mentions des sujets E4, absence du sujet 2025 et du référentiel
 
 ## 2026-10-23 — infra/ci-latex
