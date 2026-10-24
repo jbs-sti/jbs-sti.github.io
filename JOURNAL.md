@@ -17,8 +17,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (`cours-vlsm`, order 19, publié, PR #38 et #41), renumérotation des TP
   (PR #39 : VLSM = TP 4, order 30 ; OSPF = TP 5 ; ACL = TP 6), puis
   fiche VLSM (`fiche-vlsm-methode`, order 21, publiée, PR #40 et #41),
-  exercices VLSM 1 (`exercices-vlsm-entrainement`, order 22, brouillon, PR à
-  fusionner) et 2 (order 23).
+  exercices VLSM 1 (`exercices-vlsm-entrainement`, order 22, brouillon, PR #42) et 2 (order 23).
 
 **À faire**
 
@@ -129,7 +128,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Vérificateur : CONFORME au 1er passage (6 mineurs corrigés, dont un doublon avec la Q3 du cours) ; CONFORME après Codex
 - Codex : 2 constats A (À CORRIGER : « plus petit préfixe » ambigu, bornes erronées de l'exercice 6 non expliquées), corrigés par le rédacteur ; aucune réécriture
 - Relance Codex : non
-- Pull request : à renseigner
+- Pull request : #42
 - Points à relire par l'enseignant : contexte et topologie inventés ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-24 — cours/bts2-vlsm-publier
