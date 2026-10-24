@@ -14,8 +14,9 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   à contrôler sur le PDF de la CI), exercices 1 (PR #34) et 2
   (`exercices-subnetting-approfondissement`, order 17), TP subnetting + DHCP
   (`tp-subnetting-dhcp`, order 18, publié, PR #36 et #37), cours VLSM
-  (`cours-vlsm`, order 19, brouillon, PR #38), puis fiche VLSM,
-  exercices VLSM 1 et 2, et renumérotation des TP.
+  (`cours-vlsm`, order 19, brouillon, PR #38), renumérotation des TP
+  (PR à fusionner : VLSM = TP 4, order 30 ; OSPF = TP 5 ; ACL = TP 6), puis
+  fiche VLSM (order 21), exercices VLSM 1 et 2 (order 22 et 23).
 
 **À faire**
 
@@ -23,14 +24,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   de la CI et les deux SVG ; décider de garder la propriété « en ordre
   décroissant, la première adresse libre est alignée » (ajout, absent du
   beamer), la Q3 redondante avec la section « Piège », et le contre-exemple
-  `10.6.4.1` (c'est aussi l'adresse de R1 dans le corrigé). Pour placer la
-  fiche et les exercices VLSM, passer `tp-application-vlsm` à `order: 30`
-  lors de la renumérotation des TP.
+  `10.6.4.1` (c'est aussi l'adresse de R1 dans le corrigé). Le TP 4
+  (publié) renvoie à ce cours : le publier avant ou avec la PR de
+  renumérotation. La question des adresses libres du TP 4 (partie 1) a sa
+  réponse dans ce cours : la reformuler ou l'accepter.
 - `bts2/reseaux/02-subnetting-vlsm/tp-subnetting-dhcp` (publié) : confirmer dans Packet Tracer `show ip dhcp pool` (libellés
   Total / Excluded / Leased), le libellé « Maximum Number of Users » de
   Server-PT, l'absence de réponse de Server-PT quand `giaddr` n'appartient à
-  aucun pool, et les effets des trois cas du bonus. Deux « TP 3 » coexistent
-  (ce TP et `tp-application-vlsm`) jusqu'à la renumérotation des TP.
+  aucun pool, et les effets des trois cas du bonus.
 
 - `bts1/reseaux/06-services-reseau/cours-dhcp` et
   `bts1/reseaux/04-couche-liaison/cours-arp` (brouillons) : supprimer le bloc
@@ -112,6 +113,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-24 — cours/bts2-renumerotation-tp
+
+- Ressources : tp-application-vlsm (TP 3 → TP 4, order 20 → 30, prérequis et introduction vers le cours VLSM), tp-ospf (TP 4 → TP 5), tp-acl (TP 5 → TP 6), renvois de cours-acl et cours-vlsm, 2 SVG
+- Tâche transversale demandée par l'enseignant (dérogation à « une tâche = une ressource »)
+- Vérificateur : À REPRENDRE au 1er passage (2 SVG oubliés, introduction trop affirmative), CONFORME au 2e
+- Codex : 1 constat A (BLOQUANT de procédure : plusieurs ressources dans une branche `cours/`), couvert par la demande de l'enseignant ; aucune réécriture
+- Relance Codex : non
+- Pull request : à renseigner
+- Points à relire par l'enseignant : publier le cours VLSM avant ou avec cette PR (lien depuis le TP 4 publié) ; question des adresses libres du TP 4
 
 ### 2026-10-24 — cours/bts2-cours-vlsm
 
