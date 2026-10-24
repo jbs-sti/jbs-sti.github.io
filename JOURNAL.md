@@ -13,11 +13,19 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   fiche méthode subnetting (`fiche-subnetting-methode`, order 15 ; longueur
   à contrôler sur le PDF de la CI), exercices 1 (PR #34) et 2
   (`exercices-subnetting-approfondissement`, order 17), TP subnetting + DHCP
-  (`tp-subnetting-dhcp`, order 18, publié, PR #36 et #37), puis cours
-  VLSM et sa suite.
+  (`tp-subnetting-dhcp`, order 18, publié, PR #36 et #37), cours VLSM
+  (`cours-vlsm`, order 19, brouillon, PR #38), puis fiche VLSM,
+  exercices VLSM 1 et 2, et renumérotation des TP.
 
 **À faire**
 
+- `bts2/reseaux/02-subnetting-vlsm/cours-vlsm` (brouillon) : relire le PDF
+  de la CI et les deux SVG ; décider de garder la propriété « en ordre
+  décroissant, la première adresse libre est alignée » (ajout, absent du
+  beamer), la Q3 redondante avec la section « Piège », et le contre-exemple
+  `10.6.4.1` (c'est aussi l'adresse de R1 dans le corrigé). Pour placer la
+  fiche et les exercices VLSM, passer `tp-application-vlsm` à `order: 30`
+  lors de la renumérotation des TP.
 - `bts2/reseaux/02-subnetting-vlsm/tp-subnetting-dhcp` (publié) : confirmer dans Packet Tracer `show ip dhcp pool` (libellés
   Total / Excluded / Leased), le libellé « Maximum Number of Users » de
   Server-PT, l'absence de réponse de Server-PT quand `giaddr` n'appartient à
@@ -104,6 +112,17 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-24 — cours/bts2-cours-vlsm
+
+- Ressource : bts2/reseaux/02-subnetting-vlsm/cours-vlsm/index.qmd (référence imitée : beamer VLSM de l'enseignant, exercice 7 ; forme de cours-subnetting-vlsm), avec 2 SVG
+- Cours de 2 h : méthode du beamer en 5 étapes, exemple guidé 192.168.10.0/24 (/25, /26, /27, deux /30), grille de vérification en 5 points, exercice 7 (10.6.0.0/15) avec corrigé du beamer
+- Vérificateur : CONFORME au 1er passage (5 mineurs corrigés) ; CONFORME après Codex
+- Codex : 2 constats A (À CORRIGER : alignement sans les octets suivants nuls, appartenance au réseau insuffisante), corrigés par le rédacteur ; 1 réécriture
+- Réécritures gardées : R1 ; annulées : aucune
+- Relance Codex : non (corrections de deux phrases)
+- Pull request : #38
+- Points à relire par l'enseignant : voir « À faire » ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-24 — cours/bts2-tp-subnetting-dhcp-publier
 
