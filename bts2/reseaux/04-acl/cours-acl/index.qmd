@@ -319,7 +319,7 @@ liste, vous pouvez :
 ```text
 ! Packet Tracer, R1, mode de configuration globale
 ip access-list extended INVITES-IN
- 5 permit udp any eq 68 any eq 67
+ 5 permit udp host 0.0.0.0 eq 68 host 255.255.255.255 eq 67
 ! insère une ligne avant la ligne 10 (rôle expliqué plus bas)
  no 20
 ! supprime la ligne 20 : les invités pourraient alors joindre le VLAN 10
@@ -419,10 +419,11 @@ L'ACL ne sait pas que cette réponse suit une requête autorisée. **Bloquer
 le sens retour casse donc aussi la communication dans l'autre sens.** Pour
 chaque flux autorisé, pensez au paquet aller **et** au paquet retour.
 
-IOS réel propose le mot-clé `established`, qui reconnaît les segments TCP
-d'une connexion déjà ouverte. Il n'est pas documenté dans Packet Tracer :
-ce cours ne l'utilise pas. Le pare-feu à états du chapitre 06 réglera ce
-problème proprement.
+IOS réel propose le mot-clé `established`. Il teste seulement la présence
+des bits ACK ou RST dans l'en-tête TCP, sans rien mémoriser : un segment
+fabriqué avec ces bits passe. Il n'est pas documenté dans Packet Tracer, et
+ce cours ne l'utilise pas. Le pare-feu à états du chapitre 06, lui,
+mémorise les connexions.
 
 ### Protéger l'accès d'administration
 
@@ -453,8 +454,10 @@ commande protège donc toutes les adresses du routeur.
 ### Filtrer les invités sur R1
 
 **Plateforme : Cisco Packet Tracer 9.0.1, routeur 2911, IOS 15.1.** Vous
-partez du réseau du TP 4 : OSPF fonctionne et tous les pings de la matrice
-de recette réussissent.
+partez du réseau du
+[TP 4 — Router le fil rouge avec OSPF](../../03-routage-dynamique/tp-ospf/index.qmd).
+OSPF fonctionne et tous les pings de la matrice de recette de ce TP
+réussissent.
 
 Les blocs de la partie « Comprendre le mécanisme »
 étaient des exemples : partez d'un R1 sans aucune ACL.
@@ -467,11 +470,16 @@ d'adresse. Sa demande DHCP part de `0.0.0.0`, port UDP 68, vers
 `255.255.255.255`, port UDP 67. Cette source n'est pas dans le VLAN 30 : sans
 règle dédiée, le refus implicite la détruirait.
 
+La ligne DHCP vise exactement ce cas : de `host 0.0.0.0` vers
+`host 255.255.255.255`. Elle suffit. Une fois l'adresse obtenue, le poste
+renouvelle son bail depuis sa propre adresse du VLAN 30. Ce renouvellement
+est couvert par la dernière ligne de la liste.
+
 ```text
 ! Packet Tracer, R1 (2911, IOS 15.1), mode de configuration globale
 ip access-list extended INVITES-IN
  remark DHCP : demandes des postes sans adresse
- permit udp any eq 68 any eq 67
+ permit udp host 0.0.0.0 eq 68 host 255.255.255.255 eq 67
  remark Invites : pas d'acces aux VLAN internes
  deny ip 192.168.10.192 0.0.0.31 192.168.10.128 0.0.0.63
  deny ip 192.168.10.192 0.0.0.31 192.168.10.0 0.0.0.127
@@ -482,7 +490,9 @@ interface GigabitEthernet0/0.30
 ```
 
 La dernière ligne n'autorise que les sources du VLAN 30. Un poste qui usurpe
-une autre adresse source est détruit par le refus implicite.
+une autre adresse source est détruit par le refus implicite. Seule exception,
+une demande DHCP de `0.0.0.0` vers la diffusion : le routeur ne la transmet
+à aucun autre réseau.
 
 G0/0.30 est une interface passive OSPF : aucun Hello n'y circule. Cette ACL
 n'a donc pas besoin de règle pour OSPF.
@@ -510,24 +520,25 @@ de Packet Tracer. Les compteurs dépendent de vos tests.
 ```text
 R1# show access-lists
 Extended IP access list INVITES-IN
-    10 permit udp any eq 68 any eq 67 (2 match(es))
+    10 permit udp host 0.0.0.0 eq 68 host 255.255.255.255 eq 67 (2 match(es))
     20 deny ip 192.168.10.192 0.0.0.31 192.168.10.128 0.0.0.63 (4 match(es))
     30 deny ip 192.168.10.192 0.0.0.31 192.168.10.0 0.0.0.127 (4 match(es))
     40 permit ip 192.168.10.192 0.0.0.31 any (8 match(es))
 ```
 
 Les ports sont ici écrits en chiffres. Votre écran peut afficher leur nom à
-la place, par exemple `bootpc` pour 68 et `bootps` pour 67.
+la place, par exemple `bootpc` pour 68 et `bootps` pour 67. Cet affichage ne change pas
+le filtrage.
 
 - Chaque ligne affiche son **numéro de séquence**, attribué de 10 en 10.
 - Les `remark` n'y figurent pas : ils ne sont visibles que dans
   `show running-config`.
 - Le nombre entre parenthèses compte les paquets qui ont **correspondu** à
-  la ligne. Une ligne qui reste à 0 après un test est mal écrite, mal placée
-  ou masquée par une ligne plus haute.
+  la ligne. Un compteur à 0 ne prouve une erreur que si le test a produit un paquet
+  visé par la ligne. Un test HTTP, par exemple, ne sollicite pas une règle
+  DNS. Si le test était adapté, la ligne est mal écrite, mal placée ou
+  masquée par une ligne plus haute.
 - Le refus implicite n'apparaît pas, et ses paquets ne sont pas comptés ici.
-
-Ce nom n'est qu'un affichage : le filtrage reste identique.
 
 Pour repartir de zéro avant un test, remettez les compteurs à 0 :
 
@@ -820,7 +831,8 @@ ce paquet répond à une requête autorisée.
       ```text
       ! Packet Tracer, R1 (2911, IOS 15.1), mode de configuration globale
       ip access-list extended INVITES-WEB
-       permit udp any eq 68 any eq 67
+       permit udp host 0.0.0.0 eq 68 host 255.255.255.255 eq 67
+       permit udp 192.168.10.192 0.0.0.31 eq 68 host 192.168.10.222 eq 67
        deny ip 192.168.10.192 0.0.0.31 192.168.10.0 0.0.0.255
        permit udp 192.168.10.192 0.0.0.31 any eq 53
        permit tcp 192.168.10.192 0.0.0.31 any eq 80
@@ -829,8 +841,10 @@ ce paquet répond à une requête autorisée.
        ip access-group INVITES-WEB in
       ```
 
-      Une seule commande `ip access-group` est possible par sens : elle
-      remplace `INVITES-IN`. Le trafic entre deux postes du VLAN 30 ne
+      La deuxième ligne laisse passer le renouvellement du bail. Il part de
+      l'adresse du poste vers la passerelle `.222`, une destination interne :
+      sans cette ligne, le `deny` du /24 le détruirait. Une seule commande
+      `ip access-group` est possible par sens : elle remplace `INVITES-IN`. Le trafic entre deux postes du VLAN 30 ne
       passe pas par R1 : la ligne `deny` du /24 ne le gêne pas.
    b. Le ping échoue. La requête est en ICMP : aucune ligne ne correspond,
       et le refus implicite la détruit.
