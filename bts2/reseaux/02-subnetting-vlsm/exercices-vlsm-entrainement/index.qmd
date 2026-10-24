@@ -7,7 +7,7 @@ chapitre: "02 — Subnetting et VLSM"
 categories: [exercices, reseaux]
 mots-cles: [VLSM, masque de longueur variable, préfixe, bits hôtes, taille de bloc, pas d’avancement, alignement, première adresse libre, liaison point à point, ET logique, plan d’adressage]
 objectifs:
-  - "Calculer le besoin en adresses d’un segment, interface de routeur comprise, et en déduire le plus petit préfixe qui convient."
+  - "Calculer le besoin en adresses d’un segment, interface de routeur comprise, et en déduire le plus petit bloc qui suffit, donc son préfixe."
   - "Trier des segments par ordre décroissant et vérifier qu’ils tiennent dans le réseau parent."
   - "Construire un plan VLSM en contrôlant l’alignement de chaque bloc."
   - "Dire si une adresse de départ est alignée pour un préfixe donné."
@@ -305,8 +305,8 @@ taille de bloc.
 
 **7.3** Proposez deux solutions à l’administratrice :
 
-a. quel est le plus petit préfixe du réseau parent qui permettrait de tout
-   placer ?
+a. quel est le plus petit bloc parent qui suffit pour tout placer, et quel
+   est son préfixe ?
 b. on garde le /24 et on réduit l’un des deux LAN de 60 PC. Quel effectif
    maximal peut-il garder pour que le plan tienne ?
 
@@ -494,17 +494,23 @@ adresses de `.177` à `.182`, passerelle comprise.
 **6.1 et 6.2** Les quatre erreurs :
 
 - **LAN 1 : le routeur reçoit la diffusion.** Point de la grille :
-  interfaces uniques, ni réseau ni diffusion. 127 = `0|1111111` : ses 7 bits hôtes sont à 1. R1
-  doit prendre une adresse utilisable, par exemple `.1`.
+  interfaces uniques, ni réseau ni diffusion. 127 = `0|1111111` : ses
+  7 bits hôtes sont à 1. R1 doit prendre une adresse utilisable, par
+  exemple `.1`.
 - **LAN 2 : pas assez d’adresses.** Point de la grille : assez
   d’adresses. Le besoin vaut 40 + 1 = 41 adresses. Un /27 n’en offre que
   30. Il faut h = 6, donc un /26 de 62 adresses utilisables.
 - **LAN 3 : bloc non aligné, d’où un chevauchement.** Points de la grille :
-  blocs alignés ; blocs disjoints et contenus dans le parent. Le pas d’un /27 vaut 32, et
-  144 / 32 = 4,5. Avec le masque, 144 ET 224 = 128. Les adresses `.144` à
-  `.159` appartiennent déjà au LAN 2.
+  blocs alignés ; blocs disjoints et contenus dans le parent. Le pas d’un
+  /27 vaut 32, et 144 / 32 = 4,5. Avec le masque, 144 ET 224 = 128. Le
+  seul /27 qui contient `.144` est donc `.128/27` : utilisables `.129` à
+  `.158`, diffusion `.159`. Ces adresses appartiennent déjà au LAN 2. Les
+  bornes du stagiaire sont fausses elles aussi. `.175` n’est la diffusion
+  d’aucun /27 qui contient `.144`. Sa plage `.145` – `.174` traverse la
+  frontière `.160` entre deux /27.
 - **Liaison R1–R2 : R1 reçoit l’adresse réseau.** Point de la grille :
-  interfaces uniques, ni réseau ni diffusion. 176 = `101100|00` : ses 2 bits hôtes sont à 0. Les
+  interfaces uniques, ni réseau ni diffusion. 176 = `101100|00` : ses
+  2 bits hôtes sont à 0. Les
   seules adresses utilisables sont `.177` et `.178`.
 
 Le bloc /30 de la liaison, lui, est aligné : 176 = 44 × 4.
@@ -563,8 +569,8 @@ tiennent plus. Le plan est **impossible**. Il manque 8 adresses.
 
 **7.3** Deux solutions :
 
-a. **Agrandir le parent.** La plus petite puissance de 2 supérieure ou
-   égale à 264 est 512 = 2^9^. Il faut 9 bits hôtes, donc un **/23**, par
+a. **Agrandir le parent.** Un /24 offre 256 adresses, et 256 < 264 ≤ 512.
+   Le plus petit bloc parent qui suffit compte donc 512 = 2^9^ adresses. Il faut 9 bits hôtes, donc un **/23**, par
    exemple `172.20.8.0/23` (8 = 4 × 2, aligné). Il va de `172.20.8.0` à
    `172.20.9.255`.
 b. **Réduire un LAN de 60 PC** pour qu’il passe en /27. Un /27 offre

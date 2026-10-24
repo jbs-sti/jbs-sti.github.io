@@ -17,10 +17,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (`cours-vlsm`, order 19, publié, PR #38 et #41), renumérotation des TP
   (PR #39 : VLSM = TP 4, order 30 ; OSPF = TP 5 ; ACL = TP 6), puis
   fiche VLSM (`fiche-vlsm-methode`, order 21, publiée, PR #40 et #41),
-  exercices VLSM 1 et 2 (order 22 et 23).
+  exercices VLSM 1 (`exercices-vlsm-entrainement`, order 22, brouillon, PR à
+  fusionner) et 2 (order 23).
 
 **À faire**
 
+- `bts2/reseaux/02-subnetting-vlsm/exercices-vlsm-entrainement` (brouillon) :
+  relire le PDF de la CI (tableaux de 8 colonnes) ; valider le contexte
+  « Brasserie Delorme » et la topologie du siège, choisis par le rédacteur.
 - `bts2/reseaux/02-subnetting-vlsm/fiche-vlsm-methode` (publiée) : relire
   le PDF de la CI (mémo à 7 colonnes, bloc `text` d'environ 82 caractères).
 - `cours-vlsm` l. 11 : l'objectif « le plus petit préfixe qui convient » est
@@ -117,6 +121,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-24 — cours/bts2-exercices-vlsm-1
+
+- Ressource : bts2/reseaux/02-subnetting-vlsm/exercices-vlsm-entrainement/index.qmd (référence imitée : exercices-subnetting-entrainement ; fond : cours-vlsm et fiche-vlsm-methode)
+- Série 1, 1 h 40 : du besoin au préfixe, tri et total, plan guidé 192.168.50.0/24 (/25, /27, /28, /29, deux /30), alignement (8 cas), appartenance, plan à 4 erreurs (192.168.60.0/24), plan impossible (172.20.8.0/24), corrigé complet
+- Vérificateur : CONFORME au 1er passage (6 mineurs corrigés, dont un doublon avec la Q3 du cours) ; CONFORME après Codex
+- Codex : 2 constats A (À CORRIGER : « plus petit préfixe » ambigu, bornes erronées de l'exercice 6 non expliquées), corrigés par le rédacteur ; aucune réécriture
+- Relance Codex : non
+- Pull request : à renseigner
+- Points à relire par l'enseignant : contexte et topologie inventés ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-24 — cours/bts2-vlsm-publier
 
