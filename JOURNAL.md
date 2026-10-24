@@ -103,7 +103,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex (relance) : 4 constats A (dont 2 BLOQUANT), 1 réécriture ; A1 (lien vers le TP 4) refusé, la cible arrive avec la PR du TP OSPF ; les autres corrigés
 - Réécritures gardées : R1 (1re, déplacée et condensée), R1 (relance) ; annulées : aucune
 - Relance Codex : oui (correction de fond sur la ligne DHCP)
-- Pull request : #<numéro>
+- Pull request : #30
 - Points à relire par l'enseignant : ordre de fusion (PR du TP OSPF d'abord), sorties `show` reconstituées, lignes DHCP du corrigé de l'exercice 3, rendu PDF
 
 ### 2026-10-24 — cours/bts1-retrait-demos
