@@ -98,7 +98,9 @@ préfixe vaut : préfixe du parent + bits empruntés, soit 32 − h.
 **Étape 4 — Placement.** Le bloc commence à la **première adresse libre** :
 la diffusion du bloc précédent + 1. Vérifiez ensuite l’**alignement** : un
 réseau doit commencer sur un multiple de sa taille de bloc. Dans l’octet
-significatif, cela revient à un multiple du pas d’avancement. Si l’adresse
+significatif, cela revient à un multiple du pas d’avancement, et les octets
+suivants valent 0. Ainsi, `10.6.4.1` n’est pas l’adresse réseau d’un /22 :
+son 3^e^ octet est un multiple de 4, mais le 4^e^ ne vaut pas 0. Si l’adresse
 n’est pas alignée, sautez au multiple suivant.
 
 **Étape 5 — Bornes.** Mettez les bits hôtes à 0 : vous obtenez l’adresse
@@ -226,7 +228,7 @@ petit numéro prend la première adresse.
 
 ### Vérifier un plan : la grille en cinq points
 
-Un plan VLSM se relit toujours avant d’être configuré. Une erreur d’adressage
+Relisez toujours un plan VLSM avant de le configurer. Une erreur d’adressage
 coûte cher à corriger une fois les équipements en service. Voici la grille,
 appliquée à l’exemple guidé.
 
@@ -296,7 +298,7 @@ Un poste a reçu `192.168.10.200/27`. Est-il bien dans le LAN C ?
 ET   = 110|00000  = 192   ->  192.168.10.192, le LAN C
 ```
 
-L’interface `192.168.10.230/30` est-elle bien sur la liaison R2–R3 ?
+L’interface de R3, `192.168.10.230/30`, est-elle bien sur la liaison R2–R3 ?
 
 ```text
 230  = 111001|10
@@ -304,8 +306,16 @@ L’interface `192.168.10.230/30` est-elle bien sur la liaison R2–R3 ?
 ET   = 111001|00  = 228   ->  192.168.10.228, la liaison R2–R3
 ```
 
-Dans les deux cas, le réseau trouvé est celui du plan. L’adresse est donc
-correcte.
+Dans les deux cas, le réseau trouvé est celui du plan. Cette condition est
+nécessaire, mais elle ne suffit pas. L’adresse doit aussi être utilisable :
+ni l’adresse réseau, ni la diffusion. Elle ne doit pas non plus être déjà
+attribuée.
+
+- `.200` est utilisable : elle se situe entre `.193` et `.222`. Seule `.193`
+  est déjà prise, par R3. Le poste peut la garder si aucun autre équipement
+  ne l’utilise.
+- `.230` est utilisable : la plage de la liaison va de `.229` à `.230`. C’est
+  bien l’adresse prévue pour R3. Aucun autre équipement ne peut la recevoir.
 
 ### Vérifier sa compréhension
 
