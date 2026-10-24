@@ -14,7 +14,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   à contrôler sur le PDF de la CI), exercices 1 (PR #34) et 2
   (`exercices-subnetting-approfondissement`, order 17), TP subnetting + DHCP
   (`tp-subnetting-dhcp`, order 18, publié, PR #36 et #37), cours VLSM
-  (`cours-vlsm`, order 19, brouillon, PR à fusionner), puis fiche VLSM,
+  (`cours-vlsm`, order 19, brouillon, PR #38), puis fiche VLSM,
   exercices VLSM 1 et 2, et renumérotation des TP.
 
 **À faire**
@@ -121,7 +121,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : 2 constats A (À CORRIGER : alignement sans les octets suivants nuls, appartenance au réseau insuffisante), corrigés par le rédacteur ; 1 réécriture
 - Réécritures gardées : R1 ; annulées : aucune
 - Relance Codex : non (corrections de deux phrases)
-- Pull request : à renseigner
+- Pull request : #38
 - Points à relire par l'enseignant : voir « À faire » ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-24 — cours/bts2-tp-subnetting-dhcp-publier
