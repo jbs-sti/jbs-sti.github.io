@@ -134,7 +134,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : 3 constats A (À CORRIGER), 1 réécriture ; A2 et A3 corrigés ; A1 (lien vers la fiche) refusé, la cible arrive avec la PR #33
 - Réécritures gardées : R1 ; annulées : aucune
 - Relance Codex : non (corrections ponctuelles)
-- Pull request : #<numéro>
+- Pull request : #34
 - Points à relire par l'enseignant : ordre de fusion (#32, #33, puis celle-ci), largeur des tableaux à remplir dans le PDF, durée
 
 ### 2026-10-24 — cours/bts1-retrait-demos
