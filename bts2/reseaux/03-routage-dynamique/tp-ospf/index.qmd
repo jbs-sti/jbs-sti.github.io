@@ -147,9 +147,10 @@ sont *up/up*.
 
 ### Partie 2 — Retirer les routes statiques internes
 
-Une route statique a une distance administrative de 1. Elle l'emporte sur
-toute route OSPF, de distance 110. Il faut donc la retirer pour voir OSPF
-travailler.
+Une route statique a une distance administrative de 1, une route OSPF 110.
+Pour un même réseau, avec la même longueur de préfixe, la route statique
+l'emporte donc. Une route statique moins précise reste aussi dans la table.
+Il faut donc retirer les routes statiques pour voir OSPF travailler seul.
 
 **Configuration.** Sur R1, R2 puis FW :
 
@@ -291,22 +292,24 @@ Puis complétez la matrice (**OK** ou **X**) avec des `ping`.
 ### Partie 5 — Observer la convergence
 
 Vous allez couper la liaison R1–FW et regarder OSPF trouver le chemin de
-secours. La **convergence** est le temps que mettent les routeurs à
-retrouver une vue juste du réseau.
+secours. La **convergence** est le processus par lequel les routeurs
+retrouvent une vue cohérente du réseau et recalculent leurs routes. Le
+**temps de convergence** est la durée de ce processus.
 
 **Préparation.** Sur PC-P1, lancez `ping 203.0.113.1` : les quatre échos
-doivent réussir. Laissez la fenêtre ouverte, à côté de la CLI de R1.
+doivent réussir. Laissez la fenêtre du PC ouverte, à côté de la CLI de R1.
+Sur R1, entrez déjà dans `interface GigabitEthernet0/2`.
 
-**Panne.** Sur R1 : `interface GigabitEthernet0/2`, puis `shutdown`.
-Relevez aussitôt le message `%OSPF-5-ADJCHG` de la console.
+**Panne.** Sur R1, tapez `shutdown`.
 
-**Vérification.** Sur R1, relancez `show ip ospf neighbor`, puis
-`show ip route`. Regardez la route par défaut : son prochain saut a changé.
+**Test.** Aussitôt après, relancez `ping 203.0.113.1` sur PC-P1. Notez le
+nombre d'échos sans réponse. Relancez la commande jusqu'à obtenir quatre
+réponses sur quatre, en comptant les essais.
 
-**Test.** Juste après la coupure, relancez `ping 203.0.113.1` sur PC-P1.
-Notez le nombre d'échos sans réponse. Relancez la commande jusqu'à obtenir
-quatre réponses sur quatre, en comptant les essais. Lancez ensuite
-`tracert 203.0.113.1` depuis PC-P1.
+**Vérification.** Ensuite seulement, relevez sur R1 le message
+`%OSPF-5-ADJCHG` affiché dans la console. Lancez `show ip ospf neighbor`,
+puis `show ip route`. Regardez la route par défaut : son prochain saut a
+changé. Lancez enfin `tracert 203.0.113.1` depuis PC-P1.
 
 **Rétablissement.** Sur R1 : `no shutdown` sur G0/2. Notez le temps
 nécessaire pour revoir le voisin FW à l'état `FULL`. Vérifiez que le
@@ -530,7 +533,7 @@ Le réseau est validé quand :
 
 ## Synthèse
 
-Pour chaque partie, notez en une phrase ce qui a été vérifié. Citez la
+Pour chaque partie, notez en une phrase ce que vous avez vérifié. Citez la
 commande qui l'a montré. Le cas échéant, décrivez la panne rencontrée et sa
 cause.
 
