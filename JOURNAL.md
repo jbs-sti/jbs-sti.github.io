@@ -78,7 +78,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : 3 constats A (dont 1 BLOQUANT), 1 réécriture ; tous corrigés par le rédacteur
 - Réécritures gardées : R1 ; annulées : aucune
 - Relance Codex : non (corrections ponctuelles)
-- Pull request : #<numéro>
+- Pull request : #29
 - Points à relire par l'enseignant : rendu PDF, `O*E2` via Null0, messages `%OSPF-5-ADJCHG`, coût après `bandwidth 100000`, citation RFC 2328 §9.4
 
 ### 2026-10-24 — cours/bts2-fiche-vlan
