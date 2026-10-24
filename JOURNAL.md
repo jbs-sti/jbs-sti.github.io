@@ -16,7 +16,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (`tp-subnetting-dhcp`, order 18, publié, PR #36 et #37), cours VLSM
   (`cours-vlsm`, order 19, brouillon, PR #38), renumérotation des TP
   (PR #39 : VLSM = TP 4, order 30 ; OSPF = TP 5 ; ACL = TP 6), puis
-  fiche VLSM (`fiche-vlsm-methode`, order 21, brouillon, PR à fusionner),
+  fiche VLSM (`fiche-vlsm-methode`, order 21, brouillon, PR #40),
   exercices VLSM 1 et 2 (order 22 et 23).
 
 **À faire**
@@ -127,7 +127,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Vérificateur : CONFORME au 1er passage (pas du /24 incohérent avec la fiche sœur et 4 mineurs, corrigés) ; CONFORME après Codex
 - Codex : 1 constat A (À CORRIGER : « plus petit préfixe » ambigu), corrigé par le rédacteur ; aucune réécriture
 - Relance Codex : non
-- Pull request : à renseigner
+- Pull request : #40
 - Points à relire par l'enseignant : rendu PDF (Quarto absent en local) ; même ambiguïté dans l'objectif du cours VLSM
 
 ### 2026-10-24 — cours/bts2-renumerotation-tp
