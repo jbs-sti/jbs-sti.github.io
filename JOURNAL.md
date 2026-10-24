@@ -102,7 +102,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : 1re passe faite sur un `main` local périmé (diff trop large, réécriture hors ressource annulée), relancée sur le bon diff : 2 constats A (À CORRIGER), 1 réécriture ; corrigés par le rédacteur
 - Réécritures gardées : R1 ; annulées : R1 de la passe périmée (TP OSPF, hors diff)
 - Relance Codex : sans objet (seule passe valide)
-- Pull request : #<numéro>
+- Pull request : #32
 - Points à relire par l'enseignant : la page publiée perd le VLSM jusqu'à la publication du cours VLSM ; TP 3 ; sources E4 des exercices 3 à 5 ; vocabulaire pas / taille de bloc
 
 ### 2026-10-24 — cours/bts2-fiche-vlan
