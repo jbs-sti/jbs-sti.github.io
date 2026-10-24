@@ -23,11 +23,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - `bts2/reseaux/03-routage-dynamique/cours-ospf` (brouillon) : relire le PDF
   de la CI ; confirmer dans Packet Tracer les sorties `show` (reconstituées).
 - `bts2/reseaux/01-vlan-inter-vlan/fiche-vlan-inter-vlan` (brouillon) :
-  confirmer `encapsulation dot1Q` (et `native`) sur le 2911 dans Packet Tracer ;
   décider de la longueur (≈ 4 pages, encadré 3560 à garder ou non).
-- Suite de la progression BTS2 : TP OSPF, puis ACL, NAT/PAT, pare-feu et DMZ.
-- Les sous-interfaces Ethernet et `encapsulation dot1Q` ne figurent dans
-  aucune référence de commandes de routeur de Packet Tracer : à tester.
+- `bts2/reseaux/03-routage-dynamique/tp-ospf` (brouillon) : relire le PDF de
+  la CI ; confirmer en salle l'apparition de `O*E2` (Null0 +
+  `default-information originate`), le format de `%OSPF-5-ADJCHG` et le
+  recalcul du coût après `bandwidth 100000`.
+- Suite de la progression BTS2 : cours et TP ACL, puis NAT/PAT, pare-feu et
+  DMZ (ASA 5506-X).
 
 **Décisions durables**
 
@@ -44,7 +46,12 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   10 IPv6. Le routage statique est fait en classe. Plateforme : Packet Tracer.
 - Les commandes IOS se vérifient dans la référence de Packet Tracer :
   `C:\Program Files\Cisco Packet Tracer 9.0.1\help\default\commandReference\`
-  (2911 : `2900_universal_base_15.1.html`).
+  (2911 : `2900_universal_base_15.1.html`). Les sous-interfaces,
+  `encapsulation dot1q <1-1005> [native]` et `passive-interface` sur une
+  sous-interface sont documentés dans l'aide générale `CLI_routerIOS15.htm`.
+- Les TP BTS2 durent 4 h, suivent le réseau fil rouge du TP 3 et demandent un
+  compte rendu (questions et captures) ; aucun corrigé n'est publié.
+- Pare-feu des TP : ASA 5506-X dans Packet Tracer.
 
 ## Historique
 
@@ -61,6 +68,18 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-24 — cours/bts2-tp-ospf
+
+- Ressource : bts2/reseaux/03-routage-dynamique/tp-ospf/index.qmd (référence imitée : bts2/reseaux/02-subnetting-vlsm/tp-application-vlsm), avec 1 SVG
+- TP 4 de 4 h sur le fil rouge : liaison R1–FW ajoutée, router-id, interfaces passives, route par défaut diffusée, panne et convergence, coûts, bonus DR/BDR ; compte rendu (Q1–Q24, C1–C16), sans corrigé
+- Commandes confirmées dans la référence de Packet Tracer 9.0.1 (2911, aide générale, minuteries, Fast Forward Time) ; `ping -t` écarté (non documenté)
+- Vérificateur : CONFORME ; CONFORME après Codex
+- Codex : 3 constats A (dont 1 BLOQUANT), 1 réécriture ; tous corrigés par le rédacteur
+- Réécritures gardées : R1 ; annulées : aucune
+- Relance Codex : non (corrections ponctuelles)
+- Pull request : #29
+- Points à relire par l'enseignant : rendu PDF, `O*E2` via Null0, messages `%OSPF-5-ADJCHG`, coût après `bandwidth 100000`, citation RFC 2328 §9.4
 
 ### 2026-10-24 — cours/bts2-fiche-vlan
 
