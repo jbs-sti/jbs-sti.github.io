@@ -114,7 +114,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : 1 constat A (BLOQUANT, masque de pool faux dans l'encadré `giaddr`), corrigé par le rédacteur ; 2 réécritures
 - Réécritures gardées : R1, R2 ; annulées : aucune
 - Relance Codex : non (correction d'une phrase)
-- Pull request : à renseigner
+- Pull request : #36
 - Points à relire par l'enseignant : sorties et libellés Packet Tracer non testés (voir « À faire »), donnée ajoutée au contexte (« aucun service ne dépassera 50 postes »), rendu PDF (Quarto absent en local)
 
 ### 2026-10-24 — cours/bts2-tp-acl
