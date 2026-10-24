@@ -70,7 +70,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : 4 constats A (dont 1 BLOQUANT), 1 réécriture ; tous corrigés par le rédacteur
 - Réécritures gardées : R1 ; annulées : aucune
 - Relance Codex : non (précisions ponctuelles)
-- Pull request : #<numéro>
+- Pull request : #27
 - Points à relire par l'enseignant : longueur (≈ 4 pages), encadré 3560, `encapsulation dot1Q … native`, VLAN 99 natif et de gestion, URL NetAcad
 
 ### 2026-10-23 — cours/bts2-ospf
