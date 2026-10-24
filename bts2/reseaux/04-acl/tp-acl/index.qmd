@@ -1,5 +1,5 @@
 ---
-title: "TP 5 — Filtrer le trafic du fil rouge avec des ACL"
+title: "TP 6 — Filtrer le trafic du fil rouge avec des ACL"
 description: "Appliquer une politique de sécurité au réseau fil rouge dans Packet Tracer : SSH réservé à l'administration, ACL standard et étendue, modification par numéros de séquence et diagnostic d'une ACL qui coupe OSPF."
 type: tp
 domaine: reseaux
@@ -15,7 +15,7 @@ objectifs:
   - "Diagnostiquer et corriger une ACL qui coupe le voisinage OSPF."
   - "Valider le filtrage par la matrice de recette et les compteurs des ACL."
 prerequis:
-  - "TP 4 — Router le fil rouge avec OSPF (fichier .pkt terminé)"
+  - "TP 5 — Router le fil rouge avec OSPF (fichier .pkt terminé)"
   - "Cours « Les listes de contrôle d'accès (ACL) »"
   - "Cours « Le routage dynamique avec OSPF »"
   - "Protocoles TCP, UDP et ICMP ; numéros de port"
@@ -28,13 +28,13 @@ lang: fr
 
 ## Objectifs et prérequis
 
-Vous allez sécuriser le réseau **fil rouge** du TP 4. L'entreprise vous
+Vous allez sécuriser le réseau **fil rouge** du TP 5. L'entreprise vous
 remet une politique de sécurité en trois règles. Vous la traduirez d'abord
 en tests, puis en configuration : SSH sur les routeurs, une ACL standard,
 une ACL étendue. Vous provoquerez enfin une panne classique : une ACL qui
 coupe OSPF.
 
-Vous devez disposer de votre fichier Packet Tracer du TP 4, terminé. Le
+Vous devez disposer de votre fichier Packet Tracer du TP 5, terminé. Le
 cours [« Les listes de contrôle d'accès (ACL) »](../cours-acl/index.qmd)
 doit être connu. Le cours et la fiche de commandes Cisco sont autorisés.
 
@@ -45,7 +45,7 @@ PC-ADM. Il pourrait tenter une connexion sur un routeur. L'entreprise
 installe aussi un serveur web interne, SRV-WEB, dans le VLAN 10. Les invités
 doivent pouvoir consulter ses pages, et rien d'autre sur le site.
 
-![Topologie du TP : le réseau du TP 4, complété par le serveur SRV-WEB dans le VLAN 10.](img/topologie-tp-acl.svg){fig-alt="Les routeurs R1, R2 et FW forment un triangle. FW est en haut ; derrière lui, Internet est simulé par sa Loopback0 203.0.113.1/32. R2 est à gauche, R1 à droite. Liaison R1–R2 : 192.168.10.224/30, R2 G0/0 point 226, R1 G0/1 point 225. Liaison R2–FW : 192.168.10.228/30, R2 G0/1 point 229, FW G0/0 point 230. Liaison R1–FW : 192.168.10.232/30, R1 G0/2 point 233, FW G0/1 point 234. R1 G0/0 est relié en trunk à SW1 G0/1 ; SW1 G0/2 est relié en trunk 802.1Q à SW2 G0/1. Sur SW2 : PC-P2 sur F0/2 en VLAN 10 et PC-I1 sur F0/21 en VLAN 30, tous deux en DHCP. Sur SW1 : PC-P1 sur F0/1 en VLAN 10, en DHCP ; PC-ADM sur F0/11 en VLAN 20, adresse 192.168.10.129 ; le nouveau serveur SRV-WEB, en cadre épais, sur F0/5 en VLAN 10, adresse 192.168.10.101."}
+![Topologie du TP : le réseau du TP 5, complété par le serveur SRV-WEB dans le VLAN 10.](img/topologie-tp-acl.svg){fig-alt="Les routeurs R1, R2 et FW forment un triangle. FW est en haut ; derrière lui, Internet est simulé par sa Loopback0 203.0.113.1/32. R2 est à gauche, R1 à droite. Liaison R1–R2 : 192.168.10.224/30, R2 G0/0 point 226, R1 G0/1 point 225. Liaison R2–FW : 192.168.10.228/30, R2 G0/1 point 229, FW G0/0 point 230. Liaison R1–FW : 192.168.10.232/30, R1 G0/2 point 233, FW G0/1 point 234. R1 G0/0 est relié en trunk à SW1 G0/1 ; SW1 G0/2 est relié en trunk 802.1Q à SW2 G0/1. Sur SW2 : PC-P2 sur F0/2 en VLAN 10 et PC-I1 sur F0/21 en VLAN 30, tous deux en DHCP. Sur SW1 : PC-P1 sur F0/1 en VLAN 10, en DHCP ; PC-ADM sur F0/11 en VLAN 20, adresse 192.168.10.129 ; le nouveau serveur SRV-WEB, en cadre épais, sur F0/5 en VLAN 10, adresse 192.168.10.101."}
 
 **La politique de sécurité.** Elle s'applique au réseau entier. « Le site »
 désigne toutes les adresses de `192.168.10.0/24` : VLAN, passerelles et
@@ -73,18 +73,18 @@ serveur **Server-PT**. Les commandes des routeurs se tapent dans l'onglet
 *CLI*. Les commandes des PC se tapent dans *Desktop*, puis *Command
 Prompt*. Les pages web s'ouvrent dans *Desktop*, puis *Web Browser*.
 
-**Fichier de départ.** Votre projet `TP4_NOM1_NOM2.pkt`, enregistré sous un
-nouveau nom : `TP5_NOM1_NOM2.pkt`.
+**Fichier de départ.** Votre projet `TP5_NOM1_NOM2.pkt`, enregistré sous un
+nouveau nom : `TP6_NOM1_NOM2.pkt`.
 
-**Ce qui change par rapport au TP 4.**
+**Ce qui change par rapport au TP 5.**
 
 | Équipement | Interface | Adresse / préfixe | Passerelle | Rôle |
 |:---|:---|:---|:---|:---|
 | SRV-WEB | F0 | `192.168.10.101/25` | `192.168.10.126` | serveur web interne, VLAN 10 |
 
-L'adresse `192.168.10.101` est exclue du DHCP depuis le TP 3. Les adresses
+L'adresse `192.168.10.101` est exclue du DHCP depuis le TP 4. Les adresses
 de `.101` à `.126` sont en effet réservées aux équipements fixes. Les autres
-adresses sont celles du plan du TP 4.
+adresses sont celles du plan du TP 5.
 
 **Câblage supplémentaire.**
 
@@ -93,7 +93,7 @@ adresses sont celles du plan du TP 4.
 | 7 | SRV-WEB F0 | SW1 F0/5 | droit |
 
 Le port F0/5 de SW1 est déjà en mode *access*, dans le VLAN 10 : les ports
-F0/1 à F0/10 y sont affectés depuis le TP 3.
+F0/1 à F0/10 y sont affectés depuis le TP 4.
 
 **Conventions du TP.**
 
@@ -122,14 +122,14 @@ listées dans la section « Vérification et compte rendu ».
 Cette partie vérifie que le réseau fonctionne **avant** tout filtrage. Une
 ACL ne répare jamais un routage défaillant : partez d'un réseau sain.
 
-**Configuration.** Ouvrez votre fichier du TP 4. Enregistrez-le aussitôt sous
-`TP5_NOM1_NOM2.pkt`.
+**Configuration.** Ouvrez votre fichier du TP 5. Enregistrez-le aussitôt sous
+`TP6_NOM1_NOM2.pkt`.
 
 **Vérification.** Sur chaque routeur, `show ip ospf neighbor` : chacun voit
 deux voisins à l'état `FULL`. Sur R1, `show access-lists` ne doit rien
 afficher.
 
-**Test.** Refaites la matrice de recette du TP 4, avec des `ping`.
+**Test.** Refaites la matrice de recette du TP 5, avec des `ping`.
 
 | Source \\ Destination | PC-P2 | PC-ADM | PC-I1 | SW2 (.189) | R2 (.226) | FW (.234) | 203.0.113.1 |
 |:---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
@@ -139,7 +139,7 @@ afficher.
 ::: {.callout-warning}
 ## Une case est à X ?
 
-Corrigez d'abord le TP 4. Avec une panne de routage, vous ne sauriez pas si
+Corrigez d'abord le TP 5. Avec une panne de routage, vous ne sauriez pas si
 un échec vient de votre ACL ou du réseau. Prévenez l'enseignant si vous
 êtes bloqué.
 :::
@@ -215,7 +215,7 @@ sont dans le tableau des conventions.
 ```text
 ! Packet Tracer, R1 (2911, IOS 15.1), mode de configuration globale
 ip domain-name ________
-! le nom d'hôte R1 existe depuis le TP 3 : les clés en ont besoin
+! le nom d'hôte R1 existe depuis le TP 4 : les clés en ont besoin
 crypto key generate rsa general-keys modulus 2048
 ! paire de clés RSA ; la génération peut prendre quelques secondes
 ip ssh version 2
@@ -568,7 +568,7 @@ captures quand c'est utile.
 
 **Partie 0**
 
-- **Q1.** Recopiez la matrice du TP 4 obtenue en partie 0. Depuis PC-I1,
+- **Q1.** Recopiez la matrice du TP 5 obtenue en partie 0. Depuis PC-I1,
   quels essais vers SRV-WEB ont réussi ? En quoi est-ce contraire à la
   politique ?
 - **Q2.** Pourquoi un serveur reçoit-il une adresse fixe, et non une adresse
@@ -626,7 +626,7 @@ captures quand c'est utile.
   erreur ?
 - **Q16.** `INVITES-IN` ne contient aucune ligne pour OSPF. Pourquoi R1
   n'en a-t-il pas besoin sur cette interface ? Appuyez-vous sur la
-  configuration OSPF de R1 au TP 4.
+  configuration OSPF de R1 au TP 5.
 - **Q17.** Le ping de PC-ADM vers PC-I1 échoue, alors que P1 ne parle pas
   de ce flux. Expliquez, paquet par paquet. Pour T10, quel équipement a
   décidé du résultat : R1 ou FW ? Pourquoi ?
@@ -718,10 +718,10 @@ Le réseau est validé quand :
 
 ### Livrables
 
-- Le compte rendu au format PDF, nommé `TP5_NOM1_NOM2.pdf` : réponses aux
+- Le compte rendu au format PDF, nommé `TP6_NOM1_NOM2.pdf` : réponses aux
   questions Q1 à Q24, captures C1 à C17, et la matrice de recette remplie.
   Ajoutez Q25, Q26 et C18 si vous avez fait le bonus.
-- Le projet Packet Tracer, enregistré sous `TP5_NOM1_NOM2.pkt`, dans son
+- Le projet Packet Tracer, enregistré sous `TP6_NOM1_NOM2.pkt`, dans son
   état de fin de partie 6, ou de fin de partie 7 après le retour à la
   politique.
 - Les deux fichiers sont déposés sur l'ENT.

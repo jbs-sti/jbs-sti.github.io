@@ -51,14 +51,14 @@ saisies dans l'onglet CLI (interface en ligne de commande) de chaque routeur.
 
 ## Situation de départ
 
-Vous reprenez le réseau **fil rouge** des TP 3 et 4. Les routeurs R1, R2 et
+Vous reprenez le réseau **fil rouge** des TP 4 et 5. Les routeurs R1, R2 et
 le pare-feu FW forment un triangle et échangent leurs routes par OSPF. R1
 dessert trois VLAN par des sous-interfaces. La Loopback0 de FW,
 `203.0.113.1`, simule un serveur sur Internet.
 
 ![Réseau fil rouge et emplacements possibles d'une ACL entre le VLAN des invités et celui de l'administration.](img/placement-acl.svg){fig-alt="Les routeurs R1, R2 et FW forment un triangle. Liaisons : R2–FW 192.168.10.228/30, R1–FW 192.168.10.232/30, R1–R2 192.168.10.224/30. Internet est simulé par la Loopback0 de FW, 203.0.113.1/32. R1 dessert trois VLAN par des sous-interfaces : VLAN 10 Production, 192.168.10.0/25, PC-P1 et PC-P2, par G0/0.10 d'adresse .126 ; VLAN 20 Administration, 192.168.10.128/26, PC-ADM .129, par G0/0.20 d'adresse .190 ; VLAN 30 Invités, 192.168.10.192/27, PC-I1, par G0/0.30 d'adresse .222. Une flèche en tirets va du VLAN 30 au VLAN 20 : c'est le flux à interdire, qui traverse R1. Trois positions sont marquées. A, cercle plein, sur G0/0.30 : ACL étendue en entrée, bon choix, au plus près de la source. B, cercle plein, sur G0/0.20 : ACL standard en sortie, bon choix, au plus près de la destination. C, cercle en tirets, sur G0/0.30 : ACL standard en entrée, à éviter, car elle couperait aussi aux invités l'accès à Internet."}
 
-Le plan d'adressage est celui du TP 3. La passerelle de chaque VLAN est la
+Le plan d'adressage est celui du TP 4. La passerelle de chaque VLAN est la
 dernière adresse utilisable de son réseau.
 
 | Réseau | Sous-réseau | Adresses utiles |
@@ -457,7 +457,7 @@ commande protège donc toutes les adresses du routeur.
 
 **Plateforme : Cisco Packet Tracer 9.0.1, routeur 2911, IOS 15.1.** Vous
 partez du réseau du
-[TP 4 — Router le fil rouge avec OSPF](../../03-routage-dynamique/tp-ospf/index.qmd).
+[TP 5 — Router le fil rouge avec OSPF](../../03-routage-dynamique/tp-ospf/index.qmd).
 OSPF fonctionne et tous les pings de la matrice de recette de ce TP
 réussissent.
 
