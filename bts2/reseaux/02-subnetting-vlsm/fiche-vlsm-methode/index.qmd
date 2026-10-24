@@ -7,7 +7,7 @@ chapitre: "02 — Subnetting et VLSM"
 categories: [fiche, reseaux]
 mots-cles: [VLSM, masque de longueur variable, préfixe, bits hôtes, taille de bloc, pas d’avancement, alignement, première adresse libre, liaison point à point, plan d’adressage]
 objectifs:
-  - "Calculer le besoin en adresses d’un segment, interfaces de routeur comprises, et en déduire le plus petit préfixe."
+  - "Calculer le besoin en adresses d’un segment, interfaces de routeur comprises, et en déduire le plus petit bloc qui suffit, donc son préfixe."
   - "Placer des blocs de tailles différentes par ordre décroissant en contrôlant leur alignement."
   - "Vérifier un plan VLSM à l’aide de la grille en cinq points."
 prerequis:
