@@ -61,8 +61,9 @@ liaisons entre routeurs. « Internet » désigne toute adresse hors du site ;
 La politique ne cite pas les autres flux. Par exemple, PC-P1 doit toujours
 joindre PC-ADM et Internet.
 
-Le résultat attendu : chaque règle est vérifiée par un test de la matrice de
-recette. Chaque ACL est justifiée : type, interface, sens, ordre des lignes.
+Le résultat attendu : chaque règle est vérifiée dans une **matrice de
+recette**, un tableau qui rassemble les tests, leurs résultats attendus et
+leurs résultats obtenus. Chaque ACL est justifiée : type, interface, sens, ordre des lignes.
 
 ## Matériel et environnement
 
@@ -161,7 +162,7 @@ un échec vient de votre ACL ou du réseau. Prévenez l'enseignant si vous
 - `http://192.168.10.101`, puis `https://192.168.10.101`, dans le *Web
   Browser*.
 
-Les quatre essais doivent réussir depuis les deux PC. La page affichée est
+Les trois essais doivent réussir depuis chacun des deux PC. La page affichée est
 la page d'accueil par défaut du serveur.
 
 **La matrice de recette.** Elle traduit la politique en tests. Recopiez-la
@@ -171,7 +172,7 @@ colonnes « Obtenu » se remplissent aux parties 3 et 6.
 
 | N° | Source | Test | Règle | Attendu | Obtenu (partie 3) | Obtenu (partie 6) |
 |:-:|:---|:---|:-:|:-:|:-:|:-:|
-| T1 | PC-I1 | obtenir une adresse par DHCP | P1 | | | |
+| T1 | PC-I1 | obtenir une adresse par DHCP, puis `ipconfig /renew` | P1 | | | |
 | T2 | PC-I1 | `ping 203.0.113.1` | P1 | | | |
 | T3 | PC-I1 | navigateur : `http://192.168.10.101` | P1 | | | |
 | T4 | PC-I1 | navigateur : `https://192.168.10.101` | P1 | | | |
@@ -192,8 +193,10 @@ colonnes « Obtenu » se remplissent aux parties 3 et 6.
 
 Pour T6, relevez d'abord l'adresse de PC-P1 avec `ipconfig`. Pour T1,
 passez PC-I1 en adressage statique, puis de nouveau en DHCP, dans
-*Desktop*, puis *IP Configuration*. Le test réussit si PC-I1 retrouve une
-adresse du VLAN 30.
+*Desktop*, puis *IP Configuration*. Relevez l'adresse obtenue. Tapez
+ensuite `ipconfig /renew` dans le *Command Prompt* de PC-I1, puis relevez
+de nouveau l'adresse. T1 est à **OK** si les deux étapes donnent une adresse
+du VLAN 30.
 
 **Observations à consigner.** Q1, Q2, Q3 ; captures C1 et C2.
 
@@ -541,8 +544,9 @@ a besoin de ce ping pour dépanner les invités.
 2. Testez : PC-ADM vers PC-I1, puis PC-I1 vers PC-ADM.
 3. Relevez `show access-lists INVITES-IN`.
 
-**Retour à la politique.** Le fichier rendu doit appliquer P1 à P3, sans
-ajout. Retirez la ligne de l'étape B avec `no`, suivi de son numéro, dans le
+**Retour à la politique.** Le fichier rendu doit appliquer la politique P1
+à P3 modifiée par l'évolution 1 : l'accès HTTPS à SRV-WEB est conservé. Les
+ajouts du bonus doivent disparaître. Retirez la ligne de l'étape B avec `no`, suivi de son numéro, dans le
 mode de `INVITES-IN`. Supprimez aussi la liste de l'étape A :
 
 ```text
@@ -611,6 +615,8 @@ captures quand c'est utile.
   traduire P1 ?
 - **Q13.** Expliquez le rôle de chacune de vos lignes DHCP. Pour la demande
   initiale, donnez l'adresse source, l'adresse destination et les deux ports.
+  Avec votre ACL, quel paquet `ipconfig /renew` a-t-il pu envoyer ?
+  Observez-le en mode Simulation, avec le filtre DHCP.
 - **Q14.** Prenez votre ligne qui autorise HTTP vers SRV-WEB. Que se
   passerait-il si elle était placée après votre ligne `deny` ? Et votre
   dernière ligne `permit`, si elle était placée en tête ? Justifiez avec le
