@@ -1,0 +1,13 @@
+---
+title: "04 — Listes de contrôle d'accès (ACL)"
+description: "Ressources du chapitre : filtrage du trafic avec les ACL standard et étendues sur routeur Cisco."
+format:
+  html: default
+listing:
+  # Seules les ressources, pas les index de domaine ni de chapitre.
+  contents: "*/index.qmd"
+  type: grid
+  categories: true
+  sort: "order"
+  fields: [title, description, categories]
+---
