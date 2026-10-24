@@ -58,6 +58,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+### 2026-10-24 — cours/bts1-retrait-demos
+
+- Fait : suppression, à la demande de l'enseignant, des ressources de démonstration `bts1/reseaux/02-adressage-ip/cours-exemple` et `bts1/reseaux/04-couche-liaison/tp-exemple` ; aucun script, test ni workflow n'en dépendait
+- Index du chapitre `02-adressage-ip` conservé (chapitre désormais vide)
+- Vérificateur, Codex : sans objet (suppression)
+- Pull request : #<numéro>
+- Points à relire par l'enseignant : garder ou retirer le chapitre 02 vide ; `Architecture.txt` mentionne encore les deux dossiers
+
 ### 2026-10-23 — cours/bts2-ospf
 
 - Ressource : bts2/reseaux/03-routage-dynamique/cours-ospf/index.qmd (référence imitée : bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm), avec 3 SVG et l'index du nouveau chapitre 03
