@@ -685,9 +685,9 @@ ET      = 1|0000000  = 128
 
 L’adresse est dans `172.16.41.128/25`, le sous-réseau du VLAN 40. La caméra
 ne joindrait pas sa passerelle `172.16.41.1`, qui est dans un autre
-sous-réseau. Il faut une adresse du VLAN 30, de `.2` à `.126`, à retirer de
-la plage DHCP (exclusion). Sinon, le serveur pourrait la donner à un autre
-poste.
+sous-réseau. Il faut une adresse du VLAN 30, de `.2` à `.126`.
+Retirez cette adresse de la plage DHCP (exclusion). Sinon, le serveur
+pourrait la donner à un autre poste.
 
 **6.6** Les 5^e^, 6^e^ et 7^e^ sous-réseaux restent libres :
 `172.16.42.0/25`, `172.16.42.128/25` et `172.16.43.0/25`.
