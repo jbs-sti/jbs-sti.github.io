@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="570" viewBox="0 0 960 570" role="img" aria-labelledby="title desc">
+<title id="title">Topologie du TP ACL</title>
+<desc id="desc">Réseau du TP 4 complété par le serveur SRV-WEB. Les routeurs R1, R2 et FW forment un triangle. FW est en haut ; derrière lui, Internet est simulé par sa Loopback0 203.0.113.1/32. R2 est à gauche, R1 à droite. Liaison R1–R2 : 192.168.10.224/30, R2 G0/0 point 226, R1 G0/1 point 225. Liaison R2–FW : 192.168.10.228/30, R2 G0/1 point 229, FW G0/0 point 230. Liaison R1–FW : 192.168.10.232/30, R1 G0/2 point 233, FW G0/1 point 234. R1 G0/0 est relié en trunk à SW1 G0/1 ; SW1 G0/2 est relié en trunk 802.1Q à SW2 G0/1. Sur SW2 : PC-P2 sur F0/2 en VLAN 10, en DHCP, et PC-I1 sur F0/21 en VLAN 30, en DHCP. Sur SW1 : PC-P1 sur F0/1 en VLAN 10, en DHCP ; PC-ADM sur F0/11 en VLAN 20, adresse 192.168.10.129 ; nouveau serveur SRV-WEB sur F0/5 en VLAN 10, adresse 192.168.10.101, cadre épais.</desc>
+<rect width="960" height="570" fill="white"/>
+<g fill="none" stroke="#222" stroke-width="2">
+<ellipse cx="410" cy="36" rx="65" ry="24" stroke-dasharray="6 4"/>
+<path d="M410 60 V90" stroke-dasharray="6 4"/>
+<rect x="360" y="90" width="100" height="50" rx="6"/>
+<rect x="130" y="210" width="100" height="50" rx="6"/>
+<rect x="590" y="210" width="100" height="50" rx="6"/>
+<path d="M370 140 L200 210"/>
+<path d="M230 235 H590"/>
+<path d="M450 140 L620 210"/>
+<path d="M635 260 V320 M645 260 V320"/>
+<rect x="590" y="320" width="100" height="50" rx="6"/>
+<rect x="330" y="320" width="100" height="50" rx="6"/>
+<path d="M430 340 H590 M430 350 H590"/>
+<rect x="235" y="430" width="110" height="44" rx="4"/>
+<rect x="395" y="430" width="110" height="44" rx="4"/>
+<rect x="545" y="430" width="110" height="44" rx="4"/>
+<rect x="695" y="430" width="110" height="44" rx="4"/>
+<rect x="830" y="430" width="120" height="44" rx="4" stroke-width="5"/>
+<path d="M360 370 L290 430 M400 370 L450 430 M620 370 L600 430 M660 370 L750 430 M690 362 L890 430"/>
+</g>
+<g font-family="sans-serif" fill="#111" text-anchor="middle">
+<text x="410" y="42" font-size="16">Internet</text>
+<text x="485" y="32" font-size="14" text-anchor="start">Lo0 de FW : 203.0.113.1/32</text>
+<text x="410" y="121" font-size="18" font-weight="bold">FW</text>
+<text x="180" y="241" font-size="18" font-weight="bold">R2</text>
+<text x="640" y="241" font-size="18" font-weight="bold">R1</text>
+<text x="640" y="351" font-size="18" font-weight="bold">SW1</text>
+<text x="380" y="351" font-size="18" font-weight="bold">SW2</text>
+<g font-size="13">
+<text x="350" y="128" text-anchor="end">G0/0 .230</text>
+<text x="470" y="128" text-anchor="start">G0/1 .234</text>
+<text x="190" y="203" text-anchor="end">G0/1 .229</text>
+<text x="632" y="204" text-anchor="start">G0/2 .233</text>
+<text x="262" y="228">G0/0 .226</text>
+<text x="548" y="228">G0/1 .225</text>
+<text x="668" y="282" text-anchor="start">G0/0</text>
+<text x="668" y="312" text-anchor="start">G0/1</text>
+<text x="455" y="333">G0/1</text>
+<text x="565" y="333">G0/2</text>
+<text x="315" y="400" text-anchor="end">F0/2</text>
+<text x="435" y="400" text-anchor="start">F0/21</text>
+<text x="600" y="400" text-anchor="end">F0/1</text>
+<text x="712" y="400" text-anchor="start">F0/11</text>
+<text x="770" y="378" text-anchor="start">F0/5</text>
+</g>
+<text x="270" y="168" font-size="15" text-anchor="end">192.168.10.228/30</text>
+<text x="410" y="255" font-size="15">192.168.10.224/30</text>
+<text x="560" y="160" font-size="15" text-anchor="start">192.168.10.232/30</text>
+<text x="510" y="372" font-size="14">trunk 802.1Q</text>
+<g font-size="15" font-weight="bold">
+<text x="290" y="457">PC-P2</text><text x="450" y="457">PC-I1</text>
+<text x="600" y="457">PC-P1</text><text x="750" y="457">PC-ADM</text>
+<text x="890" y="457">SRV-WEB</text>
+</g>
+<g font-size="14">
+<text x="290" y="494">VLAN 10</text><text x="450" y="494">VLAN 30</text>
+<text x="600" y="494">VLAN 10</text><text x="750" y="494">VLAN 20</text>
+<text x="890" y="494">VLAN 10</text>
+</g>
+<g font-size="13">
+<text x="290" y="512">DHCP</text><text x="450" y="512">DHCP</text>
+<text x="600" y="512">DHCP</text><text x="750" y="512">.129</text>
+<text x="890" y="512">.101</text>
+</g>
+<text x="480" y="552" font-size="13">Cadre épais : nouveau serveur SRV-WEB · trait double : trunk 802.1Q · tirets : lien vers Internet simulé</text>
+</g></svg>
