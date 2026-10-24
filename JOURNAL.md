@@ -116,7 +116,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : 0 constat A, 1 réécriture
 - Réécritures gardées : R1 ; annulées : aucune
 - Relance Codex : non
-- Pull request : à renseigner
+- Pull request : #35
 - Points à relire par l'enseignant : durée pour un groupe faible, refus par IOS des lignes du corrigé 4.2 (« en principe », non testé dans Packet Tracer)
 
 ### 2026-10-24 — cours/bts2-tp-ospf
