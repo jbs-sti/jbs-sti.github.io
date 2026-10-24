@@ -85,6 +85,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Pull request : #26
 - Points à relire par l'enseignant : rendu PDF, sorties `show` à confirmer dans Packet Tracer, rôles DR/BDR dépendant de l'ordre de démarrage
 
+### 2026-10-24 — cours/bts1-retrait-demos
+
+- Fait : suppression, à la demande de l'enseignant, des ressources de démonstration `bts1/reseaux/02-adressage-ip/cours-exemple` et `bts1/reseaux/04-couche-liaison/tp-exemple` ; aucun script, test ni workflow n'en dépendait
+- Index du chapitre `02-adressage-ip` conservé (chapitre désormais vide)
+- Vérificateur, Codex : sans objet (suppression)
+- Pull request : #28
+- Points à relire par l'enseignant : garder ou retirer le chapitre 02 vide ; `Architecture.txt` mentionne encore les deux dossiers
+
 ### 2026-10-23 — cours/bts1-tcp-udp-publier
 
 - Ressource : bts1/reseaux/05-couche-transport/cours-tcp-udp/index.qmd
