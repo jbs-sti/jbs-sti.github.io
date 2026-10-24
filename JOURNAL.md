@@ -95,7 +95,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : 4 constats A (dont 2 BLOQUANT), 2 réécritures ; A2–A4 corrigés par le rédacteur ; A1 porte sur le cours ACL (hors diff), reporté dans « À faire »
 - Réécritures gardées : R1 ; annulées : R2 (fichier hors du diff)
 - Relance Codex : non (corrections ponctuelles)
-- Pull request : #<numéro>
+- Pull request : #31
 - Points à relire par l'enseignant : durée (4 h serrées), panne sur FW G0/1, `ipconfig /renew`, renumérotation à venir (TP 5 → TP 6)
 
 ### 2026-10-24 — cours/bts2-tp-ospf
