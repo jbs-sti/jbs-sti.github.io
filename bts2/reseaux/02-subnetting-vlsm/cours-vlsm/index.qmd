@@ -515,4 +515,4 @@ Convention : une liaison point à point reçoit un /30 classique, soit
   routeurs. Ce cours garde la convention du /30 classique.
 
 Vous appliquerez cette méthode au réseau fil rouge dans le
-[TP 3 — Mettre en œuvre le plan VLSM](../tp-application-vlsm/index.qmd).
+[TP 4 — Mettre en œuvre le plan VLSM](../tp-application-vlsm/index.qmd).

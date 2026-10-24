@@ -1,5 +1,5 @@
 ---
-title: "TP 3 — Mettre en œuvre le plan VLSM"
+title: "TP 4 — Mettre en œuvre le plan VLSM"
 description: "Construire dans Packet Tracer le réseau fil rouge : VLAN, routage inter-VLAN, DHCP et routage statique jusqu'au pare-feu."
 type: tp
 domaine: reseaux
@@ -13,12 +13,12 @@ objectifs:
   - "Mettre en place un routage statique et une route par défaut."
   - "Valider le réseau par une recette de tests ping."
 prerequis:
-  - "Cours « Sous-réseaux et VLSM : la méthode »"
+  - "Cours « Le VLSM : des sous-réseaux de tailles différentes »"
   - "VLAN, trunk 802.1Q, routage inter-VLAN et DHCP"
   - "Routage statique"
 duree: "4 h"
-order: 20
-date-modified: 2026-10-22
+order: 30
+date-modified: 2026-10-24
 draft: false
 lang: fr
 ---
@@ -27,7 +27,8 @@ lang: fr
 
 Vous allez construire dans Packet Tracer le réseau de l'entreprise **fil rouge** :
 VLAN, routage inter-VLAN, DHCP et routage statique jusqu'au pare-feu, avec le
-plan VLSM étudié au chapitre 2. La fiche de commandes Cisco est autorisée.
+plan VLSM de l'exemple guidé du [cours VLSM](../cours-vlsm/index.qmd). La fiche de
+commandes Cisco est autorisée.
 
 ## Situation de départ
 
@@ -36,7 +37,7 @@ production, l'administration, le Wi-Fi invité et deux liaisons entre routeurs.
 Le réseau doit permettre à chaque poste de joindre les autres services et un
 serveur situé sur Internet.
 
-![Topologie du TP 3.](img/topologie-tp3.svg){fig-alt="Internet, simulé par la Loopback0 203.0.113.1/32 de FW, est derrière le pare-feu FW. FW G0/0 est relié à R2 G0/1 par 192.168.10.228/30 ; R2 G0/0 est relié à R1 G0/1 par 192.168.10.224/30. R1 G0/0 est relié en trunk à SW1 G0/1 ; SW1 G0/2 est relié en trunk 802.1Q à SW2 G0/1. Sur SW2 : PC-P2 sur F0/2 en VLAN 10 et PC-I1 sur F0/21 en VLAN 30. Sur SW1 : PC-P1 sur F0/1 en VLAN 10 et PC-ADM sur F0/11 en VLAN 20."}
+![Topologie du TP 4.](img/topologie-tp3.svg){fig-alt="Internet, simulé par la Loopback0 203.0.113.1/32 de FW, est derrière le pare-feu FW. FW G0/0 est relié à R2 G0/1 par 192.168.10.228/30 ; R2 G0/0 est relié à R1 G0/1 par 192.168.10.224/30. R1 G0/0 est relié en trunk à SW1 G0/1 ; SW1 G0/2 est relié en trunk 802.1Q à SW2 G0/1. Sur SW2 : PC-P2 sur F0/2 en VLAN 10 et PC-I1 sur F0/21 en VLAN 30. Sur SW1 : PC-P1 sur F0/1 en VLAN 10 et PC-ADM sur F0/11 en VLAN 20."}
 
 FW est simulé par un routeur 2911 ; sa Loopback0 joue le rôle d'un serveur sur
 Internet.
@@ -192,7 +193,7 @@ source vers la destination.
 Le réseau est validé quand toutes les cases de la matrice de recette sont
 remplies et justifiées. Livrables :
 
-- le projet Packet Tracer, enregistré sous `TP3_NOM1_NOM2.pkt` et déposé sur l'ENT ;
+- le projet Packet Tracer, enregistré sous `TP4_NOM1_NOM2.pkt` et déposé sur l'ENT ;
 - les tableaux complétés et les réponses aux quatre questions.
 
 ## Synthèse

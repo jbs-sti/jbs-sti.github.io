@@ -1,5 +1,5 @@
 ---
-title: "TP 4 — Router le fil rouge avec OSPF"
+title: "TP 5 — Router le fil rouge avec OSPF"
 description: "Remplacer le routage statique du réseau fil rouge par OSPF en zone 0 dans Packet Tracer, puis observer la convergence et l'effet du coût."
 type: tp
 domaine: reseaux
@@ -13,7 +13,7 @@ objectifs:
   - "Observer la convergence d'OSPF après la coupure d'une liaison."
   - "Modifier le coût d'une interface et en mesurer l'effet sur le chemin suivi."
 prerequis:
-  - "TP 3 — Mettre en œuvre le plan VLSM (fichier .pkt terminé)"
+  - "TP 4 — Mettre en œuvre le plan VLSM (fichier .pkt terminé)"
   - "Cours « Le routage dynamique avec OSPF »"
   - "Routage statique"
 duree: "4 h"
@@ -25,18 +25,18 @@ lang: fr
 
 ## Objectifs et prérequis
 
-Vous allez faire évoluer le réseau **fil rouge** du TP 3. Une nouvelle
+Vous allez faire évoluer le réseau **fil rouge** du TP 4. Une nouvelle
 liaison va créer une boucle entre les trois routeurs. Vous remplacerez
 ensuite les routes statiques par **OSPF**, en zone 0. Vous observerez enfin
 comment OSPF réagit à une panne et au changement d'un coût.
 
-Vous devez disposer de votre fichier Packet Tracer du TP 3, terminé. Le
+Vous devez disposer de votre fichier Packet Tracer du TP 4, terminé. Le
 cours « Le routage dynamique avec OSPF » doit être connu. Le cours et la
 fiche de commandes Cisco sont autorisés.
 
 ## Situation de départ
 
-Dans le TP 3, tout le trafic vers Internet passe par R2. Si la liaison R1–R2
+Dans le TP 4, tout le trafic vers Internet passe par R2. Si la liaison R1–R2
 tombe, le site entier est coupé. L'entreprise ajoute donc une liaison directe
 entre R1 et le pare-feu FW.
 
@@ -57,17 +57,17 @@ R2, FW), commutateurs **2960-24TT** (SW1, SW2), quatre PC. Les commandes
 des routeurs se tapent dans l'onglet *CLI*. Les commandes des PC se tapent
 dans *Desktop*, puis *Command Prompt*.
 
-**Fichier de départ.** Votre projet `TP3_NOM1_NOM2.pkt`, enregistré sous un
-nouveau nom : `TP4_NOM1_NOM2.pkt`.
+**Fichier de départ.** Votre projet `TP4_NOM1_NOM2.pkt`, enregistré sous un
+nouveau nom : `TP5_NOM1_NOM2.pkt`.
 
-**Ce qui change par rapport au TP 3.**
+**Ce qui change par rapport au TP 4.**
 
 | Équipement | Interface | Adresse / préfixe | Rôle |
 |:---|:---|:---|:---|
 | R1 | G0/2 | `192.168.10.233/30` | nouvelle liaison vers FW |
 | FW | G0/1 | `192.168.10.234/30` | nouvelle liaison vers R1 |
 
-Les autres adresses sont celles de votre plan du TP 3. Les commutateurs ne
+Les autres adresses sont celles de votre plan du TP 4. Les commutateurs ne
 changent pas.
 
 **Câblage supplémentaire.**
@@ -94,22 +94,22 @@ listées dans la section « Vérification et compte rendu ».
 
 ## Travail à réaliser
 
-### Partie 0 — Reprendre le réseau du TP 3
+### Partie 0 — Reprendre le réseau du TP 4
 
 Cette partie fixe un point de comparaison. Vous saurez ainsi ce qu'OSPF
 change.
 
-**Configuration.** Ouvrez votre fichier du TP 3. Enregistrez-le aussitôt sous
-`TP4_NOM1_NOM2.pkt`.
+**Configuration.** Ouvrez votre fichier du TP 4. Enregistrez-le aussitôt sous
+`TP5_NOM1_NOM2.pkt`.
 
 **Vérification.** Sur chaque routeur, tapez `show ip route`. Selon le
-routeur, vous retrouvez des codes `C`, `L`, `S` ou `S*` du TP 3.
+routeur, vous retrouvez des codes `C`, `L`, `S` ou `S*` du TP 4.
 
 **Test.** Depuis PC-P1, lancez `ping 203.0.113.1`, puis
 `tracert 203.0.113.1`. Le ping doit réussir.
 
 ::: {.callout-warning}
-## Votre TP 3 n'est pas terminé ?
+## Votre TP 4 n'est pas terminé ?
 
 Terminez d'abord sa partie 4 : routes statiques et route par défaut. Sans
 elle, vous ne pourrez pas comparer les deux modes de routage. Prévenez
@@ -124,11 +124,11 @@ Une boucle offre deux chemins vers chaque destination. C'est elle qui rend
 le secours possible.
 
 **Choix du sous-réseau.** La nouvelle liaison relie deux routeurs : un /30
-suffit. Vous prenez le premier /30 libre du plan du TP 3 :
+suffit. Vous prenez le premier /30 libre du plan du TP 4 :
 `192.168.10.232/30`. Il suit directement la liaison R2–FW. Les trois liaisons restent ainsi groupées dans
 `192.168.10.224/27`.
 
-Les conventions du TP 3 s'appliquent. R1 est le plus proche des LAN : il
+Les conventions du TP 4 s'appliquent. R1 est le plus proche des LAN : il
 prend la première adresse utilisable, `.233`. FW prend `.234`.
 
 **Configuration.**
@@ -162,7 +162,7 @@ Il faut donc retirer les routes statiques pour voir OSPF travailler seul.
 ! Packet Tracer, FW (2911, IOS 15.1)
 ! mode privilégié : lister les routes statiques
 show ip route static
-! mode de configuration globale : supprimer la route du TP 3
+! mode de configuration globale : supprimer la route du TP 4
 no ip route 192.168.10.0 255.255.255.0 ________
 ! le prochain saut est celui affiché par show ip route static
 ```
@@ -411,7 +411,7 @@ captures quand c'est utile.
 
 **Partie 1**
 
-- **Q2.** Montrez que `192.168.10.232/30` est libre dans le plan du TP 3.
+- **Q2.** Montrez que `192.168.10.232/30` est libre dans le plan du TP 4.
   Listez pour cela les plages occupées. Donnez ensuite son adresse de
   diffusion.
 - **Q3.** Après le câblage, le `tracert` de PC-P1 emprunte-t-il la nouvelle
@@ -524,10 +524,10 @@ Le réseau est validé quand :
 
 ### Livrables
 
-- Le compte rendu au format PDF, nommé `TP4_NOM1_NOM2.pdf` : réponses aux
+- Le compte rendu au format PDF, nommé `TP5_NOM1_NOM2.pdf` : réponses aux
   questions Q1 à Q21, captures C1 à C14, et la matrice de recette. Ajoutez
   Q22 à Q24, C15 et C16 si vous avez fait le bonus.
-- Le projet Packet Tracer, enregistré sous `TP4_NOM1_NOM2.pkt`, dans son
+- Le projet Packet Tracer, enregistré sous `TP5_NOM1_NOM2.pkt`, dans son
   état de fin de partie 6 ou 7.
 - Les deux fichiers sont déposés sur l'ENT.
 
@@ -537,7 +537,7 @@ Pour chaque partie, notez en une phrase ce que vous avez vérifié. Citez la
 commande qui l'a montré. Le cas échéant, décrivez la panne rencontrée et sa
 cause.
 
-Terminez par un court bilan. Comparez le routage statique du TP 3 et OSPF :
+Terminez par un court bilan. Comparez le routage statique du TP 4 et OSPF :
 nombre de lignes de configuration, réaction à une panne, ajout d'un réseau.
 
 ## Pour aller plus loin
