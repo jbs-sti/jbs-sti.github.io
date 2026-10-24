@@ -23,8 +23,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - `bts2/reseaux/04-acl/cours-acl` (brouillon) : fusionner la PR du TP OSPF
   avant (lien vers le TP 4) ; relire le PDF de la CI ; confirmer dans Packet
   Tracer les sorties `show access-lists` et `show ip interface`, `ssh -l`
-  depuis un PC, et le cas d'une ACL appliquée mais inexistante. Ensuite :
-  TP ACL.
+  depuis un PC, et le cas d'une ACL appliquée mais inexistante. Petite PR à
+  faire : la phrase « un paquet dont la source est usurpée est détruit »
+  (l. 495) est fausse si la source usurpée est dans le VLAN 30 (constat
+  Codex) ; reprendre aussi la réécriture R2 de Codex (l. 587).
+- `bts2/reseaux/04-acl/tp-acl` (brouillon) : relire le PDF de la CI ;
+  confirmer en salle que R1 perd aussi FW pendant la panne (INIT), et le
+  comportement de `ipconfig /renew` (T1).
 - `bts2/reseaux/03-routage-dynamique/cours-ospf` (brouillon) : relire le PDF
   de la CI ; confirmer dans Packet Tracer les sorties `show` (reconstituées).
 - `bts2/reseaux/01-vlan-inter-vlan/fiche-vlan-inter-vlan` (brouillon) :
@@ -33,8 +38,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   la CI ; confirmer en salle l'apparition de `O*E2` (Null0 +
   `default-information originate`), le format de `%OSPF-5-ADJCHG` et le
   recalcul du coût après `bandwidth 100000`.
-- Suite de la progression BTS2 : cours et TP ACL, puis NAT/PAT, pare-feu et
-  DMZ (ASA 5506-X).
+- Chapitre 02 en deux blocs (décision de l'enseignant) : subnetting (cours
+  actuel recentré, même dossier ; fiche méthode ; exercices 1 et 2 ; TP
+  subnetting + DHCP serveur, routeur et relais), puis VLSM (cours à partir du
+  beamer de l'enseignant, exemple de classe C d'abord, 10.6.0.0/15 en
+  exercice ; fiche ; exercices 1 et 2 ; TP 3 actuel). Les TP sont renumérotés
+  (subnetting = TP 3, VLSM = TP 4, OSPF = TP 5, ACL = TP 6).
+- Ensuite : NAT/PAT, pare-feu et DMZ (ASA 5506-X).
 
 **Décisions durables**
 
@@ -76,6 +86,17 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-24 — cours/bts2-tp-acl
+
+- Ressource : bts2/reseaux/04-acl/tp-acl/index.qmd (référence imitée : bts2/reseaux/03-routage-dynamique/tp-ospf), avec 1 SVG
+- TP de 4 h sur le fil rouge : SSH, ACL standard + `access-class`, ACL étendue nommée pour les invités, numéros de séquence, panne OSPF provoquée sur FW, recette, bonus filtrage sans état ; Q1–Q26, C1–C18, aucun corrigé
+- Vérificateur : À REPRENDRE au 1er passage (ligne corrective de la panne quasi donnée, et publiée dans le cours), CONFORME au 2e ; CONFORME après Codex
+- Codex : 4 constats A (dont 2 BLOQUANT), 2 réécritures ; A2–A4 corrigés par le rédacteur ; A1 porte sur le cours ACL (hors diff), reporté dans « À faire »
+- Réécritures gardées : R1 ; annulées : R2 (fichier hors du diff)
+- Relance Codex : non (corrections ponctuelles)
+- Pull request : #31
+- Points à relire par l'enseignant : durée (4 h serrées), panne sur FW G0/1, `ipconfig /renew`, renumérotation à venir (TP 5 → TP 6)
 
 ### 2026-10-24 — cours/bts2-tp-ospf
 
