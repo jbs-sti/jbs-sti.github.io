@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" role="img" aria-labelledby="title desc">
+<title id="title">Topologie du routeur sur un bâton</title>
+<desc id="desc">Un routeur Cisco 2911 relié par un seul lien trunk 802.1Q à un commutateur Cisco 2960. Le routeur porte trois sous-interfaces, une par VLAN. Deux PC sont branchés sur des ports d’accès du commutateur, l’un dans le VLAN 10, l’autre dans le VLAN 20.</desc>
+<rect width="800" height="450" fill="white"/>
+<!-- Lien trunk : double trait épais -->
+<g fill="none" stroke="#111" stroke-width="4">
+<path d="M392 108 V200"/>
+<path d="M408 108 V200"/>
+</g>
+<!-- Liens d'accès : trait fin plein (VLAN 10) et tirets (VLAN 20) -->
+<path d="M350 256 L190 320" fill="none" stroke="#222" stroke-width="2.5"/>
+<path d="M450 256 L610 320" fill="none" stroke="#222" stroke-width="2.5" stroke-dasharray="10 6"/>
+<!-- Routeur R1 -->
+<circle cx="400" cy="70" r="38" fill="white" stroke="#111" stroke-width="3"/>
+<g font-family="sans-serif" fill="#111" text-anchor="middle">
+<text x="400" y="68" font-size="21" font-weight="bold">R1</text>
+<text x="400" y="88" font-size="13">2911</text>
+</g>
+<!-- Sous-interfaces -->
+<rect x="450" y="12" width="345" height="116" fill="#eee" stroke="#111" stroke-width="2"/>
+<path d="M438 70 H450" fill="none" stroke="#111" stroke-width="2" stroke-dasharray="4 4"/>
+<g font-family="sans-serif" fill="#111" font-size="14">
+<text x="462" y="36" font-weight="bold">Sous-interfaces de G0/0</text>
+<text x="462" y="62">G0/0.10 · dot1Q 10 · 192.168.10.1/24</text>
+<text x="462" y="86">G0/0.20 · dot1Q 20 · 192.168.20.1/24</text>
+<text x="462" y="110">G0/0.99 · dot1Q 99 natif · 192.168.99.1/24</text>
+</g>
+<!-- Commutateur SW1 -->
+<rect x="320" y="200" width="160" height="56" fill="white" stroke="#111" stroke-width="3"/>
+<g font-family="sans-serif" fill="#111" text-anchor="middle">
+<text x="400" y="224" font-size="21" font-weight="bold">SW1</text>
+<text x="400" y="244" font-size="13">2960 · VLAN 99 : .2</text>
+</g>
+<!-- Étiquettes du trunk -->
+<g font-family="sans-serif" fill="#111" font-size="15">
+<text x="414" y="124">G0/0</text>
+<text x="418" y="194">Gi0/1</text>
+<text x="382" y="140" text-anchor="end" font-weight="bold">Trunk 802.1Q</text>
+<text x="382" y="160" text-anchor="end">VLAN 10, 20, 99</text>
+<text x="382" y="180" text-anchor="end">natif : 99</text>
+</g>
+<!-- Étiquettes des ports d'accès -->
+<g font-family="sans-serif" fill="#111" font-size="15">
+<text x="255" y="285" text-anchor="end">Fa0/1 · accès VLAN 10</text>
+<text x="545" y="285" text-anchor="start">Fa0/11 · accès VLAN 20</text>
+</g>
+<!-- PC -->
+<g fill="#eee" stroke="#111" stroke-width="2">
+<rect x="70" y="320" width="240" height="92"/>
+<rect x="490" y="320" width="240" height="92" stroke-dasharray="6 4"/>
+</g>
+<g font-family="sans-serif" fill="#111" text-anchor="middle" font-size="15">
+<text x="190" y="341" font-weight="bold">PC-A · VLAN 10</text>
+<text x="190" y="361">Administration</text>
+<text x="190" y="381">192.168.10.10/24</text>
+<text x="190" y="401">passerelle 192.168.10.1</text>
+<text x="610" y="341" font-weight="bold">PC-E · VLAN 20</text>
+<text x="610" y="361">Élèves</text>
+<text x="610" y="381">192.168.20.10/24</text>
+<text x="610" y="401">passerelle 192.168.20.1</text>
+</g>
+<g font-family="sans-serif" fill="#111" font-size="14" text-anchor="middle">
+<text x="400" y="438">Double trait épais : trunk étiqueté 802.1Q. Trait fin plein : VLAN 10. Tirets : VLAN 20.</text>
+</g>
+</svg>
