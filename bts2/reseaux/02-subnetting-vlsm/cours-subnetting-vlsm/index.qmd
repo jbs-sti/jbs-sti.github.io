@@ -60,9 +60,14 @@ quatre services :
 
 Aujourd’hui, tous les postes partagent un seul réseau. Un poste invité peut
 envoyer un message à l’adresse de **diffusion** (adresse qui désigne toutes les
-machines du réseau). Ce message atteint donc aussi la comptabilité. L’administrateur veut
-**un réseau par service**. Il pourra ainsi limiter les diffusions à chaque
-service et filtrer les échanges entre services.
+machines du réseau). Ce message atteint donc aussi la comptabilité.
+L’administrateur veut **un réseau par service**. Il pourra ainsi limiter les
+diffusions à chaque service et filtrer les échanges entre services.
+
+Le découpage des adresses ne suffit pas à séparer les diffusions. Chaque
+service aura aussi son propre VLAN, vu au chapitre 01, ou son propre segment
+physique. Le routeur reliera les services et pourra filtrer ce qui passe entre
+eux, avec les ACL du chapitre 04.
 
 Comment partager `192.168.1.0/24` en quatre réseaux de même taille ? Ce cours
 répond à la question pas à pas.
@@ -225,7 +230,9 @@ Taille de bloc et pas sont liés :
 
 Deux règles en découlent :
 
-- **première adresse libre = diffusion précédente + 1** ;
+- **première adresse libre = diffusion précédente + 1**. C’est le début du
+  bloc suivant, donc son adresse réseau, jamais attribuée à un hôte. La
+  première adresse utilisable est la suivante ;
 - **diffusion = réseau suivant − 1**.
 
 L’octet significatif n’est pas toujours le dernier. Prenez `172.20.37.10/20` :
@@ -274,7 +281,8 @@ Sous-réseau   empruntés | hôtes   réseau   diffusion
 ```
 
 Le premier sous-réseau va de `192.168.1.0` à `192.168.1.31`. La première
-adresse libre est 31 + 1 = 32 : c’est bien le réseau suivant.
+adresse libre est 31 + 1 = 32 : c’est l’adresse réseau du sous-réseau
+suivant. Sa première adresse utilisable par un hôte est `192.168.1.33`.
 
 ::: {.callout-warning}
 ## Piège : la passerelle compte
@@ -336,7 +344,8 @@ réseau `192.168.1.128/26` : la production, dans l’exemple guidé 1.
 - Bits hôtes à 0 : réseau. Bits hôtes à 1 : diffusion.
 - Taille de bloc = 2^h^ adresses. Pas = 256 − octet significatif ;
   réseaux = multiples du pas.
-- Première adresse libre = diffusion précédente + 1.
+- Première adresse libre = diffusion précédente + 1 : c’est l’adresse réseau
+  du bloc suivant.
 - Adresse ET masque = adresse réseau.
 :::
 
@@ -520,15 +529,15 @@ la diffusion du sous-réseau `192.168.1.64/26`.
 
 - Le préfixe /n fixe la partie réseau ; h = 32 − n bits restent pour les hôtes.
 - Démarche en deux temps. A, le masque : besoin → bits empruntés → bits
-  hôtes → nouveau masque, ou besoin → bits hôtes → bits empruntés → nouveau
-  masque si le besoin porte sur les hôtes. B, les bornes : bits hôtes à 0,
+  hôtes → nouveau masque. Si le besoin porte sur les hôtes, suivez plutôt
+  besoin → bits hôtes → bits empruntés → nouveau masque. B, les bornes : bits hôtes à 0,
   puis à 1.
 - b bits empruntés donnent 2^b^ sous-réseaux ; h bits hôtes donnent 2^h^
   adresses, dont 2^h^ − 2 utilisables.
 - Bits hôtes à 0 : adresse réseau. Bits hôtes à 1 : diffusion.
 - Taille de bloc = 2^h^ adresses. Pas = 256 − octet significatif ; ils sont
   égaux quand l’octet significatif est le 4^e^. Première adresse libre =
-  diffusion précédente + 1.
+  diffusion précédente + 1 : l’adresse réseau du bloc suivant.
 - L’octet significatif peut être le 3^e^ : appliquez alors le même calcul un
   octet plus tôt.
 - Adresse ET masque = adresse réseau.

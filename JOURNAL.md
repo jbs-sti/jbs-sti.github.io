@@ -18,6 +18,11 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   `format:` avant publication, sinon le HTML ne sera pas produit (voir PR #18).
 - `snt/02-internet/fiche-adressage-ip` : encore en `draft: true`.
 - Entrée `infra/ci-latex` : numéro de pull request à renseigner.
+- `bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm` (publié) : recentré
+  sur le subnetting ; le TP 3 (publié) cite encore l'ancien titre et le plan
+  VLSM retiré : à reprendre avec le cours VLSM (order < 20) et la
+  renumérotation des TP. Vocabulaire fixé : taille de bloc = 2^h adresses,
+  pas d'avancement = 256 − octet significatif.
 - Décider d'un garde-fou côté PR sur les ancres (CODEOWNERS ou contrôle CI
   des chemins), branche `infra/` par l'enseignant.
 - `bts2/reseaux/04-acl/cours-acl` (brouillon) : fusionner la PR du TP OSPF
@@ -88,6 +93,17 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Relance Codex : non (corrections ponctuelles)
 - Pull request : #29
 - Points à relire par l'enseignant : rendu PDF, `O*E2` via Null0, messages `%OSPF-5-ADJCHG`, coût après `bandwidth 100000`, citation RFC 2328 §9.4
+
+### 2026-10-24 — cours/bts2-cours-subnetting
+
+- Ressource : bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm/index.qmd (même dossier, nouveau titre « Découper un réseau en sous-réseaux »), à la demande de l'enseignant ; méthode « par les bits » de son beamer VLSM
+- VLSM retiré (section et exercice) ; exemples en classe C (192.168.1.0/24 en 4, puis /27 pour 25 postes) ; 5 exercices avec corrigé
+- Vérificateur : CONFORME au 1er passage (4 À CORRIGER traités) ; CONFORME après Codex
+- Codex : 1re passe faite sur un `main` local périmé (diff trop large, réécriture hors ressource annulée), relancée sur le bon diff : 2 constats A (À CORRIGER), 1 réécriture ; corrigés par le rédacteur
+- Réécritures gardées : R1 ; annulées : R1 de la passe périmée (TP OSPF, hors diff)
+- Relance Codex : sans objet (seule passe valide)
+- Pull request : #<numéro>
+- Points à relire par l'enseignant : la page publiée perd le VLSM jusqu'à la publication du cours VLSM ; TP 3 ; sources E4 des exercices 3 à 5 ; vocabulaire pas / taille de bloc
 
 ### 2026-10-24 — cours/bts2-fiche-vlan
 
