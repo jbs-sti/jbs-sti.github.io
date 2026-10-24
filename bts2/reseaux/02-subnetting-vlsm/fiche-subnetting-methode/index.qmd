@@ -47,14 +47,14 @@ Vous répondrez toujours en deux temps :
 | Préfixe /n | Les n premiers bits désignent le réseau. |
 | Bits hôtes h | h = 32 − n. Ils désignent la machine dans le réseau. |
 | Bits empruntés b | Bits pris à la partie hôte : b bits donnent **2^b^ sous-réseaux**. |
-| Adresses d’un sous-réseau | **2^h^ adresses**, dont **2^h^ − 2 utilisables** par les hôtes. |
-| Adresse réseau | Bits hôtes **tous à 0**. Jamais attribuée à un hôte. |
-| Adresse de diffusion | Bits hôtes **tous à 1**. Jamais attribuée à un hôte. |
+| Adresses d’un sous-réseau | **2^h^ adresses**, dont **2^h^ − 2 utilisables** par les hôtes (cas classique). |
+| Adresse réseau | Bits hôtes **tous à 0**. Jamais attribuée à un hôte (cas classique). |
+| Adresse de diffusion | Bits hôtes **tous à 1**. Jamais attribuée à un hôte (cas classique). |
 | Taille de bloc | Nombre d’adresses d’un sous-réseau : 2^h^. |
 | Octet significatif | Premier octet du masque, en partant de la gauche, qui n’est pas 255. |
 | Pas d’avancement | **256 − octet significatif**. Les réseaux sont les multiples du pas. |
 | Première adresse libre | **Diffusion précédente + 1**. En découpage égal, où tous les blocs ont la même taille, c’est l’adresse réseau du bloc suivant. |
-| ET logique | Adresse ET masque = adresse réseau de cette adresse. |
+| ET logique | Pour chaque position, le ET donne 1 si les deux bits comparés valent 1, sinon 0. Adresse ET masque = adresse réseau de cette adresse. |
 
 Taille de bloc et pas : ils sont **égaux** quand l’octet significatif est le
 4^e^. Quand c’est le 3^e^, la taille de bloc vaut **pas × 256**.
@@ -100,9 +100,11 @@ Les bits empruntés et le nombre de sous-réseaux sont comptés à partir d’un
 | Étape | Question à vous poser | Ce que vous écrivez |
 |:-:|:---|:---|
 | 1. Besoin | Le besoin porte-t-il sur des **sous-réseaux** ou sur des **hôtes** ? Avez-vous compté la passerelle ? | N sous-réseaux, ou un nombre d’adresses |
-| 2. Bits empruntés | Quel est le plus petit b tel que 2^b^ ≥ N ? **Besoin en hôtes** : commencez par les bits hôtes. Quel est le plus petit h tel que 2^h^ − 2 ≥ besoin ? | b, ou h si besoin en hôtes |
+| 2. Premier calcul : b ou h | Quel est le plus petit b tel que 2^b^ ≥ N ? **Besoin en hôtes** : commencez par les bits hôtes. Quel est le plus petit h tel que 2^h^ − 2 ≥ besoin ? | b, ou h si besoin en hôtes |
 | 3. Bits hôtes | Combien de bits hôtes reste-t-il ? **Besoin en hôtes** : combien de bits pouvez-vous emprunter ? | h = bits hôtes de départ − b, ou b = bits hôtes de départ − h |
 | 4. Nouveau masque | Quel est le nouveau préfixe ? Quelle valeur pour l’octet significatif ? | /n et masque pointé |
+
+**Contrôle**, si le besoin porte à la fois sur les sous-réseaux et sur les hôtes : il faut b + h ≤ bits hôtes de départ, soit 8 pour un /24. Exemple : 4 sous-réseaux de 100 adresses donnent b = 2 et h = 7, or 2 + 7 = 9 > 8. La plage est trop petite : signalez-le et demandez une plage plus grande.
 
 **B. Trouver les bornes.**
 

@@ -9,7 +9,10 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
-- (rien)
+- Série subnetting / VLSM du chapitre 02 BTS2 : cours subnetting (PR #32),
+  fiche méthode subnetting (`fiche-subnetting-methode`, order 15 ; longueur
+  à contrôler sur le PDF de la CI), puis exercices 1 et 2, TP subnetting +
+  DHCP, cours VLSM et sa suite.
 
 **À faire**
 
@@ -99,6 +102,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Relance Codex : non (précisions ponctuelles)
 - Pull request : #27
 - Points à relire par l'enseignant : longueur (≈ 4 pages), encadré 3560, `encapsulation dot1Q … native`, VLAN 99 natif et de gestion, URL NetAcad
+
+### 2026-10-24 — cours/bts2-fiche-subnetting
+
+- Ressource : bts2/reseaux/02-subnetting-vlsm/fiche-subnetting-methode/index.qmd (référence imitée : bts2/reseaux/01-vlan-inter-vlan/fiche-vlan-inter-vlan), résumé du cours de la PR #32
+- Vérificateur : CONFORME au 1er passage (3 À CORRIGER : règle « diffusion + 1 » limitée au découpage égal, grille, longueur) ; CONFORME après Codex
+- Codex : 2 constats A (À CORRIGER), 1 réécriture ; A1 (« cas classique », comme le beamer) et A2 (contrôle de faisabilité) corrigés ; le contrôle a été repris par le chef de projet (b + h ≤ bits hôtes de départ, et non « b ou h »)
+- Réécritures gardées : R1 ; annulées : aucune
+- Relance Codex : non (corrections ponctuelles)
+- Pull request : #<numéro>
+- Points à relire par l'enseignant : longueur (2,5 à 3 pages estimées), fusionner après la PR #32
 
 ### 2026-10-23 — cours/bts2-ospf
 
