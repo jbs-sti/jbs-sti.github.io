@@ -14,25 +14,23 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   à contrôler sur le PDF de la CI), exercices 1 (PR #34) et 2
   (`exercices-subnetting-approfondissement`, order 17), TP subnetting + DHCP
   (`tp-subnetting-dhcp`, order 18, publié, PR #36 et #37), cours VLSM
-  (`cours-vlsm`, order 19, brouillon, PR #38), renumérotation des TP
+  (`cours-vlsm`, order 19, publié, PR #38 et #41), renumérotation des TP
   (PR #39 : VLSM = TP 4, order 30 ; OSPF = TP 5 ; ACL = TP 6), puis
-  fiche VLSM (`fiche-vlsm-methode`, order 21, brouillon, PR #40),
+  fiche VLSM (`fiche-vlsm-methode`, order 21, publiée, PR #40 et #41),
   exercices VLSM 1 et 2 (order 22 et 23).
 
 **À faire**
 
-- `bts2/reseaux/02-subnetting-vlsm/fiche-vlsm-methode` (brouillon) : relire
+- `bts2/reseaux/02-subnetting-vlsm/fiche-vlsm-methode` (publiée) : relire
   le PDF de la CI (mémo à 7 colonnes, bloc `text` d'environ 82 caractères).
 - `cours-vlsm` l. 11 : l'objectif « le plus petit préfixe qui convient » est
   ambigu (le plus petit bloc = le préfixe le plus long) ; à corriger dans une
   petite PR, comme dans la fiche.
-- `bts2/reseaux/02-subnetting-vlsm/cours-vlsm` (brouillon) : relire le PDF
+- `bts2/reseaux/02-subnetting-vlsm/cours-vlsm` (publié) : relire le PDF
   de la CI et les deux SVG ; décider de garder la propriété « en ordre
   décroissant, la première adresse libre est alignée » (ajout, absent du
   beamer), la Q3 redondante avec la section « Piège », et le contre-exemple
-  `10.6.4.1` (c'est aussi l'adresse de R1 dans le corrigé). Le TP 4
-  (publié) renvoie à ce cours : le publier avant ou avec la PR de
-  renumérotation. La question des adresses libres du TP 4 (partie 1) a sa
+  `10.6.4.1` (c'est aussi l'adresse de R1 dans le corrigé). La question des adresses libres du TP 4 (partie 1) a sa
   réponse dans ce cours : la reformuler ou l'accepter.
 - `bts2/reseaux/02-subnetting-vlsm/tp-subnetting-dhcp` (publié) : confirmer dans Packet Tracer `show ip dhcp pool` (libellés
   Total / Excluded / Leased), le libellé « Maximum Number of Users » de
@@ -119,6 +117,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-24 — cours/bts2-vlsm-publier
+
+- Ressources : bts2/reseaux/02-subnetting-vlsm/cours-vlsm/index.qmd et fiche-vlsm-methode/index.qmd
+- Fait : `draft: false` sur les deux, par l'enseignant (commit, push et PR lancés par le chef de projet à sa demande)
+- Vérificateur, Codex : sans objet (métadonnée de publication)
+- Pull request : #41
+- Points à relire par l'enseignant : les pages en ligne et leurs PDF ; le lien du TP 4 vers le cours VLSM
 
 ### 2026-10-24 — cours/bts2-fiche-vlsm
 
