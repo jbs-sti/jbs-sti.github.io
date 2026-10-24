@@ -22,8 +22,12 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   des chemins), branche `infra/` par l'enseignant.
 - `bts2/reseaux/03-routage-dynamique/cours-ospf` (brouillon) : relire le PDF
   de la CI ; confirmer dans Packet Tracer les sorties `show` (reconstituées).
-- Suite de la progression BTS2 : fiche de rappel VLAN/inter-VLAN (chapitre
-  01), puis TP OSPF, ACL, NAT/PAT, pare-feu et DMZ.
+- `bts2/reseaux/01-vlan-inter-vlan/fiche-vlan-inter-vlan` (brouillon) :
+  confirmer `encapsulation dot1Q` (et `native`) sur le 2911 dans Packet Tracer ;
+  décider de la longueur (≈ 4 pages, encadré 3560 à garder ou non).
+- Suite de la progression BTS2 : TP OSPF, puis ACL, NAT/PAT, pare-feu et DMZ.
+- Les sous-interfaces Ethernet et `encapsulation dot1Q` ne figurent dans
+  aucune référence de commandes de routeur de Packet Tracer : à tester.
 
 **Décisions durables**
 
@@ -57,6 +61,17 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-24 — cours/bts2-fiche-vlan
+
+- Ressource : bts2/reseaux/01-vlan-inter-vlan/fiche-vlan-inter-vlan/index.qmd (référence imitée : bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm), avec 1 SVG et l'index du nouveau chapitre 01
+- Commandes 2960 et 3560 confirmées dans la référence de Packet Tracer ; `encapsulation dot1Q` du 2911 absente de toute référence de routeur (non documentée, à tester)
+- Vérificateur : CONFORME après 2 passages (tableau des pannes faux au 1er) ; CONFORME après Codex
+- Codex : 4 constats A (dont 1 BLOQUANT), 1 réécriture ; tous corrigés par le rédacteur
+- Réécritures gardées : R1 ; annulées : aucune
+- Relance Codex : non (précisions ponctuelles)
+- Pull request : #27
+- Points à relire par l'enseignant : longueur (≈ 4 pages), encadré 3560, `encapsulation dot1Q … native`, VLAN 99 natif et de gestion, URL NetAcad
 
 ### 2026-10-23 — cours/bts2-ospf
 
