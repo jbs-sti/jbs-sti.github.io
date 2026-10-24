@@ -344,8 +344,9 @@ résultats des tests, les réponses à la réflexion. Puis sauvegardez sous
 ### Partie 3 — Routage inter-VLAN et relais DHCP
 
 On repart du fichier de la partie 2. Le principe : un seul câble trunk entre
-R1 et SW-RDC, et une sous-interface par VLAN. Chaque sous-interface porte la
-passerelle d'un sous-réseau `/26`.
+R1 et SW-RDC, et une sous-interface par VLAN. Chaque sous-interface est une
+interface logique rattachée à l'interface physique ; elle porte la passerelle
+d'un sous-réseau `/26`.
 
 ![Topologie de la partie 3 : le routeur R1 est relié en trunk à SW-RDC ; une sous-interface par VLAN, relais DHCP sur G0/0.20.](img/topologie-partie3.svg){fig-alt="Le routeur R1, un Cisco 2911, est au-dessus de SW-RDC. Son port G0/0 est relié en trunk 802.1Q au port Gi0/2 de SW-RDC. Sous-interfaces de R1 : G0/0.10, dot1Q 10, 192.168.10.62/26 ; G0/0.20, dot1Q 20, 192.168.10.126/26, relais DHCP. SW-RDC et SW-ETAGE sont reliés par un trunk 802.1Q, VLAN 10 et 20, entre leurs ports Gi0/1. Sur SW-RDC : PC1 sur Fa0/1, VLAN 10, en DHCP ; SRV-DHCP, en cadre épais, sur Fa0/5, VLAN 10, 192.168.10.61/26, passerelle point 62 ; PC2 sur Fa0/11, VLAN 20, en DHCP par le relais. Sur SW-ETAGE : PC3 sur Fa0/2, VLAN 10, en DHCP ; PC4 sur Fa0/12, VLAN 20, en DHCP par le relais."}
 
@@ -437,15 +438,17 @@ Ce pool distribue les adresses `.84` à `.113`. Elles sont toutes dans
 
 Le relais ne se contente pas de faire suivre la demande. Il écrit dans le
 champ `giaddr` du message DHCP l'adresse de l'interface qui l'a reçue. Il
-envoie ensuite la demande au serveur, en unicast.
+envoie ensuite la demande au serveur, en unicast : le message vise un seul
+destinataire.
 
 Le serveur cherche alors le pool dont le réseau contient `giaddr`. Il
-calcule ce réseau avec le masque du pool. Si le masque du pool est faux, ou
-si la sous-interface est adressée hors du sous-réseau du pool, aucun pool
-ne correspond. Le serveur
-ne répond alors pas. Si `giaddr` vaut `0.0.0.0`, la demande n'est pas
-passée par un relais. Le serveur choisit alors le pool du réseau de sa
-propre interface.
+calcule ce réseau avec le masque du pool. Si `giaddr` n'appartient au réseau
+d'aucun pool, par exemple avec une sous-interface adressée dans un autre
+sous-réseau, aucun pool ne correspond : le serveur ne devrait pas répondre.
+Un masque de pool faux peut au contraire laisser le pool correspondre : le
+serveur distribue alors des adresses avec ce mauvais masque. Si `giaddr`
+vaut `0.0.0.0`, la demande n'est pas passée par un relais. Le serveur
+choisit alors le pool du réseau de sa propre interface.
 :::
 
 **3.4 Réflexion.**

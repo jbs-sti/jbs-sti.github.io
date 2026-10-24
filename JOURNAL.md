@@ -12,10 +12,18 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Série subnetting / VLSM du chapitre 02 BTS2 : cours subnetting (PR #32),
   fiche méthode subnetting (`fiche-subnetting-methode`, order 15 ; longueur
   à contrôler sur le PDF de la CI), exercices 1 (PR #34) et 2
-  (`exercices-subnetting-approfondissement`, order 17), puis TP subnetting +
-  DHCP, cours VLSM et sa suite.
+  (`exercices-subnetting-approfondissement`, order 17), TP subnetting + DHCP
+  (`tp-subnetting-dhcp`, order 18, brouillon, PR à fusionner), puis cours
+  VLSM et sa suite.
 
 **À faire**
+
+- `bts2/reseaux/02-subnetting-vlsm/tp-subnetting-dhcp` (brouillon) : relire
+  le PDF de la CI ; confirmer dans Packet Tracer `show ip dhcp pool` (libellés
+  Total / Excluded / Leased), le libellé « Maximum Number of Users » de
+  Server-PT, l'absence de réponse de Server-PT quand `giaddr` n'appartient à
+  aucun pool, et les effets des trois cas du bonus. Deux « TP 3 » coexistent
+  (ce TP et `tp-application-vlsm`) jusqu'à la renumérotation des TP.
 
 - `bts1/reseaux/06-services-reseau/cours-dhcp` et
   `bts1/reseaux/04-couche-liaison/cours-arp` (brouillons) : supprimer le bloc
@@ -97,6 +105,17 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-24 — cours/bts2-tp-subnetting-dhcp
+
+- Ressource : bts2/reseaux/02-subnetting-vlsm/tp-subnetting-dhcp/index.qmd (référence imitée : TP3_VLAN_DHCP_InterVLAN_eleve.pdf de l'enseignant, conventions de tp-acl), avec 4 SVG
+- TP de 4 h, Lumitech : 192.168.10.0/24 en 4 /26 ; partie 0 plan (sans corrigé), 1 VLAN statique, 2 DHCP sur Server-PT, 3 inter-VLAN + relais (`giaddr`), 4 DHCP IOS sur R1 (VLAN 30), bonus diagnostic en 3 cas
+- Vérificateur : À REPRENDRE au 1er passage (titre « TP 3 » en double, maintenu par décision de l'enseignant ; 9 mineurs, dont un cas du bonus faussé par le proxy ARP), CONFORME au 2e ; CONFORME après Codex
+- Codex : 1 constat A (BLOQUANT, masque de pool faux dans l'encadré `giaddr`), corrigé par le rédacteur ; 2 réécritures
+- Réécritures gardées : R1, R2 ; annulées : aucune
+- Relance Codex : non (correction d'une phrase)
+- Pull request : à renseigner
+- Points à relire par l'enseignant : sorties et libellés Packet Tracer non testés (voir « À faire »), donnée ajoutée au contexte (« aucun service ne dépassera 50 postes »), rendu PDF (Quarto absent en local)
 
 ### 2026-10-24 — cours/bts2-tp-acl
 
