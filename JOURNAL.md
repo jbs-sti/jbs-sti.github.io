@@ -13,13 +13,12 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   fiche méthode subnetting (`fiche-subnetting-methode`, order 15 ; longueur
   à contrôler sur le PDF de la CI), exercices 1 (PR #34) et 2
   (`exercices-subnetting-approfondissement`, order 17), TP subnetting + DHCP
-  (`tp-subnetting-dhcp`, order 18, brouillon, PR à fusionner), puis cours
+  (`tp-subnetting-dhcp`, order 18, publié, PR #36 et #37), puis cours
   VLSM et sa suite.
 
 **À faire**
 
-- `bts2/reseaux/02-subnetting-vlsm/tp-subnetting-dhcp` (brouillon) : relire
-  le PDF de la CI ; confirmer dans Packet Tracer `show ip dhcp pool` (libellés
+- `bts2/reseaux/02-subnetting-vlsm/tp-subnetting-dhcp` (publié) : confirmer dans Packet Tracer `show ip dhcp pool` (libellés
   Total / Excluded / Leased), le libellé « Maximum Number of Users » de
   Server-PT, l'absence de réponse de Server-PT quand `giaddr` n'appartient à
   aucun pool, et les effets des trois cas du bonus. Deux « TP 3 » coexistent
@@ -105,6 +104,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-24 — cours/bts2-tp-subnetting-dhcp-publier
+
+- Ressource : bts2/reseaux/02-subnetting-vlsm/tp-subnetting-dhcp/index.qmd
+- Fait : `draft: false`, par l'enseignant (commit, push et PR lancés par le chef de projet à sa demande)
+- Vérificateur, Codex : sans objet (métadonnée de publication)
+- Pull request : #37
+- Points à relire par l'enseignant : la page en ligne et son PDF ; points Packet Tracer restant dans « À faire »
 
 ### 2026-10-24 — cours/bts2-tp-subnetting-dhcp
 
