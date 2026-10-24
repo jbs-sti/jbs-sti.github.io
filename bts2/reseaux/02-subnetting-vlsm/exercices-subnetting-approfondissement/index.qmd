@@ -1,0 +1,766 @@
+---
+title: "Subnetting : exercices d’approfondissement"
+description: "Série 2 : six exercices et un défi pour approfondir le découpage en sous-réseaux égaux, avec l’octet significatif au 3e rang, un plan d’entreprise, une configuration IOS à contrôler et les pièges de comptage."
+type: exercices
+domaine: reseaux
+chapitre: "02 — Subnetting et VLSM"
+categories: [exercices, reseaux]
+mots-cles: [IPv4, masque, préfixe, sous-réseau, subnetting, bits empruntés, bits hôtes, taille de bloc, pas d’avancement, octet significatif, diffusion, ET logique, passerelle, plage DHCP, Cisco IOS]
+objectifs:
+  - "Découper une plage /16 ou /20 en sous-réseaux égaux quand l’octet significatif est le 3e, en distinguant le pas et la taille de bloc."
+  - "Retrouver le réseau et la diffusion d’une adresse quand les bits hôtes s’étendent sur deux octets."
+  - "Choisir un masque pour un besoin d’entreprise avec une réserve de croissance, puis établir le plan : réseau, passerelle, plage DHCP, diffusion."
+  - "Repérer les incohérences d’adressage dans une configuration Cisco IOS."
+  - "Éviter les pièges de comptage et vérifier la faisabilité d’un découpage par le contrôle b + h."
+prerequis:
+  - "Cours « Découper un réseau en sous-réseaux » du chapitre 02"
+  - "Série 1 « Subnetting : exercices d’entraînement »"
+  - "Notions de VLAN et de DHCP"
+duree: "1 h 50"
+order: 17
+date-modified: 2026-10-24
+draft: true
+lang: fr
+---
+
+## Objectifs et prérequis
+
+Cette série approfondit le découpage en **sous-réseaux égaux**. Vous
+travaillerez sur des plages plus grandes qu’un /24. L’octet significatif sera
+souvent le 3^e^, et les bits hôtes s’étendront sur deux octets. Faites
+d’abord la série 1 : celle-ci la suppose acquise.
+
+Vous appliquerez toujours la démarche du cours, en deux temps :
+
+- **A. Trouver le masque**, en quatre étapes. Besoin en sous-réseaux :
+  besoin → bits empruntés → bits hôtes → nouveau masque. Besoin en hôtes :
+  besoin → bits hôtes → bits empruntés → nouveau masque.
+- **B. Trouver les bornes** : bits hôtes à 0 pour l’adresse réseau, puis à 1
+  pour la diffusion.
+
+Quand le besoin porte à la fois sur les sous-réseaux et sur les hôtes, faites
+le **contrôle b + h ≤ bits hôtes de départ**. Par exemple, un /24 a 8 bits
+hôtes de départ.
+
+::: {.callout-tip}
+## Support autorisé
+
+Gardez sous les yeux la [fiche méthode](../fiche-subnetting-methode/index.qmd)
+du chapitre. Vous y trouverez la démarche, les erreurs fréquentes et le
+tableau des puissances de 2.
+:::
+
+| Exercice | Compétence | Durée indicative |
+|:-:|:---|:-:|
+| 1 | Découper un /16, octet significatif au 3^e^ rang | 20 min |
+| 2 | Trouver le réseau d’une adresse sur deux octets | 15 min |
+| 3 | Établir le plan d’un site avec réserve de croissance | 20 min |
+| 4 | Contrôler une configuration IOS | 15 min |
+| 5 | Éviter les pièges de comptage | 15 min |
+| 6 | Synthèse : plan d’adressage d’un bâtiment | 25 min |
+| 7 | Défi (facultatif) | 10 min |
+| | **Total** | **1 h 50** sans le défi |
+
+## Situation de départ
+
+Vous êtes en alternance chez **Brévan Industrie**, un fabricant de pièces
+mécaniques. Le groupe revoit l’adressage de ses sites. Chaque site reçoit une
+plage privée (RFC 1918) :
+
+| Site | Plage reçue |
+|:---|:---|
+| Siège : réseau des bâtiments | `172.16.0.0/16` |
+| Usine de Cholet | `10.40.0.0/20` |
+| Plateforme logistique | `10.60.0.0/16` |
+| Site annexe (projet) | `10.80.4.0/23` |
+| Liaisons vers le cœur de réseau | `192.168.254.0/24`, découpée en /30 |
+
+Dans chaque site, l’administratrice veut **un sous-réseau par service** ou
+par bâtiment. Dans un même découpage, tous les sous-réseaux ont la même
+taille.
+
+Le routeur du site a une adresse dans chaque sous-réseau : c’est la
+**passerelle** des postes. Par convention chez Brévan, la passerelle prend
+la **première adresse utilisable** du sous-réseau.
+
+## Exercices
+
+### Exercice 1 — Découper un /16 : l’octet significatif au 3^e^ rang
+
+**1.1** Complétez le tableau. Pour chaque ligne, une seule case est donnée :
+le préfixe ou le masque. Les colonnes demandent :
+
+- **Pas** : 256 − octet significatif, ici le 3^e^ octet du masque ;
+- **h** : le nombre de bits hôtes, h = 32 − n ;
+- **Bloc** : la taille de bloc, 2^h^ adresses. Vérifiez qu’elle vaut
+  pas × 256 ;
+- **Hôtes** : le nombre d’hôtes utilisables, 2^h^ − 2.
+
+| Préfixe | Masque | Pas | h | Bloc | Hôtes |
+|:-:|:---|:-:|:-:|:-:|:-:|
+| /20 | | | | | |
+| | `255.255.248.0` | | | | |
+| /23 | | | | | |
+| | `255.255.224.0` | | | | |
+
+**1.2 — A. Trouver le masque.** Le siège compte 40 bâtiments. Le groupe
+veut découper `172.16.0.0/16` en sous-réseaux égaux, un par bâtiment. Chaque
+bâtiment doit accueillir au moins 900 postes et la passerelle.
+
+Le besoin porte à la fois sur les sous-réseaux et sur les hôtes. Calculez :
+
+- **b** : le plus petit nombre de bits empruntés tel que 2^b^ ≥ 40 ;
+- **h** : le plus petit nombre de bits hôtes tel que 2^h^ − 2 ≥ besoin en
+  adresses, passerelle comptée ;
+- **b + h** : le contrôle, à comparer aux 16 bits hôtes de départ.
+
+| b | h | b + h | Préfixe | Masque | Pas |
+|:-:|:-:|:-:|:-:|:---|:-:|
+| | | | | | |
+
+Combien de sous-réseaux obtenez-vous ? Combien d’hôtes utilisables chacun
+offre-t-il ?
+
+**1.3 — B. Trouver les bornes.** Les bits hôtes occupent la fin du 3^e^
+octet et tout le 4^e^. Recopiez et complétez le 1^er^ sous-réseau en
+binaire. Dans le 3^e^ octet, placez le trait entre bits empruntés et bits
+hôtes.
+
+```text
+1er sous-réseau  3e octet     4e octet    adresse
+réseau           ________     ________    172.16.___.___
+diffusion        ________     ________    172.16.___.___
+```
+
+Complétez ensuite le tableau pour le 1^er^, le 2^e^ et le dernier
+sous-réseau. Écrivez les adresses en entier.
+
+| N° | Réseau | Diffusion | Plage utilisable |
+|:-:|:---|:---|:---|
+| 1^er^ | | | |
+| 2^e^ | | | |
+| dernier | | | |
+
+**1.4** Donnez la taille de bloc de ce découpage. Comparez-la au pas trouvé
+en 1.2. Un collègue confond les deux : expliquez-lui la différence en une
+phrase.
+
+### Exercice 2 — Retrouver le réseau d’une adresse sur deux octets
+
+Pour vous échauffer, l’administratrice vous donne des adresses relevées sur
+des équipements de test. Elles sont sans lien avec les sites du tableau.
+
+a. `10.12.77.200/20`
+b. `172.18.150.9/18`
+
+**2.1** Pour a et b, faites le ET logique sur l’octet significatif.
+Recopiez et complétez :
+
+```text
+a.  77      = ________
+    masque  = ________   (/20, 3e octet)
+    ET      = ________  = ____
+
+b.  150     = ________
+    masque  = ________   (/18, 3e octet)
+    ET      = ________  = ____
+```
+
+::: {.callout-note}
+## Coup de pouce
+
+Quand l’octet significatif est le 3^e^, le 4^e^ octet ne contient que des
+bits hôtes. Il vaut 0 dans l’adresse réseau et 255 dans la diffusion.
+:::
+
+**2.2** Complétez le tableau. Écrivez les adresses en entier.
+
+| Cas | Masque | Réseau | Plage utilisable | Diffusion |
+|:-:|:---|:---|:---|:---|
+| a | | | | |
+| b | | | | |
+
+**2.3** Quatre autres adresses sont notées en /23. Pour chacune, donnez le
+réseau. Dites ensuite si l’on peut la donner à un poste, et justifiez par
+les bits hôtes.
+
+| Adresse | Réseau | Attribuable à un poste ? |
+|:---|:---|:-:|
+| `10.1.2.255/23` | | |
+| `10.1.3.0/23` | | |
+| `10.1.5.255/23` | | |
+| `10.1.6.0/23` | | |
+
+### Exercice 3 — Le plan de l’usine de Cholet
+
+Le responsable de l’usine vous envoie ce message :
+
+> Bonjour,
+>
+> Nous disposons de la plage `10.40.0.0/20`. Je veux un sous-réseau par
+> service, tous de même taille. Le plan doit tenir trois ans sans
+> renumérotation. Voici nos besoins :
+>
+> - Production : au moins 230 postes et la passerelle aujourd’hui ; au
+>   moins 320 postes et la passerelle dans trois ans ;
+> - Bureaux d’études : au moins 140 postes et la passerelle aujourd’hui ;
+>   au moins 180 postes et la passerelle dans trois ans ;
+> - Maintenance : au moins 60 postes et la passerelle aujourd’hui ; au moins
+>   80 postes et la passerelle dans trois ans ;
+> - Administration : au moins 45 postes et la passerelle aujourd’hui ; au
+>   moins 50 postes et la passerelle dans trois ans ;
+> - Wi-Fi visiteurs : au moins 150 postes et la passerelle aujourd’hui ; au
+>   moins 200 postes et la passerelle dans trois ans.
+>
+> La passerelle prend la première adresse utilisable. Le serveur DHCP
+> distribue toutes les autres adresses utilisables.
+
+**3.1** Quel service fixe la taille des sous-réseaux ? Donnez son besoin en
+adresses, aujourd’hui et dans trois ans.
+
+**3.2 — A. Trouver le masque.** Le besoin porte sur les hôtes. Partez du
+besoin dans trois ans. Donnez h, puis b, le nombre de sous-réseaux, le
+préfixe et le masque. Les bits hôtes de départ sont ceux du /20.
+
+**3.3** Un collègue calcule le masque sur le besoin d’aujourd’hui. Quel
+masque obtient-il ? Que se passe-t-il dans trois ans ? Justifiez par un
+calcul.
+
+**3.4** Avec votre masque, combien d’adresses utilisables resteront libres
+pour la production dans trois ans ? Combien de sous-réseaux restent en
+réserve pour de futurs services ?
+
+**3.5 — B. Trouver les bornes.** Donnez le pas, puis complétez le plan. Les
+services prennent les sous-réseaux dans l’ordre du message.
+
+| Service | Réseau | Passerelle | Plage DHCP | Diffusion |
+|:---|:---|:---|:---|:---|
+| Production | | | | |
+| Bureaux d’études | | | | |
+| Maintenance | | | | |
+| Administration | | | | |
+| Wi-Fi visiteurs | | | | |
+
+### Exercice 4 — Contrôler une configuration IOS
+
+La plateforme logistique compte quatre entrepôts. Chaque entrepôt a son VLAN :
+10, 20, 30 et 40. L’administratrice a prévu de grands sous-réseaux pour les
+terminaux mobiles et les capteurs : jusqu’à 1 500 terminaux par entrepôt.
+
+Le plan est le suivant :
+
+- les VLAN 10, 20, 30 et 40 prennent, dans cet ordre, les premiers
+  sous-réseaux égaux de `10.60.0.0/16`, de masque `255.255.248.0`, à partir
+  de `10.60.0.0` ;
+- la passerelle de chaque VLAN est la première adresse utilisable ;
+- l’interface GigabitEthernet0/0 relie le routeur au cœur de réseau du
+  groupe. Cette liaison est prise hors de la plage du site, dans la plage
+  des liaisons `192.168.254.0/24`.
+
+Un stagiaire a préparé le script ci-dessous. Il ne l’a pas encore collé dans
+le routeur.
+
+**Plateforme : Cisco Packet Tracer, routeur 2911, IOS 15.1.** Extrait du
+script, limité à l’adressage :
+
+```text
+interface GigabitEthernet0/0
+ ip address 192.168.254.6 255.255.255.252
+!
+interface GigabitEthernet0/1.10
+ encapsulation dot1Q 10
+ ip address 10.60.0.1 255.255.248.0
+!
+interface GigabitEthernet0/1.20
+ encapsulation dot1Q 20
+ ip address 10.60.8.1 255.255.248.0
+!
+interface GigabitEthernet0/1.30
+ encapsulation dot1Q 30
+ ip address 10.60.7.1 255.255.248.0
+!
+interface GigabitEthernet0/1.40
+ encapsulation dot1Q 40
+ ip address 10.60.31.255 255.255.248.0
+```
+
+**4.1** Pour chaque interface, trouvez le réseau et la diffusion. Dites si
+la ligne respecte le plan.
+
+| Interface | Adresse | Réseau | Diffusion | Conforme ? |
+|:---|:---|:---|:---|:-:|
+| G0/0 | `192.168.254.6` | | | |
+| G0/1.10 | `10.60.0.1` | | | |
+| G0/1.20 | `10.60.8.1` | | | |
+| G0/1.30 | `10.60.7.1` | | | |
+| G0/1.40 | `10.60.31.255` | | | |
+
+**4.2** Pour chaque ligne non conforme, nommez l’erreur. Expliquez-la en une
+phrase.
+
+**4.3** Réécrivez les lignes `ip address` à corriger, dans un bloc de texte.
+
+**4.4** Quelle adresse doit porter l’équipement du cœur de réseau, en face de
+G0/0 ?
+
+::: {.callout-note}
+## Coup de pouce
+
+Commencez par le masque `255.255.248.0` : trouvez son préfixe et son pas.
+Écrivez ensuite les quatre premiers réseaux du plan. Comparez enfin chaque
+adresse du script à son réseau prévu.
+:::
+
+### Exercice 5 — Les pièges de comptage
+
+**5.1** On emprunte 5 bits sur un /24. Donnez le nouveau préfixe, le nombre
+de sous-réseaux et le nombre d’hôtes utilisables par sous-réseau.
+
+**5.2** Dans ce découpage, combien d’adresses, au total, ne peuvent être
+données à aucun hôte ? Comparez avec le même /24 non découpé.
+
+**5.3** Pour le site annexe, la plage est `10.80.4.0/23`. Deux découpages
+égaux sont envisagés :
+
+- **Cas 1** : 4 sous-réseaux d’au moins 100 postes et la passerelle ;
+- **Cas 2** : 3 sous-réseaux d’au moins 130 postes et la passerelle.
+
+Trouvez d’abord les bits hôtes de départ du /23. Complétez ensuite le
+tableau.
+
+| Cas | b | h | b + h | Possible ? |
+|:-:|:-:|:-:|:-:|:-:|
+| 1 | | | | |
+| 2 | | | | |
+
+**5.4** Pour le cas 2, un collègue additionne les besoins des trois
+sous-réseaux. Il compare ce total au nombre d’adresses du /23. Que
+conclut-il ? A-t-il raison ?
+
+### Exercice 6 — Synthèse : le plan d’adressage du bâtiment D
+
+Cet exercice reprend toute la démarche, comme un sujet d’examen. Lisez
+l’ensemble avant de commencer.
+
+Au siège, le bâtiment D accueille le service de maintenance des équipements
+connectés. Il reçoit le **11^e^ sous-réseau** du découpage de l’exercice 1.
+Vérifiez vos réponses de l’exercice 1 dans le corrigé avant de commencer.
+
+Le bâtiment D est découpé à son tour en sous-réseaux égaux, un par VLAN :
+
+| VLAN | Usage | Besoin |
+|:-:|:---|:---|
+| 10 | Techniciens | au moins 100 postes et la passerelle |
+| 20 | Bureaux | au moins 60 postes et la passerelle |
+| 30 | Supervision | au moins 40 postes et la passerelle |
+| 40 | Wi-Fi | au moins 110 postes et la passerelle |
+| 99 | Administration réseau | au moins 10 postes et la passerelle |
+
+Les VLAN 10, 20, 30 et 40 prennent les quatre premiers sous-réseaux, dans
+cet ordre. Le VLAN 99 prend le dernier. La passerelle est la première
+adresse utilisable. La plage DHCP contient toutes les autres adresses
+utilisables.
+
+**6.1** Donnez la plage du bâtiment D : réseau, préfixe et diffusion. Combien
+a-t-elle de bits hôtes de départ ?
+
+**6.2 — A. Trouver le masque.** Partez du plus gros besoin en hôtes. Donnez
+h, b, le nombre de sous-réseaux, le préfixe et le masque. Faites ensuite le
+contrôle b + h avec le nombre de VLAN.
+
+**6.3** Quel est l’octet significatif du nouveau masque ? Donnez le pas et la
+taille de bloc.
+
+**6.4 — B. Trouver les bornes.** Complétez le plan.
+
+| VLAN | Réseau | Passerelle | Plage DHCP | Diffusion |
+|:-:|:---|:---|:---|:---|
+| 10 | | | | |
+| 20 | | | | |
+| 30 | | | | |
+| 40 | | | | |
+| 99 | | | | |
+
+**6.5** Un technicien configure à la main une caméra du VLAN 30. Il lui donne
+l’adresse `172.16.41.140` avec le masque du plan. Cette adresse convient-elle ?
+Justifiez par le ET logique sur le 4^e^ octet.
+
+**6.6** Quels sous-réseaux restent libres dans le bâtiment D ?
+
+### Exercice 7 — Défi (facultatif)
+
+Deux équipements de test ont les adresses `10.99.13.200` et `10.99.14.10`.
+Quel est le plus long préfixe pour lequel ces deux adresses sont dans le même
+sous-réseau ? Donnez ce sous-réseau, avec son réseau et sa diffusion.
+
+## Corrigé
+
+### Exercice 1
+
+**1.1** L’octet significatif est le 3^e^. On vérifie chaque bloc par
+pas × 256.
+
+| Préfixe | Masque | Pas | h | Bloc | Hôtes |
+|:-:|:---|:-:|:-:|:-:|:-:|
+| /20 | `255.255.240.0` | 16 | 12 | 4 096 | 4 094 |
+| /21 | `255.255.248.0` | 8 | 11 | 2 048 | 2 046 |
+| /23 | `255.255.254.0` | 2 | 9 | 512 | 510 |
+| /19 | `255.255.224.0` | 32 | 13 | 8 192 | 8 190 |
+
+Exemple de raisonnement : 248 = 128 + 64 + 32 + 16 + 8 = `11111000`. On
+compte 5 bits à 1, donc 16 + 5 = /21. Le pas vaut 256 − 248 = 8. Puis
+h = 32 − 21 = 11, soit 2^11^ = 2 048 adresses. Contrôle : 8 × 256 = 2 048.
+
+**1.2 — A. Trouver le masque.**
+
+- **b** : 2^5^ = 32 ne suffit pas ; 2^6^ = 64 ≥ 40. Donc b = 6.
+- **h** : 900 + 1 = 901 adresses. h = 9 donne 510, trop peu ; h = 10 donne
+  1 022, suffisant. Donc h = 10.
+- **Contrôle** : 6 + 10 = 16 ≤ 16. Le découpage est possible, tout juste.
+
+| b | h | b + h | Préfixe | Masque | Pas |
+|:-:|:-:|:-:|:-:|:---|:-:|
+| 6 | 10 | 16 | /22 | `255.255.252.0` | 4 |
+
+Le préfixe vaut 16 + 6 = /22. Le 3^e^ octet du masque vaut `11111100` = 252.
+On obtient 2^6^ = **64 sous-réseaux** de 2^10^ − 2 = **1 022 hôtes**
+utilisables. Il reste 64 − 40 = 24 sous-réseaux en réserve.
+
+**1.3 — B. Trouver les bornes.** Dans le 3^e^ octet, 6 bits empruntés puis
+2 bits hôtes. Le 4^e^ octet ne contient que des bits hôtes.
+
+```text
+1er sous-réseau  3e octet            4e octet    adresse
+réseau           000000 | 00  =  0   00000000    172.16.0.0
+diffusion        000000 | 11  =  3   11111111    172.16.3.255
+```
+
+| N° | Réseau | Diffusion | Plage utilisable |
+|:-:|:---|:---|:---|
+| 1^er^ | `172.16.0.0/22` | `172.16.3.255` | `172.16.0.1` à `172.16.3.254` |
+| 2^e^ | `172.16.4.0/22` | `172.16.7.255` | `172.16.4.1` à `172.16.7.254` |
+| dernier (64^e^) | `172.16.252.0/22` | `172.16.255.255` | `172.16.252.1` à `172.16.255.254` |
+
+Le dernier commence en 63 × 4 = 252 dans le 3^e^ octet. Chaque diffusion
+vaut le réseau suivant − 1 : `172.16.4.0` − 1 = `172.16.3.255`.
+
+**1.4** La taille de bloc vaut 2^10^ = **1 024 adresses**. Le pas vaut
+**4**. Le pas est l’écart entre deux réseaux, lu dans le 3^e^ octet. Chaque
+valeur du 3^e^ octet couvre 256 adresses : la taille de bloc vaut donc
+pas × 256 = 4 × 256 = 1 024.
+
+### Exercice 2
+
+**2.1** ET logique sur le 3^e^ octet :
+
+```text
+a.  77      = 0100|1101
+    masque  = 1111|0000   (/20 : 240)
+    ET      = 0100|0000  = 64
+
+b.  150     = 10|010110
+    masque  = 11|000000   (/18 : 192)
+    ET      = 10|000000  = 128
+```
+
+Pour a : 77 = 64 + 8 + 4 + 1. Pour b : 150 = 128 + 16 + 4 + 2.
+
+**2.2** Les pas valent 16 pour a et 64 pour b. La diffusion vaut le réseau
+suivant − 1, avec 255 dans le 4^e^ octet :
+
+- **Cas a**, `10.12.77.200/20` :
+  - masque `255.255.240.0` ;
+  - réseau `10.12.64.0` ;
+  - plage utilisable `10.12.64.1` à `10.12.79.254` ;
+  - diffusion `10.12.79.255`, juste avant le réseau suivant `10.12.80.0`.
+- **Cas b**, `172.18.150.9/18` :
+  - masque `255.255.192.0` ;
+  - réseau `172.18.128.0` ;
+  - plage utilisable `172.18.128.1` à `172.18.191.254` ;
+  - diffusion `172.18.191.255`, juste avant le réseau suivant `172.18.192.0`.
+
+**2.3** /23 donne `255.255.254.0` : pas de 2 dans le 3^e^ octet. Les bits
+hôtes sont le dernier bit du 3^e^ octet et les 8 bits du 4^e^.
+
+| Adresse | Réseau | Attribuable à un poste ? |
+|:---|:---|:-:|
+| `10.1.2.255/23` | `10.1.2.0/23` | oui |
+| `10.1.3.0/23` | `10.1.2.0/23` | oui |
+| `10.1.5.255/23` | `10.1.4.0/23` | non : diffusion |
+| `10.1.6.0/23` | `10.1.6.0/23` | non : réseau |
+
+Les bits hôtes, en binaire (dernier bit du 3^e^ octet, puis 4^e^ octet) :
+
+```text
+10.1.2.255   3e octet 0000001|0   4e octet 11111111   ni tous à 0, ni tous à 1
+10.1.3.0     3e octet 0000001|1   4e octet 00000000   ni tous à 0, ni tous à 1
+10.1.5.255   3e octet 0000010|1   4e octet 11111111   tous à 1 : diffusion
+10.1.6.0     3e octet 0000011|0   4e octet 00000000   tous à 0 : réseau
+```
+
+C’est le piège de l’exercice. Un 4^e^ octet à 255 ou à 0 ne suffit pas à
+conclure. Il faut regarder **tous** les bits hôtes, y compris celui du
+3^e^ octet.
+
+### Exercice 3
+
+**3.1** La **production** fixe la taille, car c’est le plus gros besoin. Elle
+demande 230 + 1 = **231 adresses** aujourd’hui et 320 + 1 = **321 adresses**
+dans trois ans.
+
+**3.2 — A. Trouver le masque**, sur le besoin dans trois ans.
+
+- **Étape 1** : 321 adresses.
+- **Étape 2** : h = 8 donne 254, trop peu ; h = 9 donne 510, suffisant.
+  Donc h = 9.
+- **Étape 3** : un /20 a 32 − 20 = 12 bits hôtes de départ. b = 12 − 9 = 3,
+  soit 2^3^ = **8 sous-réseaux**, assez pour 5 services.
+- **Étape 4** : 20 + 3 = **/23**, masque `255.255.254.0`.
+
+**3.3** Sur le besoin d’aujourd’hui, 231 adresses tiennent avec h = 8 : un
+**/24**, `255.255.255.0`, à 254 hôtes utilisables. Dans trois ans, la
+production aura besoin de 321 adresses. Or 321 > 254 : il faudrait
+renuméroter. Le /24 ne tient donc pas trois ans.
+
+**3.4** Le /23 offre 510 adresses utilisables. Dans trois ans, la production
+en utilisera 321. Il en restera 510 − 321 = **189** libres. Sur les
+8 sous-réseaux, 5 sont pris : **3 restent en réserve**.
+
+**3.5 — B. Trouver les bornes.** Le pas vaut 256 − 254 = 2 dans le 3^e^
+octet. Les réseaux sont en 0, 2, 4, 6, 8… La diffusion vaut le réseau
+suivant − 1.
+
+Toutes les adresses commencent par `10.40` : le tableau donne seulement les
+deux derniers octets après le réseau.
+
+| Service | Réseau | Passerelle | Plage DHCP | Diffusion |
+|:---|:---|:---|:---|:---|
+| Production | `10.40.0.0/23` | `.0.1` | `.0.2` à `.1.254` | `.1.255` |
+| Bureaux d’études | `10.40.2.0/23` | `.2.1` | `.2.2` à `.3.254` | `.3.255` |
+| Maintenance | `10.40.4.0/23` | `.4.1` | `.4.2` à `.5.254` | `.5.255` |
+| Administration | `10.40.6.0/23` | `.6.1` | `.6.2` à `.7.254` | `.7.255` |
+| Wi-Fi visiteurs | `10.40.8.0/23` | `.8.1` | `.8.2` à `.9.254` | `.9.255` |
+
+Les sous-réseaux en réserve sont `10.40.10.0/23`, `10.40.12.0/23` et
+`10.40.14.0/23`. Le dernier finit en `10.40.15.255`, la diffusion du /20 de
+départ.
+
+### Exercice 4
+
+`255.255.248.0` donne **/21** : 248 = `11111000`, soit 5 bits à 1, et
+16 + 5 = 21. Le pas vaut 256 − 248 = 8 dans le 3^e^ octet. Les quatre premiers
+réseaux sont donc `10.60.0.0`, `10.60.8.0`, `10.60.16.0` et `10.60.24.0`.
+
+**4.1**
+
+| Interface | Adresse | Réseau | Diffusion | Conforme ? |
+|:---|:---|:---|:---|:-:|
+| G0/0 | `192.168.254.6` | `192.168.254.4/30` | `192.168.254.7` | oui |
+| G0/1.10 | `10.60.0.1` | `10.60.0.0/21` | `10.60.7.255` | oui |
+| G0/1.20 | `10.60.8.1` | `10.60.8.0/21` | `10.60.15.255` | oui |
+| G0/1.30 | `10.60.7.1` | `10.60.0.0/21` | `10.60.7.255` | non |
+| G0/1.40 | `10.60.31.255` | `10.60.24.0/21` | `10.60.31.255` | non |
+
+Pour G0/1.30 : 7 = `00000|111`, et le ET avec 248 = `11111|000` donne 0.
+Pour G0/1.40 : 31 = `00011|111`, et le ET donne `00011|000` = 24.
+
+**4.2** Les deux erreurs :
+
+- **G0/1.30 : même sous-réseau que G0/1.10.** `10.60.7.1` est dans
+  `10.60.0.0/21`, le réseau du VLAN 10. Deux interfaces du routeur seraient
+  dans le même sous-réseau : le routeur ne saurait pas vers quel VLAN
+  envoyer les paquets. Le VLAN 30 doit recevoir le 3^e^ réseau,
+  `10.60.16.0/21`.
+- **G0/1.40 : adresse de diffusion attribuée.** Dans `10.60.31.255`, les
+  11 bits hôtes sont tous à 1 : c’est la diffusion de `10.60.24.0/21`. Elle
+  ne peut pas servir de passerelle. Selon le plan, la passerelle est
+  `10.60.24.1`.
+
+Sur un routeur Cisco réel, IOS refuse en principe ces deux lignes et affiche
+un message d’erreur. Ne comptez pas sur ce contrôle : vérifiez le plan avant
+de coller le script.
+
+**4.3** Lignes corrigées, pour la même plateforme :
+
+```text
+interface GigabitEthernet0/1.30
+ ip address 10.60.16.1 255.255.248.0
+!
+interface GigabitEthernet0/1.40
+ ip address 10.60.24.1 255.255.248.0
+```
+
+**4.4** `255.255.255.252` donne /30, avec un pas de 4 dans le 4^e^ octet. Le
+plus grand multiple de 4 inférieur ou égal à 6 est 4. Le réseau est
+`192.168.254.4` et la diffusion `192.168.254.7`. Les deux adresses
+utilisables sont `.5` et `.6`. Le routeur a `.6` : l’équipement d’en face
+prend **`192.168.254.5`**.
+
+### Exercice 5
+
+**5.1** 24 + 5 = **/29**. On obtient 2^5^ = **32 sous-réseaux**. Il reste
+8 − 5 = 3 bits hôtes, soit 2^3^ − 2 = **6 hôtes** par sous-réseau.
+
+Le piège : retirer 2 au nombre de sous-réseaux. Le « − 2 » ne concerne que
+les adresses d’hôtes, pas les sous-réseaux.
+
+**5.2** Chaque sous-réseau perd 2 adresses : son réseau et sa diffusion. Au
+total, 32 × 2 = **64 adresses** ne vont à aucun hôte. Le /24 non découpé
+n’en perd que 2. Le découpage coûte donc 62 adresses de plus : il reste
+32 × 6 = 192 hôtes utilisables au lieu de 254.
+
+**5.3** Un /23 a 32 − 23 = **9 bits hôtes de départ**. Le contrôle est donc
+b + h ≤ 9.
+
+- **Cas 1.** Sous-réseaux : 2^2^ = 4, donc b = 2. Hôtes : 100 + 1 = 101
+  adresses ; h = 6 donne 62, trop peu ; h = 7 donne 126, suffisant.
+  Contrôle : 2 + 7 = 9 ≤ 9. **Possible** : 23 + 2 = /25.
+- **Cas 2.** Sous-réseaux : 2^1^ = 2 ne suffit pas, 2^2^ = 4 ≥ 3, donc b = 2.
+  Hôtes : 130 + 1 = 131 adresses ; h = 7 donne 126, trop peu ; h = 8 donne
+  254, suffisant. Contrôle : 2 + 8 = 10 > 9. **Impossible** : il manque un
+  bit.
+
+| Cas | b | h | b + h | Possible ? |
+|:-:|:-:|:-:|:-:|:-:|
+| 1 | 2 | 7 | 9 | oui, /25 |
+| 2 | 2 | 8 | 10 | non |
+
+**5.4** Le collègue calcule 3 × 131 = 393 adresses. Le /23 en compte
+2^9^ = 512. Il conclut que le découpage est possible. Il a **tort**. En
+découpage égal, chaque sous-réseau est un bloc de 2^h^ adresses. Ici, chaque
+bloc fait 2^8^ = 256 adresses. Trois blocs de 256 font déjà 768 adresses,
+plus que 512. Additionner les besoins ne suffit pas : seul le contrôle
+b + h ≤ bits hôtes de départ fait foi.
+
+### Exercice 6
+
+**6.1** Le 11^e^ sous-réseau commence en 10 × 4 = 40 dans le 3^e^ octet. La
+plage du bâtiment D est **`172.16.40.0/22`**. Le réseau suivant est
+`172.16.44.0` : la diffusion vaut **`172.16.43.255`**. Il y a
+32 − 22 = **10 bits hôtes de départ**.
+
+**6.2 — A. Trouver le masque.** Le plus gros besoin est le Wi-Fi.
+
+- **Étape 1** : 110 + 1 = 111 adresses.
+- **Étape 2** : h = 6 donne 62, trop peu ; h = 7 donne 126, suffisant.
+  Donc h = 7.
+- **Étape 3** : b = 10 − 7 = 3, soit 2^3^ = **8 sous-réseaux**.
+- **Étape 4** : 22 + 3 = **/25**. Le 4^e^ octet du masque vaut `10000000`
+  = 128 : masque **`255.255.255.128`**.
+
+Contrôle avec les 5 VLAN : 2^2^ = 4 ne suffit pas, 2^3^ = 8 ≥ 5, donc
+b = 3. Puis 3 + 7 = 10 ≤ 10 : le découpage est possible, tout juste.
+
+**6.3** L’octet significatif est maintenant le **4^e^** :
+`255.255.255.128`. Le pas vaut 256 − 128 = **128**. La taille de bloc vaut
+2^7^ = **128 adresses**. Les deux sont égaux, car l’octet significatif est
+le 4^e^.
+
+**6.4 — B. Trouver les bornes.** Le pas de 128 se lit dans le 4^e^ octet.
+Tous les deux blocs, le 3^e^ octet augmente de 1. Les réseaux sont
+`.40.0`, `.40.128`, `.41.0`, `.41.128`, `.42.0`, `.42.128`, `.43.0` et
+`.43.128`.
+
+Dans chaque ligne, seul le 4^e^ octet change après le réseau : le tableau
+ne donne que lui.
+
+| VLAN | Réseau | Passerelle | Plage DHCP | Diffusion |
+|:-:|:---|:---|:---|:---|
+| 10 | `172.16.40.0/25` | `.1` | `.2` à `.126` | `.127` |
+| 20 | `172.16.40.128/25` | `.129` | `.130` à `.254` | `.255` |
+| 30 | `172.16.41.0/25` | `.1` | `.2` à `.126` | `.127` |
+| 40 | `172.16.41.128/25` | `.129` | `.130` à `.254` | `.255` |
+| 99 | `172.16.43.128/25` | `.129` | `.130` à `.254` | `.255` |
+
+Chaque sous-réseau offre 126 adresses utilisables. Le Wi-Fi en utilise
+111 : il tient.
+
+**6.5** Non, elle ne convient pas.
+
+```text
+140     = 1|0001100
+masque  = 1|0000000   (/25 : 128)
+ET      = 1|0000000  = 128
+```
+
+L’adresse est dans `172.16.41.128/25`, le sous-réseau du VLAN 40. La caméra
+ne joindrait pas sa passerelle `172.16.41.1`, qui est dans un autre
+sous-réseau. Il faut une adresse du VLAN 30, de `172.16.41.2` à
+`172.16.41.126`.
+Retirez cette adresse de la plage DHCP (exclusion). Sinon, le serveur
+pourrait la donner à un autre poste.
+
+**6.6** Les 5^e^, 6^e^ et 7^e^ sous-réseaux restent libres :
+`172.16.42.0/25`, `172.16.42.128/25` et `172.16.43.0/25`.
+
+### Exercice 7
+
+On compare les deux adresses en binaire. Les deux premiers octets sont
+identiques : 16 bits communs. Dans le 3^e^ octet :
+
+```text
+13  = 000011|01
+14  = 000011|10
+```
+
+Les 6 premiers bits sont communs ; le 7^e^ diffère. Le plus long préfixe
+commun est donc 16 + 6 = **/22**. Le réseau garde ces 6 bits et met les
+autres à 0 : `00001100` = 12. Le sous-réseau est **`10.99.12.0/22`**, de
+diffusion **`10.99.15.255`**.
+
+Vérification avec le pas de 4 : 12 ≤ 13 et 14 < 16. Avec /23, le pas vaut
+2 : 13 est dans `10.99.12.0/23` et 14 dans `10.99.14.0/23`. Les adresses
+sont alors séparées.
+
+## Synthèse
+
+**Les méthodes à retenir**
+
+- **A. Le masque.** Besoin en sous-réseaux : plus petit b tel que
+  2^b^ ≥ N. Besoin en hôtes : plus petit h tel que 2^h^ − 2 ≥ besoin,
+  passerelle comptée. L’autre valeur se déduit des bits hôtes de départ.
+- **Contrôle b + h ≤ bits hôtes de départ** : 8 pour un /24, 9 pour un /23,
+  12 pour un /20, 16 pour un /16.
+- **B. Les bornes.** Bits hôtes à 0 : adresse réseau. Bits hôtes à 1 :
+  diffusion. Quand l’octet significatif est le 3^e^, les bits hôtes
+  continuent dans le 4^e^ octet.
+- **Pas = 256 − octet significatif.** **Taille de bloc = 2^h^.** Ils sont
+  égaux au 4^e^ rang. Au 3^e^ rang, la taille de bloc vaut pas × 256.
+- **Première adresse libre = diffusion + 1.** En découpage égal, c’est
+  l’adresse réseau du bloc suivant, jamais un hôte.
+- **Réserve de croissance** : calculez le masque sur le besoin futur, pas
+  sur le besoin actuel.
+
+**Les erreurs fréquentes**
+
+| Erreur | Le bon réflexe |
+|:---|:---|
+| Confondre pas et taille de bloc | Au 3^e^ rang, multipliez le pas par 256. |
+| Juger une adresse sur son seul 4^e^ octet | Regardez tous les bits hôtes, y compris ceux du 3^e^ octet. |
+| Oublier la passerelle | Ajoutez-la au besoin avant l’étape 2, sauf si l’énoncé dit « passerelle comprise ». |
+| Retirer 2 au nombre de sous-réseaux | 2^b^ sous-réseaux ; le « − 2 » ne vaut que pour les hôtes. |
+| Additionner les besoins pour juger la faisabilité | Faites le contrôle b + h ≤ bits hôtes de départ. |
+| Mettre deux interfaces dans le même sous-réseau | Calculez le réseau de chaque adresse avant de configurer. |
+
+## Pour aller plus loin
+
+**Question supplémentaire.** Dans le bâtiment D, le Wi-Fi doit passer à au
+moins 130 postes et la passerelle. Les autres besoins ne changent pas. Le
+découpage égal de `172.16.40.0/22` en 5 sous-réseaux reste-t-il possible ?
+
+**Réponse.** Non. 130 + 1 = 131 adresses demandent h = 8, car h = 7 n’offre
+que 126 adresses. Les 5 VLAN demandent toujours b = 3. Contrôle :
+3 + 8 = 11 > 10. Il manque un bit. Deux solutions : demander une plage plus
+grande, comme un /21 à 11 bits hôtes, ou réduire le nombre de sous-réseaux.
+Le cours VLSM vous montrera une troisième voie : des sous-réseaux de tailles
+différentes, chacun ajusté à son besoin.
+
+Sources :
+
+- [RFC 950 — Internet Standard Subnetting Procedure](https://www.rfc-editor.org/rfc/rfc950.html),
+  qui a introduit le découpage en sous-réseaux.
+- [RFC 4632 — CIDR](https://www.rfc-editor.org/rfc/rfc4632.html), qui définit
+  la notation /n.
+- [RFC 1918 — adresses privées](https://www.rfc-editor.org/rfc/rfc1918.html),
+  dont les plages `10.0.0.0/8`, `172.16.0.0/12` et `192.168.0.0/16` utilisées
+  dans cette série.

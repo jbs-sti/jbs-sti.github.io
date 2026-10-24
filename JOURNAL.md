@@ -11,7 +11,8 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 - Série subnetting / VLSM du chapitre 02 BTS2 : cours subnetting (PR #32),
   fiche méthode subnetting (`fiche-subnetting-methode`, order 15 ; longueur
-  à contrôler sur le PDF de la CI), puis exercices 1 et 2, TP subnetting +
+  à contrôler sur le PDF de la CI), exercices 1 (PR #34) et 2
+  (`exercices-subnetting-approfondissement`, order 17), puis TP subnetting +
   DHCP, cours VLSM et sa suite.
 
 **À faire**
@@ -107,6 +108,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Relance Codex : non (corrections ponctuelles)
 - Pull request : #31
 - Points à relire par l'enseignant : durée (4 h serrées), panne sur FW G0/1, `ipconfig /renew`, renumérotation à venir (TP 5 → TP 6)
+
+### 2026-10-24 — cours/bts2-exercices-subnetting-2
+
+- Ressource : bts2/reseaux/02-subnetting-vlsm/exercices-subnetting-approfondissement/index.qmd (référence imitée : exercices-subnetting-entrainement), 6 exercices hors /24 (/22, /20, /23, /21, /25) et un défi, avec corrigé, 1 h 50
+- Vérificateur : CONFORME au 1er passage sous réserve de 6 constats (corrigé 6.6 contradictoire, gabarit 1.3 révélateur, phrase IOS, masque du plan, liaison /30 sortie de la plage du site, exercice 6 trop long) ; CONFORME après Codex (RFC 1918 complétée)
+- Codex : 0 constat A, 1 réécriture
+- Réécritures gardées : R1 ; annulées : aucune
+- Relance Codex : non
+- Pull request : #35
+- Points à relire par l'enseignant : durée pour un groupe faible, refus par IOS des lignes du corrigé 4.2 (« en principe », non testé dans Packet Tracer)
 
 ### 2026-10-24 — cours/bts2-tp-ospf
 
