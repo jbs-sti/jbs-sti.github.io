@@ -33,8 +33,9 @@ Les commandes visent **Cisco Packet Tracer** : commutateur **2960**
 
 ## Situation de départ
 
-Dans un lycée, administration et élèves partagent le même commutateur, donc
-les mêmes diffusions.
+Dans un lycée, administration et élèves partagent le même commutateur. Au
+départ, tous ses ports sont dans le même VLAN, le VLAN 1 par défaut : tous
+les postes reçoivent donc les mêmes diffusions.
 
 On veut séparer deux réseaux sans acheter un second commutateur :
 
@@ -45,7 +46,7 @@ On veut séparer deux réseaux sans acheter un second commutateur :
 | 99 | Gestion, VLAN natif | `192.168.99.0/24` | `192.168.99.1` | aucun port d’accès |
 
 Le commutateur SW1 prend l’adresse `192.168.99.2` pour son administration à
-distance. Le routeur R1 permettra aux deux VLAN d’échanger, sous contrôle.
+distance. Le routeur R1 permettra aux deux VLAN d’échanger.
 
 ![Topologie du routeur sur un bâton : un routeur, un commutateur, un PC par VLAN.](img/topologie.svg){fig-alt="En haut, le routeur R1, un Cisco 2911. Son interface G0/0 porte trois sous-interfaces : G0/0.10, dot1Q 10, adresse 192.168.10.1/24 ; G0/0.20, dot1Q 20, adresse 192.168.20.1/24 ; G0/0.99, dot1Q 99 natif, adresse 192.168.99.1/24. Un lien trunk 802.1Q, dessiné en double trait épais, relie G0/0 du routeur au port Gi0/1 du commutateur SW1, un Cisco 2960 d’adresse 192.168.99.2 dans le VLAN 99. Le trunk transporte les VLAN 10, 20 et 99, avec le VLAN 99 comme VLAN natif. En bas à gauche, PC-A, VLAN 10 Administration, adresse 192.168.10.10/24, passerelle 192.168.10.1, est relié au port d’accès Fa0/1 par un trait fin plein. En bas à droite, PC-E, VLAN 20 Élèves, adresse 192.168.20.10/24, passerelle 192.168.20.1, est relié au port d’accès Fa0/11 par un trait en tirets."}
 
@@ -54,7 +55,8 @@ distance. Le routeur R1 permettra aux deux VLAN d’échanger, sous contrôle.
 ### VLAN et domaine de diffusion
 
 Un **VLAN** (*Virtual LAN*) découpe un commutateur en plusieurs réseaux
-locaux logiques. Chaque VLAN forme un **domaine de diffusion** distinct. On
+locaux logiques. Chaque VLAN forme un **domaine de diffusion** distinct :
+une trame de diffusion reste dans ce VLAN, sans atteindre les autres VLAN. On
 lui associe en pratique **un sous-réseau IP**.
 
 ### Port d’accès et port trunk
@@ -62,8 +64,8 @@ lui associe en pratique **un sous-réseau IP**.
 - Un **port d’accès** appartient à un seul VLAN. Les trames y circulent sans
   étiquette. On y branche les PC, les imprimantes, les serveurs.
 - Un **port trunk** transporte plusieurs VLAN sur un seul lien. Chaque trame
-  y porte une étiquette qui indique son VLAN. On l’utilise entre
-  commutateurs, ou vers un routeur.
+  y porte une étiquette qui indique son VLAN, sauf celles du VLAN natif.
+  On l’utilise entre commutateurs, ou vers un routeur.
 
 ### L’étiquette 802.1Q
 
@@ -291,7 +293,8 @@ pouvoir revenir.
 
 ## Synthèse
 
-- Un VLAN = un domaine de diffusion = un sous-réseau IP.
+- Un VLAN est un domaine de diffusion ; il correspond en pratique à un
+  sous-réseau IP.
 - Port d’accès : un VLAN, sans étiquette. Port trunk : plusieurs VLAN,
   étiquetés 802.1Q (4 octets, VID de 12 bits, VLAN 1 à 4094).
 - VLAN natif : non étiqueté, 1 par défaut ; changez-le, à l’identique des
