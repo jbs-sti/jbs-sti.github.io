@@ -91,7 +91,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (2911 : `2900_universal_base_15.1.html`). Les sous-interfaces,
   `encapsulation dot1q <1-1005> [native]` et `passive-interface` sur une
   sous-interface sont documentés dans l'aide générale `CLI_routerIOS15.htm`.
-- Les TP BTS2 durent 4 h, suivent le réseau fil rouge du TP 3 et demandent un
+- Les TP BTS2 durent 4 h, suivent le réseau fil rouge du TP 4 et demandent un
   compte rendu (questions et captures) ; aucun corrigé n'est publié.
 - Pare-feu des TP : ASA 5506-X dans Packet Tracer.
 - Les séries d'exercices gardent un corrigé (décision de l'enseignant,

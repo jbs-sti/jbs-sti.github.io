@@ -26,8 +26,9 @@ lang: fr
 ## Objectifs et prérequis
 
 Vous allez construire dans Packet Tracer le réseau de l'entreprise **fil rouge** :
-VLAN, routage inter-VLAN, DHCP et routage statique jusqu'au pare-feu, avec le
-plan VLSM de l'exemple guidé du [cours VLSM](../cours-vlsm/index.qmd). La fiche de
+VLAN, routage inter-VLAN, DHCP et routage statique jusqu'au pare-feu. Les
+réseaux sont ceux de l'exemple guidé du [cours VLSM](../cours-vlsm/index.qmd) ;
+les adresses des interfaces suivent les conventions de ce TP. La fiche de
 commandes Cisco est autorisée.
 
 ## Situation de départ

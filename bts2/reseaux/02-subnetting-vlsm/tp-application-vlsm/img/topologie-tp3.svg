@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="820" height="440" viewBox="0 0 820 440" role="img" aria-labelledby="title desc">
-<title id="title">Topologie du TP 3</title>
+<title id="title">Topologie du TP 4</title>
 <desc id="desc">Internet, simulé par la Loopback0 203.0.113.1/32 de FW, est derrière le pare-feu FW. FW G0/0 est relié à R2 G0/1 par 192.168.10.228/30 ; R2 G0/0 est relié à R1 G0/1 par 192.168.10.224/30. R1 G0/0 est relié en trunk à SW1 G0/1 ; SW1 G0/2 est relié en trunk 802.1Q à SW2 G0/1. Sur SW2 : PC-P2 sur F0/2 en VLAN 10 et PC-I1 sur F0/21 en VLAN 30. Sur SW1 : PC-P1 sur F0/1 en VLAN 10 et PC-ADM sur F0/11 en VLAN 20.</desc>
 <rect width="820" height="440" fill="white"/>
 <g fill="none" stroke="#222" stroke-width="2">
