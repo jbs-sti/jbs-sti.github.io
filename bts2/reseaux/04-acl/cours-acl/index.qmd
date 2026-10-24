@@ -37,7 +37,9 @@ depuis un seul réseau.
 Ce cours relève de deux compétences du référentiel. C06, « Valider un
 système informatique », comprend la « sécurisation des réseaux (ACL, mots de
 passe, pare-feu) ». C09, « Installer un réseau informatique », comprend
-« pare-feu, ACL ».
+« pare-feu, ACL ». Source : référentiel du BTS CIEL (arrêté du 25 janvier
+2023), option A, compétence C06 p. 38 et C09 p. 40, lien dans « Pour aller
+plus loin ».
 
 Vous devez connaître le découpage VLSM, le routage inter-VLAN et OSPF. Le
 masque générique, vu avec OSPF, revient ici en force. Rappelez-vous aussi le
@@ -45,7 +47,7 @@ rôle des ports TCP et UDP.
 
 Les configurations utilisent **Cisco Packet Tracer 9.0.1**, avec des
 routeurs **Cisco 2911** sous **IOS 15.1**. Les commandes sont celles d'IOS,
-saisies dans l'onglet CLI de chaque routeur.
+saisies dans l'onglet CLI (interface en ligne de commande) de chaque routeur.
 
 ## Situation de départ
 
@@ -489,8 +491,8 @@ interface GigabitEthernet0/0.30
  ip access-group INVITES-IN in
 ```
 
-La dernière ligne n'autorise que les sources du VLAN 30. Un poste qui usurpe
-une autre adresse source est détruit par le refus implicite. Seule exception,
+La dernière ligne n'autorise que les sources du VLAN 30. Un paquet dont la
+source est usurpée est détruit par le refus implicite. Seule exception,
 une demande DHCP de `0.0.0.0` vers la diffusion : le routeur ne la transmet
 à aucun autre réseau.
 
@@ -833,6 +835,7 @@ ce paquet répond à une requête autorisée.
       ip access-list extended INVITES-WEB
        permit udp host 0.0.0.0 eq 68 host 255.255.255.255 eq 67
        permit udp 192.168.10.192 0.0.0.31 eq 68 host 192.168.10.222 eq 67
+       permit udp 192.168.10.192 0.0.0.31 eq 68 host 255.255.255.255 eq 67
        deny ip 192.168.10.192 0.0.0.31 192.168.10.0 0.0.0.255
        permit udp 192.168.10.192 0.0.0.31 any eq 53
        permit tcp 192.168.10.192 0.0.0.31 any eq 80
@@ -841,9 +844,11 @@ ce paquet répond à une requête autorisée.
        ip access-group INVITES-WEB in
       ```
 
-      La deuxième ligne laisse passer le renouvellement du bail. Il part de
-      l'adresse du poste vers la passerelle `.222`, une destination interne :
-      sans cette ligne, le `deny` du /24 le détruirait. Une seule commande
+      Les deuxième et troisième lignes laissent passer le renouvellement du
+      bail. Il part de l'adresse du poste vers la passerelle `.222`, une
+      destination interne : sans la deuxième ligne, le `deny` du /24 le
+      détruirait. Si ce renouvellement échoue, le poste diffuse sa demande
+      depuis son adresse : c'est la troisième ligne (RFC 2131, § 4.4.5). Une seule commande
       `ip access-group` est possible par sens : elle remplace `INVITES-IN`. Le trafic entre deux postes du VLAN 30 ne
       passe pas par R1 : la ligne `deny` du /24 ne le gêne pas.
    b. Le ping échoue. La requête est en ICMP : aucune ligne ne correspond,
@@ -937,6 +942,9 @@ ce paquet répond à une requête autorisée.
   les ports UDP 67 et 68.
 - [RFC 2328 — OSPF Version 2](https://www.rfc-editor.org/rfc/rfc2328.html) :
   OSPF utilise le protocole IP 89 et l'adresse `224.0.0.5`.
+- [Référentiel du BTS CIEL](https://referentiels-professionnels.eduscol.education.fr/referentiels_BTS/BTS_Cybersecurite_Informatique_reseaux_electronique.pdf)
+  (arrêté du 25 janvier 2023) : compétences C06, p. 38, et C09, p. 40,
+  de l'option A.
 - La référence des commandes intégrée à Packet Tracer, menu *Help*, pour le
   routeur 2911.
 - Prolongement dans Packet Tracer : protégez de la même façon les lignes VTY

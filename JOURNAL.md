@@ -20,6 +20,11 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Entrée `infra/ci-latex` : numéro de pull request à renseigner.
 - Décider d'un garde-fou côté PR sur les ancres (CODEOWNERS ou contrôle CI
   des chemins), branche `infra/` par l'enseignant.
+- `bts2/reseaux/04-acl/cours-acl` (brouillon) : fusionner la PR du TP OSPF
+  avant (lien vers le TP 4) ; relire le PDF de la CI ; confirmer dans Packet
+  Tracer les sorties `show access-lists` et `show ip interface`, `ssh -l`
+  depuis un PC, et le cas d'une ACL appliquée mais inexistante. Ensuite :
+  TP ACL.
 - `bts2/reseaux/03-routage-dynamique/cours-ospf` (brouillon) : relire le PDF
   de la CI ; confirmer dans Packet Tracer les sorties `show` (reconstituées).
 - `bts2/reseaux/01-vlan-inter-vlan/fiche-vlan-inter-vlan` (brouillon) :
@@ -42,6 +47,9 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (fait en classe), 02 VLSM, 03 routage dynamique (OSPF monozone), 04 ACL,
   05 NAT/PAT, 06 pare-feu et DMZ, 07 VPN, 08 redondance, 09 supervision,
   10 IPv6. Le routage statique est fait en classe. Plateforme : Packet Tracer.
+- Référentiel BTS CIEL (arrêté du 25 janvier 2023) consulté le 2026-10-24 sur
+  le PDF Eduscol (referentiels-professionnels.eduscol.education.fr) : ACL et
+  pare-feu en C06 (p. 38) et C09 (p. 40), niveau 3 ; NAT/PAT et VPN en C09.
 - Les commandes IOS se vérifient dans la référence de Packet Tracer :
   `C:\Program Files\Cisco Packet Tracer 9.0.1\help\default\commandReference\`
   (2911 : `2900_universal_base_15.1.html`).
@@ -84,6 +92,19 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Relance Codex : oui (correction de fond sur la distance administrative et la métrique)
 - Pull request : #26
 - Points à relire par l'enseignant : rendu PDF, sorties `show` à confirmer dans Packet Tracer, rôles DR/BDR dépendant de l'ordre de démarrage
+
+### 2026-10-24 — cours/bts2-acl
+
+- Ressource : bts2/reseaux/04-acl/cours-acl/index.qmd (référence imitée : bts2/reseaux/03-routage-dynamique/cours-ospf), avec 3 SVG et l'index du nouveau chapitre 04
+- Plan contrôlé par rapport au référentiel (C06, C09, C10) à la demande de l'enseignant ; SSH préféré à Telnet (SSH au niveau 4 en C09)
+- Commandes confirmées dans `CLI_routerIOS15.htm` (ACL numérotées et nommées, opérateurs de port, types ICMP) ; noms de ports et `established` non documentés, donc non utilisés
+- Vérificateur : CONFORME au 1er passage (6 À CORRIGER traités) ; CONFORME après chaque relecture Codex
+- Codex (1re relecture) : 4 constats A (dont 2 BLOQUANT), 1 réécriture ; tous corrigés par le rédacteur
+- Codex (relance) : 4 constats A (dont 2 BLOQUANT), 1 réécriture ; A1 (lien vers le TP 4) refusé, la cible arrive avec la PR du TP OSPF ; les autres corrigés
+- Réécritures gardées : R1 (1re, déplacée et condensée), R1 (relance) ; annulées : aucune
+- Relance Codex : oui (correction de fond sur la ligne DHCP)
+- Pull request : #<numéro>
+- Points à relire par l'enseignant : ordre de fusion (PR du TP OSPF d'abord), sorties `show` reconstituées, lignes DHCP du corrigé de l'exercice 3, rendu PDF
 
 ### 2026-10-24 — cours/bts1-retrait-demos
 
