@@ -110,7 +110,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Ressource : bts2/reseaux/02-subnetting-vlsm/tp-subnetting-dhcp/index.qmd
 - Fait : `draft: false`, par l'enseignant (commit, push et PR lancés par le chef de projet à sa demande)
 - Vérificateur, Codex : sans objet (métadonnée de publication)
-- Pull request : #37 (à confirmer)
+- Pull request : #37
 - Points à relire par l'enseignant : la page en ligne et son PDF ; points Packet Tracer restant dans « À faire »
 
 ### 2026-10-24 — cours/bts2-tp-subnetting-dhcp
