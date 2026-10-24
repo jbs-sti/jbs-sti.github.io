@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" role="img" aria-labelledby="title">
+<title id="title">Topologie de la partie 4 : VLAN 30 et DHCP assuré par R1</title>
+<rect width="960" height="560" fill="white"/>
+<g fill="white" stroke="#222" stroke-width="2">
+<rect x="130" y="230" width="150" height="50" rx="6" />
+<rect x="620" y="230" width="150" height="50" rx="6" />
+<path d="M280 250 L620 250" />
+<path d="M280 260 L620 260" />
+<rect x="15" y="390" width="120" height="44" rx="6" />
+<path d="M172.5 280 L75 390" />
+<rect x="145" y="390" width="120" height="44" rx="6" stroke-width="4"/>
+<path d="M205.0 280 L205 390" />
+<rect x="275" y="390" width="120" height="44" rx="6" stroke-dasharray="8 5"/>
+<path d="M237.5 280 L335 390" />
+<rect x="505" y="390" width="120" height="44" rx="6" />
+<path d="M662.5 280 L565 390" />
+<rect x="635" y="390" width="120" height="44" rx="6" stroke-dasharray="8 5"/>
+<path d="M695.0 280 L695 390" />
+<rect x="765" y="390" width="120" height="44" rx="6" stroke-dasharray="2 4" stroke-width="3"/>
+<path d="M727.5 280 L825 390" />
+<rect x="130" y="40" width="150" height="50" rx="6" />
+<path d="M200 90 L200 230" />
+<path d="M210 90 L210 230" />
+<rect x="20" y="524" width="30" height="18" rx="6" />
+<rect x="230" y="524" width="30" height="18" rx="6" stroke-dasharray="8 5"/>
+<rect x="460" y="524" width="30" height="18" rx="6" stroke-dasharray="2 4" stroke-width="3"/>
+<rect x="720" y="524" width="30" height="18" rx="6" stroke-width="4"/>
+</g>
+<g font-family="sans-serif" fill="#111">
+<text x="205" y="254" font-size="17" text-anchor="middle" font-weight="bold">SW-RDC</text>
+<text x="205" y="272" font-size="12" text-anchor="middle">2960-24TT</text>
+<text x="695" y="254" font-size="17" text-anchor="middle" font-weight="bold">SW-ETAGE</text>
+<text x="695" y="272" font-size="12" text-anchor="middle">2960-24TT</text>
+<text x="450" y="242" font-size="14" text-anchor="middle">trunk 802.1Q (VLAN 10, 20, 30)</text>
+<text x="290" y="280" font-size="13" text-anchor="start">Gi0/1</text>
+<text x="610" y="280" font-size="13" text-anchor="end">Gi0/1</text>
+<text x="75" y="418" font-size="16" text-anchor="middle" font-weight="bold">PC1</text>
+<text x="113.75" y="339.0" font-size="13" text-anchor="end">Fa0/1</text>
+<text x="75" y="456" font-size="14" text-anchor="middle">VLAN 10</text>
+<text x="75" y="476" font-size="14" text-anchor="middle">DHCP</text>
+<text x="205" y="418" font-size="16" text-anchor="middle" font-weight="bold">SRV-DHCP</text>
+<text x="215.0" y="339.0" font-size="13" text-anchor="start">Fa0/5</text>
+<text x="205" y="456" font-size="14" text-anchor="middle">VLAN 10</text>
+<text x="205" y="476" font-size="14" text-anchor="middle">192.168.10.61/26</text>
+<text x="205" y="496" font-size="13" text-anchor="middle">passerelle .62</text>
+<text x="335" y="418" font-size="16" text-anchor="middle" font-weight="bold">PC2</text>
+<text x="296.25" y="339.0" font-size="13" text-anchor="start">Fa0/11</text>
+<text x="335" y="456" font-size="14" text-anchor="middle">VLAN 20</text>
+<text x="335" y="476" font-size="14" text-anchor="middle">DHCP (relais)</text>
+<text x="565" y="418" font-size="16" text-anchor="middle" font-weight="bold">PC3</text>
+<text x="603.75" y="339.0" font-size="13" text-anchor="end">Fa0/2</text>
+<text x="565" y="456" font-size="14" text-anchor="middle">VLAN 10</text>
+<text x="565" y="476" font-size="14" text-anchor="middle">DHCP</text>
+<text x="695" y="418" font-size="16" text-anchor="middle" font-weight="bold">PC4</text>
+<text x="705.0" y="339.0" font-size="13" text-anchor="start">Fa0/12</text>
+<text x="695" y="456" font-size="14" text-anchor="middle">VLAN 20</text>
+<text x="695" y="476" font-size="14" text-anchor="middle">DHCP (relais)</text>
+<text x="825" y="418" font-size="16" text-anchor="middle" font-weight="bold">PC5</text>
+<text x="786.25" y="339.0" font-size="13" text-anchor="start">Fa0/21</text>
+<text x="825" y="456" font-size="14" text-anchor="middle">VLAN 30</text>
+<text x="825" y="476" font-size="14" text-anchor="middle">DHCP (R1)</text>
+<text x="205" y="64" font-size="17" text-anchor="middle" font-weight="bold">R1</text>
+<text x="205" y="82" font-size="12" text-anchor="middle">Cisco 2911</text>
+<text x="196" y="115" font-size="13" text-anchor="end">G0/0</text>
+<text x="196" y="222" font-size="13" text-anchor="end">Gi0/2</text>
+<text x="218" y="165" font-size="14" text-anchor="start">trunk 802.1Q</text>
+<text x="300" y="52" font-size="14" text-anchor="start">G0/0.10 — dot1Q 10 — 192.168.10.62/26</text>
+<text x="300" y="74" font-size="14" text-anchor="start">G0/0.20 — dot1Q 20 — 192.168.10.126/26 — relais DHCP</text>
+<text x="300" y="96" font-size="14" text-anchor="start">G0/0.30 — dot1Q 30 — 192.168.10.190/26 — serveur DHCP</text>
+<text x="58" y="538" font-size="13" text-anchor="start">VLAN 10 : cadre plein</text>
+<text x="268" y="538" font-size="13" text-anchor="start">VLAN 20 : cadre en tirets</text>
+<text x="498" y="538" font-size="13" text-anchor="start">VLAN 30 : pointillés épais</text>
+<text x="758" y="538" font-size="13" text-anchor="start">serveur : cadre épais</text>
+</g>
+</svg>
