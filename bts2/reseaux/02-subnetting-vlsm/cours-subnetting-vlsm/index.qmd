@@ -1,146 +1,280 @@
 ---
-title: "Sous-réseaux et VLSM : la méthode"
-description: "Calculer rapidement réseau, diffusion et plage d’une adresse IPv4, découper une plage en sous-réseaux égaux puis en VLSM."
+title: "Découper un réseau en sous-réseaux"
+description: "Découper une plage IPv4 en sous-réseaux de même taille par la méthode des bits empruntés, puis calculer le réseau, la plage utilisable et la diffusion de chacun."
 type: cours
 domaine: reseaux
 chapitre: "02 — Subnetting et VLSM"
 categories: [cours, reseaux]
-mots-cles: [IPv4, masque, préfixe, sous-réseau, taille de bloc, VLSM, diffusion]
+mots-cles: [IPv4, masque, préfixe, sous-réseau, subnetting, bits empruntés, bits hôtes, taille de bloc, diffusion, ET logique]
 objectifs:
   - "Convertir un préfixe /n en masque pointé et inversement."
-  - "Déterminer le réseau, la diffusion et la plage utilisable d’une adresse /n."
-  - "Découper une plage en N sous-réseaux égaux."
-  - "Construire un plan d’adressage VLSM à partir de besoins en postes."
+  - "Calculer les bits empruntés et les bits hôtes à partir d’un nombre de sous-réseaux ou d’un nombre d’hôtes."
+  - "Découper une plage en sous-réseaux égaux et donner, pour chacun, le réseau, la plage utilisable et la diffusion."
+  - "Retrouver le sous-réseau d’une adresse par le ET logique ou par le pas d’avancement."
 prerequis:
   - "Adressage IPv4 : notation pointée, rôle de l’adresse et du masque"
   - "Conversion binaire d’un octet"
+  - "Notions de VLAN et de DHCP"
 duree: "2 h"
 order: 10
-date-modified: 2026-10-23
+date-modified: 2026-10-24
 draft: false
 lang: fr
 ---
 
 ## Objectifs et prérequis
 
-À l’issue du cours, vous saurez calculer vite et sans erreur un sous-réseau
-IPv4. Vous saurez aussi bâtir un plan d’adressage VLSM, avec des sous-réseaux
-de tailles différentes, comme à l’épreuve E4.
+À l’issue du cours, vous saurez découper un réseau IPv4 en **sous-réseaux de
+même taille**. On appelle aussi ce découpage le *subnetting*. Pour chaque
+sous-réseau, vous saurez trouver l’adresse réseau, la plage utilisable et la
+diffusion, sans erreur.
+
+Vous suivrez toujours la même démarche, en deux temps.
+
+**A. Trouver le masque**, en quatre étapes. Leur ordre dépend du besoin :
+
+- besoin exprimé en **sous-réseaux** : on calcule d’abord les bits empruntés
+  b, puis les bits hôtes h :
+  **besoin → bits empruntés → bits hôtes → nouveau masque** ;
+- besoin exprimé en **hôtes** ou en adresses : on calcule d’abord h, puis b :
+  **besoin → bits hôtes → bits empruntés → nouveau masque**.
+
+**B. Trouver les bornes** de chaque sous-réseau : on met les bits hôtes à 0
+pour l’adresse réseau, puis à 1 pour la diffusion.
+
 Vous devez connaître la notation pointée et convertir un octet en binaire.
+Rappel : les huit bits d’un octet valent, de gauche à droite, 128, 64, 32, 16,
+8, 4, 2 et 1.
 
 ## Situation de départ
 
-L’entreprise fil rouge dispose de la plage `192.168.10.0/24`. Elle veut la
-partager entre cinq réseaux :
+Une agence de l’entreprise reçoit la plage `192.168.1.0/24`. Elle compte
+quatre services :
 
-| Réseau | Besoin |
-|:---|:---|
-| Production (VLAN 10) | 100 postes |
-| Administration (VLAN 20) | 50 postes |
-| Wi-Fi invité (VLAN 30) | 25 postes |
-| Liaison R1–R2 | 2 interfaces de routeur |
-| Liaison R2–FW | 2 interfaces de routeur |
+| Service | Postes |
+|:---|:-:|
+| Accueil | 20 |
+| Comptabilité | 35 |
+| Production | 50 |
+| Wi-Fi invité | 40 |
 
-Découper en cinq parts égales ne convient pas : la production manquerait
-d’adresses et les liaisons en gaspilleraient. Ce cours vous donne la méthode
-pour obtenir le plan utilisé au TP 3 :
+Aujourd’hui, tous les postes partagent un seul réseau. Un poste invité peut
+envoyer un message à l’adresse de **diffusion** (adresse qui désigne toutes les
+machines du réseau). Ce message atteint donc aussi la comptabilité. L’administrateur veut
+**un réseau par service**. Il pourra ainsi limiter les diffusions à chaque
+service et filtrer les échanges entre services.
 
-| Réseau | Sous-réseau | Passerelle |
-|:---|:---|:---|
-| Production | `192.168.10.0/25` | `192.168.10.126` |
-| Administration | `192.168.10.128/26` | `192.168.10.190` |
-| Wi-Fi invité | `192.168.10.192/27` | `192.168.10.222` |
-| Liaison R1–R2 | `192.168.10.224/30` | — |
-| Liaison R2–FW | `192.168.10.228/30` | — |
+Comment partager `192.168.1.0/24` en quatre réseaux de même taille ? Ce cours
+répond à la question pas à pas.
 
 ## Comprendre le mécanisme
 
 ### Partie réseau, partie hôte
 
-Dans `192.168.10.0/24`, le **/24** indique que les 24 premiers bits désignent
-le réseau. Les 8 bits restants désignent l’hôte. La longueur de la partie
-réseau, ici 24 bits, s’appelle la **longueur de préfixe**, ou simplement le
-**préfixe**.
+Regardez l’adresse `192.168.1.0/24`. Le **/24** indique que les 24 premiers
+bits désignent le réseau. Les 8 bits restants désignent l’hôte, c’est-à-dire
+la machine. La longueur de la partie réseau s’appelle la **longueur de
+préfixe**, ou simplement le **préfixe**.
 
-Le **masque** écrit la même information en notation pointée : des 1 pour la
-partie réseau, des 0 pour la partie hôte. Ainsi, /26 donne
-`11111111.11111111.11111111.11000000`, soit `255.255.255.192`.
-
-::: {.callout-note}
-## Adresse ET masque = adresse réseau
-
-Prenez `192.168.10.150/26` et appliquez le ET logique bit à bit : le résultat
-vaut 1 seulement si les deux bits valent 1. Seul le dernier octet change :
+Le **masque** donne la même information en notation pointée. Il contient des 1
+pour la partie réseau, puis des 0 pour la partie hôte :
 
 ```text
-150  = 1001 0110
-192  = 1100 0000
-ET   = 1000 0000  = 128
+/24  =  11111111.11111111.11111111.00000000  =  255.255.255.0
+/26  =  11111111.11111111.11111111.11000000  =  255.255.255.192
 ```
 
-Le poste appartient au réseau `192.168.10.128/26`.
-:::
+Pour passer du préfixe au masque, écrivez les 1, puis convertissez chaque
+octet. Pour passer du masque au préfixe, comptez les 1. Exemple :
+`255.255.255.224` se termine par 224 = `11100000`, soit 3 bits à 1. Le préfixe
+vaut 24 + 3 = **/27**.
+
+Un octet de masque ne peut prendre que neuf valeurs. Les 1 sont toujours à
+gauche :
+
+| Bits à 1 dans l’octet | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|:---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| Valeur de l’octet | 0 | 128 | 192 | 224 | 240 | 248 | 252 | 254 | 255 |
 
 ### Les quatre adresses d’un sous-réseau
 
-Avec h bits d’hôte (h = 32 − n), un sous-réseau contient **2^h^ adresses**.
-Deux sont réservées, il reste donc **2^h^ − 2 hôtes**.
+Prenez le réseau `192.168.1.64/26`. Il reste 32 − 26 = **6 bits hôtes**. On
+note h ce nombre : **h = 32 − n**, où n est le préfixe.
 
-| Adresse | Bits d’hôte | Exemple `192.168.10.128/26` |
+Les bits hôtes donnent les bornes du réseau :
+
+- **bits hôtes tous à 0** : l’adresse **réseau** ;
+- **bits hôtes tous à 1** : l’adresse de **diffusion** (*broadcast*).
+
+Voici le dernier octet, avec un trait entre partie réseau et partie hôte :
+
+```text
+Réseau     01|000000  =  64    ->  192.168.1.64
+Diffusion  01|111111  = 127    ->  192.168.1.127
+```
+
+Avec h bits hôtes, un sous-réseau contient **2^h^ adresses**. Les adresses
+réseau et diffusion sont réservées. Il reste donc **2^h^ − 2 adresses
+utilisables** pour les hôtes.
+
+| Adresse | Bits hôtes | Exemple `192.168.1.64/26` |
 |:---|:---|:---|
-| Réseau | tous à 0 | `192.168.10.128` |
-| Première utilisable | 0…01 | `192.168.10.129` |
-| Dernière utilisable | 1…10 | `192.168.10.190` |
-| Diffusion | tous à 1 | `192.168.10.191` |
+| Réseau | tous à 0 | `192.168.1.64` |
+| Première utilisable | 0…01 | `192.168.1.65` |
+| Dernière utilisable | 1…10 | `192.168.1.126` |
+| Diffusion | tous à 1 | `192.168.1.127` |
 
-Ici h = 32 − 26 = 6 : 2^6^ = 64 adresses, 62 hôtes.
+Ici h = 6 : 2^6^ = 64 adresses, dont 62 utilisables. Les adresses utilisables
+vont du réseau + 1 à la diffusion − 1.
 
-### La taille de bloc
+### Emprunter des bits
 
-Inutile de tout passer en binaire. Repérez l’**octet significatif** du masque :
-le premier octet, en partant de la gauche, qui n’est pas 255. C’est l’octet où
-le masque passe des 1 aux 0. Calculez ensuite :
+Pour créer des sous-réseaux, on prend des bits à la partie hôte et on les donne
+à la partie réseau. Ce sont les **bits empruntés**. On note b leur nombre.
 
-**taille de bloc = 256 − octet significatif**
+- b bits empruntés donnent **2^b^ sous-réseaux** ;
+- le préfixe s’allonge de b bits ;
+- il reste moins de bits hôtes, donc moins d’hôtes par sous-réseau.
 
-Les adresses réseau sont les multiples de cette taille, dans cet octet.
-Les octets suivants valent 0. Pour
-/26, le bloc vaut 256 − 192 = 64. Les réseaux commencent en .0, .64, .128 et
-.192.
+Partez de `/24`. Emprunter 1 bit donne 2 sous-réseaux en /25. Emprunter 2 bits
+donne 4 sous-réseaux en /26. Chaque bit emprunté double le nombre de
+sous-réseaux et divise leur taille par deux.
+
+### Exemple guidé 1 : quatre sous-réseaux
+
+Revenons à l’agence : `192.168.1.0/24` doit donner **4 sous-réseaux égaux**.
+Seul le dernier octet change, nous travaillons donc sur lui.
+
+**A. Trouver le masque.** Le besoin porte sur les sous-réseaux : on calcule
+d’abord b, puis h.
+
+**Étape 1 — Besoin.** Il faut 4 sous-réseaux.
+
+**Étape 2 — Bits empruntés.** On cherche le plus petit b tel que 2^b^ ≥ 4.
+Avec b = 1, 2^1^ = 2 : pas assez. Avec b = 2, 2^2^ = 4 : cela suffit. On
+emprunte **2 bits**.
+
+**Étape 3 — Bits hôtes.** Il y avait 8 bits hôtes. Il en reste 8 − 2 =
+**6 bits hôtes**. Chaque sous-réseau offre 2^6^ − 2 = **62 adresses
+utilisables**. La production, avec 50 postes et sa passerelle, y tient.
+
+**Étape 4 — Nouveau masque.** Le préfixe devient 24 + 2 = **/26**. Le dernier
+octet du masque vaut `11000000` = 128 + 64 = 192. Le masque est
+**`255.255.255.192`**.
+
+**B. Trouver les bornes.** Les 2 bits empruntés numérotent les
+sous-réseaux : ils prennent les quatre valeurs 00, 01, 10 et 11.
+
+**B1 — Bits hôtes à 0 : les adresses réseau.**
+
+```text
+Sous-réseau   empruntés | hôtes   dernier octet
+1             00        | 000000  =   0
+2             01        | 000000  =  64
+3             10        | 000000  = 128
+4             11        | 000000  = 192
+```
+
+**B2 — Bits hôtes à 1 : les diffusions.** Gardez les bits empruntés et
+mettez les bits hôtes à 1 :
+
+```text
+Sous-réseau   empruntés | hôtes   dernier octet
+1             00        | 111111  =  63
+2             01        | 111111  = 127
+3             10        | 111111  = 191
+4             11        | 111111  = 255
+```
+
+Le plan complet tient dans un tableau :
+
+| Service | Réseau | Première utilisable | Dernière utilisable | Diffusion |
+|:---|:---|:---|:---|:---|
+| Accueil | `192.168.1.0/26` | `.1` | `.62` | `.63` |
+| Comptabilité | `192.168.1.64/26` | `.65` | `.126` | `.127` |
+| Production | `192.168.1.128/26` | `.129` | `.190` | `.191` |
+| Wi-Fi invité | `192.168.1.192/26` | `.193` | `.254` | `.255` |
+
+Toutes les adresses commencent par `192.168.1`. Observez les colonnes Réseau
+et Diffusion. Chaque réseau commence juste après la diffusion du précédent :
+63 + 1 = 64, 127 + 1 = 128, 191 + 1 = 192.
+
+### La taille de bloc et le pas d’avancement
+
+Dans l’exemple, chaque sous-réseau contient 64 adresses. Ce nombre est la
+**taille de bloc** : le nombre d’adresses d’un sous-réseau, soit
+2^h^ = 2^6^ = 64.
+
+Les réseaux commencent en 0, 64, 128 et 192 : ils avancent de 64 en 64. Cet
+écart entre deux réseaux, lu dans un octet, est le **pas d’avancement**. Il
+permet de trouver les réseaux sans binaire. Repérez l’**octet significatif** du
+masque : le premier octet, en partant de la gauche, qui n’est pas 255. Puis
+calculez :
+
+**pas d’avancement = 256 − octet significatif**
+
+Pour /26 : 256 − 192 = 64. Les adresses réseau sont les multiples du pas, dans
+l’octet significatif. Les octets suivants valent 0.
+
+Taille de bloc et pas sont liés :
+
+- octet significatif au **4^e^ rang** : le pas et la taille de bloc sont
+  égaux (64 et 64 pour /26) ;
+- octet significatif au **3^e^ rang** : la taille de bloc vaut
+  **pas × 256**, car chaque valeur du 3^e^ octet couvre 256 adresses.
+
+Deux règles en découlent :
+
+- **première adresse libre = diffusion précédente + 1** ;
+- **diffusion = réseau suivant − 1**.
 
 L’octet significatif n’est pas toujours le dernier. Prenez `172.20.37.10/20` :
 
 - /20 donne `255.255.240.0` : l’octet significatif est le **troisième** ;
-- bloc = 256 − 240 = 16, donc réseaux en 0, 16, 32, 48… dans le 3^e^ octet ;
+- pas = 256 − 240 = 16, donc réseaux en 0, 16, 32, 48… dans le 3^e^ octet ;
 - 37 est entre 32 et 48 : réseau `172.20.32.0/20` ;
 - diffusion : `172.20.47.255`, juste avant le réseau suivant `172.20.48.0`.
 
-### Mémo /24 à /30
+Ici, le pas vaut 16 dans le 3^e^ octet. La taille de bloc vaut
+16 × 256 = 4 096 adresses, soit 2^12^, car h = 12.
 
-| Préfixe | Masque | Bloc | Adresses | Hôtes utilisables |
-|:-:|:---|:-:|:-:|:-:|
-| /24 | `255.255.255.0` | 256 | 256 | 254 |
-| /25 | `255.255.255.128` | 128 | 128 | 126 |
-| /26 | `255.255.255.192` | 64 | 64 | 62 |
-| /27 | `255.255.255.224` | 32 | 32 | 30 |
-| /28 | `255.255.255.240` | 16 | 16 | 14 |
-| /29 | `255.255.255.248` | 8 | 8 | 6 |
-| /30 | `255.255.255.252` | 4 | 4 | 2 |
+### Exemple guidé 2 : partir du nombre d’hôtes
 
-Un octet plus tôt, seuls le masque et la taille de bloc se transposent : /20
-donne `255.255.240.0` et un bloc de 16 dans le 3^e^ octet, comme /28 donne
-`255.255.255.240`. Le nombre d’adresses, lui, change : un /20 compte
-2^12^ = 4 096 adresses, soit 4 094 hôtes.
+Le besoin peut aussi porter sur les hôtes. Une salle de formation reçoit
+`192.168.1.0/24`. Elle veut des sous-réseaux égaux d’**au moins 25 postes**,
+plus la passerelle. Combien de sous-réseaux obtiendra-t-elle ?
 
-### Découper en sous-réseaux égaux
+**A. Trouver le masque.** Le besoin porte sur les hôtes : on calcule d’abord
+h, puis b.
 
-Deux points de départ sont possibles.
+**Étape 1 — Besoin.** 25 postes + 1 passerelle = **26 adresses**.
 
-- **On connaît le nombre N de sous-réseaux.** Empruntez b bits à la partie
-  hôte, avec 2^b^ ≥ N. Exemple : 5 sous-réseaux dans un /24 donnent b = 3
-  (2^3^ = 8), donc des /27.
-- **On connaît le nombre d’hôtes par sous-réseau.** Cherchez le plus petit h
-  tel que 2^h^ − 2 ≥ besoin. Le préfixe vaut 32 − h.
+**Étape 2 — Bits hôtes.** On cherche le plus petit h tel que 2^h^ − 2 ≥ 26 :
+
+- h = 4 : 2^4^ − 2 = 14, insuffisant ;
+- h = 5 : 2^5^ − 2 = 30, suffisant.
+
+On garde **5 bits hôtes**.
+
+**Étape 3 — Bits empruntés.** Il y avait 8 bits hôtes. On en emprunte
+8 − 5 = **3**. On obtient 2^3^ = **8 sous-réseaux**.
+
+**Étape 4 — Nouveau masque.** 24 + 3 = **/27**. Le dernier octet vaut
+`11100000` = 224 : masque **`255.255.255.224`**. Le pas vaut 256 − 224 = 32.
+
+**B. Trouver les bornes.** Les réseaux commencent en 0, 32, 64, 96, 128, 160,
+192 et 224. Mettons les bits hôtes à 0, puis à 1, pour le premier, le deuxième
+et le dernier :
+
+```text
+Sous-réseau   empruntés | hôtes   réseau   diffusion
+1             000       | 00000   =   0    000|11111 =  31
+2             001       | 00000   =  32    001|11111 =  63
+8             111       | 00000   = 224    111|11111 = 255
+```
+
+Le premier sous-réseau va de `192.168.1.0` à `192.168.1.31`. La première
+adresse libre est 31 + 1 = 32 : c’est bien le réseau suivant.
 
 ::: {.callout-warning}
 ## Piège : la passerelle compte
@@ -150,37 +284,60 @@ La passerelle occupe une adresse du sous-réseau. Lisez bien l’énoncé.
 « 30 postes plus la passerelle » : 31 adresses, il faut un /26.
 :::
 
-### VLSM : des blocs de tailles différentes
+### Mémo /24 à /30
 
-Le **VLSM** (*Variable Length Subnet Mask*) donne à chaque réseau la taille
-dont il a besoin. La méthode tient en trois règles :
+Le tableau part d’un /24. Les bits empruntés et le nombre de sous-réseaux
+valent pour ce point de départ.
 
-1. trier les besoins du plus grand au plus petit ;
-2. placer chaque bloc sur une adresse multiple de sa taille ;
-3. enchaîner : le bloc suivant commence juste après la diffusion du précédent.
+| Préfixe | Masque | Bits empruntés | Sous-réseaux | Bits hôtes | Bloc | Hôtes utilisables |
+|:-:|:---|:-:|:-:|:-:|:-:|:-:|
+| /24 | `255.255.255.0` | 0 | 1 | 8 | 256 | 254 |
+| /25 | `255.255.255.128` | 1 | 2 | 7 | 128 | 126 |
+| /26 | `255.255.255.192` | 2 | 4 | 6 | 64 | 62 |
+| /27 | `255.255.255.224` | 3 | 8 | 5 | 32 | 30 |
+| /28 | `255.255.255.240` | 4 | 16 | 4 | 16 | 14 |
+| /29 | `255.255.255.248` | 5 | 32 | 3 | 8 | 6 |
+| /30 | `255.255.255.252` | 6 | 64 | 2 | 4 | 2 |
 
-Appliquons-la au fil rouge. On compte une adresse de plus pour la passerelle.
+Un octet plus tôt, seuls le masque et le pas se transposent : /20 donne
+`255.255.240.0` et un pas de 16 dans le 3^e^ octet, comme /28 donne
+`255.255.255.240`. Le nombre d’adresses, lui, change : un /20 compte
+2^12^ = 4 096 adresses, soit 4 094 hôtes.
 
-| Réseau | Adresses | h | Bloc | Sous-réseau |
-|:---|:-:|:-:|:-:|:---|
-| Production | 101 | 7 | 128 | `.0/25` |
-| Administration | 51 | 6 | 64 | `.128/26` |
-| Wi-Fi invité | 26 | 5 | 32 | `.192/27` |
-| R1–R2 | 2 | 2 | 4 | `.224/30` |
-| R2–FW | 2 | 2 | 4 | `.228/30` |
+### Le ET logique : retrouver le réseau d’une adresse
 
-Toutes les adresses commencent par `192.168.10`. Chaque début est bien un
-multiple de son bloc : 0, 128, 192, 224 et 228 (228 = 57 × 4). Chaque bloc
-commence juste après la fin du précédent. Masques, plages et diffusions sont à
-compléter au TP 3.
+Un poste a l’adresse `192.168.1.150/26`. Dans quel sous-réseau se trouve-t-il ?
+Le poste lui-même se pose la question avant chaque envoi. Si le destinataire
+est dans son réseau, il lui envoie la trame directement. Sinon, il passe par
+la passerelle.
+
+Pour répondre, on applique le **ET logique** bit à bit entre l’adresse et le
+masque. Le résultat vaut 1 seulement si les deux bits valent 1. Seul le
+dernier octet change :
+
+```text
+150  = 10|010110
+192  = 11|000000
+ET   = 10|000000  = 128
+```
+
+Le ET garde les bits réseau et met les bits hôtes à 0. Le poste appartient au
+réseau `192.168.1.128/26` : la production, dans l’exemple guidé 1.
 
 ::: {.callout-note}
 ## À retenir
 
-- h = 32 − n ; 2^h^ adresses ; 2^h^ − 2 hôtes.
-- Bloc = 256 − octet significatif du masque ; réseaux = multiples du bloc.
-- Diffusion = réseau suivant − 1.
-- VLSM : du plus grand au plus petit, chaque bloc sur un multiple de sa taille.
+- Besoin en sous-réseaux : besoin → bits empruntés → bits hôtes → nouveau
+  masque.
+- Besoin en hôtes : besoin → bits hôtes → bits empruntés → nouveau masque.
+- N sous-réseaux : plus petit b tel que 2^b^ ≥ N.
+- Besoin en adresses : plus petit h tel que 2^h^ − 2 ≥ besoin.
+- h = 32 − n ; 2^h^ adresses ; 2^h^ − 2 utilisables.
+- Bits hôtes à 0 : réseau. Bits hôtes à 1 : diffusion.
+- Taille de bloc = 2^h^ adresses. Pas = 256 − octet significatif ;
+  réseaux = multiples du pas.
+- Première adresse libre = diffusion précédente + 1.
+- Adresse ET masque = adresse réseau.
 :::
 
 ## Observer et appliquer
@@ -190,23 +347,26 @@ compléter au TP 3.
 Méthode, appliquée à `172.16.5.77/28` :
 
 1. **Masque.** /28 donne `255.255.255.240` ; octet significatif : le 4^e^.
-2. **Bloc.** 256 − 240 = 16.
+2. **Pas.** 256 − 240 = 16.
 3. **Réseau.** Plus grand multiple de 16 inférieur ou égal à 77 : 64.
    Réseau `172.16.5.64/28`.
 4. **Diffusion.** Réseau suivant 80, moins 1 : `172.16.5.79`.
 5. **Plage utilisable.** `172.16.5.65` à `172.16.5.78`, soit 14 hôtes.
 
+Le ET logique confirme le réseau : 77 = `0100|1101`, 240 = `1111|0000`, et le
+ET donne `0100|0000` = 64.
+
 ### Lire une configuration
 
-**Plateforme : Cisco IOS.** Voici l’extrait de configuration d’un routeur
-relié à un fournisseur d’accès :
+**Plateforme : Cisco Packet Tracer, routeur 2911 sous IOS.** Voici l’extrait
+de configuration d’un routeur relié à un fournisseur d’accès :
 
 ```text
 interface GigabitEthernet0/0
  ip address 203.0.113.253 255.255.255.252
 ```
 
-Le masque `255.255.255.252` correspond à /30, donc à un bloc de 4. Le multiple
+Le masque `255.255.255.252` correspond à /30, donc à un pas de 4. Le multiple
 de 4 juste inférieur à 253 est 252. On obtient :
 
 - réseau `203.0.113.252/30` ;
@@ -220,55 +380,122 @@ dans les exemples.
 
 ::: {.content-visible when-format="html"}
 <details>
-<summary>Le poste 192.168.10.200/27 est-il dans le Wi-Fi invité ?</summary>
-<p>Oui. Le bloc vaut 32 ; le multiple de 32 inférieur à 200 est 192. Le poste est dans 192.168.10.192/27, le réseau du Wi-Fi invité.</p>
+<summary>Dans le plan de l’agence, à quel sous-réseau appartient 192.168.1.100 ?</summary>
+<p>Au 2e, 192.168.1.64/26 : la comptabilité. Le pas vaut 64, et 100 est entre 64 et 128. En binaire, 100 = 01|100100 : les bits empruntés valent 01.</p>
+</details>
+
+<details>
+<summary>Peut-on donner l’adresse 192.168.1.127 à un poste de l’agence ?</summary>
+<p>Non. Dans 192.168.1.127, les 6 bits hôtes sont tous à 1 : c’est la diffusion du sous-réseau 192.168.1.64/26.</p>
+</details>
+
+<details>
+<summary>Pour 5 sous-réseaux égaux, combien de bits faut-il emprunter ?</summary>
+<p>3 bits. Avec 2 bits, 2² = 4 sous-réseaux : pas assez. Avec 3 bits, 2³ = 8 sous-réseaux : cela suffit, et 3 restent en réserve.</p>
 </details>
 :::
 
 ::: {.content-visible unless-format="html"}
-**Question.** Le poste `192.168.10.200/27` est-il dans le Wi-Fi invité ?
+**Question 1.** Dans le plan de l’agence, à quel sous-réseau appartient
+`192.168.1.100` ?
 
-**Réponse.** Oui. Le bloc vaut 32 ; le multiple de 32 inférieur à 200 est 192.
-Le poste est dans `192.168.10.192/27`, le réseau du Wi-Fi invité.
+**Réponse.** Au 2^e^, `192.168.1.64/26` : la comptabilité. Le pas vaut 64, et
+100 est entre 64 et 128. En binaire, 100 = `01|100100` : les bits empruntés
+valent 01.
+
+**Question 2.** Peut-on donner l’adresse `192.168.1.127` à un poste de
+l’agence ?
+
+**Réponse.** Non. Dans `192.168.1.127`, les 6 bits hôtes sont tous à 1 : c’est
+la diffusion du sous-réseau `192.168.1.64/26`.
+
+**Question 3.** Pour 5 sous-réseaux égaux, combien de bits faut-il emprunter ?
+
+**Réponse.** 3 bits. Avec 2 bits, 2^2^ = 4 sous-réseaux : pas assez. Avec
+3 bits, 2^3^ = 8 sous-réseaux : cela suffit, et 3 restent en réserve.
 :::
 
 ## Exercices de vérification
 
-1. **Sous-réseaux égaux** (d’après BTS SN IR, E4 2023). On découpe `172.16.88.0/24` en 64
-   sous-réseaux de même taille. Donner le préfixe, le masque et le nombre
-   d’hôtes par sous-réseau. Pour le premier, le deuxième et le dernier
-   sous-réseau, donner l’adresse réseau, la première et la dernière adresse
-   utilisables, et la diffusion.
-2. **Octet significatif au 3^e^ rang** (d’après BTS SN IR, E4 2024). On découpe
-   `172.20.0.0/16` en 16 sous-réseaux. Combien de bits faut-il emprunter ?
-   Donner le préfixe, le masque et le nombre d’hôtes. Donner l’adresse réseau
-   et la diffusion du premier, du deuxième et du dernier sous-réseau.
-3. **VLAN et DHCP** (d’après BTS CIEL IR, E4 2026). La plage `192.168.69.0/24` est découpée
-   en sous-réseaux égaux. Chaque sous-réseau doit pouvoir accueillir 30
-   machines, passerelle comprise, et pas davantage : on choisit le plus petit
-   sous-réseau qui convient. Les VLAN
-   10 et 20 prennent les deux premiers sous-réseaux, le VLAN 99 le dernier.
-   La passerelle est la dernière adresse utilisable. La plage DHCP contient
-   toutes les autres adresses utilisables. Pour chaque VLAN, donner le réseau,
-   la plage DHCP, la passerelle et la diffusion.
-4. **VLSM.** Découper `10.0.0.0/24` pour trois services de 60, 28 et 12 postes,
-   passerelle non comprise, et une liaison entre deux routeurs. Donner pour
-   chacun le sous-réseau, la plage utilisable, la passerelle et la diffusion.
+1. **Masque et préfixe.** Donnez le masque et le nombre d’hôtes utilisables de
+   /25, /27 et /29. Donnez le préfixe de `255.255.255.240` et de
+   `255.255.255.252`.
+2. **Six sous-réseaux.** On découpe `192.168.50.0/24` en 6 sous-réseaux égaux.
+
+   a. Combien de bits faut-il emprunter ? Donnez le préfixe, le masque, le
+      nombre d’hôtes utilisables et le nombre de sous-réseaux en réserve.
+   b. Pour le 1^er^, le 2^e^ et le 6^e^ sous-réseau, donnez le réseau, la
+      première et la dernière adresse utilisables, et la diffusion.
+   c. Par le ET logique, trouvez le réseau de `192.168.50.100`, de
+      `192.168.50.97` et de `192.168.50.130`. Lesquelles sont dans le même
+      sous-réseau ?
+3. **Sous-réseaux égaux** (d’après BTS SN IR, E4 2023). On découpe
+   `172.16.88.0/24` en 64 sous-réseaux de même taille. Donnez le préfixe, le
+   masque et le nombre d’hôtes par sous-réseau. Pour le premier, le deuxième
+   et le dernier sous-réseau, donnez l’adresse réseau, la première et la
+   dernière adresse utilisables, et la diffusion.
+4. **Octet significatif au 3^e^ rang** (d’après BTS SN IR, E4 2024). On
+   découpe `172.20.0.0/16` en 16 sous-réseaux. Combien de bits faut-il
+   emprunter ? Donnez le préfixe, le masque et le nombre d’hôtes. Donnez
+   l’adresse réseau et la diffusion du premier, du deuxième et du dernier
+   sous-réseau.
+5. **VLAN et DHCP** (d’après BTS CIEL IR, E4 2026). La plage `192.168.69.0/24`
+   est découpée en sous-réseaux égaux. Chaque sous-réseau doit pouvoir
+   accueillir 30 machines, passerelle comprise : on choisit le plus petit
+   sous-réseau qui convient. Les VLAN 10 et 20 prennent les deux
+   premiers sous-réseaux, le VLAN 99 le dernier. La passerelle est la dernière
+   adresse utilisable. La plage DHCP contient toutes les autres adresses
+   utilisables. Pour chaque VLAN, donnez le réseau, la plage DHCP, la
+   passerelle et la diffusion.
 
 ### Corrigé
 
-1. 64 = 2^6^ : on emprunte 6 bits. 24 + 6 = **/30**, masque `255.255.255.252`,
-   **2 hôtes** (2^2^ − 2). Bloc de 4.
+1. Masques et préfixes :
+
+   | Préfixe | Masque | Bits hôtes | Hôtes utilisables |
+   |:-:|:---|:-:|:-:|
+   | /25 | `255.255.255.128` | 7 | 126 |
+   | /27 | `255.255.255.224` | 5 | 30 |
+   | /29 | `255.255.255.248` | 3 | 6 |
+
+   240 = `11110000` : 4 bits à 1, donc **/28**. 252 = `11111100` : 6 bits à
+   1, donc **/30**.
+2. Six sous-réseaux :
+
+   a. 2^2^ = 4 est trop peu ; 2^3^ = 8 ≥ 6. On emprunte **3 bits**. Il reste
+      8 − 3 = 5 bits hôtes. Préfixe **/27**, masque `255.255.255.224`,
+      2^5^ − 2 = **30 hôtes**. Sur 8 sous-réseaux, **2 restent en réserve**.
+   b. Le pas vaut 256 − 224 = 32. Le 6^e^ commence en 5 × 32 = 160, soit
+      `101|00000`. Sa diffusion est `101|11111` = 191.
+
+      | Sous-réseau | Réseau | Première | Dernière | Diffusion |
+      |:---|:---|:---|:---|:---|
+      | 1^er^ | `192.168.50.0/27` | `.1` | `.30` | `.31` |
+      | 2^e^ | `192.168.50.32/27` | `.33` | `.62` | `.63` |
+      | 6^e^ | `192.168.50.160/27` | `.161` | `.190` | `.191` |
+
+   c. Le dernier octet du masque vaut 224 = `111|00000`.
+
+      ```text
+      100 = 011|00100   ET 224  ->  011|00000 =  96
+       97 = 011|00001   ET 224  ->  011|00000 =  96
+      130 = 100|00010   ET 224  ->  100|00000 = 128
+      ```
+
+      `.100` et `.97` sont dans le même sous-réseau, `192.168.50.96/27`, le
+      4^e^. `.130` est dans `192.168.50.128/27`, le 5^e^.
+3. 64 = 2^6^ : on emprunte 6 bits. 24 + 6 = **/30**, masque
+   `255.255.255.252`, **2 hôtes** (2^2^ − 2). Pas de 4.
 
    | Sous-réseau | Réseau | Première | Dernière | Diffusion |
    |:---|:---|:---|:---|:---|
-   | 1^er^ | `172.16.88.0` | `.1` | `.2` | `.3` |
-   | 2^e^ | `172.16.88.4` | `.5` | `.6` | `.7` |
-   | 64^e^ | `172.16.88.252` | `.253` | `.254` | `.255` |
+   | 1^er^ | `172.16.88.0/30` | `.1` | `.2` | `.3` |
+   | 2^e^ | `172.16.88.4/30` | `.5` | `.6` | `.7` |
+   | 64^e^ | `172.16.88.252/30` | `.253` | `.254` | `.255` |
 
    Le dernier commence en 63 × 4 = 252.
-2. 16 = 2^4^ : on emprunte **4 bits**. 16 + 4 = **/20**, masque
-   `255.255.240.0`. h = 12, soit 2^12^ − 2 = **4 094 hôtes**. Bloc de 16 dans
+4. 16 = 2^4^ : on emprunte **4 bits**. 16 + 4 = **/20**, masque
+   `255.255.240.0`. h = 12, soit 2^12^ − 2 = **4 094 hôtes**. Pas de 16 dans
    le 3^e^ octet.
 
    | Sous-réseau | Réseau | Diffusion |
@@ -278,42 +505,45 @@ Le poste est dans `192.168.10.192/27`, le réseau du Wi-Fi invité.
    | 16^e^ | `172.20.240.0/20` | `172.20.255.255` |
 
    Le dernier commence en 15 × 16 = 240.
-3. On cherche le plus petit h tel que 2^h^ − 2 ≥ 30. h = 4 donne 14 hôtes,
-   trop peu ; h = 5 donne 30 hôtes : **/27**, masque `255.255.255.224`,
-   bloc de 32, 8 sous-réseaux. Le dernier commence en 7 × 32 = 224.
+5. On cherche le plus petit h tel que 2^h^ − 2 ≥ 30. h = 4 donne 14 hôtes,
+   trop peu ; h = 5 donne 30 hôtes. On emprunte 8 − 5 = 3 bits : **/27**,
+   masque `255.255.255.224`, pas de 32, 8 sous-réseaux. Le dernier commence
+   en 7 × 32 = 224.
 
    | VLAN | Réseau | Plage DHCP | Passerelle | Diffusion |
    |:-:|:---|:---|:---|:---|
    | 10 | `192.168.69.0/27` | `.1` à `.29` | `.30` | `.31` |
    | 20 | `192.168.69.32/27` | `.33` à `.61` | `.62` | `.63` |
    | 99 | `192.168.69.224/27` | `.225` à `.253` | `.254` | `.255` |
-4. On ajoute la passerelle à chaque service, puis on trie.
-
-   | Réseau | Adresses | Préfixe | Sous-réseau | Plage utilisable | Passerelle | Diffusion |
-   |:---|:-:|:-:|:---|:---|:---|:---|
-   | 60 postes | 61 | /26 | `10.0.0.0` | `.1` à `.62` | `.62` | `.63` |
-   | 28 postes | 29 | /27 | `10.0.0.64` | `.65` à `.94` | `.94` | `.95` |
-   | 12 postes | 13 | /28 | `10.0.0.96` | `.97` à `.110` | `.110` | `.111` |
-   | Liaison | 2 | /30 | `10.0.0.112` | `.113` à `.114` | — | `.115` |
-
-   Vérification : 64, 96 et 112 sont des multiples de 32, 16 et 4. Le plan
-   occupe 64 + 32 + 16 + 4 = 116 adresses ; il en reste 140 pour l’avenir.
 
 ## Synthèse
 
 - Le préfixe /n fixe la partie réseau ; h = 32 − n bits restent pour les hôtes.
-- Un sous-réseau compte 2^h^ adresses, dont 2^h^ − 2 utilisables.
-- Bloc = 256 − octet significatif ; le réseau est le multiple du bloc qui
-  précède l’adresse, la diffusion est le réseau suivant moins 1.
-- L’octet significatif est le premier octet du masque différent de 255 ; il
-  peut être le 3^e^ : appliquez alors le même calcul un octet plus tôt.
-- En VLSM, placez les plus grands blocs d’abord, chacun sur un multiple de sa
-  taille.
+- Démarche en deux temps. A, le masque : besoin → bits empruntés → bits
+  hôtes → nouveau masque, ou besoin → bits hôtes → bits empruntés → nouveau
+  masque si le besoin porte sur les hôtes. B, les bornes : bits hôtes à 0,
+  puis à 1.
+- b bits empruntés donnent 2^b^ sous-réseaux ; h bits hôtes donnent 2^h^
+  adresses, dont 2^h^ − 2 utilisables.
+- Bits hôtes à 0 : adresse réseau. Bits hôtes à 1 : diffusion.
+- Taille de bloc = 2^h^ adresses. Pas = 256 − octet significatif ; ils sont
+  égaux quand l’octet significatif est le 4^e^. Première adresse libre =
+  diffusion précédente + 1.
+- L’octet significatif peut être le 3^e^ : appliquez alors le même calcul un
+  octet plus tôt.
+- Adresse ET masque = adresse réseau.
 - Comptez toujours la passerelle avant de choisir le préfixe.
+- Limite du découpage égal : tous les sous-réseaux ont la taille du plus
+  grand besoin. Dans l’agence, l’accueil reçoit 62 adresses pour 20 postes.
 
 ## Pour aller plus loin
 
+- [RFC 950 — Internet Standard Subnetting Procedure](https://www.rfc-editor.org/rfc/rfc950.html),
+  qui a introduit le découpage en sous-réseaux.
 - [RFC 4632 — CIDR](https://www.rfc-editor.org/rfc/rfc4632.html), qui définit
   la notation /n.
 - [RFC 5737 — plages IPv4 de documentation](https://www.rfc-editor.org/rfc/rfc5737.html),
   dont `203.0.113.0/24`.
+
+Le prochain cours du chapitre lèvera la limite du découpage égal. Avec le **VLSM**, chaque
+sous-réseau recevra la taille dont il a besoin, par la même démarche.
