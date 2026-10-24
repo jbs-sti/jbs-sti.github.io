@@ -132,7 +132,7 @@ b.  170     = ________
     ET      = ________  = ____
 ```
 
-**2.2** Pour c, utilisez le pas : 256 − octet significatif. Cherchez le plus
+**2.2** Pour c, utilisez le pas : 256 − octet significatif (ici, la valeur du quatrième octet du masque). Cherchez le plus
 grand multiple du pas inférieur ou égal à 203.
 
 **2.3** Complétez le tableau. Écrivez les adresses en entier.
@@ -201,10 +201,13 @@ sous-réseaux sont égaux et découpés dans `192.168.31.0/24`.
 **4.1 — A. Trouver le masque.** Le besoin porte sur les hôtes : on calcule
 d’abord h, puis b. Voici quatre demandes différentes :
 
-a. au moins 50 postes plus la passerelle ;
-b. au moins 5 postes plus la passerelle ;
-c. 62 postes, passerelle comprise ;
-d. 62 postes plus la passerelle.
+a. au moins 50 postes et la passerelle ;
+b. au moins 5 postes et la passerelle ;
+c. au moins 61 postes et la passerelle ;
+d. au moins 62 postes et la passerelle.
+
+Dans chaque cas, la passerelle s’ajoute aux postes : elle prend une adresse
+de plus.
 
 Pour chaque demande, complétez le tableau :
 
@@ -220,7 +223,8 @@ Pour chaque demande, complétez le tableau :
 | c | | | | | |
 | d | | | | | |
 
-**4.2** Comparez les cas c et d. Pourquoi le préfixe change-t-il ?
+**4.2** Comparez les cas c et d : il n’y a qu’un poste de plus. Pourquoi le
+préfixe change-t-il ?
 
 **4.3 — B. Trouver les bornes, cas b.** Donnez le pas, puis complétez :
 
@@ -364,11 +368,21 @@ suivant `.208`. Le ET le confirme : 203 = `11001|011`, et le ET avec 248 =
 **2.3** Les pas valent 64 pour a, 16 pour b et 8 pour c. La diffusion vaut
 le réseau suivant − 1 :
 
-| Cas | Masque | Réseau | Plage utilisable | Diffusion |
-|:-:|:---|:---|:---|:---|
-| a | `255.255.255.192` | `192.168.40.64` | `.65` à `.126` | `192.168.40.127` |
-| b | `255.255.255.240` | `192.168.41.160` | `.161` à `.174` | `192.168.41.175` |
-| c | `255.255.255.248` | `192.168.42.200` | `.201` à `.206` | `192.168.42.207` |
+- **Cas a**, `192.168.40.90/26` :
+  - masque `255.255.255.192` ;
+  - réseau `192.168.40.64` ;
+  - plage utilisable `192.168.40.65` à `192.168.40.126` ;
+  - diffusion `192.168.40.127`.
+- **Cas b**, `192.168.41.170/28` :
+  - masque `255.255.255.240` ;
+  - réseau `192.168.41.160` ;
+  - plage utilisable `192.168.41.161` à `192.168.41.174` ;
+  - diffusion `192.168.41.175`.
+- **Cas c**, `192.168.42.203/29` :
+  - masque `255.255.255.248` ;
+  - réseau `192.168.42.200` ;
+  - plage utilisable `192.168.42.201` à `192.168.42.206` ;
+  - diffusion `192.168.42.207`.
 
 Contrôle : 64 + 64 − 1 = 127 ; 160 + 16 − 1 = 175 ; 200 + 8 − 1 = 207.
 
@@ -427,7 +441,7 @@ ne la donne pas à un poste : le premier poste du 2^e^ sous-réseau prend `.33`.
 - **Cas b.** Étape 1 : 5 + 1 = 6 adresses. Étape 2 : h = 2 donne 2, trop
   peu ; h = 3 donne 6, suffisant. Étape 3 : b = 8 − 3 = 5, soit
   32 sous-réseaux. Étape 4 : /29.
-- **Cas c.** Étape 1 : la passerelle est déjà comptée, 62 adresses. Étape 2 :
+- **Cas c.** Étape 1 : 61 + 1 = 62 adresses. Étape 2 :
   h = 6 donne 62, suffisant. Étape 3 : b = 2, soit 4 sous-réseaux. Étape 4 :
   /26.
 - **Cas d.** Étape 1 : 62 + 1 = 63 adresses. Étape 2 : h = 6 donne 62, trop
@@ -441,9 +455,10 @@ ne la donne pas à un poste : le premier poste du 2^e^ sous-réseau prend `.33`.
 | c | 62 | 6 | 2 | 4 | /26, `255.255.255.192` |
 | d | 63 | 7 | 1 | 2 | /25, `255.255.255.128` |
 
-**4.2** C’est le piège de la passerelle. Dans le cas c, elle fait partie des
-62 adresses : un /26 suffit tout juste. Dans le cas d, elle s’ajoute :
-63 adresses dépassent les 62 d’un /26. Il faut un bit hôte de plus, donc un
+**4.2** C’est le piège de la passerelle. Dans le cas c, 61 postes et la
+passerelle font 62 adresses : un /26 suffit tout juste. Dans le cas d,
+62 postes et la passerelle font 63 adresses : c’est une de plus que les 62
+d’un /26. Il faut un bit hôte de plus, donc un
 /25, et seulement 2 sous-réseaux.
 
 **4.3 — B. Trouver les bornes, cas b.** Le pas vaut 256 − 248 = 8. En

@@ -60,6 +60,8 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Les TP BTS2 durent 4 h, suivent le réseau fil rouge du TP 3 et demandent un
   compte rendu (questions et captures) ; aucun corrigé n'est publié.
 - Pare-feu des TP : ASA 5506-X dans Packet Tracer.
+- Les séries d'exercices gardent un corrigé (décision de l'enseignant,
+  2026-10-24) ; les TP n'en ont pas.
 
 ## Historique
 
@@ -124,6 +126,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Relance Codex : oui (correction de fond sur la ligne DHCP)
 - Pull request : #30
 - Points à relire par l'enseignant : ordre de fusion (PR du TP OSPF d'abord), sorties `show` reconstituées, lignes DHCP du corrigé de l'exercice 3, rendu PDF
+
+### 2026-10-24 — cours/bts2-exercices-subnetting-1
+
+- Ressource : bts2/reseaux/02-subnetting-vlsm/exercices-subnetting-entrainement/index.qmd (gabarit exercices, vocabulaire du cours de la PR #32 et de la fiche de la PR #33), 7 exercices guidés en /24 avec corrigé, 1 h 40
+- Vérificateur : CONFORME au 1er passage (6 À CORRIGER : contradiction énoncé, réponses visibles dans le sujet, durée, tableaux trop larges, question orientée, phrase finale) ; CONFORME après Codex
+- Codex : 3 constats A (À CORRIGER), 1 réécriture ; A2 et A3 corrigés ; A1 (lien vers la fiche) refusé, la cible arrive avec la PR #33
+- Réécritures gardées : R1 ; annulées : aucune
+- Relance Codex : non (corrections ponctuelles)
+- Pull request : #<numéro>
+- Points à relire par l'enseignant : ordre de fusion (#32, #33, puis celle-ci), largeur des tableaux à remplir dans le PDF, durée
 
 ### 2026-10-24 — cours/bts1-retrait-demos
 
