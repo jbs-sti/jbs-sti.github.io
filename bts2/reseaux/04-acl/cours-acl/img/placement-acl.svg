@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="675" viewBox="0 0 820 675" role="img" aria-labelledby="title desc">
+<title id="title">Placement d’une ACL sur le réseau fil rouge</title>
+<desc id="desc">Les routeurs R1, R2 et FW forment un triangle ; Internet est simulé par la Loopback0 de FW. R1 dessert les VLAN 10, 20 et 30 par trois sous-interfaces. Le flux à interdire va du VLAN 30 Invités au VLAN 20 Administration. Position A : ACL étendue en entrée de G0/0.30, bon choix. Position B : ACL standard en sortie de G0/0.20, bon choix. Position C : ACL standard en entrée de G0/0.30, à éviter, car elle couperait aussi Internet aux invités.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#222"/></marker></defs>
+<rect width="820" height="675" fill="white"/>
+<!-- Équipements -->
+<g fill="none" stroke="#222" stroke-width="2">
+<ellipse cx="410" cy="38" rx="190" ry="26" stroke-dasharray="6 4"/>
+<path d="M410 64 V95" stroke-dasharray="6 4"/>
+<rect x="360" y="95" width="100" height="50" rx="6"/>
+<rect x="170" y="205" width="100" height="50" rx="6"/>
+<rect x="470" y="205" width="100" height="50" rx="6"/>
+<path d="M370 145 L240 205"/>
+<path d="M450 145 L500 205"/>
+<path d="M270 230 H470"/>
+<path d="M495 255 L290 380"/>
+<path d="M520 255 V380"/>
+<path d="M545 255 L720 380"/>
+</g>
+<g fill="#eee" stroke="#111" stroke-width="2">
+<rect x="200" y="380" width="180" height="95" rx="4"/>
+<rect x="430" y="380" width="180" height="95" rx="4"/>
+<rect x="630" y="380" width="180" height="95" rx="4"/>
+</g>
+<!-- Flux à interdire : tirets fins, sous les VLAN -->
+<path d="M720 477 Q 620 540 530 479" fill="none" stroke="#222" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+<!-- Positions A et B : cercles pleins ; C : cercle en tirets -->
+<g fill="white" stroke="#111" stroke-width="3">
+<circle cx="590" cy="287" r="16"/>
+<circle cx="520" cy="300" r="16"/>
+</g>
+<circle cx="650" cy="330" r="16" fill="white" stroke="#111" stroke-width="2" stroke-dasharray="4 3"/>
+<g font-family="sans-serif" fill="#111" text-anchor="middle">
+<text x="410" y="44" font-size="15">Internet : Lo0 de FW, 203.0.113.1/32</text>
+<text x="410" y="126" font-size="18" font-weight="bold">FW</text>
+<text x="220" y="236" font-size="18" font-weight="bold">R2</text>
+<text x="520" y="236" font-size="18" font-weight="bold">R1</text>
+<g font-size="17" font-weight="bold">
+<text x="590" y="293">A</text>
+<text x="520" y="306">B</text>
+<text x="650" y="336">C</text>
+</g>
+<g font-size="15" font-weight="bold">
+<text x="290" y="402">VLAN 10</text>
+<text x="520" y="402">VLAN 20</text>
+<text x="720" y="402">VLAN 30</text>
+<text x="290" y="420">Production</text>
+<text x="520" y="420">Administration</text>
+<text x="720" y="420">Invités</text>
+</g>
+<g font-size="14">
+<text x="290" y="441">192.168.10.0/25</text>
+<text x="520" y="441">192.168.10.128/26</text>
+<text x="720" y="441">192.168.10.192/27</text>
+<text x="290" y="461">PC-P1, PC-P2</text>
+<text x="520" y="461">PC-ADM .129</text>
+<text x="720" y="461">PC-I1</text>
+</g>
+<text x="625" y="540" font-size="14" font-style="italic">flux à interdire (il traverse R1)</text>
+</g>
+<g font-family="sans-serif" fill="#111" font-size="13">
+<text x="290" y="168" text-anchor="end">192.168.10.228/30</text>
+<text x="485" y="168" text-anchor="start">192.168.10.232/30</text>
+<text x="370" y="222" text-anchor="middle">192.168.10.224/30</text>
+<text x="380" y="320" text-anchor="end">G0/0.10 (.126)</text>
+<text x="528" y="350" text-anchor="start">G0/0.20 (.190)</text>
+<text x="672" y="300" text-anchor="start">G0/0.30 (.222)</text>
+</g>
+<g font-family="sans-serif" fill="#111" font-size="14" text-anchor="start">
+<text x="20" y="575"><tspan font-weight="bold">A</tspan> (cercle plein) : ACL étendue, en entrée de G0/0.30. Bon choix : au plus près de la source.</text>
+<text x="20" y="597"><tspan font-weight="bold">B</tspan> (cercle plein) : ACL standard, en sortie de G0/0.20. Bon choix : au plus près de la destination.</text>
+<text x="20" y="619"><tspan font-weight="bold">C</tspan> (cercle en tirets) : ACL standard, en entrée de G0/0.30. À éviter : elle ne voit que la source</text>
+<text x="44" y="639">et couperait aussi aux invités l’accès à Internet et aux autres réseaux.</text>
+<text x="20" y="661">Les trois sous-interfaces de R1 partagent le même câble G0/0 vers SW1 (vue logique).</text>
+</g>
+</svg>

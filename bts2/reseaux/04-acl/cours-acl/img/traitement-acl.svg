@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="800" viewBox="0 0 820 800" role="img" aria-labelledby="title desc">
+<title id="title">Traitement d’un paquet par une ACL</title>
+<desc id="desc">Organigramme. Si aucune ACL n’est appliquée dans ce sens, le paquet est traité normalement. Sinon, le routeur lit la première ligne. Si le paquet correspond, l’action de la ligne s’applique : permit, le paquet est transmis ; deny, il est détruit ; la lecture s’arrête. S’il ne correspond pas, le routeur passe à la ligne suivante. Quand il ne reste plus de ligne, le refus implicite détruit le paquet.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#222"/></marker></defs>
+<rect width="820" height="800" fill="white"/>
+<!-- Formes : rectangles = actions, losanges = questions -->
+<g fill="white" stroke="#111" stroke-width="2">
+<rect x="150" y="20" width="300" height="60" rx="30"/>
+<path d="M300 110 L450 170 L300 230 L150 170 Z"/>
+<rect x="540" y="140" width="240" height="60" rx="6"/>
+<rect x="170" y="260" width="260" height="50" rx="6"/>
+<path d="M300 350 L450 410 L300 470 L150 410 Z"/>
+<path d="M660 355 L780 410 L660 465 L540 410 Z"/>
+<rect x="560" y="245" width="200" height="55" rx="6"/>
+<path d="M300 510 L450 570 L300 630 L150 570 Z"/>
+</g>
+<!-- Paquets détruits : fond gris, trait épais -->
+<g fill="#ddd" stroke="#111" stroke-width="4">
+<rect x="560" y="520" width="200" height="60" rx="6"/>
+<rect x="120" y="670" width="360" height="70" rx="6" stroke-dasharray="10 5"/>
+</g>
+<!-- Flèches -->
+<g fill="none" stroke="#222" stroke-width="2" marker-end="url(#arrow)">
+<path d="M300 80 V108"/>
+<path d="M450 170 H538"/>
+<path d="M300 230 V258"/>
+<path d="M300 310 V348"/>
+<path d="M450 410 H538"/>
+<path d="M660 355 V302"/>
+<path d="M660 465 V518"/>
+<path d="M300 470 V508"/>
+<path d="M150 570 H70 V410 H148"/>
+<path d="M300 630 V668"/>
+</g>
+<g font-family="sans-serif" fill="#111" text-anchor="middle">
+<g font-size="16">
+<text x="300" y="46">Paquet reçu (in) ou à émettre (out)</text>
+<text x="300" y="66">sur une interface</text>
+<text x="300" y="166">Une ACL est-elle appliquée</text>
+<text x="300" y="186">dans ce sens ?</text>
+<text x="660" y="166">Aucun filtrage :</text>
+<text x="660" y="186">paquet traité normalement</text>
+<text x="300" y="291">Lire la première ligne</text>
+<text x="300" y="406">Le paquet correspond-il</text>
+<text x="300" y="426">à cette ligne ?</text>
+<text x="660" y="406">Action de</text>
+<text x="660" y="426">la ligne ?</text>
+<text x="660" y="268" font-weight="bold">permit :</text>
+<text x="660" y="288">paquet transmis, arrêt</text>
+<text x="660" y="545" font-weight="bold">deny :</text>
+<text x="660" y="566">paquet détruit, arrêt</text>
+<text x="300" y="566">Reste-t-il une ligne</text>
+<text x="300" y="586">après celle-ci ?</text>
+<text x="300" y="698" font-weight="bold">Refus implicite (deny any)</text>
+<text x="300" y="720">paquet détruit</text>
+</g>
+<g font-size="15" font-style="italic">
+<text x="494" y="160">non</text>
+<text x="322" y="250">oui</text>
+<text x="494" y="400">oui</text>
+<text x="322" y="494">non</text>
+<text x="322" y="654">non</text>
+</g>
+<g font-size="15" font-style="italic" text-anchor="start">
+<text x="80" y="480">oui :</text>
+<text x="80" y="498">ligne</text>
+<text x="80" y="516">suivante</text>
+</g>
+</g>
+<g font-family="sans-serif" fill="#111" font-size="14" text-anchor="middle">
+<text x="410" y="770">Fond gris et trait épais : paquet détruit. Cadre en tirets : règle invisible,</text>
+<text x="410" y="790">ajoutée par IOS à la fin de toute ACL ; elle n’apparaît pas dans la configuration.</text>
+</g>
+</svg>

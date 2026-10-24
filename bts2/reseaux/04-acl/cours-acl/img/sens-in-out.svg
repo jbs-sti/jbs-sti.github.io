@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="470" viewBox="0 0 820 470" role="img" aria-labelledby="title desc">
+<title id="title">Sens d’application d’une ACL sur un routeur</title>
+<desc id="desc">Un paquet part de PC-I1, dans le VLAN 30, vers PC-ADM, dans le VLAN 20. Il entre dans R1 par la sous-interface G0/0.30 : une ACL en entrée (in) y est contrôlée, avant la décision de routage. R1 choisit ensuite l’interface de sortie. Le paquet sort par G0/0.20 : une ACL en sortie (out) y est contrôlée, après la décision de routage.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#222"/></marker></defs>
+<rect width="820" height="470" fill="white"/>
+<!-- Routeur et décision de routage -->
+<g fill="white" stroke="#111" stroke-width="3">
+<rect x="290" y="120" width="240" height="190" rx="10"/>
+</g>
+<g fill="#eee" stroke="#111" stroke-width="2">
+<rect x="345" y="185" width="130" height="70" rx="6"/>
+<rect x="20" y="185" width="140" height="70" rx="6"/>
+<rect x="660" y="185" width="140" height="70" rx="6"/>
+</g>
+<!-- Liaisons -->
+<g fill="none" stroke="#222" stroke-width="3">
+<path d="M160 220 H290"/>
+<path d="M530 220 H660"/>
+</g>
+<!-- Points de contrôle : barrières hachurées -->
+<g fill="white" stroke="#111" stroke-width="3">
+<rect x="280" y="190" width="20" height="60"/>
+<rect x="520" y="190" width="20" height="60"/>
+</g>
+<g stroke="#111" stroke-width="2">
+<path d="M280 205 L300 190 M280 225 L300 210 M280 245 L300 230 M285 250 L300 240"/>
+<path d="M520 205 L540 190 M520 225 L540 210 M520 245 L540 230 M525 250 L540 240"/>
+</g>
+<!-- Trajet du paquet : tirets avec flèches -->
+<g fill="none" stroke="#222" stroke-width="2" stroke-dasharray="8 5" marker-end="url(#arrow)">
+<path d="M165 175 H340"/>
+<path d="M480 175 H655"/>
+</g>
+<g font-family="sans-serif" fill="#111" text-anchor="middle">
+<text x="410" y="145" font-size="20" font-weight="bold">R1</text>
+<text x="410" y="213" font-size="15" font-weight="bold">2. Décision</text>
+<text x="410" y="233" font-size="15" font-weight="bold">de routage</text>
+<text x="90" y="215" font-size="17" font-weight="bold">PC-I1</text>
+<text x="90" y="238" font-size="14">VLAN 30</text>
+<text x="730" y="215" font-size="17" font-weight="bold">PC-ADM</text>
+<text x="730" y="238" font-size="14">VLAN 20</text>
+<text x="410" y="172" font-size="14" font-style="italic">trajet du paquet</text>
+<g font-size="15">
+<text x="290" y="332">G0/0.30 (.222)</text>
+<text x="530" y="332">G0/0.20 (.190)</text>
+</g>
+<g font-size="16" font-weight="bold">
+<text x="200" y="60">1. ACL en entrée (in)</text>
+<text x="620" y="60">3. ACL en sortie (out)</text>
+</g>
+<g font-size="15">
+<text x="200" y="82">contrôle à l’arrivée dans R1,</text>
+<text x="200" y="100">avant la décision de routage</text>
+<text x="620" y="82">contrôle au départ de R1,</text>
+<text x="620" y="100">après la décision de routage</text>
+</g>
+</g>
+<g fill="none" stroke="#222" stroke-width="1.5">
+<path d="M220 108 L285 186"/>
+<path d="M600 108 L533 186"/>
+</g>
+<g font-family="sans-serif" fill="#111" font-size="14" text-anchor="middle">
+<text x="410" y="385">Barrière hachurée : point de contrôle d’une ACL. Le sens se lit depuis le routeur :</text>
+<text x="410" y="405">in = le paquet entre dans R1 par l’interface ; out = il en sort par l’interface.</text>
+<text x="410" y="435">Vue logique : les deux sous-interfaces partagent le même câble physique G0/0.</text>
+<text x="410" y="455">Au plus une ACL IPv4 par interface et par sens.</text>
+</g>
+</svg>
