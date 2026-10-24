@@ -110,7 +110,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : 2 constats A (À CORRIGER), 1 réécriture ; A1 (« cas classique », comme le beamer) et A2 (contrôle de faisabilité) corrigés ; le contrôle a été repris par le chef de projet (b + h ≤ bits hôtes de départ, et non « b ou h »)
 - Réécritures gardées : R1 ; annulées : aucune
 - Relance Codex : non (corrections ponctuelles)
-- Pull request : #<numéro>
+- Pull request : #33
 - Points à relire par l'enseignant : longueur (2,5 à 3 pages estimées), fusionner après la PR #32
 
 ### 2026-10-23 — cours/bts2-ospf
