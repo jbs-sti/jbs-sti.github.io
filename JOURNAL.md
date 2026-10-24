@@ -15,7 +15,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (`exercices-subnetting-approfondissement`, order 17), TP subnetting + DHCP
   (`tp-subnetting-dhcp`, order 18, publié, PR #36 et #37), cours VLSM
   (`cours-vlsm`, order 19, brouillon, PR #38), renumérotation des TP
-  (PR à fusionner : VLSM = TP 4, order 30 ; OSPF = TP 5 ; ACL = TP 6), puis
+  (PR #39 : VLSM = TP 4, order 30 ; OSPF = TP 5 ; ACL = TP 6), puis
   fiche VLSM (order 21), exercices VLSM 1 et 2 (order 22 et 23).
 
 **À faire**
@@ -121,7 +121,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Vérificateur : À REPRENDRE au 1er passage (2 SVG oubliés, introduction trop affirmative), CONFORME au 2e
 - Codex : 1 constat A (BLOQUANT de procédure : plusieurs ressources dans une branche `cours/`), couvert par la demande de l'enseignant ; aucune réécriture
 - Relance Codex : non
-- Pull request : à renseigner
+- Pull request : #39
 - Points à relire par l'enseignant : publier le cours VLSM avant ou avec cette PR (lien depuis le TP 4 publié) ; question des adresses libres du TP 4
 
 ### 2026-10-24 — cours/bts2-cours-vlsm
