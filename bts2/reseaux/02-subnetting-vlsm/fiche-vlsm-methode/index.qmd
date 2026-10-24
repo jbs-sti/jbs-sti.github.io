@@ -1,0 +1,217 @@
+---
+title: "Le VLSM : la méthode pas à pas"
+description: "La démarche en cinq étapes pour construire un plan VLSM : besoin en adresses, bits hôtes, masque, placement aligné, bornes. Puis la vérification du plan avec la grille en cinq points."
+type: fiche
+domaine: reseaux
+chapitre: "02 — Subnetting et VLSM"
+categories: [fiche, reseaux]
+mots-cles: [VLSM, masque de longueur variable, préfixe, bits hôtes, taille de bloc, pas d’avancement, alignement, première adresse libre, liaison point à point, plan d’adressage]
+objectifs:
+  - "Calculer le besoin en adresses d’un segment, interfaces de routeur comprises, et en déduire le plus petit bloc qui suffit, donc son préfixe."
+  - "Placer des blocs de tailles différentes par ordre décroissant en contrôlant leur alignement."
+  - "Vérifier un plan VLSM à l’aide de la grille en cinq points."
+prerequis:
+  - "Cours « Le VLSM : des sous-réseaux de tailles différentes » du chapitre 02"
+  - "Fiche « Découper un réseau en sous-réseaux : la méthode pas à pas »"
+duree: "20 min"
+order: 21
+date-modified: 2026-10-24
+draft: true
+lang: fr
+---
+
+## Objectifs et prérequis
+
+Cette fiche résume la méthode du cours
+[« Le VLSM : des sous-réseaux de tailles différentes »](../cours-vlsm/index.qmd).
+Gardez-la sous les yeux pendant les exercices et le TP. Suivez les cinq
+étapes dans l’ordre, pour chaque segment.
+
+Elle prolonge la fiche
+[« Découper un réseau en sous-réseaux »](../fiche-subnetting-methode/index.qmd).
+Les mots bits hôtes, taille de bloc et pas d’avancement doivent vous être
+familiers.
+
+## Situation de départ
+
+Une PME reçoit la plage `172.16.0.0/24`. Elle a trois LAN de **60, 28 et
+12 PC**, chacun derrière son routeur, et deux liaisons entre routeurs. Le
+plus grand LAN demande 61 adresses, donc un /26. En découpage égal, tous les
+blocs seraient des /26. Un /24 n’en contient que 4, pour 5 segments : c’est
+impossible.
+
+Vous allez donc donner à chaque segment **son propre masque**. Vous
+répondrez en deux temps :
+
+- **A. Dimensionner** chaque segment : besoin, bits hôtes, préfixe ;
+- **B. Placer** chaque bloc : alignement, bornes.
+
+## Notions essentielles
+
+| Notion | Ce qu’il faut retenir |
+|:---|:---|
+| VLSM | *Variable Length Subnet Mask* : chaque sous-réseau reçoit un masque ajusté à son besoin. |
+| Besoin en adresses | PC **+ interfaces de routeur** du segment. Une liaison point à point demande **2 adresses**. |
+| Bits hôtes h | Plus petit h tel que **2^h^ − 2 ≥ besoin**. |
+| Préfixe | **32 − h**. Bits empruntés : bits hôtes du parent − h. |
+| Taille de bloc | **2^h^ adresses**, dont 2^h^ − 2 utilisables (cas classique). |
+| Pas d’avancement | **256 − octet significatif** du masque. |
+| Première adresse libre | **Diffusion précédente + 1**. C’est un candidat, pas encore une réponse. |
+| Alignement | Un réseau commence sur un multiple de sa taille de bloc : octet significatif **multiple du pas** et octets suivants **à 0**. |
+| Bornes | Bits hôtes à 0 : réseau. Bits hôtes à 1 : diffusion. Utilisables : réseau + 1 à diffusion − 1. |
+
+### Mémo : du besoin au préfixe
+
+Lisez la première colonne : elle donne l’intervalle de besoins couvert par
+chaque préfixe. De /24 à /30, l’octet significatif est le 4^e^. Pour /23
+et /22, c’est le 3^e^ : la taille de bloc vaut alors pas × 256.
+
+| Besoin en adresses | h | Préfixe | Masque | Taille de bloc | Utilisables | Pas |
+|:-:|:-:|:-:|:---|:-:|:-:|:-:|
+| 1 à 2 | 2 | /30 | `255.255.255.252` | 4 | 2 | 4 (4^e^ octet) |
+| 3 à 6 | 3 | /29 | `255.255.255.248` | 8 | 6 | 8 (4^e^ octet) |
+| 7 à 14 | 4 | /28 | `255.255.255.240` | 16 | 14 | 16 (4^e^ octet) |
+| 15 à 30 | 5 | /27 | `255.255.255.224` | 32 | 30 | 32 (4^e^ octet) |
+| 31 à 62 | 6 | /26 | `255.255.255.192` | 64 | 62 | 64 (4^e^ octet) |
+| 63 à 126 | 7 | /25 | `255.255.255.128` | 128 | 126 | 128 (4^e^ octet) |
+| 127 à 254 | 8 | /24 | `255.255.255.0` | 256 | 254 | 256 (4^e^ octet), soit 1 dans le 3^e^ |
+| 255 à 510 | 9 | /23 | `255.255.254.0` | 512 | 510 | 2 (3^e^ octet) |
+| 511 à 1 022 | 10 | /22 | `255.255.252.0` | 1 024 | 1 022 | 4 (3^e^ octet) |
+
+## Méthode et exemple
+
+### La démarche, étape par étape
+
+**A. Dimensionner.** Faites-le pour tous les segments avant d’en placer un
+seul.
+
+| Étape | Question à vous poser | Ce que vous écrivez |
+|:-:|:---|:---|
+| 1. Besoin | Combien de PC ? Combien d’interfaces de routeur sur ce segment ? | Besoin en adresses, puis liste **triée par ordre décroissant** |
+| 2. Bits hôtes | Quel est le plus petit h tel que 2^h^ − 2 ≥ besoin ? | h |
+| 3. Masque | Combien de bits empruntés ? Quel préfixe ? | Bits hôtes du parent − h ; /n = 32 − h ; masque pointé |
+
+**B. Placer**, bloc par bloc, du plus grand au plus petit.
+
+| Étape | Question à vous poser | Ce que vous écrivez |
+|:-:|:---|:---|
+| 4. Placement | Que vaut la diffusion précédente + 1 ? Ce candidat est-il un multiple du pas, avec les octets suivants à 0 ? | Adresse réseau alignée ; sinon, multiple suivant |
+| 5. Bornes | Que vaut l’adresse avec les bits hôtes à 1 ? | Diffusion, puis plage réseau + 1 à diffusion − 1 |
+
+Le premier bloc commence à l’adresse réseau du parent. Si vous placez les
+blocs par ordre décroissant, à la suite et sans trou, chaque candidat tombe
+aligné. Vérifiez quand même : c’est un contrôle de deux secondes.
+
+### Exemple : `172.16.0.0/24`
+
+Trois LAN, chacun derrière son routeur, et deux liaisons R1–R2 et R2–R3.
+Seul le dernier octet change.
+
+**Étapes 1 à 3.** Chaque LAN compte une interface de routeur. Le parent /24
+offre 8 bits hôtes.
+
+| Segment | Besoin | Calcul de h | h | Préfixe | Masque |
+|:---|:-:|:---|:-:|:-:|:---|
+| LAN 1 | 60 + 1 = 61 | 2^5^ − 2 = 30 non ; 2^6^ − 2 = 62 oui | 6 | /26 | `255.255.255.192` |
+| LAN 2 | 28 + 1 = 29 | 2^4^ − 2 = 14 non ; 2^5^ − 2 = 30 oui | 5 | /27 | `255.255.255.224` |
+| LAN 3 | 12 + 1 = 13 | 2^3^ − 2 = 6 non ; 2^4^ − 2 = 14 oui | 4 | /28 | `255.255.255.240` |
+| R1–R2 | 1 + 1 = 2 | 2^1^ − 2 = 0 non ; 2^2^ − 2 = 2 oui | 2 | /30 | `255.255.255.252` |
+| R2–R3 | 1 + 1 = 2 | idem | 2 | /30 | `255.255.255.252` |
+
+**Étapes 4 et 5.** Pour chaque bloc : candidat, alignement, bornes.
+
+```text
+Segment  Candidat         Pas  Aligné ?        Réseau             Diffusion
+LAN 1    .0 (parent)      64   0 = 0 x 64      00|000000 =   0    00|111111 =  63
+LAN 2    63 + 1 = 64      32   64 = 2 x 32     010|00000 =  64    010|11111 =  95
+LAN 3    95 + 1 = 96      16   96 = 6 x 16     0110|0000 =  96    0110|1111 = 111
+R1-R2    111 + 1 = 112     4   112 = 28 x 4    011100|00 = 112    011100|11 = 115
+R2-R3    115 + 1 = 116     4   116 = 29 x 4    011101|00 = 116    011101|11 = 119
+```
+
+| Segment | Préfixe | Réseau | Utilisables | Diffusion |
+|:---|:-:|:---|:---|:---|
+| LAN 1 | /26 | `172.16.0.0` | `.1` – `.62` | `.63` |
+| LAN 2 | /27 | `172.16.0.64` | `.65` – `.94` | `.95` |
+| LAN 3 | /28 | `172.16.0.96` | `.97` – `.110` | `.111` |
+| R1–R2 | /30 | `172.16.0.112` | `.113` – `.114` | `.115` |
+| R2–R3 | /30 | `172.16.0.116` | `.117` – `.118` | `.119` |
+
+Les adresses de `172.16.0.120` à `172.16.0.255` restent libres, soit
+136 adresses. Elles forment deux blocs alignés : `172.16.0.120/29`
+(120 = 15 × 8) et `172.16.0.128/25`.
+
+::: {.content-visible when-format="html"}
+<details>
+<summary>À vous : la PME ajoute un LAN de 100 postes derrière un nouveau routeur. Où le placer ?</summary>
+<p>Besoin : 100 + 1 = 101 adresses. 2⁶ − 2 = 62 ne suffit pas ; 2⁷ − 2 = 126 suffit : h = 7, /25. La première adresse libre est .120, qui n’est pas un multiple de 128. Le bloc commence donc en 172.16.0.128/25 : utilisables de .129 à .254, diffusion .255.</p>
+</details>
+:::
+
+::: {.content-visible unless-format="html"}
+**À vous.** La PME ajoute un LAN de 100 postes derrière un nouveau
+routeur. Où le placer ?
+
+**Réponse.** Besoin : 100 + 1 = 101 adresses. 2^6^ − 2 = 62 ne suffit pas ;
+2^7^ − 2 = 126 suffit : h = 7, /25. La première adresse libre est `.120`,
+qui n’est pas un multiple de 128. Le bloc commence donc en
+`172.16.0.128/25` : utilisables de `.129` à `.254`, diffusion `.255`.
+:::
+
+## Points de vigilance
+
+### Les erreurs fréquentes
+
+| Erreur | Exemple | Le bon réflexe |
+|:---|:---|:---|
+| Oublier l’interface du routeur | 254 PC + 1 routeur = 255 adresses. Un /24 n’offre que 254 adresses utilisables. | Comptez les interfaces **avant** l’étape 2. Ici, il faut un /23 : il ne tient pas dans un parent /24. |
+| Compter une seule adresse pour une liaison | Une liaison R1–R2 relie deux interfaces. | 2 adresses, donc h = 2 et un **/30** classique. |
+| Placer les blocs sans les trier | Le /27 du LAN 2 placé en `.0`, puis le /26 du LAN 1. | Triez par besoin décroissant : les grands blocs ont les contraintes d’alignement les plus fortes. |
+| Prendre la première adresse libre sans contrôle | Démarrer un /26 en `.32`. | Vérifiez que le candidat est un multiple du pas. Sinon, sautez au multiple suivant. |
+| Oublier les octets suivants | Prendre `10.6.4.1` pour le réseau d’un /22. | Le 3^e^ octet est bien un multiple de 4, mais le 4^e^ doit valoir 0. |
+
+::: {.callout-warning}
+## Piège : diffusion + 1 n’est pas toujours aligné
+
+Un bloc finit en `172.16.0.31`. Le candidat suivant est `.32`. Or un /26
+avance par 64 : ses réseaux commencent en 0, 64, 128 ou 192. Avec le masque
+/26, 32 ET 192 = 0 : le bloc chevaucherait celui déjà placé. Laissez `.32` à
+`.63` libres et commencez le /26 en `172.16.0.64`.
+:::
+
+### Vérifier son plan
+
+- [ ] **Assez d’adresses** : chaque masque offre 2^h^ − 2 ≥ besoin, PC et
+  interfaces de routeur compris.
+- [ ] **Blocs alignés** : chaque réseau est un multiple de sa taille de bloc.
+- [ ] **Blocs disjoints et contenus dans le parent** : chaque réseau commence
+  après la diffusion du précédent, et le dernier finit dans la plage de départ.
+- [ ] **Interfaces uniques** : chaque interface a une adresse différente,
+  dans le bon réseau, ni réseau ni diffusion.
+- [ ] **Passerelles et routes** : les PC ont la bonne passerelle et chaque
+  réseau du plan est joignable depuis chaque routeur.
+
+## Synthèse
+
+- **A. Dimensionner** : besoin → bits hôtes → bits empruntés → nouveau
+  masque.
+- Besoin = PC + interfaces de routeur. Liaison point à point : 2 adresses,
+  un /30.
+- Plus petit h tel que 2^h^ − 2 ≥ besoin. Préfixe = 32 − h.
+- Triez les segments par besoin décroissant.
+- **B. Placer** : première adresse libre = diffusion précédente + 1. Vérifiez
+  ensuite l’alignement du nouveau bloc.
+- Bits hôtes à 0 : réseau. Bits hôtes à 1 : diffusion. Utilisables : du
+  réseau + 1 à la diffusion − 1.
+- Relisez chaque plan avec la grille en cinq points.
+
+## Pour aller plus loin
+
+- [RFC 1878 — Variable Length Subnet Table For IPv4](https://www.rfc-editor.org/rfc/rfc1878.html),
+  RFC historique, utile comme table des préfixes et de leurs tailles.
+- [RFC 4632 — CIDR](https://www.rfc-editor.org/rfc/rfc4632.html), qui définit
+  la notation /n.
+- [RFC 1918 — adresses privées](https://www.rfc-editor.org/rfc/rfc1918.html),
+  dont la plage `172.16.0.0/12`, qui contient l’exemple.
+- [RFC 3021 — préfixes /31 sur les liaisons point à point](https://www.rfc-editor.org/rfc/rfc3021.html).
+  Cette fiche garde, comme le cours, la convention du /30 classique.
