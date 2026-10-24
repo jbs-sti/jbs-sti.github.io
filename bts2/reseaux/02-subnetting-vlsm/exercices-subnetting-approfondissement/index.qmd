@@ -685,7 +685,8 @@ ET      = 1|0000000  = 128
 
 L’adresse est dans `172.16.41.128/25`, le sous-réseau du VLAN 40. La caméra
 ne joindrait pas sa passerelle `172.16.41.1`, qui est dans un autre
-sous-réseau. Il faut une adresse du VLAN 30, de `.2` à `.126`.
+sous-réseau. Il faut une adresse du VLAN 30, de `172.16.41.2` à
+`172.16.41.126`.
 Retirez cette adresse de la plage DHCP (exclusion). Sinon, le serveur
 pourrait la donner à un autre poste.
 
@@ -761,4 +762,5 @@ Sources :
 - [RFC 4632 — CIDR](https://www.rfc-editor.org/rfc/rfc4632.html), qui définit
   la notation /n.
 - [RFC 1918 — adresses privées](https://www.rfc-editor.org/rfc/rfc1918.html),
-  dont les plages `10.0.0.0/8` et `172.16.0.0/12` utilisées dans cette série.
+  dont les plages `10.0.0.0/8`, `172.16.0.0/12` et `192.168.0.0/16` utilisées
+  dans cette série.
