@@ -123,7 +123,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Ressources : bts2/reseaux/02-subnetting-vlsm/cours-vlsm/index.qmd et fiche-vlsm-methode/index.qmd
 - Fait : `draft: false` sur les deux, par l'enseignant (commit, push et PR lancés par le chef de projet à sa demande)
 - Vérificateur, Codex : sans objet (métadonnée de publication)
-- Pull request : #41 (à confirmer)
+- Pull request : #41
 - Points à relire par l'enseignant : les pages en ligne et leurs PDF ; le lien du TP 4 vers le cours VLSM
 
 ### 2026-10-24 — cours/bts2-fiche-vlsm
