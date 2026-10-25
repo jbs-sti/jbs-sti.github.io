@@ -34,9 +34,17 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (`exercices-subnetting-classes`, order 12, brouillon, écrite par Codex) :
   3 découpages en sous-réseaux égaux (192.168.10.0/24, 172.16.0.0/16,
   10.0.0.0/8), énoncés sur une page, corrigé après saut de page.
+- Fiche d'exercices VLSM d'une page (`exercices-vlsm-fiche`, order 20,
+  **publiée par l'enseignant**, écrite par Codex) : 3 plans VLSM
+  (192.168.80.0/24, 10.10.20.0/24, 172.20.0.0/22 avec un /23), colonne
+  « Ordre » pour le tri, corrigé après saut de page. Le cours VLSM reste
+  tel quel (décision de l'enseignant).
 
 **À faire**
 
+- `bts2/reseaux/02-subnetting-vlsm/exercices-vlsm-fiche` (publiée) :
+  vérifier sur le PDF de la CI que les énoncés tiennent sur une page et que
+  les colonnes Réseau et Diffusion laissent la place d'écrire.
 - `bts2/reseaux/02-subnetting-vlsm/exercices-subnetting-classes`
   (brouillon) : vérifier sur le PDF de la CI que les trois énoncés tiennent
   sur une page A4 (estimation : de justesse) et que les tableaux à compléter
@@ -173,6 +181,18 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-25 — cours/bts2-fiche-vlsm-exercices
+
+- Ressource : `bts2/reseaux/02-subnetting-vlsm/exercices-vlsm-fiche/index.qmd`, type exercices, order 20 ; écrite par Codex (forme imitée de `exercices-subnetting-classes`)
+- Demande de l'enseignant : fiche d'exercices VLSM d'une page ; ne pas toucher au cours VLSM ; exercice 2 en 10.10.x.x (`10.10.20.0/24` au lieu de `192.168.90.0/24`)
+- Vérificateur : 1er passage À REPRENDRE (calculs justes ; 6 À CORRIGER : « + 2 » expliqué, h défini, exemple du Rappel qui donnait une réponse, colonne « Ordre », colonnes élargies, RFC 1878 historique ; BLOQUANT « rendu » dû à l'absence de Quarto en local) ; 2e passage À REPRENDRE (`draft: false` dans le fichier, retours à la ligne du corrigé) ; corrigés par Codex
+- `draft: false` : modification faite par l'enseignant dans son éditeur (commit 4ff5276) ; d'abord prise pour une anomalie et remise à `true` par Codex, puis confirmée par l'enseignant et gardée
+- Relecteur : 0 réécriture (contrainte d'une page), 4 constats A (« taille de bloc », pas au 3e octet dans le Rappel, fichier d'échange de l'éditeur, retours à la ligne) corrigés par Codex ou sans objet
+- Vérification finale : CONFORME (contenu ; rendu et `verifier_site.py` à confirmer par la CI)
+- Relance du relecteur : non
+- Pull request : #55
+- Points à relire par l'enseignant : énoncés sur une page dans le PDF de la CI ; ligne du Rappel sur le pas
 
 ### 2026-10-25 — cours/bts2-fiche-subnetting-classes
 

@@ -1,0 +1,126 @@
+---
+title: "VLSM : fiche d'exercices"
+description: "Trois exercices pour dimensionner et placer des sous-réseaux de tailles différentes."
+type: exercices
+domaine: reseaux
+chapitre: "02 — Subnetting et VLSM"
+categories: [exercices, reseaux]
+mots-cles: [VLSM, taille de bloc, préfixe, alignement, bornes, liaison point à point]
+objectifs:
+  - "Choisir la taille de bloc et le préfixe adaptés à chaque besoin."
+  - "Placer les blocs et calculer leurs bornes."
+prerequis:
+  - "Cours « Le VLSM : des sous-réseaux de tailles différentes »"
+duree: "45 min"
+order: 20
+date-modified: 2026-10-25
+draft: false
+lang: fr
+---
+
+## Objectifs et prérequis
+
+Dimensionner, placer et trouver les bornes. Prérequis : le [cours VLSM](../cours-vlsm/index.qmd).
+
+## Situation de départ
+
+Économisez les adresses en adaptant les blocs. Les besoins incluent les interfaces de routeur.
+
+::: {.callout-note title="Rappel"}
+**A. Dimensionner** : besoin + 2 (adresse réseau et diffusion) ; 51 → 53 → 64 → /26.  
+Taille de bloc = plus petit 2^h^ ≥ ce total (h = bits hôtes) ; préfixe = 32 − h.  
+**B. Placer** : triez du plus grand bloc au plus petit ; placez-les à la suite depuis le réseau parent.  
+Départ **aligné** : multiple de la taille ; au-delà de 256, du pas (256 − octet du masque) au 3^e^ octet.  
+Diffusion = réseau + taille de bloc − 1. Liaison point à point : **/30** classique (2 utilisables).
+:::
+
+## Exercices
+
+1. **A. Dimensionner** : calculez la taille de bloc et le préfixe de chaque segment.
+2. **Trier** : du plus grand bloc au plus petit ; à taille égale, gardez l’ordre du tableau.
+3. **B. Placer** : partez du réseau parent ; vérifiez l’alignement de chaque réseau.
+4. **Bornes** : complétez réseau et diffusion, en adresses complètes.
+
+### Exercice 1 — `192.168.80.0/24`
+
+| Ordre | Segment | Besoin | Taille de bloc | Préfixe | Réseau | Diffusion |
+|:-----:|:--------|:-----:|:-------------:|:------:|:------------------------|:------------------------|
+| | LAN A | 18 | | | | |
+| | LAN B | 80 | | | | |
+| | LAN C | 35 | | | | |
+| | R1–R2 | 2 | | | | |
+
+### Exercice 2 — `10.10.20.0/24`
+
+| Ordre | Segment | Besoin | Taille de bloc | Préfixe | Réseau | Diffusion |
+|:-----:|:--------|:-----:|:-------------:|:------:|:------------------------|:------------------------|
+| | LAN A | 11 | | | | |
+| | LAN B | 85 | | | | |
+| | LAN C | 5 | | | | |
+| | LAN D | 40 | | | | |
+| | R1–R2 | 2 | | | | |
+| | R2–R3 | 2 | | | | |
+
+### Exercice 3 — `172.20.0.0/22`
+
+| Ordre | Segment | Besoin | Taille de bloc | Préfixe | Réseau | Diffusion |
+|:-----:|:--------|:-----:|:-------------:|:------:|:------------------------|:------------------------|
+| | LAN A | 100 | | | | |
+| | LAN B | 300 | | | | |
+| | LAN C | 180 | | | | |
+| | R1–R2 | 2 | | | | |
+
+{{< pagebreak >}}
+
+## Corrigé
+
+**A. Dimensionner.** Exemple : 80 + 2 = 82 ; 64 ne suffit pas, 128 suffit : h = 7, donc /25.  
+**B. Placer.** Les tableaux suivent l’ordre décroissant des blocs ; chaque réseau est aligné.  
+**Bornes** : réseau et diffusion ci-dessous ; utilisables de réseau + 1 à diffusion − 1.
+
+### Exercice 1
+
+| Ordre | Segment | Besoin | Taille de bloc | Préfixe | Réseau | Diffusion |
+|:-----:|:--------|:-----:|:-------------:|:------:|:------------------------|:------------------------|
+| 1 | LAN B | 80 | 128 | /25 | `192.168.80.0` | `192.168.80.127` |
+| 2 | LAN C | 35 | 64 | /26 | `192.168.80.128` | `192.168.80.191` |
+| 3 | LAN A | 18 | 32 | /27 | `192.168.80.192` | `192.168.80.223` |
+| 4 | R1–R2 | 2 | 4 | /30 | `192.168.80.224` | `192.168.80.227` |
+
+228 adresses occupées ; **28 libres**, de `192.168.80.228` à `192.168.80.255`.
+
+### Exercice 2
+
+| Ordre | Segment | Besoin | Taille de bloc | Préfixe | Réseau | Diffusion |
+|:-----:|:--------|:-----:|:-------------:|:------:|:------------------------|:------------------------|
+| 1 | LAN B | 85 | 128 | /25 | `10.10.20.0` | `10.10.20.127` |
+| 2 | LAN D | 40 | 64 | /26 | `10.10.20.128` | `10.10.20.191` |
+| 3 | LAN A | 11 | 16 | /28 | `10.10.20.192` | `10.10.20.207` |
+| 4 | LAN C | 5 | 8 | /29 | `10.10.20.208` | `10.10.20.215` |
+| 5 | R1–R2 | 2 | 4 | /30 | `10.10.20.216` | `10.10.20.219` |
+| 6 | R2–R3 | 2 | 4 | /30 | `10.10.20.220` | `10.10.20.223` |
+
+224 adresses occupées ; **32 libres**, de `10.10.20.224` à `10.10.20.255`.
+
+### Exercice 3
+
+| Ordre | Segment | Besoin | Taille de bloc | Préfixe | Réseau | Diffusion |
+|:-----:|:--------|:-----:|:-------------:|:------:|:------------------------|:------------------------|
+| 1 | LAN B | 300 | 512 | /23 | `172.20.0.0` | `172.20.1.255` |
+| 2 | LAN C | 180 | 256 | /24 | `172.20.2.0` | `172.20.2.255` |
+| 3 | LAN A | 100 | 128 | /25 | `172.20.3.0` | `172.20.3.127` |
+| 4 | R1–R2 | 2 | 4 | /30 | `172.20.3.128` | `172.20.3.131` |
+
+Pour le /23 : masque `255.255.254.0`, pas = 256 − 254 = **2 au 3^e^ octet**.  
+Le bloc couvre `172.20.0.0` à `172.20.1.255` ; le suivant commence en `172.20.2.0`.  
+900 adresses occupées ; **124 libres**, de `172.20.3.132` à `172.20.3.255`.  
+
+## Synthèse
+
+Dimensionnez, triez, placez, puis calculez les bornes. Gardez tous les blocs dans le réseau parent, sans chevauchement.
+
+## Pour aller plus loin
+
+Refaites les exercices avec la [fiche méthode VLSM](../fiche-vlsm-methode/index.qmd).
+Sources : [RFC 1878 (historique) — tailles des blocs](https://www.rfc-editor.org/rfc/rfc1878.html) ;
+[RFC 1918, § 3 — plages privées](https://www.rfc-editor.org/rfc/rfc1918.html#section-3).
