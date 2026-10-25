@@ -18,13 +18,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (PR #39 : VLSM = TP 4, order 30 ; OSPF = TP 5 ; ACL = TP 6), puis
   fiche VLSM (`fiche-vlsm-methode`, order 21, publiée, PR #40 et #41),
   exercices VLSM 1 (`exercices-vlsm-entrainement`, order 22, brouillon, PR #42)
-  et 2 (`exercices-vlsm-approfondissement`, order 23, brouillon, PR #43). Le bloc VLSM du chapitre 02 est alors complet ; ensuite :
+  et 2 (`exercices-vlsm-approfondissement`, order 23, publiée, PR #43). Le bloc VLSM du chapitre 02 est alors complet ; ensuite :
   NAT/PAT, pare-feu et DMZ.
 
 **À faire**
 
 - `bts2/reseaux/02-subnetting-vlsm/exercices-vlsm-approfondissement`
-  (brouillon) : relire le PDF de la CI ; valider le contexte « Varenne
+  (publiée par l'enseignant dans la PR #43) : relire le PDF de la CI ; valider le contexte « Varenne
   Médical », l'exercice 5.2 (seconde erreur « un /31 suffit » ajoutée pour
   que le piège ait un effet) et la présentation de l'exercice 4 en projet de
   configuration à contrôler avant saisie (IOS refuserait sans doute
@@ -139,6 +139,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Relance Codex : non
 - Fusion de `main` dans la branche (faite par l'enseignant, `git merge` étant bloqué par les permissions) pour intégrer la série 1 et éviter un conflit sur le journal
 - Pull request : #43
+- `draft: false` passé par l'enseignant sur la branche, commité dans la même PR
 - Points à relire par l'enseignant : voir « À faire » ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-24 — cours/bts2-exercices-vlsm-1
