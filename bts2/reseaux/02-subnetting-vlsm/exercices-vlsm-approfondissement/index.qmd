@@ -354,7 +354,8 @@ plan de l’exercice 3. L’agence comprend :
 - un LAN de 25 PC ;
 - une liaison WAN entre le routeur de Poitiers et le routeur de l’agence.
 
-Les deux LAN ont leur passerelle sur le routeur de l’agence.
+Les deux LAN ont leur passerelle sur le routeur de l’agence. Ces besoins
+sont fermes : dimensionnez-les **sans** réserve de croissance.
 
 **6.1 — A. Dimensionner.** Donnez le besoin, h, le préfixe et le masque de
 chaque segment.
@@ -599,8 +600,9 @@ désignent bien les passerelles du LAN 1 et du LAN 2.
 
 **4.2** Les quatre erreurs :
 
-- **G0/0.10 : masque trop court.** Le LAN 1 est un /23, de masque
-  `255.255.254.0`. Avec `255.255.255.0`, R1 croirait que le LAN 1 s’arrête
+- **G0/0.10 : préfixe trop long, donc bloc trop petit.** Le LAN 1 est un
+  /23, de masque `255.255.254.0`, soit 512 adresses. `255.255.255.0` est un
+  /24 : 256 adresses seulement. Avec ce masque, R1 croirait que le LAN 1 s’arrête
   en `172.18.4.255`. Les PC de `172.18.5.0` à `172.18.5.254` seraient hors
   de son réseau.
 - **G0/0.30 : adresse de diffusion attribuée.** `127 = 0|1111111` : les
@@ -609,7 +611,8 @@ désignent bien les passerelles du LAN 1 et du LAN 2.
 - **G0/1 : masque de LAN sur une liaison.** Avec `255.255.255.0`, le réseau
   de cette interface serait `172.18.7.0/24`. Il recouvrirait le LAN 3, le
   LAN 4 et la liaison L2. Une liaison prend un /30 : `255.255.255.252`.
-- **pool LAN1 : masque du pool trop court.** Le pool ne couvrirait que
+- **pool LAN1 : préfixe trop long, donc pool trop petit.** Le pool ne
+  couvrirait que
   `172.18.4.0/24`. Il distribuerait au mieux `172.18.4.2` à `172.18.4.254`,
   soit 253 adresses pour 400 PC. Il donnerait aussi le mauvais masque aux
   postes.
@@ -806,9 +809,9 @@ suffit encore. Le plan final finit en `10.20.37.159`, dans
 `10.20.32.0/21`. Le /20 est donc surdimensionné pour les besoins actuels,
 mais il laisse une large marge.
 
-**7.3** Le total suffit à conclure si trois conditions sont réunies : on
-part de l’adresse réseau du parent ; les blocs, tous des puissances de 2,
-sont placés par taille décroissante ; ils se suivent, sans trou. Alors
+**7.3** Le total suffit à conclure si trois conditions sont réunies.
+On part de l’adresse réseau du parent. On place les blocs, tous des
+puissances de 2, par taille décroissante. Ils se suivent, sans trou. Alors
 chaque candidat est aligné et les blocs occupent exactement le total.
 
 Le plan de l’exercice 6 ne place pas les nouveaux blocs par ordre
