@@ -114,14 +114,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Le site vouvoie le lecteur.
 - Une ressource n'a pas de bloc `format:` : elle hérite des formats du
   projet (html, vintage-pdf).
-- Rôles (décision de l'enseignant, 2026-10-25) : Codex écrit en
-  `workspace-write` d'après `.review/consigne.md` (`docs/redaction-codex.md`),
-  le `verificateur` contrôle, le sous-agent `relecteur` relit et réécrit
-  après commit du premier jet (`docs/relecture.md`) ; le chef de projet
-  contrôle ses changements dans `git diff`. Le `redacteur` Claude n'écrit
-  qu'en secours si Codex est indisponible. Fiche, exercices et TP 7 NAT/PAT
-  finissent avec l'ancien protocole ; le nouveau s'applique à partir du
-  chapitre 06.
+- Rôles (décision de l'enseignant, 2026-10-25) : Codex rédige les cours,
+  fiches et exercices (`docs/redaction-codex.md`, méthode « premier
+  principe, exemple concret, méthode » : court, mots simples, illustré,
+  pour un élève fragile) ; le sous-agent `redacteur` rédige les TP ; la
+  relecture est croisée (`docs/relecture.md`) : `relecteur` Claude pour
+  Codex, Codex pour les TP ; le `verificateur` contrôle tout ; Claude Code
+  pilote. Fiche, exercices et TP 7 NAT/PAT ont fini avec l'ancien
+  protocole. Premiers travaux du nouveau : réécriture courte des cours
+  subnetting et VLSM par Codex.
 - Les ancres (tests, schéma, scripts de vérification, CI) ne sont jamais
   modifiées par un agent.
 - Progression BTS2 réseaux, validée par l'enseignant : 01 VLAN et inter-VLAN
@@ -172,13 +173,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 ### 2026-10-25 — infra/codex-redacteur
 
-- Demande de l'enseignant : Codex écrit, Claude relit
-- `CLAUDE.md` : nouveau déroulé (consigne → rédaction Codex → vérificateur → corrections par Codex via `.review/constats.md` → commit → relecteur → contrôle du diff → tableau → vérification → PR → journal) et secours par le `redacteur`
-- `docs/redaction-codex.md` (nouveau) : consignes de rédaction et de correction pour Codex
-- `docs/relecture-codex.md` renommé `docs/relecture.md`, adressé au sous-agent `relecteur` (mêmes critères, plafonds et interdits)
-- `.claude/agents/relecteur.md` (nouveau) ; descriptions de `redacteur` (secours) et `verificateur` mises à jour
-- `.claude/settings.json` inchangé (non modifiable par un agent) : la sortie de Codex garde `-o .review/codex.md`, déjà autorisée
-- Pull request : #47
+- Demande de l'enseignant, précisée en deux temps : d'abord « Codex écrit, Claude relit », puis répartition par type : Codex rédige les cours (et, par défaut, fiches et exercices), Claude rédige les TP, Claude reste vérificateur et chef de projet
+- `CLAUDE.md` : tableau des rôles, déroulé avec rédaction selon le type, relecture croisée, corrections par le rédacteur de la ressource ; si Codex est indisponible, on attend pour les cours
+- `docs/redaction-codex.md` (nouveau) : consignes de rédaction et de correction pour Codex, méthode « premier principe, exemple concret, méthode »
+- `docs/relecture-codex.md` renommé `docs/relecture.md`, commun aux deux relecteurs (mêmes critères, plafonds et interdits)
+- `.claude/agents/relecteur.md` (nouveau) ; `redacteur` limité aux TP ; `verificateur` contrôle aussi la méthode des cours
+- `.claude/settings.json` inchangé (non modifiable par un agent) : les commandes Codex gardent `-o .review/codex.md`, déjà autorisée
+- Pull request : #47 (première version), puis #51 (répartition par type)
 
 ### 2026-10-25 — cours/bts2-cours-nat-pat
 
