@@ -28,7 +28,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Réécriture courte des cours par Codex (nouveau protocole, PR #47 et #51) :
   cours subnetting (PR #52, publié, 558 → 257 lignes, 3 SVG), cours VLSM
   (PR #53, 518 → 230 lignes, 2 SVG nouveaux), cours routage dynamique
-  (`cours-ospf`, brouillon, 776 → 292 lignes, progression du PDF
+  (`cours-ospf`, brouillon, PR #56, 776 → 292 lignes, progression du PDF
   `Routage_dynamique.pdf` : statique → RIPv2 → redondance → OSPF,
   exemple HexaTech, 4 SVG dont `rip-sauts` nouveau). Ensuite, selon
   l'enseignant : cours NAT/PAT au même format, puis chapitre 06 pare-feu
@@ -195,7 +195,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Vérificateur : 1er passage après relecture À REPRENDRE (V1 router-id employé avant définition, V2 `no shutdown` manquant, V3 LSDB et Null0 non définis ; BLOQUANT « rendu » dû à l'absence de Quarto en local) ; corrigés par Codex ; 2e passage CONFORME, avec une retouche d'une ligne du chef de projet (l. 258 : le TP 5 ne détaille pas la métrique E2)
 - Rapport du premier jet de Codex (section « Incertitudes ») écrasé par les rapports de correction : non repris dans la PR
 - Relance du relecteur : non (corrections de forme)
-- Pull request : à renseigner
+- Pull request : #56
 - Points à relire par l'enseignant : rendu PDF de la CI et SVG ; sortie RIP et bascule après panne dans Packet Tracer
 
 ### 2026-10-25 — cours/bts2-fiche-vlsm-exercices
