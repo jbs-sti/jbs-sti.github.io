@@ -191,7 +191,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Relecteur : 0 réécriture (contrainte d'une page), 4 constats A (« taille de bloc », pas au 3e octet dans le Rappel, fichier d'échange de l'éditeur, retours à la ligne) corrigés par Codex ou sans objet
 - Vérification finale : CONFORME (contenu ; rendu et `verifier_site.py` à confirmer par la CI)
 - Relance du relecteur : non
-- Pull request : à renseigner
+- Pull request : #55
 - Points à relire par l'enseignant : énoncés sur une page dans le PDF de la CI ; ligne du Rappel sur le pas
 
 ### 2026-10-25 — cours/bts2-fiche-subnetting-classes
