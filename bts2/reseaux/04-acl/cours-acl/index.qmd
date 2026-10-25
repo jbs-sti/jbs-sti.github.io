@@ -21,7 +21,7 @@ prerequis:
   - "Protocoles TCP, UDP et ICMP ; notion de numéro de port"
 duree: "2 h"
 order: 10
-date-modified: 2026-10-24
+date-modified: 2026-10-25
 draft: true
 lang: fr
 ---
@@ -492,9 +492,11 @@ interface GigabitEthernet0/0.30
 ```
 
 La dernière ligne n'autorise que les sources du VLAN 30. Un paquet dont la
-source est usurpée est détruit par le refus implicite. Seule exception,
-une demande DHCP de `0.0.0.0` vers la diffusion : le routeur ne la transmet
-à aucun autre réseau.
+source usurpée est hors du VLAN 30 est détruit par le refus implicite. Seule
+exception, une demande DHCP de `0.0.0.0` vers la diffusion : le routeur ne
+la transmet à aucun autre réseau. En revanche, une ACL ne contrôle que
+l'adresse écrite dans le paquet : un invité qui usurpe l'adresse d'un autre
+invité du VLAN 30 passe la dernière ligne.
 
 G0/0.30 est une interface passive OSPF : aucun Hello n'y circule. Cette ACL
 n'a donc pas besoin de règle pour OSPF.
@@ -583,9 +585,9 @@ qu'aucune ACL n'est appliquée dans ce sens.
 **Plateforme : Cisco Packet Tracer 9.0.1, routeur 2911, IOS 15.1.**
 
 SSH a besoin d'une paire de clés RSA. RSA est un algorithme de
-chiffrement asymétrique : il fournit au routeur sa paire de clés, publique
-et privée. Le routeur la nomme d'après son nom
-d'hôte et son nom de domaine : ces deux réglages viennent donc d'abord.
+chiffrement asymétrique : il repose sur une paire de clés, l'une publique,
+l'autre privée. Le routeur nomme cette paire d'après son nom d'hôte et son
+nom de domaine : ces deux réglages viennent donc d'abord.
 
 ```text
 ! Packet Tracer, R1 (2911, IOS 15.1), mode de configuration globale
