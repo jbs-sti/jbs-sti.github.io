@@ -24,12 +24,19 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   racine) : cours (`cours-nat-pat`, order 10, brouillon, PR #46), fiche
   (`fiche-nat-pat`, order 15, PR #48), exercices (`exercices-nat-pat`,
   order 16, PR #49), TP 7 (`tp-nat-pat`, order 20, option A : fil rouge +
-  FAI et serveur public, PR #50). Le chapitre est alors complet ;
-  ensuite : chapitre 06 pare-feu et DMZ (ASA 5506-X), avec le nouveau
-  protocole « Codex écrit, Claude relit » (PR #47).
+  FAI et serveur public, PR #50). Le chapitre est complet.
+- Réécriture courte des cours par Codex (nouveau protocole, PR #47 et #51) :
+  cours subnetting (PR #52, publié, 558 → 257 lignes, 3 SVG), cours VLSM
+  (PR #53, 518 → 230 lignes, 2 SVG nouveaux). Ensuite, selon
+  l'enseignant : cours NAT/PAT au même format, puis chapitre 06 pare-feu
+  et DMZ (ASA 5506-X).
 
 **À faire**
 
+- `bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm` et `cours-vlsm`
+  (publiés, réécrits par Codex) : relire le PDF de la CI et les figures
+  (`frontiere`, `blocs`, `bornes` ; `ordre-blocs`, `plan-vlsm`) ; dire si
+  ce format court sert de modèle pour les cours suivants.
 - `bts2/reseaux/05-nat-pat/tp-nat-pat` (brouillon) : relire le PDF de la
   CI et le SVG ; confirmer dans Packet Tracer que la route
   `198.51.100.8/29 → Null0` de FW ne gêne pas les adresses traduites (.9 à
@@ -158,6 +165,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-25 — cours/bts2-cours-subnetting-court et cours/bts2-cours-vlsm-court
+
+- Premiers cours du nouveau protocole : Codex rédige, le `verificateur` contrôle, le `relecteur` Claude relit ; consignes de Codex dans `.review/` tant que la PR #51 n'était pas fusionnée
+- Demande de l'enseignant : cours courts, pour un élève fragile, « premier principe, exemple concret, méthode », illustrés ; chemins, titres, vocabulaire (taille de bloc, pas d'avancement, aligné), démarches A/B et exemple guidé VLSM (repris par le TP 4) conservés
+- **Subnetting** `bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm/index.qmd` : 558 → 257 lignes, SVG `frontiere`, `blocs`, `bornes` ; vérificateur À REPRENDRE (18 constats, dont 1 BLOQUANT : le découpage IP ne limite pas seul les diffusions), puis CONFORME (3 retouches mineures du chef de projet) ; relecteur : R1, R2 gardées, 2 constats A appliqués par le chef de projet ; CONFORME ; PR #52 (journal porté par la PR suivante)
+- **VLSM** `bts2/reseaux/02-subnetting-vlsm/cours-vlsm/index.qmd` : 518 → 230 lignes, SVG `ordre-blocs`, `plan-vlsm` (nouveaux), `topologie-exemple` gardé, `topologie-exercice` supprimé (aucune référence) ; vérificateur À REPRENDRE (8 constats, dont 1 BLOQUANT : propriété « placés à la suite, chaque candidat tombe aligné » retirée alors que la série d'approfondissement s'y réfère), puis CONFORME ; relecteur : R1, R2, R3, P1 gardées, 2 constats A (piège redondant supprimé, phrase précisée) corrigés par Codex ; CONFORME après une nuance d'un mot du chef de projet
+- Branche VLSM recalée sur `main` (aucun commit propre) avant le premier commit, pour éviter un conflit sur le journal
+- Pull request : #53
+- Points à relire par l'enseignant : voir « À faire » ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-25 — cours/bts2-tp-nat-pat (et entrées de la fiche et des exercices)
 
