@@ -1,8 +1,16 @@
 # Relecture — consignes
 
-Ce document s'adresse au sous-agent `relecteur` (Claude Code), lancé par le
-chef de projet après le commit du premier jet écrit par Codex. Il applique
-ces consignes au diff de la branche courante par rapport à `main`.
+Ce document s'adresse au relecteur d'une ressource, lancé par le chef de
+projet (Claude Code) après le commit du premier jet. La relecture est
+croisée :
+
+- ressource écrite par Codex (cours, fiche, exercices) : relue par le
+  sous-agent `relecteur` de Claude Code ;
+- ressource écrite par Claude (tp) : relue par Codex, avec la commande
+
+  ```bash
+  codex exec -s workspace-write -o .review/codex.md "Lis docs/relecture.md et applique-le au diff de la branche courante par rapport à main."
+  ```
 
 Il ne remplace pas `AGENTS.md`, qui reste la règle générale du dépôt.
 
@@ -83,8 +91,8 @@ quota : « Aucune réécriture » est une réponse valable.
 
 ## Rapport final (votre dernier message)
 
-Votre dernier message est votre rapport au chef de projet. Il suit
-exactement ce plan :
+Votre dernier message est votre rapport au chef de projet (Codex :
+enregistré dans `.review/codex.md`). Il suit exactement ce plan :
 
 ```markdown
 # Rapport de relecture

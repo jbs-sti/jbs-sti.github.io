@@ -2,11 +2,17 @@
 
 ## Protocole d'orchestration
 
-Claude Code est chef de projet. Codex écrit, le sous-agent `verificateur`
-contrôle, le sous-agent `relecteur` relit et réécrit, l'enseignant fusionne.
-Les consignes de rédaction de Codex sont dans `docs/redaction-codex.md`,
-celles du relecteur dans `docs/relecture.md`. Le sous-agent `redacteur`
-n'écrit plus qu'en secours, quand Codex est indisponible.
+Claude Code est chef de projet et vérificateur ; l'enseignant fusionne.
+Chaque ressource est écrite par un modèle et relue par l'autre :
+
+| Type | Rédaction | Relecture et réécriture | Vérification |
+|---|---|---|---|
+| cours, fiche, exercices | Codex (`docs/redaction-codex.md`) | sous-agent `relecteur` | sous-agent `verificateur` |
+| tp | sous-agent `redacteur` | Codex (`docs/relecture.md`) | sous-agent `verificateur` |
+
+Les deux relecteurs appliquent les mêmes consignes, `docs/relecture.md`.
+Les cours suivent la méthode « premier principe, exemple concret, méthode »
+décrite dans `docs/redaction-codex.md` : courts, simples, illustrés.
 
 ### Mémoire de session
 
@@ -29,20 +35,25 @@ n'écrit plus qu'en secours, quand Codex est indisponible.
 1. **Consigne** : créer `.review/` si besoin et écrire `.review/consigne.md` :
    chemin cible, formation, type, ressource de référence, sources (fichiers
    de l'enseignant), contenu attendu, plateforme, métadonnées imposées
-   (`order`, `duree`, prérequis, liens permis ou interdits).
-2. **Rédaction par Codex** : lancer cette commande seule, sans pipe ni `&&`,
-   avec un délai d'exécution de 10 minutes (le délai par défaut coupe les
-   rédactions longues) :
+   (`order`, `duree`, prérequis, liens permis ou interdits), ressources qui
+   dépendent de celle-ci (titres, exemples, vocabulaire à garder).
+2. **Rédaction** :
+   - **cours, fiche, exercices** : lancer Codex, seul, sans pipe ni `&&`,
+     avec un délai d'exécution de 10 minutes (le délai par défaut coupe les
+     rédactions longues) :
 
-   ```bash
-   codex exec -s workspace-write -o .review/codex.md "Lis docs/redaction-codex.md et rédige la ressource décrite dans .review/consigne.md."
-   ```
+     ```bash
+     codex exec -s workspace-write -o .review/codex.md "Lis docs/redaction-codex.md et rédige la ressource décrite dans .review/consigne.md."
+     ```
+
+   - **tp** : sous-agent `redacteur`, avec la même consigne.
 
    Puis contrôler `git status` : seul le dossier de la ressource (et les
    index créés par `scripts/nouveau.py`) a changé ; sinon, annuler le reste.
 3. **Vérification** : sous-agent `verificateur`. Si le verdict est
-   À REPRENDRE, écrire les constats dans `.review/constats.md` et relancer
-   Codex, seul et avec le même délai :
+   À REPRENDRE, renvoyer les constats au rédacteur de la ressource. Pour
+   Codex, les écrire dans `.review/constats.md` et lancer, seul et avec le
+   même délai :
 
    ```bash
    codex exec -s workspace-write -o .review/codex.md "Lis docs/redaction-codex.md et corrige la ressource selon .review/constats.md."
@@ -52,8 +63,15 @@ n'écrit plus qu'en secours, quand Codex est indisponible.
    s'arrêter et consulter l'enseignant.
 4. **Commit du premier jet** sur la branche de travail, pour que les
    modifications du relecteur apparaissent seules dans `git diff`.
-5. **Relecture** : sous-agent `relecteur`, qui applique `docs/relecture.md`
-   au diff de la branche par rapport à `main`.
+5. **Relecture croisée**, d'après `docs/relecture.md`, sur le diff de la
+   branche par rapport à `main` :
+   - ressource écrite par Codex : sous-agent `relecteur` ;
+   - ressource écrite par Claude (tp) : Codex, seul et avec le même délai :
+
+     ```bash
+     codex exec -s workspace-write -o .review/codex.md "Lis docs/relecture.md et applique-le au diff de la branche courante par rapport à main."
+     ```
+
 6. **Contrôle des modifications du relecteur** :
    - `git status` : seuls des `index.qmd` de ressources du diff ont changé ;
      sinon, annuler les autres changements ;
@@ -61,8 +79,8 @@ n'écrit plus qu'en secours, quand Codex est indisponible.
      réellement retiré dans `git diff`, et juger l'exactitude technique et
      le respect de la syntaxe Quarto ;
    - annuler une à une les réécritures refusées ;
-   - traiter les constats BLOQUANT de la partie A : correction par Codex
-     (via `.review/constats.md`), jamais par le relecteur.
+   - traiter les constats BLOQUANT de la partie A : correction par le
+     rédacteur de la ressource, jamais par le relecteur.
 7. **Tableau à l'enseignant**, dans la réponse et dans la PR :
 
    | ID | Niveau | Critère | Avant | Après | Décision du chef de projet |
@@ -74,16 +92,17 @@ n'écrit plus qu'en secours, quand Codex est indisponible.
 10. **Publication de la branche** : commit, `git push -u origin <branche>`,
     puis pull request vers `main` (`gh pr create --base main`). La
     description donne ce qui a été fait, ce qui reste incertain (section
-    « Incertitudes » du rapport de Codex comprise), ce que l'enseignant doit
-    relire en priorité, le verdict du vérificateur et le tableau des
+    « Incertitudes » du rapport du rédacteur comprise), ce que l'enseignant
+    doit relire en priorité, le verdict du vérificateur et le tableau des
     réécritures.
 11. **Journal** : ajouter une entrée à `JOURNAL.md`, dans le même commit.
 
-### Secours si Codex est indisponible
+### Si Codex est indisponible
 
-Si Codex échoue (limite d'usage, panne), le sous-agent `redacteur` prend sa
-place aux étapes 2 et 3, avec la même consigne. Le signaler dans la PR et
-dans le journal.
+Si Codex échoue (limite d'usage, panne), attendre qu'il redevienne
+disponible pour les cours : leur style est confié à Codex. Pour une
+relecture de TP, le sous-agent `relecteur` peut le remplacer. Le signaler
+dans la PR et dans le journal.
 
 ### Interdits
 
