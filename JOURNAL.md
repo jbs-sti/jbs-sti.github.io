@@ -18,8 +18,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (PR #39 : VLSM = TP 4, order 30 ; OSPF = TP 5 ; ACL = TP 6), puis
   fiche VLSM (`fiche-vlsm-methode`, order 21, publiée, PR #40 et #41),
   exercices VLSM 1 (`exercices-vlsm-entrainement`, order 22, brouillon, PR #42)
-  et 2 (`exercices-vlsm-approfondissement`, order 23, brouillon, PR à
-  fusionner). Le bloc VLSM du chapitre 02 est alors complet ; ensuite :
+  et 2 (`exercices-vlsm-approfondissement`, order 23, brouillon, PR #43). Le bloc VLSM du chapitre 02 est alors complet ; ensuite :
   NAT/PAT, pare-feu et DMZ.
 
 **À faire**
@@ -139,7 +138,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Réécritures gardées : R1 ; annulées : aucune
 - Relance Codex : non
 - Fusion de `main` dans la branche (faite par l'enseignant, `git merge` étant bloqué par les permissions) pour intégrer la série 1 et éviter un conflit sur le journal
-- Pull request : à renseigner
+- Pull request : #43
 - Points à relire par l'enseignant : voir « À faire » ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-24 — cours/bts2-exercices-vlsm-1
