@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="440" viewBox="0 0 900 440" role="img" aria-labelledby="title desc">
+<title id="title">Topologie de référence du cours NAT</title>
+<desc id="desc">Le LAN 192.168.1.0/24 contient PC1 (192.168.1.10), PC2 (192.168.1.11) et un serveur (192.168.1.100), reliés au commutateur SW. SW est relié à l’interface G0/0 du routeur R1, d’adresse 192.168.1.1/24, déclarée ip nat inside. L’interface G0/1 de R1, d’adresse 203.0.113.1/24, est déclarée ip nat outside et mène à Internet, où se trouve un serveur web d’adresse 198.51.100.80.</desc>
+<rect width="900" height="440" fill="white"/>
+<!-- Zone du LAN -->
+<rect x="20" y="50" width="335" height="320" rx="12" fill="none" stroke="#111" stroke-width="2" stroke-dasharray="10 6"/>
+<!-- Séparation inside / outside -->
+<path d="M470 40 V165 M470 320 V390" fill="none" stroke="#444" stroke-width="2" stroke-dasharray="3 5"/>
+<!-- Liaisons -->
+<g fill="none" stroke="#222" stroke-width="3">
+<path d="M190 110 L250 210"/>
+<path d="M190 210 H250"/>
+<path d="M190 310 L250 210"/>
+<path d="M330 210 H430"/>
+<path d="M510 210 H650"/>
+</g>
+<!-- Postes et commutateur -->
+<g fill="#f2f2f2" stroke="#111" stroke-width="2">
+<rect x="40" y="80" width="150" height="60" rx="6"/>
+<rect x="40" y="180" width="150" height="60" rx="6"/>
+<rect x="40" y="280" width="150" height="60" rx="6"/>
+<rect x="250" y="185" width="80" height="50" rx="4"/>
+</g>
+<!-- Routeur -->
+<circle cx="470" cy="210" r="40" fill="#d9d9d9" stroke="#111" stroke-width="3"/>
+<!-- Internet -->
+<ellipse cx="765" cy="210" rx="115" ry="65" fill="#f7f7f7" stroke="#111" stroke-width="2"/>
+<g font-family="sans-serif" fill="#111" text-anchor="middle">
+<text x="187" y="40" font-size="15" font-weight="bold">LAN 192.168.1.0/24</text>
+<text x="115" y="105" font-size="16" font-weight="bold">PC1</text>
+<text x="115" y="126" font-size="14" font-family="monospace">192.168.1.10</text>
+<text x="115" y="205" font-size="16" font-weight="bold">PC2</text>
+<text x="115" y="226" font-size="14" font-family="monospace">192.168.1.11</text>
+<text x="115" y="305" font-size="16" font-weight="bold">Serveur</text>
+<text x="115" y="326" font-size="14" font-family="monospace">192.168.1.100</text>
+<text x="290" y="216" font-size="16" font-weight="bold">SW</text>
+<text x="470" y="217" font-size="20" font-weight="bold">R1</text>
+<text x="765" y="195" font-size="18" font-weight="bold">Internet</text>
+<text x="765" y="218" font-size="14">serveur web</text>
+<text x="765" y="238" font-size="14" font-family="monospace">198.51.100.80</text>
+<text x="400" y="235" font-size="14">G0/0</text>
+<text x="380" y="176" font-size="13" font-family="monospace">192.168.1.1/24</text>
+<text x="540" y="235" font-size="14">G0/1</text>
+<text x="580" y="195" font-size="13" font-family="monospace">203.0.113.1/24</text>
+<text x="470" y="285" font-size="14" font-family="monospace">G0/0 : ip nat inside</text>
+<text x="470" y="305" font-size="14" font-family="monospace">G0/1 : ip nat outside</text>
+<text x="240" y="410" font-size="15" font-style="italic">côté inside : adresses privées</text>
+<text x="690" y="410" font-size="15" font-style="italic">côté outside : adresses publiques</text>
+</g>
+</svg>
