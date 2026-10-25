@@ -203,7 +203,7 @@ l'en-tête.
 | 6 | | | | |
 
 **4.2** Quelles lignes relèvent du NAT statique ? Lesquelles relèvent du
-PAT ? Justifiez par la colonne *Inside global*.
+PAT ? Justifiez par les colonnes *Inside global* et *Inside local*.
 
 **4.3** Pourquoi la ligne 1 ne contient-elle ni protocole ni adresse
 externe ?
@@ -273,6 +273,9 @@ Masque générique = `255.255.255.255` − masque, octet par octet. Un bit à
 À la clinique vétérinaire, le routeur RV relie le LAN `172.18.4.0/23` au
 FAI. Le FAI a attribué le bloc `203.0.113.16/28`. Il en occupe la
 première adresse utilisable, `203.0.113.17`, comme passerelle.
+
+Hypothèse : les interfaces de RV sont déjà actives (`no shutdown`). Seules
+les commandes NAT et la route par défaut sont étudiées.
 
 Le cahier des charges :
 
@@ -368,7 +371,9 @@ access-list 30 permit 192.168.20.0 0.0.0.255
 ip nat inside source list 30 pool Sortie
 ```
 
-Rappel : G0/0 est côté LAN, G0/1 côté FAI. Le client veut que ses
+Rappel : G0/0 est côté LAN, G0/1 côté FAI. Hypothèse : les interfaces
+sont déjà adressées et actives (`no shutdown`). Seules les commandes NAT
+et la route par défaut sont étudiées. Le client veut que ses
 200 postes naviguent en même temps, avec les deux adresses du pool.
 Résultat : aucun poste n'accède à Internet, et `show ip nat translations`
 reste vide.
@@ -484,8 +489,8 @@ a. **PAT.** Tous les postes partagent l'unique adresse publique grâce aux
    ports. La commande cite l'interface G0/1 : elle fonctionne même si
    l'adresse vient du DHCP.
 b. **NAT statique.** Le serveur doit être joignable en permanence, à une
-   adresse fixe, sur tous ses services : il faut une correspondance un
-   pour un, permanente.
+   adresse fixe, sur tous ses services. Il faut donc une correspondance
+   un pour un, permanente.
 c. **Redirection de port.** Seul le port 443 de l'adresse publique est
    redirigé vers le serveur. Les autres ports restent disponibles pour le
    PAT des postes.
@@ -511,9 +516,17 @@ Le service se lit sur le port de l'hôte externe. Ligne 2, c'est le
 serveur interne qui offre le service, sur son port 443.
 
 **4.2** Les lignes 1 et 2 relèvent du **NAT statique** : leur inside
-global, `192.0.2.37`, est l'adresse dédiée au serveur. Les lignes 3 à 6
-relèvent du **PAT** : elles partagent toutes `192.0.2.34`, l'adresse de
-l'interface G0/1.
+global, `192.0.2.37`, est l'adresse que la ligne 1 associe en
+permanence au serveur. Elle correspond à une seule inside local, `10.30.0.200`. Les lignes 3 à 6
+relèvent du **PAT** : la même inside global, `192.0.2.34`, est partagée
+par trois inside local différentes, `10.30.0.21`, `10.30.0.22` et
+`10.30.0.40`. De plus, la ligne 4 montre un port source changé.
+
+Une même inside global avec des ports différents ne suffit pas à
+conclure au PAT. Plusieurs connexions vers le serveur publié donneraient
+aussi plusieurs lignes en `192.0.2.37`, avec des ports différents. Le
+critère du PAT : plusieurs inside local derrière une même inside
+global.
 
 Attention, les lignes 1 et 2 ne sont pas de même nature. La ligne 2 est
 une entrée de flux, créée par le trafic entrant vers l'adresse statique.
@@ -522,6 +535,11 @@ Elle est dynamique et expire, alors que la ligne 1 reste.
 **4.3** La ligne 1 est l'entrée statique. Elle existe dès la
 configuration, sans aucun trafic. Elle n'est liée à aucun flux : les
 colonnes outside restent vides, notées `---`.
+
+Une correspondance de NAT dynamique, sans ports, s'afficherait de la même
+façon. Ici, vous savez que la ligne 1 est statique grâce à la
+configuration décrite dans l'énoncé. Vous pourriez aussi le constater :
+elle reste après `clear ip nat translation *`.
 
 **4.4** Les deux postes ont choisi le port 49720. RT a conservé 49720
 pour `10.30.0.21`, ligne 3. Ce port était alors pris : RT a attribué 1024
@@ -752,8 +770,12 @@ Contrôlez ensuite avec un ping d'un poste vers Internet, puis
 - **Aller : la source change. Retour : la destination change.**
 - **Choisir le mode.** Serveur publié : NAT statique, ou redirection de
   port pour un seul service. Accès Internet des postes : PAT.
-- **Lire une table.** Une ligne `---` sans adresse externe : entrée
-  statique. Une même inside global avec des ports différents : PAT.
+- **Lire une table.** Une ligne `---`, sans ports ni adresse externe,
+  est une correspondance d'adresse à adresse, statique ou dynamique.
+  Elle est statique si la configuration contient
+  `ip nat inside source static`, ou si elle reste après
+  `clear ip nat translation *`. Plusieurs inside local derrière une même
+  inside global : PAT.
 - **Masque générique = `255.255.255.255` − masque.** Vérifiez la
   dernière adresse couverte.
 - **Dépanner dans l'ordre de la check-list** : interfaces, ACL, noms,
