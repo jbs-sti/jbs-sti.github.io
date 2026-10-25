@@ -408,8 +408,8 @@ associations disparaissent après une période d'inactivité.
 ::: {.callout-note}
 ## Définition : NAT dynamique
 
-Le NAT dynamique associe les adresses internes à un **pool** d'adresses
-publiques. Quand un hôte interne émet vers l'extérieur, le routeur lui
+Le NAT dynamique associe les adresses internes à un **pool**, c'est-à-dire
+une réserve d'adresses publiques. Quand un hôte interne émet vers l'extérieur, le routeur lui
 attribue la première adresse libre du pool. La correspondance est un pour
 un, et temporaire.
 :::
@@ -460,8 +460,9 @@ Le NAT rend de grands services, mais il a un coût.
 - **Charge du routeur.** Chaque paquet est modifié : adresse, port, sommes
   de contrôle IP et TCP ou UDP recalculées. Cela consomme des ressources et
   ajoute un peu de latence.
-- **Rupture du modèle de bout en bout.** Un hôte externe ne peut pas ouvrir
-  de connexion vers un hôte interne sans redirection de port. Certaines
+- **Rupture du modèle de bout en bout.** Derrière un PAT, le cas le plus
+  courant, un hôte externe ne peut pas ouvrir de connexion vers un hôte
+  interne. Il faut pour cela un NAT statique ou une redirection de port. Certaines
   applications transportent des adresses IP dans leurs données : pair à
   pair, VoIP (SIP), certains jeux, FTP actif. Elles exigent des
   contournements, comme les ALG (passerelles applicatives) ou STUN et TURN :
@@ -513,9 +514,16 @@ interface GigabitEthernet0/1
 ! G0/1 : côté FAI, 203.0.113.1/24
 ```
 
+Ces déclarations ne suffisent pas : elles disent seulement où traduire.
 Un paquet qui **entre par l'inside et sort par l'outside** voit son adresse
-source traduite, du privé vers le public. Un paquet qui **entre par
-l'outside** voit son adresse destination traduite en sens inverse.
+source traduite, du privé vers le public, s'il correspond à une règle NAT.
+Cette règle est une traduction statique, ou une ACL liée par
+`ip nat inside source list` qui autorise sa source.
+Sinon, il est routé sans traduction.
+
+Un paquet qui **entre par l'outside** voit son adresse destination traduite
+en sens inverse. Il faut pour cela qu'une correspondance existe dans la
+table NAT : entrée statique, ou entrée créée par le trafic sortant.
 
 Ces deux déclarations sont communes aux trois modes. Les blocs suivants ne
 les répètent pas : ajoutez-les si elles manquent.
@@ -543,11 +551,18 @@ l'adresse publique** : dans un vrai réseau, l'adresse privée du serveur
 n'est ni connue ni joignable.
 
 ::: {.callout-warning}
-## Un simulateur peut être trop permissif
+## Un ping vers l'adresse privée ne prouve pas que le NAT fonctionne
 
-Si le routage est mal fait, Packet Tracer laisse parfois passer un ping
-vers l'adresse privée du serveur. Ce résultat n'est pas représentatif d'un
-vrai réseau : sur Internet, les opérateurs rejettent les adresses privées.
+Dans votre maquette, un ping externe vers `192.168.1.100` peut réussir. Ce
+n'est pas un défaut du simulateur. Il réussit si le routeur externe
+possède une route vers le LAN privé et si rien ne filtre le paquet. Un
+réseau réel ferait de même.
+
+Sur Internet, ce paquet n'arriverait pas. La RFC 1918 demande de ne pas
+propager les adresses privées entre organisations. Les opérateurs filtrent
+donc ces adresses. Ce filtrage est une décision des opérateurs, pas une
+règle du routage IP. Testez
+toujours avec l'adresse publique `203.0.113.10`.
 :::
 
 L'entrée statique apparaît dans la table dès la configuration, sans aucun
