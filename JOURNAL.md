@@ -34,9 +34,6 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   « Brasserie Delorme » et la topologie du siège, choisis par le rédacteur.
 - `bts2/reseaux/02-subnetting-vlsm/fiche-vlsm-methode` (publiée) : relire
   le PDF de la CI (mémo à 7 colonnes, bloc `text` d'environ 82 caractères).
-- `cours-vlsm` l. 11 : l'objectif « le plus petit préfixe qui convient » est
-  ambigu (le plus petit bloc = le préfixe le plus long) ; à corriger dans une
-  petite PR, comme dans la fiche.
 - `bts2/reseaux/02-subnetting-vlsm/cours-vlsm` (publié) : relire le PDF
   de la CI et les deux SVG ; décider de garder la propriété « en ordre
   décroissant, la première adresse libre est alignée » (ajout, absent du
@@ -63,10 +60,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - `bts2/reseaux/04-acl/cours-acl` (brouillon) : fusionner la PR du TP OSPF
   avant (lien vers le TP 4) ; relire le PDF de la CI ; confirmer dans Packet
   Tracer les sorties `show access-lists` et `show ip interface`, `ssh -l`
-  depuis un PC, et le cas d'une ACL appliquée mais inexistante. Petite PR à
-  faire : la phrase « un paquet dont la source est usurpée est détruit »
-  (l. 495) est fausse si la source usurpée est dans le VLAN 30 (constat
-  Codex) ; reprendre aussi la réécriture R2 de Codex (l. 587).
+  depuis un PC, et le cas d'une ACL appliquée mais inexistante.
 - `bts2/reseaux/04-acl/tp-acl` (brouillon) : relire le PDF de la CI ;
   confirmer en salle que R1 perd aussi FW pendant la panne (INIT), et le
   comportement de `ipconfig /renew` (T1).
@@ -128,6 +122,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-25 — cours/bts2-cours-vlsm-objectif et cours/bts2-cours-acl-usurpation
+
+- Deux petites corrections, une branche et une PR chacune ; cette entrée de journal est portée par la seconde pour éviter un conflit
+- cours-vlsm : description et objectif, « le plus petit préfixe » → « le plus petit bloc qui suffit (, donc son préfixe) »
+- cours-acl : la source usurpée n'est détruite que hors du VLAN 30 ; un invité qui usurpe l'adresse d'un autre invité est traité comme lui ; phrase sur RSA reformulée (reprise de la réécriture laissée en attente)
+- Vérificateur : CONFORME pour les deux (1 mineur corrigé sur l'ACL)
+- Codex : aucun constat ; 1 réécriture gardée (ACL, phrase coupée en deux)
+- Pull requests : à renseigner
 
 ### 2026-10-25 — cours/bts2-exercices-vlsm-2
 
