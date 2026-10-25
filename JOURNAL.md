@@ -18,11 +18,24 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (PR #39 : VLSM = TP 4, order 30 ; OSPF = TP 5 ; ACL = TP 6), puis
   fiche VLSM (`fiche-vlsm-methode`, order 21, publiée, PR #40 et #41),
   exercices VLSM 1 (`exercices-vlsm-entrainement`, order 22, brouillon, PR #42)
-  et 2 (`exercices-vlsm-approfondissement`, order 23, publiée, PR #43). Le bloc VLSM du chapitre 02 est alors complet ; ensuite :
-  NAT/PAT, pare-feu et DMZ.
+  et 2 (`exercices-vlsm-approfondissement`, order 23, publiée, PR #43). Le bloc VLSM du chapitre 02 est complet.
+- Chapitre 05 NAT/PAT BTS2 (`bts2/reseaux/05-nat-pat/`), à partir du
+  `cours_nat-pat.tex` et du TP de l'enseignant (fichiers non suivis à la
+  racine) : cours (`cours-nat-pat`, order 10, brouillon, PR #46), puis
+  fiche (order 15), exercices (order 16) et TP 7 (order 20, option A : fil
+  rouge + routeur FAI et serveur web public ; PAT pour les VLAN, NAT
+  statique pour SRV-WEB).
 
 **À faire**
 
+- `bts2/reseaux/05-nat-pat/cours-nat-pat` (brouillon) : relire le PDF de la
+  CI (sorties `show ip nat translations` de 79 caractères) et les 4 SVG ;
+  confirmer dans Packet Tracer le format des sorties `show ip nat
+  translations`, la conservation du port source en PAT (51000 gardé, 1024
+  attribué), les délais d'expiration, `static tcp … interface g0/1 443`,
+  `show ip nat translations verbose`, `debug ip nat` et le filtre
+  `| include` ; valider les écarts au `.tex` (exemple PAT, route par défaut
+  du corrigé 3, figure 172.25.0.0/16 non reprise).
 - `bts2/reseaux/02-subnetting-vlsm/exercices-vlsm-approfondissement`
   (publiée par l'enseignant dans la PR #43) : relire le PDF de la CI ; valider le contexte « Varenne
   Médical », l'exercice 5.2 (seconde erreur « un /31 suffit » ajoutée pour
@@ -122,6 +135,17 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-25 — cours/bts2-cours-nat-pat
+
+- Ressource : bts2/reseaux/05-nat-pat/cours-nat-pat/index.qmd (référence imitée : bts2/reseaux/04-acl/cours-acl ; fond : `cours_nat-pat.tex` de l'enseignant, diapositives de Reims pour contrôle seulement), plus l'index du chapitre 05 « 05 — Traduction d'adresses (NAT et PAT) »
+- Vérificateur : À REPRENDRE (9 constats : adresse 203.0.113.10 non introduite, épuisement IPv4, accès entrant NAT dynamique, commandes à vérifier sous PT, pipe en tableau, lignes longues, lien Cisco retiré, C09, sigles), puis CONFORME
+- Chef de projet : commande `static tcp … interface` remise sur une ligne (abréviation g0/1) au lieu d'être coupée
+- Codex : 3 constats A (A1 BLOQUANT connexion entrante impossible généralisée à tout NAT ; A2 ping vers l'adresse privée attribué au simulateur ; A3 inside/outside présentés comme suffisants), corrigés par le rédacteur
+- Réécritures gardées : R1 ; annulées : aucune
+- Relance Codex : non
+- Pull request : #46
+- Points à relire par l'enseignant : voir « À faire » ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-25 — cours/bts2-cours-vlsm-objectif et cours/bts2-cours-acl-usurpation
 

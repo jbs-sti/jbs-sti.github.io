@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="400" viewBox="0 0 960 400" role="img" aria-labelledby="title desc">
+<title id="title">PAT : plusieurs postes partagent une adresse publique grâce aux ports</title>
+<desc id="desc">PC1 (192.168.1.10, port source 51000) et PC2 (192.168.1.11, port source 51000) joignent le serveur web 198.51.100.80 port 80 à travers R1, qui fait du PAT. Après R1, le flux de PC1 porte la source 203.0.113.1:51000 et celui de PC2 la source 203.0.113.1:1024.</desc>
+<rect width="960" height="400" fill="white"/>
+<g fill="none" stroke="#222" stroke-width="3">
+<path d="M230 90 L345 165"/>
+<path d="M230 270 L345 195"/>
+<path d="M420 180 H740"/>
+</g>
+<g fill="#f2f2f2" stroke="#111" stroke-width="2">
+<rect x="20" y="60" width="210" height="60" rx="6"/>
+<rect x="20" y="240" width="210" height="60" rx="6"/>
+<rect x="740" y="150" width="200" height="60" rx="6"/>
+</g>
+<circle cx="380" cy="180" r="40" fill="#d9d9d9" stroke="#111" stroke-width="3"/>
+<!-- Paquets traduits -->
+<rect x="455" y="95" width="250" height="58" rx="4" fill="white" stroke="#111" stroke-width="2"/>
+<rect x="455" y="207" width="250" height="58" rx="4" fill="white" stroke="#111" stroke-width="2" stroke-dasharray="8 5"/>
+<g font-family="sans-serif" fill="#111" text-anchor="middle">
+<text x="125" y="84" font-size="16" font-weight="bold">PC1</text>
+<text x="125" y="264" font-size="16" font-weight="bold">PC2</text>
+<text x="840" y="174" font-size="16" font-weight="bold">Serveur web</text>
+<text x="380" y="177" font-size="18" font-weight="bold">R1</text>
+<text x="380" y="197" font-size="13">PAT</text>
+<text x="580" y="115" font-size="13">flux de PC1 (cadre plein)</text>
+<text x="580" y="227" font-size="13">flux de PC2 (cadre en tirets)</text>
+<text x="480" y="340" font-size="15" font-style="italic">PC1 garde son port 51000. Ce port est déjà pris :</text>
+<text x="480" y="362" font-size="15" font-style="italic">R1 attribue un autre port, ici 1024, au flux de PC2.</text>
+</g>
+<g font-family="monospace" font-size="14" fill="#111" text-anchor="middle">
+<text x="125" y="106">192.168.1.10:51000</text>
+<text x="125" y="286">192.168.1.11:51000</text>
+<text x="840" y="196">198.51.100.80:80</text>
+<text x="580" y="140" font-weight="bold">src 203.0.113.1:51000</text>
+<text x="580" y="252" font-weight="bold">src 203.0.113.1:1024</text>
+</g>
+</svg>

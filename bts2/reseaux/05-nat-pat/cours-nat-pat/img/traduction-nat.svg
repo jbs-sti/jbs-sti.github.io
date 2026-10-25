@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="470" viewBox="0 0 900 470" role="img" aria-labelledby="title desc">
+<title id="title">Traduction de l’adresse source à l’aller et de l’adresse destination au retour</title>
+<desc id="desc">PC (192.168.1.10) envoie un paquet au serveur web 198.51.100.80 à travers R1. À l’aller, avant R1, le paquet porte src 192.168.1.10 et dst 198.51.100.80 ; après R1, il porte src 203.0.113.1 et la même destination. Au retour, avant R1, la réponse porte src 198.51.100.80 et dst 203.0.113.1 ; après R1, elle porte dst 192.168.1.10.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#111"/></marker></defs>
+<rect width="900" height="470" fill="white"/>
+<!-- Liaisons -->
+<g fill="none" stroke="#222" stroke-width="3">
+<path d="M180 230 H410"/>
+<path d="M490 230 H720"/>
+</g>
+<g fill="#f2f2f2" stroke="#111" stroke-width="2">
+<rect x="20" y="200" width="160" height="60" rx="6"/>
+<rect x="720" y="200" width="160" height="60" rx="6"/>
+</g>
+<circle cx="450" cy="230" r="40" fill="#d9d9d9" stroke="#111" stroke-width="3"/>
+<!-- Paquets : clair = avant traduction, gris = après traduction -->
+<g stroke="#111" stroke-width="2">
+<rect x="190" y="60" width="210" height="64" rx="4" fill="white"/>
+<rect x="500" y="60" width="210" height="64" rx="4" fill="#e3e3e3"/>
+<rect x="500" y="340" width="210" height="64" rx="4" fill="white"/>
+<rect x="190" y="340" width="210" height="64" rx="4" fill="#e3e3e3"/>
+</g>
+<!-- Flèches : aller en trait plein, retour en tirets -->
+<path d="M405 92 H492" fill="none" stroke="#111" stroke-width="2.5" marker-end="url(#arrow)"/>
+<path d="M495 372 H408" fill="none" stroke="#111" stroke-width="2.5" stroke-dasharray="8 5" marker-end="url(#arrow)"/>
+<g font-family="sans-serif" fill="#111" text-anchor="middle">
+<text x="100" y="225" font-size="16" font-weight="bold">PC</text>
+<text x="100" y="246" font-size="14" font-family="monospace">192.168.1.10</text>
+<text x="800" y="225" font-size="16" font-weight="bold">Serveur web</text>
+<text x="800" y="246" font-size="14" font-family="monospace">198.51.100.80</text>
+<text x="450" y="237" font-size="20" font-weight="bold">R1</text>
+<text x="450" y="35" font-size="16" font-weight="bold">1. Aller (trait plein) : R1 remplace l’adresse source</text>
+<text x="450" y="445" font-size="16" font-weight="bold">2. Retour (tirets) : R1 remplace l’adresse destination</text>
+<text x="100" y="290" font-size="14" font-style="italic">réseau interne (inside)</text>
+<text x="800" y="290" font-size="14" font-style="italic">réseau externe (outside)</text>
+</g>
+<g font-family="monospace" font-size="15" fill="#111">
+<text x="205" y="86">src 192.168.1.10</text>
+<text x="205" y="110">dst 198.51.100.80</text>
+<text x="515" y="86" font-weight="bold">src 203.0.113.1</text>
+<text x="515" y="110">dst 198.51.100.80</text>
+<text x="515" y="366">src 198.51.100.80</text>
+<text x="515" y="390" font-weight="bold">dst 203.0.113.1</text>
+<text x="205" y="366">src 198.51.100.80</text>
+<text x="205" y="390" font-weight="bold">dst 192.168.1.10</text>
+</g>
+<g font-family="sans-serif" font-size="13" fill="#111" text-anchor="middle">
+<text x="295" y="142">avant traduction</text>
+<text x="605" y="142">après traduction (champ modifié en gras)</text>
+<text x="605" y="330">avant traduction</text>
+<text x="295" y="330">après traduction (champ modifié en gras)</text>
+</g>
+</svg>
