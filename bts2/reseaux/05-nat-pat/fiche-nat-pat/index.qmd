@@ -221,7 +221,9 @@ Une entrée **statique** apparaît dès la configuration, sans trafic. Les
 entrées **dynamiques** n'apparaissent qu'au passage du trafic. Générez
 donc d'abord un ping d'un poste vers `198.51.100.80`, puis relancez
 `show ip nat translations`. En PAT, les lignes partagent la même
-*inside global* : seul le port les distingue.
+*inside global*. Le routeur les distingue par le numéro de port en TCP ou
+UDP. En ICMP, c'est l'identifiant de la requête, affiché après les
+deux-points : ce n'est pas un port.
 
 ::: {.content-visible when-format="html"}
 <details>
@@ -263,7 +265,12 @@ sur Internet. Pour un /16, il faut le masque générique `0.0.255.255` :
 En maquette, un ping externe vers `192.168.1.100` peut réussir. Il réussit
 si le routeur externe a une route vers le LAN privé. Cela ne prouve pas que
 le NAT fonctionne. Sur Internet, les opérateurs filtrent les adresses
-privées. Testez **toujours** avec l'adresse publique, ici `203.0.113.10`.
+privées. Testez **toujours** avec l'adresse publique :
+
+- en NAT statique, un ping ou un accès vers `203.0.113.10` ;
+- en redirection de port, un accès TCP au port 80 de `203.0.113.1`, par
+  exemple avec un navigateur. Un ping ne vérifie pas la redirection : seul
+  le port 80 en TCP est redirigé.
 :::
 
 ::: {.callout-note}
