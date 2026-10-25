@@ -76,7 +76,7 @@ R3 connaît le LAN Marseille ; R2 l’apprend à **1 saut**, puis R1 à **2 saut
 
 ![RIPv2 propage la route vers Marseille, un saut supplémentaire à chaque relais.](img/rip-sauts.svg){fig-alt="Chaîne R1 Paris, R2 Lyon, R3 Marseille. Le LAN 192.168.3.0/24 est connecté à R3. Une annonce de R3 vers R2 donne une route de métrique 1 sur R2 ; le relais de R2 vers R1 donne une route de métrique 2 sur R1. Les données circulent dans le sens inverse pour joindre Marseille."}
 
-**RIPv2** (*Routing Information Protocol*, version 2) est un protocole à **vecteur de distance** : direction et distance reçues du voisin.
+**RIPv2** (*Routing Information Protocol*, version 2) est un protocole à **vecteur de distance**. Chaque route reçue donne une direction, le voisin qui l’annonce, et une distance en sauts.
 Sa métrique compte les sauts : le plus petit nombre gagne. **15 au maximum ; 16 signifie inaccessible.**
 Les annonces périodiques partent environ toutes les **30 s**, en **UDP 520**, vers **224.0.0.9** en multicast.
 RIPv2 transmet aussi les masques : il accepte le VLSM.
@@ -98,7 +98,7 @@ router rip
 end
 ```
 
-En RIP Cisco, `network` utilise le **réseau majeur** : `10.0.0.0` sélectionne les interfaces du réseau `10.0.0.0/8`.
+En RIP Cisco, `network` utilise le **réseau majeur** : le réseau de classe A, B ou C qui contient l’adresse. Ainsi, `10.0.0.0` sélectionne les interfaces du réseau `10.0.0.0/8`.
 `no auto-summary` conserve les sous-réseaux précis au passage entre réseaux majeurs.
 Le LAN passif reste annoncé aux autres routeurs ; aucune annonce RIP n’est envoyée vers ses PC.
 Sur R2 et R3, remplacez seulement `192.168.1.0` par leur LAN : `192.168.2.0` ou `192.168.3.0`.
@@ -132,14 +132,15 @@ Si R1–R3 tombe, le trajet R1–R2–R3 reste possible.
 2. Coupez R1 G0/2 avec `shutdown` en configuration d’interface.
 3. Attendez, puis testez : RIP réapprend Marseille par R2, à 2 sauts. Rétablissez avec `no shutdown`.
 
-La **convergence** est l’adaptation des informations et des routes après un changement.
+La **convergence** est le processus par lequel tous les routeurs mettent à jour leurs routes après un changement.
 Elle prend du temps : des paquets peuvent être perdus pendant la bascule.
 
 ### 4. OSPF : choisir selon le coût
 
 Une route courte encombrée peut être moins intéressante qu’une autoroute passant par davantage de villes.
-RIP compte les sauts, sans considérer le débit. OSPF permet de comparer autrement les chemins.
-Chez HexaTech, fixons les coûts : **R1–R2 = 10, R2–R3 = 10, R1–R3 = 30**.
+RIP compte les sauts, sans considérer le débit.
+OSPF, lui, donne un **coût** à chaque interface : plus il est faible, plus le lien est intéressant.
+Chez HexaTech, nous fixons les coûts à la main : **R1–R2 = 10, R2–R3 = 10, R1–R3 = 30**.
 Le LAN Marseille garde son coût automatique de **1**.
 
 ![Vers Marseille : OSPF préfère deux liaisons de coût 10 à une liaison de coût 30.](img/arbre-spf.svg){fig-alt="Depuis R1, le chemin direct vers le LAN Marseille coûte 30 plus 1, soit 31. Le chemin par R2 coûte 10 plus 10 plus 1, soit 21 : c’est le chemin retenu par SPF. Le coût 1 final est celui de G0/0 de R3. Trait épais : chemin choisi ; tirets : chemin direct disponible."}
@@ -246,7 +247,7 @@ Gardez G0/0 passive et son coût automatique de 1 sur chacun.
 
 ### Annoncer une route par défaut
 
-Pour une destination inconnue, il faut une sortie commune. Si HexaTech reçoit un accès Internet, son routeur de sortie l’annonce.
+Un paquet vers une destination absente de la table, Internet par exemple, a besoin d’une sortie commune : la **route par défaut**, `0.0.0.0/0`. Si HexaTech reçoit un accès Internet, son routeur de sortie l’annonce.
 Dans le **TP 5**, ce rôle revient à **FW**, sur une autre topologie et un autre adressage.
 
 1. Installez une route par défaut sur le routeur de sortie.
