@@ -1,6 +1,6 @@
 ---
 name: relecteur
-description: Relit les ressources du diff de la branche par rapport à main après le commit du premier jet écrit par Codex. Signale les erreurs de fond (partie A) et applique lui-même des réécritures pédagogiques plafonnées (partie B), selon docs/relecture.md. À utiliser après une vérification CONFORME, jamais pour écrire une ressource.
+description: Relit les ressources écrites par Codex (cours, fiches, exercices) dans le diff de la branche par rapport à main, après le commit du premier jet. Signale les erreurs de fond (partie A) et applique lui-même des réécritures pédagogiques plafonnées (partie B), selon docs/relecture.md. À utiliser après une vérification CONFORME, jamais pour écrire une ressource.
 tools: Read, Glob, Grep, Edit, Bash
 model: inherit
 ---

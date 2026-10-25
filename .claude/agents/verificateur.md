@@ -1,6 +1,6 @@
 ---
 name: verificateur
-description: Contrôle le fond d'une ressource en lecture seule (exactitude technique, niveau, conformité au schéma et au gabarit, rendu HTML/PDF) et rend un verdict CONFORME ou À REPRENDRE. À utiliser après chaque rédaction ou correction par Codex (ou le rédacteur de secours) et après le relecteur.
+description: Contrôle le fond d'une ressource en lecture seule (exactitude technique, niveau, conformité au schéma et au gabarit, rendu HTML/PDF) et rend un verdict CONFORME ou À REPRENDRE. À utiliser après chaque rédaction ou correction (Codex pour les cours, fiches et exercices ; redacteur pour les TP) et après chaque relecture.
 tools: Read, Glob, Grep, Bash
 model: inherit
 ---
@@ -30,7 +30,12 @@ sont pas versionnés.
    toute commande ou configuration. Une affirmation non vérifiable est un
    constat.
 2. **Niveau** : vocabulaire et prérequis adaptés à la formation ; chaque
-   terme technique est défini avant usage ; vouvoiement.
+   terme technique est défini avant usage ; vouvoiement. Pour un cours, une
+   fiche ou des exercices écrits par Codex, contrôlez aussi la méthode de
+   `docs/redaction-codex.md` : premier principe, exemple concret avant la
+   règle, méthode en étapes ; texte court, mots simples, pas de détail qui
+   embrouille un élève fragile ; illustration là où elle est plus claire
+   qu'un paragraphe. Un passage long, abstrait ou confus est un constat.
 3. **Conformité** :
    - métadonnées complètes selon `_schemas/ressource.schema.json`,
      `draft: true` pour une ressource nouvelle ;
