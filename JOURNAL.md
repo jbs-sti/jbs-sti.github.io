@@ -150,7 +150,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - `docs/relecture-codex.md` renommé `docs/relecture.md`, adressé au sous-agent `relecteur` (mêmes critères, plafonds et interdits)
 - `.claude/agents/relecteur.md` (nouveau) ; descriptions de `redacteur` (secours) et `verificateur` mises à jour
 - `.claude/settings.json` inchangé (non modifiable par un agent) : la sortie de Codex garde `-o .review/codex.md`, déjà autorisée
-- Pull request : à renseigner
+- Pull request : #47
 
 ### 2026-10-25 — cours/bts2-cours-nat-pat
 
