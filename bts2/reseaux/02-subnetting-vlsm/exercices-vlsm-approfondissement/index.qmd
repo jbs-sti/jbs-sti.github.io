@@ -27,8 +27,9 @@ lang: fr
 
 Cette série approfondit le **VLSM**. Les plages de départ sont plus grandes
 qu’un /24. Certains blocs dépassent 256 adresses : l’octet significatif passe
-alors au 3^e^ rang. Faites d’abord la série 1, « VLSM : exercices
-d’entraînement » : celle-ci la suppose acquise.
+alors au 3^e^ rang. Faites d’abord la série 1,
+[VLSM : exercices d’entraînement](../exercices-vlsm-entrainement/index.qmd) :
+celle-ci la suppose acquise.
 
 Vous appliquerez la démarche du cours, en deux temps :
 
