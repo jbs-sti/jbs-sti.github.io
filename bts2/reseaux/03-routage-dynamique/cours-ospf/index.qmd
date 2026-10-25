@@ -255,7 +255,7 @@ Dans le **TP 5**, ce rôle revient à **FW**, sur une autre topologie et un autr
 3. Vérifiez sur les autres routeurs le code **`O*E2`** : OSPF, candidate par défaut (`*`), externe de type 2.
 
 Sans route par défaut présente, cette commande seule n’en annonce aucune.
-Le TP 5 détaille l’Internet simulé sur une Loopback et la métrique E2.
+Le TP 5 met en œuvre l’Internet simulé sur une Loopback et la route `O*E2`.
 
 ## Exercices de vérification
 
