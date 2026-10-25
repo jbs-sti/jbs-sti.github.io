@@ -1,0 +1,317 @@
+---
+title: "Le NAT et le PAT : la méthode pas à pas"
+description: "Choisir le bon mode de traduction, configurer un NAT statique, une redirection de port, un NAT dynamique ou un PAT sur un routeur Cisco en quatre étapes, puis vérifier et dépanner avec une check-list."
+type: fiche
+domaine: reseaux
+chapitre: "05 — Traduction d'adresses (NAT et PAT)"
+categories: [fiche, reseaux]
+mots-cles: [NAT, PAT, NAT overload, NAT statique, NAT dynamique, redirection de port, pool NAT, inside local, inside global, RFC 1918, masque générique, table NAT, Packet Tracer]
+objectifs:
+  - "Choisir le mode de traduction adapté à un besoin : NAT statique, redirection de port, NAT dynamique ou PAT."
+  - "Configurer ce mode sur un routeur Cisco en suivant les quatre étapes de la méthode."
+  - "Vérifier une traduction et diagnostiquer une panne à l'aide de la check-list."
+prerequis:
+  - "Cours « La traduction d'adresses : NAT et PAT » du chapitre 05"
+duree: "20 min"
+order: 15
+date-modified: 2026-10-25
+draft: true
+lang: fr
+---
+
+## Objectifs et prérequis
+
+Cette fiche résume la méthode du cours
+[« La traduction d'adresses : NAT et PAT »](../cours-nat-pat/index.qmd).
+Gardez-la sous les yeux pendant le TP du chapitre. Elle vous aide à choisir
+un mode, à le configurer, puis à vérifier qu'il fonctionne.
+
+Le vocabulaire du cours doit vous être familier : table NAT, pool, inside
+et outside. Revoyez aussi le masque générique du
+[cours ACL du chapitre 04](../../04-acl/cours-acl/index.qmd).
+
+Toutes les commandes visent **Cisco Packet Tracer 9.0.1**, routeur
+**Cisco 2911** sous **IOS 15.1**. G0/0 est l'interface interne, G0/1
+l'interface externe.
+
+## Situation de départ
+
+Reprenez la topologie du cours. Le LAN `192.168.1.0/24` sort vers le FAI
+par l'interface G0/1 de R1, d'adresse `203.0.113.1`. Le serveur interne a
+l'adresse `192.168.1.100`.
+
+Vous avez deux besoins :
+
+- **sortir** : les postes du LAN doivent accéder à Internet ;
+- **entrer** : le serveur doit être joignable depuis Internet.
+
+Avant de taper une commande, posez-vous deux questions. Combien
+d'adresses publiques avez-vous ? Et dans quel sens le trafic doit-il
+s'établir ?
+
+## Notions essentielles
+
+### Les adresses à connaître
+
+Les adresses privées servent dans le réseau local. Elles ne sont pas
+routables sur Internet : c'est pourquoi il faut les traduire.
+
+| Plage privée (RFC 1918) | Préfixe | Bornes |
+|:---|:---|:---|
+| « classe A » | `10.0.0.0/8` | `10.0.0.0` – `10.255.255.255` |
+| « classe B » | `172.16.0.0/12` | `172.16.0.0` – `172.31.255.255` |
+| « classe C » | `192.168.0.0/16` | `192.168.0.0` – `192.168.255.255` |
+
+Les « adresses publiques » des exemples sont des adresses de
+**documentation** (RFC 5737) : `192.0.2.0/24`, `198.51.100.0/24` et
+`203.0.113.0/24`. Un exemple n'utilise jamais les adresses réelles d'un
+organisme.
+
+::: {.callout-warning}
+## La plage « classe B » est un /12
+
+Elle va de `172.16` à `172.31`. Ainsi, `172.25.0.1` est privée, mais
+`172.32.0.1` est publique.
+:::
+
+### Les quatre types d'adresses
+
+Ces termes se lisent **toujours du point de vue du routeur qui fait le
+NAT**. *Inside* ou *outside* dit où se trouve l'hôte. *Local* ou *global*
+dit comment son adresse est vue.
+
+| Terme Cisco | Ce qu'il désigne | Exemple du cours |
+|:---|:---|:---|
+| Inside local | adresse **réelle** de l'hôte interne, en général privée | `192.168.1.10` |
+| Inside global | adresse sous laquelle l'hôte interne **apparaît sur Internet** | `203.0.113.1` |
+| Outside local | adresse de l'hôte externe **vue depuis le réseau interne** | `198.51.100.80` |
+| Outside global | adresse **réelle** de l'hôte externe sur Internet | `198.51.100.80` |
+
+Presque toujours, outside local = outside global. Le NAT classique traduit
+l'**inside local** en **inside global**.
+
+### Quel mode choisir ?
+
+| Votre besoin | Mode | Adresses publiques | Commande clé |
+|:---|:---|:---|:---|
+| Publier un serveur à une adresse fixe | NAT statique | 1 par serveur | `ip nat inside source static` |
+| Publier un seul service d'un serveur | Redirection de port | un port d'une adresse, partageable avec le PAT | `ip nat inside source static tcp` |
+| Faire sortir des postes avec un pool | NAT dynamique | 1 par hôte **actif** | `ip nat pool` + `ip nat inside source list … pool …` |
+| Faire sortir tout le LAN avec une adresse | PAT (*overload*) | 1 pour tout le réseau | `ip nat inside source list … interface … overload` |
+
+Le PAT est le cas le plus courant : c'est ce que fait votre box. Le NAT
+dynamique est rare aujourd'hui. Derrière un PAT, aucune connexion entrante
+n'est possible, sauf redirection de port.
+
+## Méthode et exemple
+
+### La démarche en quatre étapes
+
+| Étape | Question à vous poser | Ce que vous tapez |
+|:-:|:---|:---|
+| 1. Interfaces | Quelle interface est côté LAN ? Laquelle est côté FAI ? | `ip nat inside` côté LAN, `ip nat outside` côté FAI |
+| 2. Règle | Quel mode, d'après le tableau de décision ? | `static`, ou ACL + pool, ou ACL + interface `overload` |
+| 3. Route | R1 sait-il joindre Internet ? | une route par défaut vers le FAI |
+| 4. Vérification | La traduction apparaît-elle avec du trafic ? | `show ip nat translations`, `show ip nat statistics` |
+
+### Étape 1 : déclarer inside et outside
+
+Cette étape est commune à tous les modes. Elle dit seulement au routeur
+où traduire.
+
+```text
+! Packet Tracer, R1 (2911, IOS 15.1), mode de configuration globale
+interface GigabitEthernet0/0
+ ip nat inside
+! G0/0 : côté LAN 192.168.1.0/24
+interface GigabitEthernet0/1
+ ip nat outside
+! G0/1 : côté FAI, 203.0.113.1/24
+```
+
+### Étape 2 : définir la règle, mémo par mode
+
+**NAT statique.** Si le FAI vous attribue en plus `203.0.113.10`, vous
+pouvez y associer le serveur. Le premier argument est **toujours** l'adresse interne
+(inside local). Le second est l'adresse publique (inside global).
+
+```text
+! Packet Tracer, R1 (2911, IOS 15.1), mode de configuration globale
+ip nat inside source static 192.168.1.100 203.0.113.10
+! le serveur apparaît sur Internet sous 203.0.113.10
+```
+
+**Redirection de port.** Seul le port 80 de `203.0.113.1` est redirigé.
+Les autres ports restent disponibles pour le PAT des postes.
+
+```text
+! Packet Tracer, R1 (2911, IOS 15.1), mode de configuration globale
+ip nat inside source static tcp 192.168.1.100 80 203.0.113.1 80
+! TCP vers 203.0.113.1, port 80 -> serveur 192.168.1.100, port 80
+```
+
+**NAT dynamique.** Avec trois adresses supplémentaires, `203.0.113.11` à
+`203.0.113.13`, vous créez un pool. Trois commandes : le pool, l'ACL,
+puis la liaison.
+
+```text
+! Packet Tracer, R1 (2911, IOS 15.1), mode de configuration globale
+ip nat pool PUBLIC 203.0.113.11 203.0.113.13 netmask 255.255.255.0
+! 1. pool de trois adresses publiques
+access-list 1 permit 192.168.1.0 0.0.0.255
+! 2. ACL qui désigne le LAN à traduire (masque générique)
+ip nat inside source list 1 pool PUBLIC
+! 3. liaison entre l'ACL 1 et le pool PUBLIC
+```
+
+**PAT.** Plus besoin de pool : la commande cite l'interface externe.
+
+```text
+! Packet Tracer, R1 (2911, IOS 15.1), mode de configuration globale
+access-list 1 permit 192.168.1.0 0.0.0.255
+! désigne le LAN à traduire
+ip nat inside source list 1 interface GigabitEthernet0/1 overload
+! adresse de G0/1 ; overload active la traduction de port
+```
+
+Le PAT peut aussi s'appuyer sur un pool :
+`ip nat inside source list 1 pool PUBLIC overload`.
+
+::: {.callout-important}
+## L'ACL du NAT ne filtre pas : elle désigne
+
+L'ACL n'est appliquée à aucune interface. La commande
+`ip nat inside source list` l'utilise pour **sélectionner** le trafic à
+traduire.
+
+- `permit` signifie « à traduire ».
+- `deny`, ou le refus implicite, signifie « à ne pas traduire ». Le paquet
+  n'est pas détruit : il est routé avec son adresse privée.
+- Le réseau s'écrit avec un **masque générique** : `0.0.0.255` pour un /24,
+  `0.0.255.255` pour un /16.
+:::
+
+### Étape 3 : la route par défaut vers le FAI
+
+Le NAT ne remplace pas le routage. R1 doit avoir une route par défaut :
+`ip route 0.0.0.0 0.0.0.0` *adresse-du-routeur-du-FAI*. Le cours ne donne pas l'adresse du routeur
+du FAI de R1. Voici l'exemple de l'exercice 3 du cours, sur un autre
+réseau. Le routeur de la PME a `198.51.100.2/30` côté FAI. Sur ce /30, le
+FAI ne peut avoir que `198.51.100.1` :
+
+```text
+! Packet Tracer, routeur PME (2911, IOS 15.1), config. globale
+ip route 0.0.0.0 0.0.0.0 198.51.100.1
+! toute destination inconnue part vers le FAI
+```
+
+### Étape 4 : vérifier
+
+Ces commandes se tapent en mode privilégié (`R1#`).
+
+| Commande | Ce que vous y lisez |
+|:---|:---|
+| `show ip nat translations` | la table NAT, c'est-à-dire les traductions actives |
+| `show ip nat statistics` | nombre de traductions, interfaces inside et outside, utilisation du pool, compteurs *hits* et *misses* |
+| `clear ip nat translation *` | vide les entrées **dynamiques** de la table |
+| `show ip nat translations verbose` | durée de vie et inactivité de chaque entrée ; IOS réel, à vérifier sous Packet Tracer |
+| `debug ip nat` | chaque traduction en temps réel, arrêt par `undebug all` ; IOS réel, à vérifier sous Packet Tracer |
+
+Une entrée **statique** apparaît dès la configuration, sans trafic. Les
+entrées **dynamiques** n'apparaissent qu'au passage du trafic. Générez
+donc d'abord un ping d'un poste vers `198.51.100.80`, puis relancez
+`show ip nat translations`. En PAT, les lignes partagent la même
+*inside global* : seul le port les distingue.
+
+::: {.content-visible when-format="html"}
+<details>
+<summary>À vous : pour le LAN 172.16.0.0/16, un collègue écrit access-list 1 permit 172.16.0.0 0.0.0.255. Le poste 172.16.1.20 n'accède pas à Internet. Pourquoi ?</summary>
+<p>Le masque générique 0.0.0.255 ne couvre que 172.16.0.0 à 172.16.0.255. Le poste 172.16.1.20 n'est pas désigné : il n'est pas traduit. R1 le route avec son adresse privée, que les opérateurs filtrent sur Internet. Pour un /16, il faut le masque générique 0.0.255.255 : access-list 1 permit 172.16.0.0 0.0.255.255.</p>
+</details>
+:::
+
+::: {.content-visible unless-format="html"}
+**À vous.** Pour le LAN `172.16.0.0/16`, un collègue écrit
+`access-list 1 permit 172.16.0.0 0.0.0.255`. Le poste `172.16.1.20`
+n'accède pas à Internet. Pourquoi ?
+
+**Réponse.** Le masque générique `0.0.0.255` ne couvre que `172.16.0.0` à
+`172.16.0.255`. Le poste `172.16.1.20` n'est pas désigné : il n'est pas
+traduit. R1 le route avec son adresse privée, que les opérateurs filtrent
+sur Internet. Pour un /16, il faut le masque générique `0.0.255.255` :
+`access-list 1 permit 172.16.0.0 0.0.255.255`.
+:::
+
+## Points de vigilance
+
+### Les erreurs fréquentes
+
+| Erreur | Ce qui se passe | Le bon réflexe |
+|:---|:---|:---|
+| Inside et outside inversés | Les paquets du LAN ne sont pas traduits comme prévu. | `ip nat inside` côté LAN, `ip nat outside` côté FAI. |
+| ACL qui ne couvre pas le LAN | Les postes hors de l'ACL sortent avec leur adresse privée. | Vérifiez le réseau et le masque générique de l'ACL. |
+| Noms de pool ou d'ACL différents | `PUBLIC` à la création, `public` dans la liaison : la liaison ne désigne pas le pool créé. | Mêmes noms partout, majuscules comprises. |
+| Oubli de `overload` | Sans ce mot-clé, pas de traduction de port : ce n'est pas un PAT. | Terminez la commande du PAT par `overload`. |
+| Pool trop petit | En NAT dynamique, les hôtes suivants ne peuvent plus sortir. | Contrôlez l'utilisation du pool avec `show ip nat statistics`. |
+| Oubli de la route par défaut | R1 n'a aucune route vers Internet : le paquet ne part pas vers le FAI. | `ip route 0.0.0.0 0.0.0.0` vers le FAI. |
+| Arguments de `static` inversés | L'adresse publique est prise pour l'hôte interne. | D'abord l'inside local, puis l'inside global. |
+| Table vide prise pour une panne | Avant tout trafic, aucune entrée dynamique n'existe. | Générez du trafic, puis relancez la commande. |
+
+::: {.callout-warning}
+## Piège : tester vers l'adresse privée
+
+En maquette, un ping externe vers `192.168.1.100` peut réussir. Il réussit
+si le routeur externe a une route vers le LAN privé. Cela ne prouve pas que
+le NAT fonctionne. Sur Internet, les opérateurs filtrent les adresses
+privées. Testez **toujours** avec l'adresse publique, ici `203.0.113.10`.
+:::
+
+::: {.callout-note}
+## Le NAT n'est pas un pare-feu
+
+Le NAT masque l'adressage interne, mais il ne filtre rien. Le contrôle
+d'accès reste le rôle du pare-feu et des ACL appliquées aux interfaces.
+:::
+
+### Check-list de dépannage
+
+- [ ] Les interfaces sont déclarées `ip nat inside` et `ip nat outside`,
+  sans inversion.
+- [ ] L'ACL désigne le bon réseau, avec un **masque générique** correct.
+- [ ] Les noms d'ACL et de pool sont identiques dans toutes les commandes.
+- [ ] En NAT dynamique, le pool contient assez d'adresses
+  (`show ip nat statistics`).
+- [ ] Le routeur a une **route par défaut** vers Internet.
+- [ ] Une traduction apparaît quand vous générez du trafic
+  (`show ip nat translations`).
+
+## Synthèse
+
+- Plages privées (RFC 1918) : `10.0.0.0/8`, `172.16.0.0/12`,
+  `192.168.0.0/16`. Elles ne sont pas routables sur Internet.
+- Inside local : adresse réelle de l'hôte interne. Inside global : son
+  adresse vue d'Internet.
+- Statique : publier un serveur. Redirection de port : publier un service.
+  Dynamique : un pool, un pour un. PAT : tout le LAN derrière une adresse.
+- **1.** `ip nat inside` / `ip nat outside`. **2.** La règle : `static`,
+  ACL + `pool`, ou ACL + `interface … overload`. **3.** Route par défaut.
+  **4.** Vérification.
+- L'ACL du NAT désigne le trafic à traduire, avec un masque générique.
+  Elle ne filtre pas.
+- Vérifiez avec `show ip nat translations` et `show ip nat statistics`,
+  après avoir généré du trafic.
+- Testez toujours avec l'adresse publique.
+
+## Pour aller plus loin
+
+- Le cours [« La traduction d'adresses : NAT et PAT »](../cours-nat-pat/index.qmd),
+  pour les tables NAT détaillées, les délais d'expiration et les limites du
+  NAT.
+- [RFC 1918 — Address Allocation for Private Internets](https://www.rfc-editor.org/rfc/rfc1918.html),
+  qui définit les trois plages privées.
+- [RFC 3022 — Traditional IP Network Address Translator](https://www.rfc-editor.org/rfc/rfc3022.html),
+  qui décrit le NAT de base et le NAPT.
+- [RFC 5737 — IPv4 Address Blocks Reserved for Documentation](https://www.rfc-editor.org/rfc/rfc5737.html),
+  pour les adresses des exemples.
+- La référence des commandes intégrée à Packet Tracer, menu *Help*, pour le
+  routeur 2911.
