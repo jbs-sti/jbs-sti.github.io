@@ -21,13 +21,29 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   et 2 (`exercices-vlsm-approfondissement`, order 23, publiée, PR #43). Le bloc VLSM du chapitre 02 est complet.
 - Chapitre 05 NAT/PAT BTS2 (`bts2/reseaux/05-nat-pat/`), à partir du
   `cours_nat-pat.tex` et du TP de l'enseignant (fichiers non suivis à la
-  racine) : cours (`cours-nat-pat`, order 10, brouillon, PR #46), puis
-  fiche (order 15), exercices (order 16) et TP 7 (order 20, option A : fil
-  rouge + routeur FAI et serveur web public ; PAT pour les VLAN, NAT
-  statique pour SRV-WEB).
+  racine) : cours (`cours-nat-pat`, order 10, brouillon, PR #46), fiche
+  (`fiche-nat-pat`, order 15, PR #48), exercices (`exercices-nat-pat`,
+  order 16, PR #49), TP 7 (`tp-nat-pat`, order 20, option A : fil rouge +
+  FAI et serveur public, PR #50). Le chapitre est alors complet ;
+  ensuite : chapitre 06 pare-feu et DMZ (ASA 5506-X), avec le nouveau
+  protocole « Codex écrit, Claude relit » (PR #47).
 
 **À faire**
 
+- `bts2/reseaux/05-nat-pat/tp-nat-pat` (brouillon) : relire le PDF de la
+  CI et le SVG ; confirmer dans Packet Tracer que la route
+  `198.51.100.8/29 → Null0` de FW ne gêne pas les adresses traduites (.9 à
+  .11, traduction outside → inside avant routage), le comportement de la
+  panne A (G0/1 sans `ip nat inside`), les compteurs du pool dans
+  `show ip nat statistics`, la disparition des entrées avec *Fast Forward
+  Time*, et les résultats du défi (https et ping vers .2).
+- `bts2/reseaux/05-nat-pat/exercices-nat-pat` (brouillon) : confirmer dans
+  Packet Tracer l'entrée de flux vers une statique (ex. 4, ligne 2) et son
+  effacement par `clear ip nat translation *`, et la réaction à un nom de
+  pool mal orthographié (ex. 8) ; ajouter le lien vers la fiche une fois
+  les PR #48 et #49 fusionnées.
+- `bts2/reseaux/05-nat-pat/fiche-nat-pat` (brouillon) : relire le PDF de la
+  CI (2 à 3 pages) et les formulations prudentes du tableau des pièges.
 - `bts2/reseaux/05-nat-pat/cours-nat-pat` (brouillon) : relire le PDF de la
   CI (sorties `show ip nat translations` de 79 caractères) et les 4 SVG ;
   confirmer dans Packet Tracer le format des sorties `show ip nat
@@ -141,6 +157,18 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-25 — cours/bts2-tp-nat-pat (et entrées de la fiche et des exercices)
+
+- Entrées regroupées dans cette PR pour éviter des conflits sur le journal entre les trois PR du chapitre 05 ; ancien protocole (rédacteur Claude, relecture Codex), comme décidé par l'enseignant
+- **Fiche** `bts2/reseaux/05-nat-pat/fiche-nat-pat/index.qmd` (référence imitée : fiche-vlsm-methode ; fond : cours-nat-pat) : vérificateur CONFORME au 1er passage (4 mineurs corrigés), CONFORME après Codex ; Codex : 2 constats A (A1 BLOQUANT « seul le port distingue » faux en ICMP, A2 test par mode), corrigés par le rédacteur ; aucune réécriture ; PR #48 ; pas de journal dans la PR
+- **Exercices** `bts2/reseaux/05-nat-pat/exercices-nat-pat/index.qmd` (référence imitée : exercices-vlsm-entrainement) : 8 exercices, 1 h 30, corrigé ; vérificateur CONFORME au 1er passage (2 mineurs corrigés), CONFORME après Codex ; Codex : 4 constats A (A1 et A2 BLOQUANT sur la lecture des tables : `---` statique ou dynamique, PAT = plusieurs inside local ; A3 interfaces actives ; A4 sans objet, fiche en PR), corrigés par le rédacteur ; réécriture R1 gardée ; PR #49
+- **TP 7** `bts2/reseaux/05-nat-pat/tp-nat-pat/index.qmd` (référence imitée : tp-acl ; inspiration : TP2_NAT_eleve de l'enseignant) : fil rouge du TP 6 + FAI (2911) + SW-EXT, SRV-EXT, PC-EXT ; liaison 198.51.100.0/30, bloc public 198.51.100.8/29, Internet 192.0.2.0/24 ; Loopback0 de FW supprimée, route par défaut vers le FAI, route Null0 du bloc public ; statique → dynamique (pool de 2) → PAT → pannes → recette → défi redirection ; Q1-Q27, C1-C18, T1-T13, sans corrigé
+- Vérificateur TP 7 : À REPRENDRE (1 BLOQUANT : boucle FW–FAI sans route Null0 du bloc ; 9 à corriger), puis CONFORME ; CONFORME après Codex (1 précision sur INVITES-IN appliquée par le chef de projet)
+- Codex TP 7 : 3 constats A (A1 BLOQUANT .2 hors du /29, A2 BLOQUANT INVITES-IN voit une destination publique, A3 compteurs du pool), corrigés par le rédacteur ; réécritures R1 et R2 gardées
+- Relance Codex : non (aucune des trois)
+- Pull request : #50
+- Points à relire par l'enseignant : voir « À faire » ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-25 — infra/codex-redacteur
 
