@@ -24,7 +24,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   racine) : cours (`cours-nat-pat`, order 10, brouillon, PR #46), fiche
   (`fiche-nat-pat`, order 15, PR #48), exercices (`exercices-nat-pat`,
   order 16, PR #49), TP 7 (`tp-nat-pat`, order 20, option A : fil rouge +
-  FAI et serveur public, PR à venir). Le chapitre est alors complet ;
+  FAI et serveur public, PR #50). Le chapitre est alors complet ;
   ensuite : chapitre 06 pare-feu et DMZ (ASA 5506-X), avec le nouveau
   protocole « Codex écrit, Claude relit » (PR #47).
 
@@ -161,7 +161,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Vérificateur TP 7 : À REPRENDRE (1 BLOQUANT : boucle FW–FAI sans route Null0 du bloc ; 9 à corriger), puis CONFORME ; CONFORME après Codex (1 précision sur INVITES-IN appliquée par le chef de projet)
 - Codex TP 7 : 3 constats A (A1 BLOQUANT .2 hors du /29, A2 BLOQUANT INVITES-IN voit une destination publique, A3 compteurs du pool), corrigés par le rédacteur ; réécritures R1 et R2 gardées
 - Relance Codex : non (aucune des trois)
-- Pull request : à renseigner
+- Pull request : #50
 - Points à relire par l'enseignant : voir « À faire » ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-25 — cours/bts2-cours-nat-pat
