@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="310" viewBox="0 0 960 310" role="img" aria-labelledby="title desc">
+  <title id="title">Un /24 découpé en quatre /26</title>
+  <desc id="desc">Règle du dernier octet de 192.168.1.0/24, de 0 à 256. Les blocs de 64 adresses commencent à 0, 64, 128 et 192. Les deux bits empruntés sont respectivement 00, 01, 10 et 11. Une flèche indique un pas de 64. La graduation 256 marque la fin exclusive du /24 et n’est pas une valeur d’octet.</desc>
+  <defs>
+    <marker id="fleche" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111"/>
+    </marker>
+  </defs>
+  <rect width="960" height="310" fill="#fff"/>
+  <path d="M80 100 H280" stroke="#111" stroke-width="2" marker-start="url(#fleche)" marker-end="url(#fleche)"/>
+  <g stroke="#111" stroke-width="2">
+    <rect x="80" y="125" width="200" height="55" fill="#dedede"/>
+    <rect x="280" y="125" width="200" height="55" fill="#fff"/>
+    <rect x="480" y="125" width="200" height="55" fill="#dedede"/>
+    <rect x="680" y="125" width="200" height="55" fill="#fff"/>
+    <path d="M80 118 V190 M280 118 V190 M480 118 V190 M680 118 V190 M880 118 V190"/>
+  </g>
+  <g font-family="sans-serif" fill="#111">
+    <text x="35" y="32" font-size="22" font-weight="bold">192.168.1.0/24 : quatre blocs /26 de 64 adresses</text>
+    <text x="35" y="60" font-size="19">Les graduations indiquent le dernier octet.</text>
+    <text x="180" y="89" text-anchor="middle" font-size="20">pas = 64</text>
+    <g text-anchor="middle" font-size="20">
+      <text x="180" y="160">/26</text>
+      <text x="380" y="160">/26</text>
+      <text x="580" y="160">/26</text>
+      <text x="780" y="160">/26</text>
+      <text x="80" y="213">0</text>
+      <text x="280" y="213">64</text>
+      <text x="480" y="213">128</text>
+      <text x="680" y="213">192</text>
+      <text x="880" y="213">256*</text>
+    </g>
+    <text x="80" y="240" font-size="18">Bits empruntés :</text>
+    <g text-anchor="middle" font-family="monospace" font-size="22" font-weight="bold">
+      <text x="180" y="267">00</text>
+      <text x="380" y="267">01</text>
+      <text x="580" y="267">10</text>
+      <text x="780" y="267">11</text>
+    </g>
+    <text x="35" y="297" font-size="17">* 256 marque la fin du /24 ; ce n’est pas une valeur d’octet.</text>
+  </g>
+</svg>
