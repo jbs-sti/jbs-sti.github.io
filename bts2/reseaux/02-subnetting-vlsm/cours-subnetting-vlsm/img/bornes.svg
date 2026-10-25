@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-labelledby="title desc">
+  <title id="title">Les bornes de 192.168.1.64/26</title>
+  <desc id="desc">Règle du dernier octet de 64 à 127. L’adresse réseau .64 a ses six bits hôtes à 0. Les 62 adresses utilisables vont de .65 à .126. L’adresse de diffusion .127 a ses six bits hôtes à 1. Réseau et diffusion sont réservés.</desc>
+  <rect width="960" height="300" fill="#fff"/>
+  <rect x="170" y="125" width="610" height="50" fill="#dedede"/>
+  <g stroke="#111" stroke-width="2" fill="none">
+    <path d="M160 175 H790"/>
+    <path d="M160 125 V175 M170 125 V175 M780 125 V175 M790 125 V175"/>
+    <path d="M170 125 L245 87 H310 M780 125 L705 87 H640"/>
+    <path d="M160 175 L105 218 M790 175 L845 218"/>
+  </g>
+  <g font-family="sans-serif" fill="#111">
+    <text x="35" y="32" font-size="22" font-weight="bold">192.168.1.64/26 : 64 adresses, dont 62 utilisables</text>
+    <text x="35" y="60" font-size="19">Seul le dernier octet est indiqué sur la règle.</text>
+    <g text-anchor="middle">
+      <text x="310" y="78" font-size="20">.65 : première</text>
+      <text x="640" y="78" font-size="20">.126 : dernière</text>
+      <text x="475" y="157" font-size="21">62 adresses utilisables</text>
+      <text x="105" y="240" font-size="20" font-weight="bold">.64 : réseau</text>
+      <text x="845" y="240" font-size="20" font-weight="bold">.127 : diffusion</text>
+      <text x="105" y="267" font-size="18">Bits hôtes : 000000</text>
+      <text x="845" y="267" font-size="18">Bits hôtes : 111111</text>
+    </g>
+    <text x="475" y="290" text-anchor="middle" font-size="18">Réseau et diffusion : adresses réservées.</text>
+  </g>
+</svg>
