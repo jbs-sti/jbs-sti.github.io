@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="350" viewBox="0 0 960 350" role="img" aria-labelledby="title desc">
+  <title id="title">Placer les grands blocs avant les petits</title>
+  <desc id="desc">Deux règles de 192.168.10.0/24. En haut, deux /30 en .0 et .128 bloquent les deux emplacements possibles d’un /25. En bas, le /25 en .0 puis les /30 en .128 et .132 tiennent ensemble. Les barres sont à la même échelle ; 256 indique la fin du /24, pas une valeur d’octet.</desc>
+  <rect width="960" height="350" fill="#fff"/>
+  <g stroke="#111" stroke-width="2">
+    <rect x="60" y="100" width="832" height="40" fill="#fff"/>
+    <rect x="60" y="100" width="13" height="40" fill="#555"/>
+    <rect x="476" y="100" width="13" height="40" fill="#555"/>
+    <path d="M60 92 V148 M476 92 V148 M892 92 V148"/>
+    <path d="M66.5 100 L100 80 H145 M482.5 100 L516 80 H561" fill="none"/>
+    <rect x="60" y="247" width="832" height="40" fill="#fff"/>
+    <rect x="60" y="247" width="416" height="40" fill="#ddd"/>
+    <rect x="476" y="247" width="13" height="40" fill="#555"/>
+    <rect x="489" y="247" width="13" height="40" fill="#555"/>
+    <path d="M60 239 V295 M476 239 V295 M892 239 V295"/>
+    <path d="M482.5 247 L454 224 H430 M495.5 247 L524 224 H548" fill="none"/>
+  </g>
+  <g font-family="sans-serif" font-size="19" fill="#111">
+    <text x="30" y="30" font-size="22" font-weight="bold">192.168.10.0/24 : pourquoi commencer par le /25 ?</text>
+    <text x="30" y="60">Petits blocs dispersés : aucun des deux emplacements /25 n’est libre.</text>
+    <text x="150" y="85">/30</text>
+    <text x="566" y="85">/30</text>
+    <g text-anchor="middle">
+      <text x="268" y="127">/25 bloqué</text>
+      <text x="684" y="127">/25 bloqué</text>
+      <text x="60" y="173">0</text>
+      <text x="476" y="173">128</text>
+      <text x="892" y="173">256*</text>
+    </g>
+    <text x="30" y="207">Grand bloc d’abord : le /25 et les deux /30 tiennent à la suite.</text>
+    <text x="425" y="230" text-anchor="end">/30</text>
+    <text x="553" y="230">/30</text>
+    <g text-anchor="middle">
+      <text x="268" y="274">/25 : 128 adresses</text>
+      <text x="697" y="274">Libre</text>
+      <text x="60" y="320">0</text>
+      <text x="476" y="320">128</text>
+      <text x="892" y="320">256*</text>
+    </g>
+    <text x="30" y="344" font-size="16">* Fin du /24. Graduations : dernier octet. Les deux petits blocs contiennent 4 adresses chacun.</text>
+  </g>
+</svg>
