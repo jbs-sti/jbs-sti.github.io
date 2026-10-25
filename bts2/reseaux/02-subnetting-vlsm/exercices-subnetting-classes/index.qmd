@@ -116,5 +116,5 @@ Retirez le réseau et la diffusion pour obtenir les adresses utilisables.
 ## Pour aller plus loin
 
 Gardez la [fiche méthode](../fiche-subnetting-methode/index.qmd) pour refaire la démarche A/B.
-Sources : [RFC 1918, § 3 — plages privées et classes](https://www.rfc-editor.org/rfc/rfc1918.html#section-3) ;
+Sources : [RFC 1918, § 3 — plages privées](https://www.rfc-editor.org/rfc/rfc1918.html#section-3) ;
 [RFC 4632, § 3.1 — préfixes CIDR](https://www.rfc-editor.org/rfc/rfc4632.html#section-3.1).
