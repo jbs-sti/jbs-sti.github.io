@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="255" viewBox="0 0 900 255" role="img" aria-labelledby="title desc">
+<title id="title">RIPv2 : apprendre Marseille à un puis deux sauts</title>
+<desc id="desc">Le LAN Marseille est connecté à R3. R2 apprend ce LAN à un saut, R1 à deux sauts. Les flèches représentent les annonces, de R3 vers R2 puis R1.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#222"/></marker></defs>
+<rect width="900" height="255" fill="white"/>
+<g font-family="sans-serif" font-size="18" fill="#111" text-anchor="middle">
+
+<g fill="none" stroke="#222" stroke-width="3" marker-end="url(#arrow)">
+<path d="M750 98 H490"/><path d="M410 98 H150"/>
+</g>
+<text x="600" y="46" font-weight="bold">R2 apprend : 1 saut</text>
+<text x="300" y="46" font-weight="bold">R1 apprend : 2 sauts</text>
+<text x="600" y="76">annonce de R3 vers R2</text>
+<text x="300" y="76">relais de R2 vers R1</text>
+<g fill="white" stroke="#111" stroke-width="3">
+<circle cx="115" cy="98" r="35"/><circle cx="450" cy="98" r="35"/><circle cx="785" cy="98" r="35"/>
+</g>
+<g font-size="22" font-weight="bold">
+<text x="115" y="105">R1</text><text x="450" y="105">R2</text><text x="785" y="105">R3</text>
+</g>
+<text x="115" y="164">Paris</text><text x="450" y="164">Lyon</text>
+<text x="785" y="164">Marseille</text>
+<text x="785" y="192">LAN 192.168.3.0/24</text>
+<text x="450" y="235" font-size="16">Flèches : annonces vers Paris. Pour joindre Marseille, les données vont de R1 vers R3.</text>
+
+</g>
+</svg>
