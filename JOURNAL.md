@@ -151,7 +151,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - `docs/relecture-codex.md` renommé `docs/relecture.md`, commun aux deux relecteurs (mêmes critères, plafonds et interdits)
 - `.claude/agents/relecteur.md` (nouveau) ; `redacteur` limité aux TP ; `verificateur` contrôle aussi la méthode des cours
 - `.claude/settings.json` inchangé (non modifiable par un agent) : les commandes Codex gardent `-o .review/codex.md`, déjà autorisée
-- Pull request : #47
+- Pull request : #47 (première version), puis #51 (répartition par type)
 
 ### 2026-10-25 — cours/bts2-cours-nat-pat
 
