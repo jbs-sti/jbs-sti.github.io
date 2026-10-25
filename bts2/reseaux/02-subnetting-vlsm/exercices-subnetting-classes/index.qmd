@@ -88,7 +88,7 @@ Ajoutez b au préfixe de départ. Puis h = 32 − nouveau préfixe.
 | 2 — B | 3 | 13 | /16 + 3 = /19 | `255.255.224.0` |
 | 3 — A | 2 | 22 | /8 + 2 = /10 | `255.192.0.0` |
 
-Pour chaque pas, soustrayez l’octet significatif à 256 : 256 − 192 = 64 ; 256 − 224 = 32.
+Pour trouver le pas, soustrayez l’octet significatif à 256 : 256 − 192 = 64 ; 256 − 224 = 32.
 
 | Exercice | Pas et octet significatif | Taille de bloc (adresses) | Adresses utilisables |
 |:---|:---|:---|:---|
