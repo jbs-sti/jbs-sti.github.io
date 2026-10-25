@@ -30,9 +30,17 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (PR #53, 518 → 230 lignes, 2 SVG nouveaux). Ensuite, selon
   l'enseignant : cours NAT/PAT au même format, puis chapitre 06 pare-feu
   et DMZ (ASA 5506-X).
+- Fiche d'exercices courte « classes A, B et C »
+  (`exercices-subnetting-classes`, order 12, brouillon, écrite par Codex) :
+  3 découpages en sous-réseaux égaux (192.168.10.0/24, 172.16.0.0/16,
+  10.0.0.0/8), énoncés sur une page, corrigé après saut de page.
 
 **À faire**
 
+- `bts2/reseaux/02-subnetting-vlsm/exercices-subnetting-classes`
+  (brouillon) : vérifier sur le PDF de la CI que les trois énoncés tiennent
+  sur une page A4 (estimation : de justesse) et que les tableaux à compléter
+  laissent assez de place pour écrire.
 - `bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm` et `cours-vlsm`
   (publiés, réécrits par Codex) : relire le PDF de la CI et les figures
   (`frontiere`, `blocs`, `bornes` ; `ordre-blocs`, `plan-vlsm`) ; dire si
@@ -165,6 +173,17 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-25 — cours/bts2-fiche-subnetting-classes
+
+- Ressource : `bts2/reseaux/02-subnetting-vlsm/exercices-subnetting-classes/index.qmd`, type exercices (le gabarit fiche impose 7 sections, trop long pour une page), order 12 ; écrite par Codex
+- Demande de l'enseignant : « petite fiche, une page, simple », 3 exercices, adresses de classe A, B et C ; vocabulaire et démarche A/B du cours et de la fiche méthode
+- Vérificateur : CONFORME au premier passage, 3 formulations À CORRIGER traitées par Codex (« adresses complètes (4 octets) », n/h/N définis dans le Rappel, situation concrète)
+- Relecteur : 1 constat A (À CORRIGER : libellé de la source RFC 1918 limité à « plages privées », corrigé par Codex), 1 réécriture R1 gardée ; calculs refaits, tous justes
+- Vérification finale : CONFORME (contenu ; rendu non contrôlable en local)
+- Relance du relecteur : non
+- Pull request : #54
+- Points à relire par l'enseignant : tenue des énoncés sur une page dans le PDF de la CI
 
 ### 2026-10-25 — cours/bts2-cours-subnetting-court et cours/bts2-cours-vlsm-court
 
