@@ -1,0 +1,120 @@
+---
+title: "Sous-réseaux : fiche d’exercices (classes A, B et C)"
+description: "Trois exercices pour choisir un masque et trouver les bornes de sous-réseaux égaux."
+type: exercices
+domaine: reseaux
+chapitre: "02 — Subnetting et VLSM"
+categories: [exercices, reseaux]
+mots-cles: [IPv4, sous-réseau, classes A B C, masque, taille de bloc, pas d’avancement, octet significatif]
+objectifs:
+  - "Choisir un masque pour créer des sous-réseaux égaux."
+  - "Calculer la taille de bloc, le pas et les bornes."
+prerequis:
+  - "Cours « Découper un réseau en sous-réseaux »"
+duree: "45 min"
+order: 12
+date-modified: 2026-10-25
+draft: true
+lang: fr
+---
+
+## Objectifs et prérequis
+
+Choisir un masque et calculer les bornes. Prérequis : le [cours](../cours-subnetting-vlsm/index.qmd)
+« Découper un réseau en sous-réseaux ».
+
+## Situation de départ
+
+Trois entreprises veulent découper leur réseau en sous-réseaux égaux.
+
+**Classes : premier octet → masque par défaut.** A : 1 à 126 → /8 ; B : 128 à 191 → /16 ; C : 192 à 223 → /24.
+Aujourd’hui, on raisonne en préfixes (/n) ; la classe donne ici seulement le masque de départ.
+
+::: {.callout-note title="Rappel"}
+n = préfixe ; h = bits hôtes = 32 − n ; taille de bloc = 2^h^ adresses ; adresses utilisables = 2^h^ − 2.  
+Octet significatif : premier octet du masque différent de 255 ; pas d’avancement = 256 − cet octet.  
+Taille de bloc = pas au 4^e^ octet ; pas × 256 au 3^e^ ; pas × 65 536 au 2^e^.  
+**A. Trouver le masque** : N = nombre de sous-réseaux voulus ; plus petit b avec 2^b^ ≥ N ; nouveau préfixe = préfixe de départ + b.  
+**B. Trouver les bornes** : diffusion = réseau suivant − 1 ; utilisables : réseau + 1 à diffusion − 1.
+:::
+
+## Exercices
+
+Découpez chaque réseau en **sous-réseaux égaux**. Le n° 1 commence à l’adresse réseau de départ.
+
+### Exercice 1 — Classe C : `192.168.10.0/24` en 4 sous-réseaux
+
+1. **A.** Trouvez les bits empruntés b, puis le préfixe et le masque pointé.
+2. Calculez la taille de bloc et le pas ; indiquez l’octet significatif.
+3. **B.** Complétez les bornes des deux premiers sous-réseaux, en adresses complètes (4 octets).
+
+| N° | Réseau | Première utilisable | Dernière utilisable | Diffusion |
+|:-:|:---|:---|:---|:---|
+| 1 | | | | |
+| 2 | | | | |
+
+### Exercice 2 — Classe B : `172.16.0.0/16` en 8 sous-réseaux
+
+1. **A.** Trouvez les bits empruntés b, puis le préfixe et le masque pointé.
+2. Calculez la taille de bloc et le pas ; indiquez l’octet significatif.
+3. **B.** Complétez les bornes des deux premiers sous-réseaux, en adresses complètes (4 octets).
+
+| N° | Réseau | Première utilisable | Dernière utilisable | Diffusion |
+|:-:|:---|:---|:---|:---|
+| 1 | | | | |
+| 2 | | | | |
+
+### Exercice 3 — Classe A : `10.0.0.0/8` en 4 sous-réseaux
+
+1. **A.** Trouvez les bits empruntés b, puis le préfixe et le masque pointé.
+2. Calculez la taille de bloc et le pas ; indiquez l’octet significatif.
+3. **B.** Complétez les bornes des deux premiers sous-réseaux, en adresses complètes (4 octets).
+
+| N° | Réseau | Première utilisable | Dernière utilisable | Diffusion |
+|:-:|:---|:---|:---|:---|
+| 1 | | | | |
+| 2 | | | | |
+
+{{< pagebreak >}}
+
+## Corrigé
+
+**A. Trouver le masque.** 4 = 2^2^ : empruntez 2 bits ; 8 = 2^3^ : empruntez 3 bits.
+Ajoutez b au préfixe de départ. Puis h = 32 − nouveau préfixe.
+
+| Exercice | b | h | Nouveau préfixe | Masque pointé |
+|:---|:-:|:-:|:-:|:---|
+| 1 — C | 2 | 6 | /24 + 2 = /26 | `255.255.255.192` |
+| 2 — B | 3 | 13 | /16 + 3 = /19 | `255.255.224.0` |
+| 3 — A | 2 | 22 | /8 + 2 = /10 | `255.192.0.0` |
+
+Pour chaque pas, soustrayez l’octet significatif à 256 : 256 − 192 = 64 ; 256 − 224 = 32.
+
+| Exercice | Pas et octet significatif | Taille de bloc (adresses) | Adresses utilisables |
+|:---|:---|:---|:---|
+| 1 — C | 64 au 4^e^ octet | 2^6^ = 64 | 62 |
+| 2 — B | 32 au 3^e^ octet | 32 × 256 = 8 192 = 2^13^ | 8 190 |
+| 3 — A | 64 au 2^e^ octet | 64 × 65 536 = 4 194 304 = 2^22^ | 4 194 302 |
+
+**B. Trouver les bornes.** Avancez de pas en pas dans l’octet significatif.
+Par exemple, en classe B : `172.16.32.0` suit `172.16.0.0` ; la première diffusion est `172.16.31.255`.
+
+| Ex. / n° | Réseau | Première utilisable | Dernière utilisable | Diffusion |
+|:---|:---|:---|:---|:---|
+| C / 1 | `192.168.10.0` | `192.168.10.1` | `192.168.10.62` | `192.168.10.63` |
+| C / 2 | `192.168.10.64` | `192.168.10.65` | `192.168.10.126` | `192.168.10.127` |
+| B / 1 | `172.16.0.0` | `172.16.0.1` | `172.16.31.254` | `172.16.31.255` |
+| B / 2 | `172.16.32.0` | `172.16.32.1` | `172.16.63.254` | `172.16.63.255` |
+| A / 1 | `10.0.0.0` | `10.0.0.1` | `10.63.255.254` | `10.63.255.255` |
+| A / 2 | `10.64.0.0` | `10.64.0.1` | `10.127.255.254` | `10.127.255.255` |
+
+## Synthèse
+
+Repérez toujours l’octet significatif. Le pas et la taille de bloc diffèrent aux 2^e^ et 3^e^ octets.
+Retirez le réseau et la diffusion pour obtenir les adresses utilisables.
+
+## Pour aller plus loin
+
+Gardez la [fiche méthode](../fiche-subnetting-methode/index.qmd) pour refaire la démarche A/B.
+Sources : [RFC 1918, § 3 — plages privées et classes](https://www.rfc-editor.org/rfc/rfc1918.html#section-3) ;
+[RFC 4632, § 3.1 — préfixes CIDR](https://www.rfc-editor.org/rfc/rfc4632.html#section-3.1).
