@@ -61,8 +61,7 @@ La direction fixe trois besoins :
 ![Topologie du TP : le réseau du TP 6, relié par FW à un fournisseur d'accès simulé.](img/topologie-tp-nat-pat.svg){fig-alt="En haut, dans un cadre en tirets « Internet simulé » : le routeur FAI, dont G0/1 point 1 est relié au commutateur SW-EXT, réseau 192.0.2.0/24 ; sur SW-EXT, SRV-EXT 192.0.2.80 sur F0/1 et PC-EXT 192.0.2.10 sur F0/2. Le FAI n'a aucune route vers 192.168.10.0/24 ; il route le bloc public 198.51.100.8/29 vers FW. Liaison FAI–FW : 198.51.100.0/30, FAI G0/0 point 1, FW G0/2 point 2, interface outside. Une ligne pointillée horizontale sépare le côté outside, aux adresses publiques, du côté inside, aux adresses privées. Les routeurs R1, R2 et FW forment un triangle. Liaison R1–R2 : 192.168.10.224/30, R2 G0/0 point 226, R1 G0/1 point 225. Liaison R2–FW : 192.168.10.228/30, R2 G0/1 point 229, FW G0/0 point 230, inside. Liaison R1–FW : 192.168.10.232/30, R1 G0/2 point 233, FW G0/1 point 234, inside. R1 G0/0 est relié en trunk à SW1 G0/1 ; SW1 G0/2 est relié en trunk 802.1Q à SW2 G0/1. Sur SW2 : PC-P2 sur F0/2 en VLAN 10 et PC-I1 sur F0/21 en VLAN 30, en DHCP. Sur SW1 : PC-P1 sur F0/1 en VLAN 10, en DHCP ; PC-ADM sur F0/11 en VLAN 20, adresse 192.168.10.129 ; SRV-WEB sur F0/5 en VLAN 10, adresse 192.168.10.101, publiée sous 198.51.100.9. Les nouveaux équipements FAI, SW-EXT, SRV-EXT et PC-EXT ont un cadre épais."}
 
 Le résultat attendu : chaque besoin est vérifié dans une **matrice de
-recette**, comme au TP 6. Chaque traduction est prouvée par la table NAT de
-FW.
+recette**, comme au TP 6. La table NAT de FW prouve chaque traduction.
 
 ## Matériel et environnement
 
@@ -97,8 +96,9 @@ publiques.
 | SRV-EXT | F0 | `192.0.2.80/24` | `192.0.2.1` | serveur web public, visité par les salariés |
 | PC-EXT | F0 | `192.0.2.10/24` | `192.0.2.1` | internaute, client de SRV-WEB |
 
-**Adresses publiques de l'entreprise.** Elles sont prises dans le bloc
-`198.51.100.8/29`.
+**Adresses publiques de l'entreprise.** Ce sont les adresses du bloc
+`198.51.100.8/29`, attribué par le FAI. S'y ajoute `198.51.100.2`,
+l'adresse de FW sur la liaison `198.51.100.0/30`.
 
 | Adresse publique | Usage | Partie |
 |:---|:---|:-:|
@@ -430,8 +430,11 @@ description du pool.
 2. Depuis PC-P1, puis PC-ADM, puis PC-I1, **dans cet ordre** :
    `ping 192.0.2.80`.
 3. Sur FW : `show ip nat translations`, puis `show ip nat statistics`.
-   Relevez l'adresse publique prêtée à chaque poste. Relevez aussi les
-   compteurs *hits* et *misses*.
+   Relevez l'adresse publique prêtée à chaque poste. Relevez les
+   compteurs globaux *hits* et *misses*. Relevez aussi les lignes
+   propres au pool `PUBLIC` : adresses allouées et, si elles sont
+   affichées, allocations refusées. Leur libellé exact est à vérifier
+   sous Packet Tracer.
 4. Depuis PC-P1, relancez `ping 192.0.2.80`. Relevez son adresse publique.
 5. Pendant que la traduction de PC-P1 existe, prévoyez par écrit le
    résultat d'un `ping` de PC-EXT vers l'adresse publique de PC-P1.
@@ -498,10 +501,12 @@ vérifier sous Packet Tracer.
 ::: {.callout-note}
 ## Et l'ACL INVITES-IN du TP 6 ?
 
-Elle filtre l'entrée de R1 G0/0.30, bien avant FW. Elle ne voit donc que
-des adresses privées. Sa dernière ligne laisse les invités joindre toute
-destination hors du site : SRV-EXT en fait partie. Le PAT ne demande
-aucune modification de `INVITES-IN`.
+Elle filtre l'entrée de R1 G0/0.30, bien avant FW. Le NAT n'a pas encore
+eu lieu : elle voit la source privée du poste. Elle voit aussi une
+destination publique, par exemple `192.0.2.80`. Ses règles distinguent
+les destinations du site, filtrées, de toute destination hors du site,
+autorisée. Une destination publique tombe dans ce second cas : le PAT ne
+demande aucune modification de `INVITES-IN`.
 :::
 
 **Sauvegarde.** Sur FW et sur FAI : `copy running-config startup-config`.
@@ -565,8 +570,8 @@ place.
 4. Sur chaque routeur : `copy running-config startup-config`. Enregistrez
    le fichier `.pkt`.
 
-Toute case où l'obtenu diffère de l'attendu doit être expliquée, puis
-corrigée.
+Expliquez, puis corrigez tout écart entre le résultat obtenu et le résultat
+attendu.
 
 **Observations à consigner.** Q25 ; captures C16 et C17.
 
@@ -649,8 +654,9 @@ captures quand c'est utile.
   Détaillez le calcul du masque générique du VLAN 20 et du `netmask` du
   pool.
 - **Q12.** Recopiez les adresses publiques prêtées aux trois postes. Que
-  devient le troisième ? Quel compteur de `show ip nat statistics` le
-  confirme ?
+  devient le troisième ? Dans `show ip nat statistics`, distinguez les
+  compteurs globaux *hits* et *misses* des lignes du pool `PUBLIC`.
+  Lesquelles révèlent vraiment l'épuisement du pool ? Justifiez.
 - **Q13.** Au nouveau ping de PC-P1, son adresse publique a-t-elle changé ?
   Pourquoi ? Combien de temps, selon le cours, une entrée de NAT dynamique
   reste-t-elle sur un IOS réel ?
