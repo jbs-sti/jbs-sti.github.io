@@ -1,6 +1,6 @@
 ---
 title: "Le VLSM : des sous-réseaux de tailles différentes"
-description: "Construire un plan d’adressage VLSM : calculer le besoin de chaque segment, choisir le plus petit préfixe, placer les blocs par ordre décroissant en contrôlant leur alignement, puis vérifier le plan."
+description: "Construire un plan d’adressage VLSM : calculer le besoin de chaque segment, choisir le plus petit bloc qui suffit, placer les blocs par ordre décroissant en contrôlant leur alignement, puis vérifier le plan."
 type: cours
 domaine: reseaux
 chapitre: "02 — Subnetting et VLSM"
@@ -8,7 +8,7 @@ categories: [cours, reseaux]
 mots-cles: [VLSM, masque de longueur variable, sous-réseau, préfixe, bits hôtes, bits empruntés, taille de bloc, alignement, liaison point à point, plan d’adressage]
 objectifs:
   - "Calculer le besoin en adresses d’un segment, PC et interfaces de routeur comprises."
-  - "Choisir, pour chaque segment, le plus petit préfixe qui convient."
+  - "Choisir, pour chaque segment, le plus petit bloc qui suffit, donc son préfixe."
   - "Construire un plan VLSM en plaçant les blocs par ordre décroissant et en contrôlant leur alignement."
   - "Vérifier un plan d’adressage à l’aide d’une grille en cinq points."
 prerequis:
@@ -17,7 +17,7 @@ prerequis:
   - "Rôle d’un routeur et liaison entre deux routeurs"
 duree: "2 h"
 order: 19
-date-modified: 2026-10-24
+date-modified: 2026-10-25
 draft: false
 lang: fr
 ---
