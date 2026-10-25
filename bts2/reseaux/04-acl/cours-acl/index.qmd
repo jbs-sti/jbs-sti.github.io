@@ -495,7 +495,7 @@ La dernière ligne n'autorise que les sources du VLAN 30. Un paquet dont la
 source usurpée est hors du VLAN 30 est détruit par le refus implicite. Seule
 exception, une demande DHCP de `0.0.0.0` vers la diffusion : le routeur ne
 la transmet à aucun autre réseau. En revanche, une ACL ne contrôle que
-l'adresse écrite dans le paquet : un invité qui usurpe l'adresse d'un autre
+l'adresse écrite dans le paquet. Un invité qui usurpe l'adresse d'un autre
 invité du VLAN 30 passe la dernière ligne.
 
 G0/0.30 est une interface passive OSPF : aucun Hello n'y circule. Cette ACL
