@@ -1,0 +1,878 @@
+---
+title: "VLSM : exercices d’approfondissement"
+description: "Série 2 : six exercices et un défi pour approfondir le VLSM, avec un parent /22 ou /20, une réserve de croissance, une configuration IOS à contrôler, les pièges d’alignement et l’extension d’un plan existant."
+type: exercices
+domaine: reseaux
+chapitre: "02 — Subnetting et VLSM"
+categories: [exercices, reseaux]
+mots-cles: [VLSM, masque de longueur variable, préfixe, bits hôtes, taille de bloc, pas d’avancement, alignement, octet significatif, première adresse libre, liaison point à point, plan d’adressage, passerelle, plage DHCP, Cisco IOS]
+objectifs:
+  - "Construire un plan VLSM dans un parent /22 ou /20, quand l’octet significatif passe au 3e rang."
+  - "Retrouver le segment d’un plan VLSM auquel appartient une adresse, en raisonnant sur deux octets."
+  - "Dimensionner des segments avec une réserve de croissance, puis donner passerelles et plage DHCP."
+  - "Repérer les erreurs d’adressage dans une configuration Cisco IOS à partir d’un plan VLSM."
+  - "Éviter les pièges de comptage et d’alignement, et compléter un plan existant en réutilisant un trou."
+prerequis:
+  - "Cours « Le VLSM : des sous-réseaux de tailles différentes » du chapitre 02"
+  - "Fiche « Le VLSM : la méthode pas à pas »"
+  - "Série 1 « VLSM : exercices d’entraînement »"
+duree: "1 h 50"
+order: 23
+date-modified: 2026-10-25
+draft: false
+lang: fr
+---
+
+## Objectifs et prérequis
+
+Cette série approfondit le **VLSM**. Les plages de départ sont plus grandes
+qu’un /24. Certains blocs dépassent 256 adresses : l’octet significatif passe
+alors au 3^e^ rang. Faites d’abord la série 1,
+[VLSM : exercices d’entraînement](../exercices-vlsm-entrainement/index.qmd) :
+celle-ci la suppose acquise.
+
+Vous appliquerez la démarche du cours, en deux temps :
+
+- **A. Dimensionner** chaque segment : besoin en adresses → bits hôtes →
+  bits empruntés → préfixe et masque ;
+- **B. Placer** chaque bloc, du plus grand au plus petit : première adresse
+  libre, contrôle de l’alignement, puis bornes.
+
+Rappelez-vous la règle d’alignement. Un réseau commence sur un multiple de sa
+taille de bloc. Dans l’octet significatif, il est **multiple du pas**, et les
+octets suivants **valent 0**.
+
+::: {.callout-tip}
+## Support autorisé
+
+Gardez sous les yeux la [fiche méthode VLSM](../fiche-vlsm-methode/index.qmd)
+du chapitre. Vous y trouverez les cinq étapes, le mémo du besoin au préfixe
+et la grille de vérification en cinq points.
+:::
+
+| Exercice | Compétence | Durée indicative |
+|:-:|:---|:-:|
+| 1 | Construire un plan VLSM dans un /22 | 20 min |
+| 2 | Retrouver le segment d’une adresse sur deux octets | 15 min |
+| 3 | Établir un plan avec réserve de croissance | 20 min |
+| 4 | Contrôler une configuration IOS | 15 min |
+| 5 | Éviter les pièges de comptage et d’alignement | 15 min |
+| 6 | Synthèse : ajouter un site distant | 25 min |
+| 7 | Défi (facultatif) | 10 min |
+| | **Total** | **1 h 50** sans le défi |
+
+## Situation de départ
+
+Vous êtes en alternance chez **Varenne Médical**, un fabricant de matériel
+de laboratoire. L’entreprise revoit l’adressage de ses sites. Chaque site
+reçoit une plage privée (RFC 1918) :
+
+| Site | Plage reçue |
+|:---|:---|
+| Site de Tours | `172.18.4.0/22` |
+| Site de Poitiers | `10.20.32.0/20` |
+| Laboratoire d’essais | `192.168.70.0/24` |
+
+Cette fois, les segments n’ont pas tous la même taille. Chaque segment reçoit
+**le plus petit bloc qui lui suffit**.
+
+Les conventions de Varenne Médical sont les suivantes :
+
+- chaque LAN compte **une interface de routeur**, sa passerelle ;
+- la passerelle prend la **première adresse utilisable** du LAN ;
+- chaque liaison entre deux routeurs est un **/30 classique** ;
+- les blocs sont placés **par besoin décroissant**. À préfixe égal, le plus
+  gros besoin passe d’abord.
+
+## Exercices
+
+### Exercice 1 — Un plan VLSM dans un /22 : l’octet significatif au 3^e^ rang
+
+Le site de Tours reçoit `172.18.4.0/22`. Il compte quatre LAN et deux
+liaisons :
+
+| Segment | Contenu |
+|:---|:---|
+| LAN 1 | 400 PC, derrière le routeur R1 |
+| LAN 2 | 200 PC, derrière R1 |
+| LAN 3 | 100 PC, derrière R1 |
+| LAN 4 | 50 PC, derrière le routeur R2 |
+| L1 | liaison R1–R2 |
+| L2 | liaison R2–R3, R3 étant le routeur du cœur de réseau |
+
+**1.1 — A. Dimensionner.** Le parent /22 offre combien de bits hôtes ?
+Complétez ensuite le tableau.
+
+| Segment | Besoin en adresses | h | Bits empruntés | Préfixe | Masque | Taille de bloc |
+|:---|:-:|:-:|:-:|:-:|:---|:-:|
+| LAN 1 | | | | | | |
+| LAN 2 | | | | | | |
+| LAN 3 | | | | | | |
+| LAN 4 | | | | | | |
+| L1 | | | | | | |
+| L2 | | | | | | |
+
+**1.2** Pour le LAN 1 et le LAN 2, quel est l’octet significatif du masque ?
+Donnez le pas. Vérifiez ensuite la taille de bloc par pas × 256, en
+raisonnant sur le 3^e^ octet.
+
+::: {.callout-note}
+## Coup de pouce
+
+Un /23 a pour masque `255.255.254.0`. L’octet significatif est le 3^e^ : le
+pas vaut 256 − 254 = 2. Un /23 commence donc sur un 3^e^ octet **pair**, avec
+un 4^e^ octet à 0. Pour un /24, l’octet significatif est le 4^e^, de pas 256.
+Vu depuis le 3^e^ octet, le pas vaut 1 : n’importe quelle valeur convient,
+pourvu que le 4^e^ octet vaille 0.
+:::
+
+**1.3 — B. Placer.** Complétez le plan, dans l’ordre décroissant. Pour chaque
+bloc, écrivez le candidat, puis justifiez son alignement.
+
+| Segment | Candidat | Aligné ? | Réseau | Utilisables | Diffusion |
+|:---|:---|:-:|:---|:---|:---|
+| LAN 1 | | | | | |
+| LAN 2 | | | | | |
+| LAN 3 | | | | | |
+| LAN 4 | | | | | |
+| L1 | | | | | |
+| L2 | | | | | |
+
+**1.4** Retrouvez en binaire l’adresse réseau et la diffusion du LAN 1.
+Recopiez et complétez, en plaçant le trait entre partie réseau et bits hôtes
+dans le 3^e^ octet :
+
+```text
+LAN 1       3e octet     4e octet    adresse
+réseau      ________     ________    172.18.___.___
+diffusion   ________     ________    172.18.___.___
+```
+
+**1.5** Quelles adresses restent libres dans le /22 ? Combien y en a-t-il ?
+Découpez cet espace en blocs alignés, du plus petit au plus grand.
+
+### Exercice 2 — Retrouver le segment d’une adresse sur deux octets
+
+Le technicien de Tours relève des adresses sur le réseau. Il vous demande à
+quel segment du plan de l’exercice 1 chacune appartient. Vérifiez vos
+réponses de l’exercice 1 dans le corrigé avant de commencer.
+
+**2.1** Pour chaque adresse, donnez le segment. Précisez sa nature :
+adresse réseau, adresse utilisable, diffusion, ou adresse hors plan (libre).
+
+| Adresse | Segment | Nature |
+|:---|:---|:---|
+| `172.18.5.200` | | |
+| `172.18.5.255` | | |
+| `172.18.6.0` | | |
+| `172.18.7.130` | | |
+| `172.18.7.210` | | |
+
+::: {.callout-note}
+## Coup de pouce
+
+Regardez d’abord le 3^e^ octet. Les valeurs 4 et 5 ne peuvent appartenir
+qu’au LAN 1, la valeur 6 qu’au LAN 2. Pour la valeur 7, comparez le 4^e^
+octet aux bornes des blocs placés dans `172.18.7.0`.
+:::
+
+**2.2** Pour `172.18.5.200`, faites le ET logique avec le masque du LAN 1 sur
+le 3^e^ octet. Concluez ensuite par les bits hôtes : tous à 0, tous à 1, ou
+mélangés ?
+
+**2.3** Pour `172.18.7.130`, faites le ET logique avec le masque du LAN 4 sur
+le 4^e^ octet. Cette adresse peut-elle être donnée à un PC ?
+
+### Exercice 3 — Le plan du site de Poitiers, avec réserve de croissance
+
+Le responsable du site de Poitiers vous écrit :
+
+> Bonjour,
+>
+> Nous disposons de la plage `10.20.32.0/20`. Le plan doit absorber une
+> croissance de 20 % sans renumérotation. Voici nos besoins actuels :
+>
+> - Wi-Fi invités : 400 appareils ;
+> - Production : 300 postes ;
+> - Bureaux : 150 postes ;
+> - Serveurs : 20 machines ;
+> - Administration : 10 postes.
+>
+> Il faut aussi trois liaisons entre routeurs, L1, L2 et L3. Chaque LAN a sa
+> passerelle sur un routeur.
+
+**3.1 — A. Dimensionner.** Majorez chaque besoin actuel de 20 %, arrondi à
+l’entier supérieur. Ajoutez ensuite l’interface du routeur. Complétez :
+
+| Segment | Actuel | + 20 % | + routeur | h | Préfixe | Masque |
+|:---|:-:|:-:|:-:|:-:|:-:|:---|
+| Wi-Fi invités | 400 | | | | | |
+| Production | 300 | | | | | |
+| Bureaux | 150 | | | | | |
+| Serveurs | 20 | | | | | |
+| Administration | 10 | | | | | |
+| L1, L2, L3 | — | — | | | | |
+
+**3.2** Triez les segments. Deux LAN ont le même préfixe : lequel
+placez-vous en premier, selon la convention de Varenne Médical ?
+
+**3.3 — B. Placer.** Complétez le plan. Justifiez l’alignement de chaque bloc.
+
+| Segment | Réseau | Passerelle | Utilisables | Diffusion |
+|:---|:---|:---|:---|:---|
+| Wi-Fi invités | | | | |
+| Production | | | | |
+| Bureaux | | | | |
+| Serveurs | | | | |
+| Administration | | | | |
+| L1 | | — | | |
+| L2 | | — | | |
+| L3 | | — | | |
+
+**3.4** Le serveur DHCP distribue aux Bureaux toutes les adresses
+utilisables, sauf la passerelle. Donnez la plage DHCP. Combien d’adresses
+contient-elle ? Couvre-t-elle le besoin majoré ?
+
+**3.5** Quelle est la première adresse libre après le plan ? Quelle est la
+dernière adresse du /20 ? Combien d’adresses restent libres ?
+
+### Exercice 4 — Contrôler une configuration IOS
+
+Revenez au site de Tours de l’exercice 1. Le routeur **R1** dessert trois
+LAN par un seul lien vers le commutateur : c’est un **routeur sur un bâton**.
+
+- Son interface GigabitEthernet0/0 porte trois sous-interfaces 802.1Q : le
+  VLAN 10 pour le LAN 1, le VLAN 20 pour le LAN 2, le VLAN 30 pour le LAN 3.
+- Son interface GigabitEthernet0/1 rejoint R2 par la liaison L1. R1 prend la
+  première adresse utilisable de L1.
+- R1 sert de serveur DHCP pour le LAN 1 et le LAN 2. Le LAN 3 est adressé à
+  la main.
+
+Un stagiaire a préparé le **projet de configuration** ci-dessous. Rien n’est
+encore saisi dans le routeur : votre rôle est de contrôler ce projet avant
+sa saisie.
+
+**Plateforme : Cisco Packet Tracer, routeur 2911, Cisco IOS.** Extrait du
+projet, limité à l’adressage :
+
+```text
+! Plateforme : Cisco Packet Tracer, routeur 2911 (R1), Cisco IOS
+interface GigabitEthernet0/0
+ no shutdown
+!
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 172.18.4.1 255.255.255.0
+!
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 172.18.6.1 255.255.255.0
+!
+interface GigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 172.18.7.127 255.255.255.128
+!
+interface GigabitEthernet0/1
+ ip address 172.18.7.193 255.255.255.0
+ no shutdown
+!
+ip dhcp excluded-address 172.18.4.1
+ip dhcp excluded-address 172.18.6.1
+!
+ip dhcp pool LAN1
+ network 172.18.4.0 255.255.255.0
+ default-router 172.18.4.1
+!
+ip dhcp pool LAN2
+ network 172.18.6.0 255.255.255.0
+ default-router 172.18.6.1
+```
+
+Le projet contient **exactement quatre erreurs d’adressage**. Travaillez sur
+papier, à partir du plan de l’exercice 1.
+
+**4.1** Pour chaque ligne qui contient une adresse et un masque, comparez-la
+au plan. Complétez :
+
+| Ligne | Adresse | Masque | Attendu d’après le plan | Conforme ? |
+|:---|:---|:---|:---|:-:|
+| G0/0.10 | `172.18.4.1` | `255.255.255.0` | | |
+| G0/0.20 | `172.18.6.1` | `255.255.255.0` | | |
+| G0/0.30 | `172.18.7.127` | `255.255.255.128` | | |
+| G0/1 | `172.18.7.193` | `255.255.255.0` | | |
+| pool LAN1 | `172.18.4.0` | `255.255.255.0` | | |
+| pool LAN2 | `172.18.6.0` | `255.255.255.0` | | |
+
+**4.2** Pour chaque erreur, nommez-la et expliquez-la en une phrase.
+
+**4.3** Réécrivez le projet complet, corrigé, dans un bloc de texte.
+
+**4.4** Quelle adresse et quel masque doit porter R2 sur la liaison L1 ?
+
+::: {.callout-note}
+## Coup de pouce
+
+Écrivez d’abord, pour chaque segment, le masque pointé qui correspond à son
+préfixe. Un /23 ne s’écrit pas `255.255.255.0`. Contrôlez ensuite chaque
+adresse d’interface : ni réseau, ni diffusion, et la passerelle prévue.
+:::
+
+### Exercice 5 — Les pièges de comptage et d’alignement
+
+Pour chaque affirmation d’un camarade, dites si elle est juste. Justifiez
+par un calcul.
+
+**5.1** « Un LAN de 254 PC tient dans un /24, puisqu’un /24 offre
+254 adresses utilisables. »
+
+**5.2** « Une liaison relie R1 à R2, mais R2 est déjà compté ailleurs. Je
+compte donc 1 adresse, et un bloc de 2 adresses suffit : un /31. »
+
+**5.3** Dans le plan de l’exercice 1, la liaison L2 finit en `172.18.7.199`.
+« J’ajoute un LAN de 20 PC : un /27 commence en `172.18.7.200`. »
+
+**5.4** « Je peux placer un /22 en `172.18.6.0`. »
+
+**5.5** Au laboratoire d’essais, la plage est `192.168.70.0/24`. Le camarade
+place d’abord un LAN de 25 PC, puis un LAN de 120 PC. « Le /27 va en `.0`. Le
+/25 commence juste après, en `.32`. »
+
+Pour 5.5, donnez le bon placement du /25 dans cet ordre. Quel espace reste
+inutilisé entre les deux blocs ? Peut-on le récupérer ? Comparez enfin avec
+le placement par ordre décroissant.
+
+### Exercice 6 — Synthèse : ajouter un site distant dans un plan existant
+
+Cet exercice reprend toute la démarche, comme un sujet d’examen. Lisez
+l’ensemble avant de commencer. Vérifiez vos réponses de l’exercice 3 dans le
+corrigé.
+
+Varenne Médical ouvre une petite agence, rattachée au site de Poitiers. Ses
+adresses sont prises dans l’espace libre de `10.20.32.0/20`, à la suite du
+plan de l’exercice 3. L’agence comprend :
+
+- un LAN de 60 PC ;
+- un LAN de 25 PC ;
+- une liaison WAN entre le routeur de Poitiers et le routeur de l’agence.
+
+Les deux LAN ont leur passerelle sur le routeur de l’agence. Ces besoins
+sont fermes : dimensionnez-les **sans** réserve de croissance.
+
+**6.1 — A. Dimensionner.** Donnez le besoin, h, le préfixe et le masque de
+chaque segment.
+
+**6.2** La première adresse libre du plan de l’exercice 3 est
+`10.20.37.60`. Pour quelles tailles de bloc est-elle alignée ? Justifiez.
+
+**6.3** Un collègue applique l’ordre décroissant sans réfléchir : /26, puis
+/27, puis /30. Donnez son plan. Quel espace laisse-t-il inutilisé ?
+
+**6.4 — B. Placer.** Proposez un plan qui ne laisse aucun trou. Complétez :
+
+| Segment | Réseau | Passerelle | Utilisables | Diffusion |
+|:---|:---|:---|:---|:---|
+| WAN | | — | | |
+| LAN 60 PC | | | | |
+| LAN 25 PC | | | | |
+
+Pour le WAN, le routeur de Poitiers prend la première adresse utilisable.
+
+**6.5** Vérifiez votre plan avec la grille en cinq points de la fiche
+méthode.
+
+**6.6** Quelle est maintenant la première adresse libre du /20 ?
+
+### Exercice 7 — Défi (facultatif)
+
+Le groupe se demande si le /20 de Poitiers n’est pas surdimensionné.
+
+**7.1** Additionnez les tailles de bloc du plan de l’exercice 3. Quel est le
+plus petit bloc parent dont le total suffit ? Donnez son adresse réseau et
+vérifiez son alignement.
+
+**7.2** Même question en ajoutant l’agence de l’exercice 6.
+
+**7.3** Rappelez à quelles conditions la comparaison du total à la taille du
+parent suffit pour conclure.
+
+## Corrigé
+
+### Exercice 1
+
+**1.1 — A. Dimensionner.** Un /22 a 32 − 22 = **10 bits hôtes**. Chaque LAN
+compte une interface de routeur. Une liaison demande 2 adresses.
+
+| Segment | Besoin en adresses | h | Bits empruntés | Préfixe | Masque | Taille de bloc |
+|:---|:-:|:-:|:-:|:-:|:---|:-:|
+| LAN 1 | 400 + 1 = 401 | 9 | 1 | /23 | `255.255.254.0` | 512 |
+| LAN 2 | 200 + 1 = 201 | 8 | 2 | /24 | `255.255.255.0` | 256 |
+| LAN 3 | 100 + 1 = 101 | 7 | 3 | /25 | `255.255.255.128` | 128 |
+| LAN 4 | 50 + 1 = 51 | 6 | 4 | /26 | `255.255.255.192` | 64 |
+| L1 | 2 | 2 | 8 | /30 | `255.255.255.252` | 4 |
+| L2 | 2 | 2 | 8 | /30 | `255.255.255.252` | 4 |
+
+Exemple pour le LAN 1 : h = 8 donne 2^8^ − 2 = 254, trop peu. h = 9 donne
+2^9^ − 2 = 510, suffisant. Bits empruntés : 10 − 9 = 1. Préfixe :
+32 − 9 = /23.
+
+**1.2** Pour le LAN 1 (/23), l’octet significatif est le **3^e^** : 254. Le
+pas vaut 256 − 254 = **2**. Contrôle : 2 × 256 = 512 = 2^9^.
+
+Pour le LAN 2 (/24), le masque vaut `255.255.255.0`. L’octet significatif
+est le **4^e^** : 0. Le pas vaut 256 − 0 = **256** : il est égal à la taille
+de bloc, 2^8^ = 256. Pour le contrôle par pas × 256, on raisonne sur le
+3^e^ octet : 255, soit un pas de 256 − 255 = 1. Contrôle : 1 × 256 = 256.
+
+**1.3 — B. Placer.** Le premier bloc part de l’adresse réseau du parent.
+Chaque candidat vaut la diffusion précédente + 1.
+
+| Segment | Candidat | Aligné ? | Réseau | Utilisables | Diffusion |
+|:---|:---|:---|:---|:---|:---|
+| LAN 1 | `172.18.4.0` (parent) | 4 = 2 × 2, 4^e^ octet à 0 | `172.18.4.0/23` | `172.18.4.1` à `172.18.5.254` | `172.18.5.255` |
+| LAN 2 | `172.18.6.0` | pas de 1 au 3^e^ rang, 4^e^ octet à 0 | `172.18.6.0/24` | `172.18.6.1` à `172.18.6.254` | `172.18.6.255` |
+| LAN 3 | `172.18.7.0` | 0 = 0 × 128 | `172.18.7.0/25` | `172.18.7.1` à `172.18.7.126` | `172.18.7.127` |
+| LAN 4 | `172.18.7.128` | 128 = 2 × 64 | `172.18.7.128/26` | `172.18.7.129` à `172.18.7.190` | `172.18.7.191` |
+| L1 | `172.18.7.192` | 192 = 48 × 4 | `172.18.7.192/30` | `.193` à `.194` | `.195` |
+| L2 | `172.18.7.196` | 196 = 49 × 4 | `172.18.7.196/30` | `.197` à `.198` | `.199` |
+
+Les blocs sont placés par taille décroissante, à la suite, sans trou, depuis
+l’adresse réseau du parent. Chaque candidat tombe donc aligné, comme prévu
+par le cours. Le contrôle le confirme.
+
+Le /23 exige un 3^e^ octet pair : 4 convient, 5 ne conviendrait pas. Le /24
+exige seulement un 4^e^ octet à 0 : `172.18.6.0` convient.
+
+**1.4** Le masque /23 laisse 1 bit hôte dans le 3^e^ octet et 8 dans le
+4^e^.
+
+```text
+LAN 1       3e octet          4e octet         adresse
+réseau      0000010|0  = 4    00000000 =   0   172.18.4.0
+diffusion   0000010|1  = 5    11111111 = 255   172.18.5.255
+```
+
+Les 9 bits hôtes sont tous à 0 pour le réseau, tous à 1 pour la diffusion.
+
+**1.5** Le plan finit en `172.18.7.199`. Le /22 finit en `172.18.7.255`.
+Il reste de `172.18.7.200` à `172.18.7.255`, soit 255 − 200 + 1 =
+**56 adresses**. Ces 56 adresses se découpent en trois blocs alignés :
+
+- `172.18.7.200/29` : 8 adresses, 200 = 25 × 8 ;
+- `172.18.7.208/28` : 16 adresses, 208 = 13 × 16 ;
+- `172.18.7.224/27` : 32 adresses, 224 = 7 × 32.
+
+Contrôle : 8 + 16 + 32 = 56.
+
+### Exercice 2
+
+**2.1**
+
+| Adresse | Segment | Nature |
+|:---|:---|:---|
+| `172.18.5.200` | LAN 1, `172.18.4.0/23` | utilisable |
+| `172.18.5.255` | LAN 1, `172.18.4.0/23` | diffusion |
+| `172.18.6.0` | LAN 2, `172.18.6.0/24` | adresse réseau |
+| `172.18.7.130` | LAN 4, `172.18.7.128/26` | utilisable |
+| `172.18.7.210` | aucun : hors plan | libre, dans `172.18.7.208/28` |
+
+Pour `172.18.6.0` : le masque du LAN 1 donne 6 ET 254 = 6, et non 4. Elle
+n’est donc pas dans le LAN 1. Le 3^e^ octet 6 désigne le LAN 2. Son 4^e^
+octet, entièrement fait de bits hôtes, vaut 0 : c’est l’adresse réseau.
+
+Pour `172.18.7.210` : le dernier bloc placé finit en `.199`. Toute adresse
+de `.200` à `.255` est libre.
+
+**2.2** ET logique sur le 3^e^ octet, masque /23 :
+
+```text
+5       = 0000010|1
+masque  = 1111111|0   (/23 : 254)
+ET      = 0000010|0  = 4    ->  réseau 172.18.4.0, le LAN 1
+```
+
+Les bits hôtes sont le dernier bit du 3^e^ octet et tout le 4^e^ :
+
+```text
+172.18.5.200   3e octet 0000010|1   4e octet 11001000   mélangés : utilisable
+```
+
+L’adresse est dans le LAN 1 et elle est utilisable. Un 4^e^ octet de 200 ne
+dit rien à lui seul : il faut regarder les 9 bits hôtes.
+
+**2.3** ET logique sur le 4^e^ octet, masque /26 :
+
+```text
+130     = 10|000010
+masque  = 11|000000   (/26 : 192)
+ET      = 10|000000  = 128   ->  réseau 172.18.7.128, le LAN 4
+```
+
+Les bits hôtes `000010` ne sont ni tous à 0, ni tous à 1. L’adresse est
+utilisable : elle est entre `.129` et `.190`. Selon la convention, `.129`
+est la passerelle. Un PC peut recevoir `.130` si personne d’autre ne
+l’utilise.
+
+### Exercice 3
+
+**3.1 — A. Dimensionner.** Tous les besoins majorés tombent juste :
+400 × 1,2 = 480, par exemple. L’arrondi ne change donc rien ici.
+
+| Segment | Actuel | + 20 % | + routeur | h | Préfixe | Masque |
+|:---|:-:|:-:|:-:|:-:|:-:|:---|
+| Wi-Fi invités | 400 | 480 | 481 | 9 | /23 | `255.255.254.0` |
+| Production | 300 | 360 | 361 | 9 | /23 | `255.255.254.0` |
+| Bureaux | 150 | 180 | 181 | 8 | /24 | `255.255.255.0` |
+| Serveurs | 20 | 24 | 25 | 5 | /27 | `255.255.255.224` |
+| Administration | 10 | 12 | 13 | 4 | /28 | `255.255.255.240` |
+| L1, L2, L3 | — | — | 2 | 2 | /30 | `255.255.255.252` |
+
+Exemple pour la production : h = 8 donne 254, trop peu pour 361. h = 9 donne
+510, suffisant.
+
+**3.2** Ordre : Wi-Fi, Production, Bureaux, Serveurs, Administration, L1,
+L2, L3. Le Wi-Fi et la Production sont deux /23. Selon la convention, le
+plus gros besoin passe d’abord : le **Wi-Fi** (481 contre 361). Pour
+l’alignement, cet ordre ne change rien : les deux blocs ont la même taille.
+
+**3.3 — B. Placer.** Toutes les adresses commencent par `10.20` : le tableau
+ne donne que les deux derniers octets après le réseau.
+
+| Segment | Réseau | Passerelle | Utilisables | Diffusion |
+|:---|:---|:---|:---|:---|
+| Wi-Fi invités | `10.20.32.0/23` | `.32.1` | `.32.1` à `.33.254` | `.33.255` |
+| Production | `10.20.34.0/23` | `.34.1` | `.34.1` à `.35.254` | `.35.255` |
+| Bureaux | `10.20.36.0/24` | `.36.1` | `.36.1` à `.36.254` | `.36.255` |
+| Serveurs | `10.20.37.0/27` | `.37.1` | `.37.1` à `.37.30` | `.37.31` |
+| Administration | `10.20.37.32/28` | `.37.33` | `.37.33` à `.37.46` | `.37.47` |
+| L1 | `10.20.37.48/30` | — | `.37.49` à `.37.50` | `.37.51` |
+| L2 | `10.20.37.52/30` | — | `.37.53` à `.37.54` | `.37.55` |
+| L3 | `10.20.37.56/30` | — | `.37.57` à `.37.58` | `.37.59` |
+
+Contrôles d’alignement :
+
+- Wi-Fi : 32 = 16 × 2, 3^e^ octet pair, 4^e^ octet à 0 ;
+- Production : 34 = 17 × 2, 4^e^ octet à 0 ;
+- Bureaux : pas de 1 au 3^e^ rang, 4^e^ octet à 0 ;
+- Serveurs : 0 = 0 × 32 ;
+- Administration : 32 = 2 × 16 ;
+- L1, L2, L3 : 48 = 12 × 4, 52 = 13 × 4, 56 = 14 × 4.
+
+Exemple de diffusion, pour la production, sur deux octets :
+
+```text
+Production   3e octet           4e octet
+réseau       0010001|0  = 34    00000000 =   0   10.20.34.0
+diffusion    0010001|1  = 35    11111111 = 255   10.20.35.255
+```
+
+**3.4** La passerelle des Bureaux est `10.20.36.1`. La plage DHCP va de
+**`10.20.36.2` à `10.20.36.254`**. Elle contient 254 − 2 + 1 =
+**253 adresses**. Le besoin majoré est de 180 postes : il est couvert.
+
+**3.5** La première adresse libre est la diffusion de L3 + 1 :
+**`10.20.37.60`**. La dernière adresse du /20 est **`10.20.47.255`**, car
+le /20 a un pas de 16 au 3^e^ rang : 32 + 16 − 1 = 47.
+
+Adresses libres : de `10.20.37.60` à `10.20.47.255`. On compte 196 adresses
+dans `10.20.37.x` (60 à 255), puis 10 × 256 = 2 560 adresses de `10.20.38.0`
+à `10.20.47.255`. Total : **2 756 adresses**. Contrôle : 4 096 − 1 340 =
+2 756, où 1 340 est la somme des blocs du plan.
+
+### Exercice 4
+
+D’après le plan, les masques attendus sont : LAN 1 `255.255.254.0`, LAN 2
+`255.255.255.0`, LAN 3 `255.255.255.128`, L1 `255.255.255.252`. Les
+passerelles sont `172.18.4.1`, `172.18.6.1` et `172.18.7.1`. R1 prend
+`172.18.7.193` sur L1.
+
+**4.1**
+
+| Ligne | Adresse | Masque | Attendu d’après le plan | Conforme ? |
+|:---|:---|:---|:---|:-:|
+| G0/0.10 | `172.18.4.1` | `255.255.255.0` | `172.18.4.1 255.255.254.0` | non |
+| G0/0.20 | `172.18.6.1` | `255.255.255.0` | `172.18.6.1 255.255.255.0` | oui |
+| G0/0.30 | `172.18.7.127` | `255.255.255.128` | `172.18.7.1 255.255.255.128` | non |
+| G0/1 | `172.18.7.193` | `255.255.255.0` | `172.18.7.193 255.255.255.252` | non |
+| pool LAN1 | `172.18.4.0` | `255.255.255.0` | `172.18.4.0 255.255.254.0` | non |
+| pool LAN2 | `172.18.6.0` | `255.255.255.0` | `172.18.6.0 255.255.255.0` | oui |
+
+Les lignes `excluded-address` et `default-router` sont conformes : elles
+désignent bien les passerelles du LAN 1 et du LAN 2.
+
+**4.2** Les quatre erreurs :
+
+- **G0/0.10 : préfixe trop long, donc bloc trop petit.** Le LAN 1 est un
+  /23, de masque `255.255.254.0`, soit 512 adresses. `255.255.255.0` est un
+  /24 : 256 adresses seulement. Avec ce masque, R1 croirait que le LAN 1 s’arrête
+  en `172.18.4.255`. Les PC de `172.18.5.0` à `172.18.5.254` seraient hors
+  de son réseau.
+- **G0/0.30 : adresse de diffusion attribuée.** `127 = 0|1111111` : les
+  7 bits hôtes sont tous à 1. C’est la diffusion du LAN 3. Selon la
+  convention, la passerelle est `172.18.7.1`.
+- **G0/1 : masque de LAN sur une liaison.** Avec `255.255.255.0`, le réseau
+  de cette interface serait `172.18.7.0/24`. Il recouvrirait le LAN 3, le
+  LAN 4 et la liaison L2. Une liaison prend un /30 : `255.255.255.252`.
+- **pool LAN1 : préfixe trop long, donc pool trop petit.** Le pool ne
+  couvrirait que
+  `172.18.4.0/24`. Il distribuerait au mieux `172.18.4.2` à `172.18.4.254`,
+  soit 253 adresses pour 400 PC. Il donnerait aussi le mauvais masque aux
+  postes.
+
+Ce contrôle se fait sur papier, avant toute saisie. Le routeur ne connaît
+pas votre plan : seule la comparaison avec le plan garantit un adressage
+juste.
+
+**4.3** Projet corrigé, pour la même plateforme :
+
+```text
+! Plateforme : Cisco Packet Tracer, routeur 2911 (R1), Cisco IOS
+interface GigabitEthernet0/0
+ no shutdown
+!
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 172.18.4.1 255.255.254.0
+!
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 172.18.6.1 255.255.255.0
+!
+interface GigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 172.18.7.1 255.255.255.128
+!
+interface GigabitEthernet0/1
+ ip address 172.18.7.193 255.255.255.252
+ no shutdown
+!
+ip dhcp excluded-address 172.18.4.1
+ip dhcp excluded-address 172.18.6.1
+!
+ip dhcp pool LAN1
+ network 172.18.4.0 255.255.254.0
+ default-router 172.18.4.1
+!
+ip dhcp pool LAN2
+ network 172.18.6.0 255.255.255.0
+ default-router 172.18.6.1
+```
+
+**4.4** L1 est `172.18.7.192/30`. Ses deux adresses utilisables sont `.193`
+et `.194`. R1 a `.193` : R2 prend **`172.18.7.194`**, avec le masque
+**`255.255.255.252`**.
+
+### Exercice 5
+
+**5.1 Faux.** 254 PC + 1 interface de routeur = **255 adresses**. h = 8
+donne 2^8^ − 2 = 254 : il manque une adresse. Il faut h = 9, soit un
+**/23**, de 510 adresses utilisables. Le piège : oublier l’interface du
+routeur avant l’étape 2.
+
+**5.2 Faux, pour deux raisons.**
+
+- Une liaison relie **deux interfaces**, une sur chaque routeur. Chacune a
+  son adresse dans le réseau de la liaison : le besoin est de **2 adresses**.
+- Dans la convention classique, un bloc perd 2 adresses : réseau et
+  diffusion. Il faut 2^h^ − 2 ≥ 2, donc h = 2 : un **/30** de 4 adresses.
+
+Le /31 existe pour les liaisons point à point (RFC 3021). Mais la convention
+de Varenne Médical, comme celle du cours, reste le /30 classique.
+
+**5.3 Faux.** Un /27 avance par 32. Or 200 / 32 = 6,25 : `.200` n’est pas un
+multiple de 32. Le multiple suivant est 7 × 32 = **224**. Le /27 va en
+`172.18.7.224/27`, de `.225` à `.254` utilisables, diffusion `.255`. Les
+adresses `.200` à `.223` restent libres pour un /29 et un /28.
+
+**5.4 Faux.** Un /22 a un pas de 4 au 3^e^ rang. Or 6 n’est pas un multiple
+de 4. Avec le masque /22, 6 ET 252 = 4 : `172.18.6.0` appartient à
+`172.18.4.0/22`, qui couvre `172.18.4.0` à `172.18.7.255`. Un /22 ne peut
+commencer qu’en 0, 4, 8, 12… dans le 3^e^ octet.
+
+**5.5 Faux.** Le LAN de 25 PC demande 26 adresses : un /27. Le LAN de
+120 PC demande 121 adresses : un /25, de pas 128.
+
+- Le /27 occupe `192.168.70.0` à `.31`. Le candidat suivant est `.32`.
+- 32 n’est pas un multiple de 128. Avec le masque /25, 32 ET 128 = 0 : le
+  bloc deviendrait `192.168.70.0/25` et recouvrirait le /27.
+- Le /25 va donc au multiple suivant : **`192.168.70.128/25`**, utilisables
+  `.129` à `.254`, diffusion `.255`.
+
+Un **trou** apparaît de `.32` à `.127`, soit 96 adresses. Il se récupère en
+deux blocs alignés : un /27 en `192.168.70.32` (32 = 1 × 32) et un /26 en
+`192.168.70.64` (64 = 1 × 64).
+
+Par ordre décroissant, le /25 va en `.0` et le /27 en `.128`. Les deux blocs
+sont contigus et chaque candidat tombe aligné. L’espace libre, de `.160` à
+`.255`, compte aussi 96 adresses. Mais il est rejeté en fin de plage, sans
+trou au milieu. Et aucun candidat n’a dû être corrigé.
+
+### Exercice 6
+
+**6.1 — A. Dimensionner.**
+
+| Segment | Besoin | h | Préfixe | Masque |
+|:---|:-:|:-:|:-:|:---|
+| LAN 60 PC | 60 + 1 = 61 | 6 | /26 | `255.255.255.192` |
+| LAN 25 PC | 25 + 1 = 26 | 5 | /27 | `255.255.255.224` |
+| WAN | 2 | 2 | /30 | `255.255.255.252` |
+
+Pour le LAN de 60 PC : h = 5 donne 30, trop peu ; h = 6 donne 62, suffisant.
+
+**6.2** On teste 60 contre chaque taille de bloc :
+
+- 60 = 15 × 4 : aligné pour un **/30** ;
+- 60 / 8 = 7,5 : pas aligné pour un /29, donc ni pour un /27 ni pour un /26.
+
+`10.20.37.60` n’est alignée que pour un /30. Les nouveaux blocs sont plus
+grands que les derniers /30 placés : l’ordre décroissant n’est plus respecté,
+il faut contrôler l’alignement.
+
+**6.3** Le collègue place le /26 au premier multiple de 64 après `.59` :
+`10.20.37.64/26`, jusqu’à `.127`. Le /27 suit en `10.20.37.128/27`, jusqu’à
+`.159`. Le /30 suit en `10.20.37.160/30`, jusqu’à `.163`.
+
+Son plan est correct, mais il laisse un **trou** de `10.20.37.60` à
+`10.20.37.63` : 4 adresses inutilisées entre L3 et le /26.
+
+**6.4 — B. Placer.** Ce trou de 4 adresses a exactement la taille d’un /30.
+On y loge le WAN, puis les LAN par ordre décroissant.
+
+| Segment | Réseau | Passerelle | Utilisables | Diffusion |
+|:---|:---|:---|:---|:---|
+| WAN | `10.20.37.60/30` | — | `.61` à `.62` | `.63` |
+| LAN 60 PC | `10.20.37.64/26` | `.65` | `.65` à `.126` | `.127` |
+| LAN 25 PC | `10.20.37.128/27` | `.129` | `.129` à `.158` | `.159` |
+
+Le routeur de Poitiers prend `10.20.37.61` sur le WAN, celui de l’agence
+`10.20.37.62`.
+
+À retenir : un petit bloc peut **boucher un trou** laissé par un plan
+existant. Quand on complète un plan, cherchez d’abord les espaces libres
+alignés pour les petits blocs.
+
+**6.5** La grille en cinq points, appliquée au plan final :
+
+1. **Chaque masque offre-t-il assez d’adresses utilisables ?** LAN 60 PC :
+   62 ≥ 61. LAN 25 PC : 30 ≥ 26. WAN : 2 ≥ 2. Les segments de l’exercice 3
+   ont déjà été vérifiés. Oui.
+2. **Chaque bloc est-il aligné ?** `.60` = 15 × 4 ; `.64` = 1 × 64 ;
+   `.128` = 4 × 32. Oui.
+3. **Les blocs sont-ils disjoints et contenus dans le parent ?** Le WAN
+   commence après `.59`, la diffusion de L3. Le LAN 60 PC commence après
+   `.63`, le LAN 25 PC après `.127`. Le dernier finit en `10.20.37.159`,
+   avant `10.20.47.255`. Oui.
+4. **Chaque interface a-t-elle une adresse unique ?** Le routeur de l’agence
+   porte `.62`, `.65` et `.129`, toutes différentes. Chacune est dans le bon
+   réseau, ni réseau ni diffusion. Le routeur de Poitiers porte `.61`. Oui.
+5. **Les passerelles et les routes permettront-elles les communications
+   voulues ?** Les PC ont pour passerelle `10.20.37.65` ou `10.20.37.129`.
+   Le routeur de Poitiers doit connaître les deux LAN de l’agence, par
+   `10.20.37.62`. Le routeur de l’agence doit joindre le reste du site, par
+   `10.20.37.61`.
+
+Pour le point 5, voici les routes statiques possibles.
+
+**Plateforme : Cisco IOS, par exemple un routeur 2911 dans Packet Tracer.**
+
+```text
+! Sur le routeur de Poitiers : les deux LAN de l’agence
+ip route 10.20.37.64 255.255.255.192 10.20.37.62
+ip route 10.20.37.128 255.255.255.224 10.20.37.62
+! Sur le routeur de l’agence : route par défaut vers Poitiers
+ip route 0.0.0.0 0.0.0.0 10.20.37.61
+```
+
+Le routage statique fait l’objet de son propre chapitre : retenez ici que
+chaque réseau du plan doit être joignable.
+
+**6.6** La première adresse libre est la diffusion du LAN 25 PC + 1 :
+**`10.20.37.160`**. C’est l’adresse réseau d’un /27 libre
+(160 = 5 × 32), suivi d’un /26 libre en `10.20.37.192`.
+
+### Exercice 7
+
+**7.1** Somme des tailles de bloc de l’exercice 3 :
+
+512 + 512 + 256 + 32 + 16 + 4 + 4 + 4 = **1 340 adresses**.
+
+Un /22 contient 1 024 adresses, un /21 en contient 2 048. Or
+1 024 < 1 340 ≤ 2 048. Le plus petit parent qui suffit est donc un
+**/21**.
+
+Ce /21 part de l’adresse réseau du site : **`10.20.32.0/21`**. Son pas vaut
+8 au 3^e^ rang, et 32 = 4 × 8, avec un 4^e^ octet à 0 : il est aligné. Il
+couvre `10.20.32.0` à `10.20.39.255`. Le plan de l’exercice 3 finit en
+`10.20.37.59` : il tient bien dedans.
+
+**7.2** L’agence ajoute 64 + 32 + 4 = 100 adresses : 1 340 + 100 =
+**1 440 adresses**. On a toujours 1 024 < 1 440 ≤ 2 048 : un **/21**
+suffit encore. Le plan final finit en `10.20.37.159`, dans
+`10.20.32.0/21`. Le /20 est donc surdimensionné pour les besoins actuels,
+mais il laisse une large marge.
+
+**7.3** Le total suffit à conclure si trois conditions sont réunies.
+On part de l’adresse réseau du parent. On place les blocs, tous des
+puissances de 2, par taille décroissante. Ils se suivent, sans trou. Alors
+chaque candidat est aligné et les blocs occupent exactement le total.
+
+Le plan de l’exercice 6 ne place pas les nouveaux blocs par ordre
+décroissant. On vérifie donc aussi par le plan réel : il finit en
+`10.20.37.159`, bien avant `10.20.39.255`. Si l’on replace les onze blocs
+par ordre décroissant, ils occupent 1 440 adresses depuis `10.20.32.0`, et
+tiennent aussi dans le /21.
+
+## Synthèse
+
+**Les méthodes à retenir**
+
+- **A. Dimensionner.** Besoin = PC + interfaces de routeur, réserve de
+  croissance comprise. Plus petit h tel que 2^h^ − 2 ≥ besoin. Préfixe =
+  32 − h.
+- **Taille de bloc = 2^h^.** **Pas = 256 − octet significatif.** Au 3^e^
+  rang, la taille de bloc vaut pas × 256.
+- **B. Placer.** Candidat = diffusion précédente + 1. Il est aligné si
+  l’octet significatif est un multiple du pas **et** si les octets suivants
+  valent 0.
+- **Ordre décroissant** depuis l’adresse réseau du parent, à la suite, sans
+  trou : chaque candidat tombe aligné. Hors de ces conditions, contrôlez.
+- **Compléter un plan existant** : cherchez d’abord les trous alignés pour
+  les petits blocs.
+- **Liaisons** : 2 adresses, un /30 classique.
+- **Vérification** : grille en cinq points avant toute configuration.
+
+**Les erreurs fréquentes**
+
+| Erreur | Le bon réflexe |
+|:---|:---|
+| Oublier l’interface du routeur | Ajoutez-la au besoin avant de chercher h. |
+| Compter 1 adresse pour une liaison | Deux interfaces, donc 2 adresses : un /30. |
+| Prendre diffusion + 1 sans contrôle | Vérifiez que le candidat est un multiple du pas. |
+| Oublier le 4^e^ octet pour un /23 ou un /22 | 3^e^ octet multiple du pas **et** 4^e^ octet à 0. |
+| Écrire `255.255.255.0` pour tout LAN | Convertissez chaque préfixe en masque pointé, un par un. |
+| Juger une adresse sur son seul 4^e^ octet | Regardez tous les bits hôtes, y compris ceux du 3^e^ octet. |
+| Calculer la croissance après l’arrondi au bloc | Majorez le besoin, ajoutez le routeur, puis cherchez h. |
+
+## Pour aller plus loin
+
+**Question supplémentaire.** Le routeur du cœur de réseau, R3, doit joindre
+tous les réseaux du site de Tours. Faut-il lui donner une route par
+segment ? Une seule route peut-elle suffire ?
+
+**Réponse.** Une seule route suffit. Tous les blocs du plan de l’exercice 1
+sont contenus dans `172.18.4.0/22`. R3 peut donc les joindre par une seule
+route vers `172.18.4.0/22`, via R2. On appelle cela un **résumé de routes**,
+ou agrégation. Un plan VLSM bien construit, avec des blocs contigus dans un
+parent aligné, rend cette agrégation possible. Le chapitre sur le routage y
+reviendra.
+
+Sources :
+
+- [RFC 4632 — CIDR](https://www.rfc-editor.org/rfc/rfc4632.html), qui définit
+  la notation /n et l’agrégation de préfixes.
+- [RFC 1878 — Variable Length Subnet Table For IPv4](https://www.rfc-editor.org/rfc/rfc1878.html),
+  RFC historique, utile comme table des préfixes et de leurs tailles.
+- [RFC 1918 — adresses privées](https://www.rfc-editor.org/rfc/rfc1918.html),
+  dont les plages `10.0.0.0/8`, `172.16.0.0/12` et `192.168.0.0/16` utilisées
+  dans cette série.
+- [RFC 3021 — préfixes /31 sur les liaisons point à point](https://www.rfc-editor.org/rfc/rfc3021.html).
+  Cette série garde, comme le cours, la convention du /30 classique.

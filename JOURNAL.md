@@ -17,10 +17,18 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (`cours-vlsm`, order 19, publié, PR #38 et #41), renumérotation des TP
   (PR #39 : VLSM = TP 4, order 30 ; OSPF = TP 5 ; ACL = TP 6), puis
   fiche VLSM (`fiche-vlsm-methode`, order 21, publiée, PR #40 et #41),
-  exercices VLSM 1 (`exercices-vlsm-entrainement`, order 22, brouillon, PR #42) et 2 (order 23).
+  exercices VLSM 1 (`exercices-vlsm-entrainement`, order 22, brouillon, PR #42)
+  et 2 (`exercices-vlsm-approfondissement`, order 23, publiée, PR #43). Le bloc VLSM du chapitre 02 est alors complet ; ensuite :
+  NAT/PAT, pare-feu et DMZ.
 
 **À faire**
 
+- `bts2/reseaux/02-subnetting-vlsm/exercices-vlsm-approfondissement`
+  (publiée par l'enseignant dans la PR #43) : relire le PDF de la CI ; valider le contexte « Varenne
+  Médical », l'exercice 5.2 (seconde erreur « un /31 suffit » ajoutée pour
+  que le piège ait un effet) et la présentation de l'exercice 4 en projet de
+  configuration à contrôler avant saisie (IOS refuserait sans doute
+  172.18.7.127/25, comportement non vérifié).
 - `bts2/reseaux/02-subnetting-vlsm/exercices-vlsm-entrainement` (brouillon) :
   relire le PDF de la CI (tableaux de 8 colonnes) ; valider le contexte
   « Brasserie Delorme » et la topologie du siège, choisis par le rédacteur.
@@ -120,6 +128,19 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-25 — cours/bts2-exercices-vlsm-2
+
+- Ressource : bts2/reseaux/02-subnetting-vlsm/exercices-vlsm-approfondissement/index.qmd (référence imitée : exercices-subnetting-approfondissement ; fond : cours-vlsm et fiche-vlsm-methode)
+- Série 2, 1 h 50 : parent /22 (172.18.4.0/22, /23 et /24), segment d'une adresse sur deux octets, site 10.20.32.0/20 avec 20 % de réserve, projet de configuration IOS à 4 erreurs (2911), pièges, site distant dans l'espace libre, défi (/21 suffit), corrigé complet
+- Vérificateur : CONFORME au 1er passage (5 mineurs corrigés, dont la présentation de l'exercice 4) ; CONFORME après Codex
+- Codex : 3 constats A (A1 BLOQUANT « masque trop court » au lieu de préfixe trop long, A2 réserve de croissance de l'agence non précisée, A3 série 1 introuvable, sans objet car en PR) ; A1 et A2 corrigés par le rédacteur
+- Réécritures gardées : R1 ; annulées : aucune
+- Relance Codex : non
+- Fusion de `main` dans la branche (faite par l'enseignant, `git merge` étant bloqué par les permissions) pour intégrer la série 1 et éviter un conflit sur le journal
+- Pull request : #43
+- `draft: false` passé par l'enseignant sur la branche, commité dans la même PR
+- Points à relire par l'enseignant : voir « À faire » ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-24 — cours/bts2-exercices-vlsm-1
 
