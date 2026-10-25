@@ -21,7 +21,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   et 2 (`exercices-vlsm-approfondissement`, order 23, publiée, PR #43). Le bloc VLSM du chapitre 02 est complet.
 - Chapitre 05 NAT/PAT BTS2 (`bts2/reseaux/05-nat-pat/`), à partir du
   `cours_nat-pat.tex` et du TP de l'enseignant (fichiers non suivis à la
-  racine) : cours (`cours-nat-pat`, order 10, brouillon, PR à venir), puis
+  racine) : cours (`cours-nat-pat`, order 10, brouillon, PR #46), puis
   fiche (order 15), exercices (order 16) et TP 7 (order 20, option A : fil
   rouge + routeur FAI et serveur web public ; PAT pour les VLAN, NAT
   statique pour SRV-WEB).
@@ -144,7 +144,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : 3 constats A (A1 BLOQUANT connexion entrante impossible généralisée à tout NAT ; A2 ping vers l'adresse privée attribué au simulateur ; A3 inside/outside présentés comme suffisants), corrigés par le rédacteur
 - Réécritures gardées : R1 ; annulées : aucune
 - Relance Codex : non
-- Pull request : à renseigner
+- Pull request : #46
 - Points à relire par l'enseignant : voir « À faire » ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-25 — cours/bts2-cours-vlsm-objectif et cours/bts2-cours-acl-usurpation
@@ -423,5 +423,5 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Cause : les PDF passent par lualatex depuis la PR #14, mais les runners n'avaient pas de TeX ; vérification de la PR #14 et publications #12 et #14 en échec
 - Correctif : installation de TeX Live par apt, contrôle kpsewhich des fichiers requis
 - Vérificateur, Codex : sans objet (infrastructure)
-- Pull request : à renseigner
+- Pull request : #46
 - Points à relire par l'enseignant : liste des paquets TeX Live (non testée en local, la CI de la PR fait foi)
