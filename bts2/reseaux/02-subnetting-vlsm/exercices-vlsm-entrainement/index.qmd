@@ -1,0 +1,637 @@
+---
+title: "VLSM : exercices d’entraînement"
+description: "Série 1 : sept exercices courts et guidés pour s’entraîner au VLSM, du besoin en adresses d’un segment jusqu’à la vérification d’un plan complet."
+type: exercices
+domaine: reseaux
+chapitre: "02 — Subnetting et VLSM"
+categories: [exercices, reseaux]
+mots-cles: [VLSM, masque de longueur variable, préfixe, bits hôtes, taille de bloc, pas d’avancement, alignement, première adresse libre, liaison point à point, ET logique, plan d’adressage]
+objectifs:
+  - "Calculer le besoin en adresses d’un segment, interface de routeur comprise, et en déduire le plus petit bloc qui suffit, donc son préfixe."
+  - "Trier des segments par ordre décroissant et vérifier qu’ils tiennent dans le réseau parent."
+  - "Construire un plan VLSM en contrôlant l’alignement de chaque bloc."
+  - "Dire si une adresse de départ est alignée pour un préfixe donné."
+  - "Trouver le segment d’un plan VLSM auquel appartient une adresse."
+  - "Repérer et corriger les erreurs d’un plan VLSM."
+prerequis:
+  - "Cours « Le VLSM : des sous-réseaux de tailles différentes »"
+  - "Fiche « Le VLSM : la méthode pas à pas »"
+duree: "1 h 40"
+order: 22
+date-modified: 2026-10-24
+draft: true
+lang: fr
+---
+
+## Objectifs et prérequis
+
+Cette série vous entraîne au **VLSM** : chaque sous-réseau reçoit un masque
+ajusté à son besoin. Chaque exercice travaille une seule compétence. Les
+exercices vont du plus simple au plus complet : faites-les dans l’ordre.
+
+Vous appliquerez toujours la méthode du cours, en deux temps :
+
+- **A. Dimensionner** chaque segment : besoin → bits hôtes → bits empruntés
+  → nouveau masque. Faites-le pour tous les segments avant d’en placer un
+  seul.
+- **B. Placer** chaque bloc, du plus grand au plus petit : première adresse
+  libre, contrôle de l’alignement, puis bornes.
+
+Vous devez savoir convertir un octet en binaire. Les huit bits d’un octet
+valent, de gauche à droite, 128, 64, 32, 16, 8, 4, 2 et 1.
+
+::: {.callout-tip}
+## Support autorisé
+
+Gardez sous les yeux la [fiche méthode VLSM](../fiche-vlsm-methode/index.qmd)
+du chapitre. Vous y trouverez les cinq étapes, le mémo « du besoin au
+préfixe » et la grille « Vérifier son plan ».
+:::
+
+| Exercice | Compétence | Durée indicative |
+|:-:|:---|:-:|
+| 1 | Passer du besoin au préfixe | 10 min |
+| 2 | Trier les segments et vérifier que tout tient | 10 min |
+| 3 | Établir un plan VLSM | 25 min |
+| 4 | Contrôler l’alignement d’un bloc | 15 min |
+| 5 | Trouver le segment d’une adresse | 10 min |
+| 6 | Repérer les erreurs d’un plan | 20 min |
+| 7 | Vérifier la faisabilité (facultatif) | 10 min |
+| | **Total** | **1 h 40** (1 h 30 sans l’exercice 7) |
+
+## Situation de départ
+
+Vous êtes en stage chez **Brasserie Delorme**, une PME qui fabrique et
+livre des boissons. L’entreprise refait le plan d’adressage de ses sites.
+Chaque site reçoit une plage privée (RFC 1918) en /24 :
+
+| Site | Plage reçue | Exercices |
+|:---|:---|:-:|
+| Siège | `192.168.50.0/24` | 2, 3 et 5 |
+| Usine | `192.168.60.0/24` | 6 |
+| Future plateforme logistique | `172.20.8.0/24` | 7 |
+
+Au siège, trois routeurs R1, R2 et R3 desservent six segments :
+
+| Segment | Contenu | Routeur |
+|:---|:---|:-:|
+| LAN A, production | 100 PC | R1 |
+| LAN B, bureaux | 25 PC | R1 |
+| LAN C, laboratoire | 10 PC | R2 |
+| LAN D, accueil | 5 PC | R3 |
+| L1 | liaison point à point entre R1 et R2 | R1, R2 |
+| L2 | liaison point à point entre R2 et R3 | R2, R3 |
+
+Chaque LAN compte aussi **une interface de routeur** : c’est la passerelle
+des PC. Une liaison point à point relie deux interfaces : elle demande
+**2 adresses**, donc un /30 classique.
+
+Dans toute la série, seul le **4^e^ octet** change. Deux exceptions : les
+cas e, f et h de l’exercice 4, et la question 7.3 a.
+
+## Exercices
+
+### Exercice 1 — Du besoin au préfixe
+
+**1.1** L’administratrice vous donne six segments, sans lien avec les
+sites. Pour chacun, complétez le tableau :
+
+- **Adresses requises** : PC + interface de routeur ;
+- **h** : le plus petit nombre de bits hôtes tel que 2^h^ − 2 ≥ besoin ;
+- **Préfixe** : 32 − h ;
+- **Masque** : le préfixe écrit en notation pointée ;
+- **Utilisables** : 2^h^ − 2.
+
+| Segment | Contenu | Adresses requises | h | Préfixe | Masque | Utilisables |
+|:-:|:---|:-:|:-:|:-:|:---|:-:|
+| a | 50 PC + 1 routeur | | | | | |
+| b | 12 PC + 1 routeur | | | | | |
+| c | 120 PC + 1 routeur | | | | | |
+| d | liaison point à point | | | | | |
+| e | 30 PC + 1 routeur | | | | | |
+| f | 6 PC + 1 routeur | | | | | |
+
+**1.2** Pour les segments e et f, un collègue propose un /27 et un /29.
+Acceptez-vous ? Justifiez par un calcul.
+
+::: {.callout-note}
+## Coup de pouce
+
+Ajoutez l’interface du routeur **avant** de chercher h. Puis testez les
+valeurs de 2^h^ − 2 dans l’ordre : 2, 6, 14, 30, 62, 126. Gardez la
+première qui est supérieure ou égale au besoin.
+:::
+
+### Exercice 2 — Trier et vérifier que tout tient
+
+On revient au siège. Avant de placer un seul bloc, l’administratrice veut
+savoir si les six segments tiennent dans `192.168.50.0/24`.
+
+**2.1** Pour chaque segment du siège, complétez le tableau. La taille de
+bloc vaut 2^h^ adresses.
+
+| Segment | Adresses requises | h | Taille de bloc |
+|:---|:-:|:-:|:-:|
+| LAN A | | | |
+| LAN B | | | |
+| LAN C | | | |
+| LAN D | | | |
+| L1 | | | |
+| L2 | | | |
+
+**2.2** Classez les segments par taille de bloc décroissante.
+
+**2.3** Calculez le total des tailles de bloc. Comparez-le aux
+256 adresses du /24. Le plan tient-il ? Combien d’adresses resteront
+libres ?
+
+**2.4** En découpage égal, tous les blocs auraient la taille de celui du
+LAN A. Combien de blocs de cette taille un /24 contient-il ? Le découpage
+égal est-il possible ici ?
+
+### Exercice 3 — Établir un plan VLSM
+
+Vous placez maintenant les blocs du siège dans `192.168.50.0/24`, dans
+l’ordre trouvé à l’exercice 2.
+
+**3.1 — A. Dimensionner.** Pour chaque segment, donnez le préfixe et le
+masque, à partir de h trouvé en 2.1.
+
+| Segment | h | Préfixe | Masque |
+|:---|:-:|:-:|:---|
+| LAN A | | | |
+| LAN B | | | |
+| LAN C | | | |
+| LAN D | | | |
+| L1 | | | |
+| L2 | | | |
+
+**3.2 — B. Placer.** Complétez le tableau, ligne par ligne. Pour chaque
+bloc :
+
+- **Candidat** : la diffusion précédente + 1 ;
+- **Pas** : 256 − octet significatif du masque ;
+- **Aligné ?** : le candidat est-il un multiple du pas ? Écrivez la
+  division ;
+- **Réseau, utilisables, diffusion** : bits hôtes à 0, puis à 1.
+
+La première ligne est donnée en exemple.
+
+| Segment | Préfixe | Candidat | Pas | Aligné ? | Réseau | Utilisables | Diffusion |
+|:---|:-:|:-:|:-:|:---|:---|:---|:-:|
+| LAN A | /25 | `.0` (parent) | 128 | 0 = 0 × 128, oui | `192.168.50.0` | `.1` – `.126` | `.127` |
+| LAN B | | | | | | | |
+| LAN C | | | | | | | |
+| LAN D | | | | | | | |
+| L1 | | | | | | | |
+| L2 | | | | | | | |
+
+**3.3** Pour le LAN C, retrouvez le réseau et la diffusion en binaire.
+Recopiez et complétez, en séparant les bits du réseau et les bits hôtes
+par une barre :
+
+```text
+Réseau      ____|____  = ____
+Diffusion   ____|____  = ____
+```
+
+**3.4** Quelles adresses restent libres à la fin du plan ? Forment-elles
+un seul bloc aligné ? Si oui, donnez-le avec son préfixe.
+
+### Exercice 4 — Le bloc est-il aligné ?
+
+Un collègue construit plusieurs plans VLSM. Dans chacun, il propose une
+adresse de départ pour le bloc suivant. Toutes les adresses qui précèdent
+cette proposition sont déjà occupées.
+
+Pour chaque proposition, dites si elle est alignée. Sinon, donnez la
+première adresse alignée qui la suit.
+
+| Cas | Adresse proposée | Préfixe | Pas | Aligné ? | Adresse de départ correcte |
+|:-:|:---|:-:|:-:|:-:|:---|
+| a | `192.168.1.160` | /26 | | | |
+| b | `192.168.1.96` | /27 | | | |
+| c | `192.168.1.200` | /28 | | | |
+| d | `192.168.1.44` | /30 | | | |
+| e | `10.1.6.0` | /23 | | | |
+| f | `10.1.5.0` | /22 | | | |
+| g | `192.168.1.128` | /25 | | | |
+| h | `10.1.4.1` | /22 | | | |
+
+::: {.callout-note}
+## Coup de pouce
+
+Divisez l’octet significatif par le pas : le résultat doit être entier.
+Pour /23 et /22, l’octet significatif est le 3^e^, et le 4^e^ octet doit
+alors valoir 0. Si le bloc n’est pas aligné, prenez le multiple suivant :
+on ne recule jamais, car les adresses précédentes sont occupées.
+:::
+
+### Exercice 5 — À quel segment appartient cette adresse ?
+
+On reprend le plan du siège établi à l’exercice 3.
+
+**5.1** Pour chaque adresse, donnez le segment, son réseau et la nature de
+l’adresse : utilisable, adresse réseau, diffusion, ou hors de tout
+segment.
+
+| Adresse | Segment | Réseau du segment | Nature de l’adresse |
+|:---|:-:|:---|:---|
+| `192.168.50.170` | | | |
+| `192.168.50.186` | | | |
+| `192.168.50.183` | | | |
+| `192.168.50.130` | | | |
+| `192.168.50.200` | | | |
+
+**5.2** Vérifiez deux lignes par le ET logique, avec le masque du segment
+candidat :
+
+```text
+170     = ________
+masque  = ________   (/28)
+ET      = ________  = ____
+
+183     = ________
+masque  = ________   (/29)
+ET      = ________  = ____
+```
+
+**5.3** Un technicien veut donner `192.168.50.183` à un PC de l’accueil.
+Acceptez-vous ? Justifiez par les bits hôtes.
+
+### Exercice 6 — Repérer les erreurs d’un plan VLSM
+
+À l’usine, R1 dessert le LAN 1 (90 PC) et le LAN 2 (40 PC). R2 dessert le
+LAN 3 (20 PC). Une liaison point à point relie R1 et R2. Un stagiaire a
+proposé ce plan dans `192.168.60.0/24` :
+
+| Segment | Besoin | Réseau | Utilisables | Diffusion | Interfaces de routeur |
+|:---|:---|:---|:---|:-:|:---|
+| LAN 1 | 90 PC + R1 | `192.168.60.0/25` | `.1` – `.126` | `.127` | R1 : `.127` |
+| LAN 2 | 40 PC + R1 | `192.168.60.128/27` | `.129` – `.158` | `.159` | R1 : `.129` |
+| LAN 3 | 20 PC + R2 | `192.168.60.144/27` | `.145` – `.174` | `.175` | R2 : `.145` |
+| R1–R2 | 2 interfaces | `192.168.60.176/30` | `.177` – `.178` | `.179` | R1 : `.176` ; R2 : `.177` |
+
+**6.1** Ce plan contient **quatre erreurs**. Trouvez-les.
+
+**6.2** Pour chaque erreur, dites quel point de la grille elle viole, puis
+expliquez-la en une phrase.
+
+**6.3** Établissez un plan corrigé complet. Sur chaque LAN, le routeur
+prend la première adresse utilisable. Sur la liaison, R1 prend la première
+adresse utilisable et R2 la seconde.
+
+::: {.callout-note}
+## Coup de pouce
+
+Passez chaque ligne à la grille « Vérifier son plan » de la fiche méthode :
+assez d’adresses ; blocs alignés ; blocs disjoints et contenus dans le
+parent ; interfaces uniques, ni réseau ni diffusion ; passerelles et
+routes. Pour le plan corrigé, repartez de l’étape 1 et triez
+les segments.
+:::
+
+### Exercice 7 — Facultatif : le plan est-il possible ?
+
+Pour la future plateforme logistique, la plage est `172.20.8.0/24`. Il
+faut un LAN de **120 PC**, deux LAN de **60 PC** chacun et **deux
+liaisons** point à point. Chaque LAN compte une interface de routeur.
+
+**7.1** Pour chaque segment, donnez le besoin en adresses, le préfixe et la
+taille de bloc.
+
+**7.2** Calculez le total des tailles de bloc. Le plan tient-il dans le
+/24 ?
+
+**7.3** Proposez deux solutions à l’administratrice :
+
+a. quel est le plus petit bloc parent qui suffit pour tout placer, et quel
+   est son préfixe ?
+b. on garde le /24 et on réduit l’un des deux LAN de 60 PC. Quel effectif
+   maximal peut-il garder pour que le plan tienne ?
+
+## Corrigé
+
+### Exercice 1
+
+| Segment | Contenu | Adresses requises | h | Préfixe | Masque | Utilisables |
+|:-:|:---|:-:|:-:|:-:|:---|:-:|
+| a | 50 PC + 1 routeur | 51 | 6 | /26 | `255.255.255.192` | 62 |
+| b | 12 PC + 1 routeur | 13 | 4 | /28 | `255.255.255.240` | 14 |
+| c | 120 PC + 1 routeur | 121 | 7 | /25 | `255.255.255.128` | 126 |
+| d | liaison point à point | 2 | 2 | /30 | `255.255.255.252` | 2 |
+| e | 30 PC + 1 routeur | 31 | 6 | /26 | `255.255.255.192` | 62 |
+| f | 6 PC + 1 routeur | 7 | 4 | /28 | `255.255.255.240` | 14 |
+
+Exemple de raisonnement pour a : 50 + 1 = 51 adresses. h = 5 donne
+2^5^ − 2 = 30, trop peu. h = 6 donne 2^6^ − 2 = 62, suffisant. Le préfixe
+vaut 32 − 6 = /26.
+
+**1.2** Vous refusez les deux propositions. C’est le piège de l’interface
+du routeur :
+
+- **Segment e.** Un /27 offre 2^5^ − 2 = 30 adresses utilisables. Or
+  30 PC + 1 routeur = 31 adresses. Il manque une adresse : il faut un /26.
+- **Segment f.** Un /29 offre 2^3^ − 2 = 6 adresses utilisables. Or
+  6 PC + 1 routeur = 7 adresses. Il manque une adresse : il faut un /28.
+
+Le collègue a compté les PC, mais pas la passerelle.
+
+### Exercice 2
+
+**2.1** Chaque LAN compte une interface de routeur. Chaque liaison compte
+deux interfaces.
+
+| Segment | Adresses requises | h | Taille de bloc |
+|:---|:-:|:-:|:-:|
+| LAN A | 100 + 1 = 101 | 7 | 128 |
+| LAN B | 25 + 1 = 26 | 5 | 32 |
+| LAN C | 10 + 1 = 11 | 4 | 16 |
+| LAN D | 5 + 1 = 6 | 3 | 8 |
+| L1 | 2 | 2 | 4 |
+| L2 | 2 | 2 | 4 |
+
+Pour le LAN D : h = 3 donne 2^3^ − 2 = 6. C’est tout juste suffisant.
+
+**2.2** Ordre décroissant : LAN A (128), LAN B (32), LAN C (16), LAN D (8),
+L1 (4), L2 (4).
+
+**2.3** Total : 128 + 32 + 16 + 8 + 4 + 4 = **192** adresses. Or
+192 ≤ 256 : le plan tient. Il restera 256 − 192 = **64** adresses libres.
+
+Ce total suffit, à trois conditions. On part de l’adresse réseau du
+parent. Les blocs, en puissances de 2, sont placés par taille
+décroissante. Ils se suivent sans trou. Chaque bloc tombe alors aligné.
+
+**2.4** Le LAN A demande un /25, soit 128 adresses. Un /24 ne contient que
+256 / 128 = **2** blocs /25. Il en faudrait 6 : le découpage égal est
+impossible. Le VLSM, lui, tient en 192 adresses.
+
+### Exercice 3
+
+**3.1 — A. Dimensionner.**
+
+| Segment | h | Préfixe | Masque |
+|:---|:-:|:-:|:---|
+| LAN A | 7 | /25 | `255.255.255.128` |
+| LAN B | 5 | /27 | `255.255.255.224` |
+| LAN C | 4 | /28 | `255.255.255.240` |
+| LAN D | 3 | /29 | `255.255.255.248` |
+| L1 | 2 | /30 | `255.255.255.252` |
+| L2 | 2 | /30 | `255.255.255.252` |
+
+**3.2 — B. Placer.** Chaque candidat vaut la diffusion précédente + 1.
+
+| Segment | Préfixe | Candidat | Pas | Aligné ? | Réseau | Utilisables | Diffusion |
+|:---|:-:|:-:|:-:|:---|:---|:---|:-:|
+| LAN A | /25 | `.0` (parent) | 128 | 0 = 0 × 128, oui | `192.168.50.0` | `.1` – `.126` | `.127` |
+| LAN B | /27 | 127 + 1 = 128 | 32 | 128 = 4 × 32, oui | `192.168.50.128` | `.129` – `.158` | `.159` |
+| LAN C | /28 | 159 + 1 = 160 | 16 | 160 = 10 × 16, oui | `192.168.50.160` | `.161` – `.174` | `.175` |
+| LAN D | /29 | 175 + 1 = 176 | 8 | 176 = 22 × 8, oui | `192.168.50.176` | `.177` – `.182` | `.183` |
+| L1 | /30 | 183 + 1 = 184 | 4 | 184 = 46 × 4, oui | `192.168.50.184` | `.185` – `.186` | `.187` |
+| L2 | /30 | 187 + 1 = 188 | 4 | 188 = 47 × 4, oui | `192.168.50.188` | `.189` – `.190` | `.191` |
+
+Tous les candidats tombent alignés : c’est l’effet du tri décroissant.
+
+Le calcul en binaire confirme chaque ligne. Le nombre de bits hôtes vaut
+h ; ils sont à droite de la barre :
+
+```text
+Segment  h   Réseau (hôtes à 0)     Diffusion (hôtes à 1)
+LAN A    7   0|0000000   =   0      0|1111111   = 127
+LAN B    5   100|00000   = 128      100|11111   = 159
+LAN C    4   1010|0000   = 160      1010|1111   = 175
+LAN D    3   10110|000   = 176      10110|111   = 183
+L1       2   101110|00   = 184      101110|11   = 187
+L2       2   101111|00   = 188      101111|11   = 191
+```
+
+**3.3** LAN C, avec h = 4 bits hôtes. 160 = 128 + 32 = `10100000`.
+
+```text
+Réseau      1010|0000  = 160   ->  192.168.50.160
+Diffusion   1010|1111  = 175   ->  192.168.50.175
+```
+
+Contrôle : 160 + 16 − 1 = 175.
+
+**3.4** Les adresses de `192.168.50.192` à `192.168.50.255` restent
+libres, soit 64 adresses. 64 = 2^6^ : c’est la taille d’un bloc /26. Or
+192 = 3 × 64 : le bloc est aligné. L’espace libre forme donc un seul bloc,
+`192.168.50.192/26`.
+
+### Exercice 4
+
+Le pas vaut 256 − octet significatif du masque.
+
+- **a.** /26, pas 256 − 192 = 64. 160 / 64 = 2,5 : **non aligné**. Les
+  multiples de 64 voisins sont 128 et 192. On ne recule pas :
+  départ en `192.168.1.192`.
+- **b.** /27, pas 256 − 224 = 32. 96 = 3 × 32 : **aligné**.
+- **c.** /28, pas 256 − 240 = 16. 200 / 16 = 12,5 : **non aligné**. Le
+  multiple suivant vaut 13 × 16 = 208 : départ en `192.168.1.208`.
+- **d.** /30, pas 256 − 252 = 4. 44 = 11 × 4 : **aligné**.
+- **e.** /23, masque `255.255.254.0`. Le 3^e^ octet est significatif, pas
+  256 − 254 = 2. 6 = 3 × 2 et le 4^e^ octet vaut 0 : **aligné**. Le bloc va
+  de `10.1.6.0` à `10.1.7.255`.
+- **f.** /22, masque `255.255.252.0`, pas 256 − 252 = 4 dans le 3^e^ octet.
+  5 / 4 = 1,25 : **non aligné**. Le multiple suivant vaut 2 × 4 = 8 :
+  départ en `10.1.8.0`.
+- **g.** /25, pas 256 − 128 = 128. 128 = 1 × 128 : **aligné**.
+- **h.** /22, pas 4 dans le 3^e^ octet. 4 = 1 × 4 convient, mais le
+  4^e^ octet vaut 1 au lieu de 0 : **non aligné**. `10.1.4.0` est déjà
+  occupé, car il précède la proposition. La frontière suivante est
+  `10.1.8.0`.
+
+| Cas | Adresse proposée | Préfixe | Pas | Aligné ? | Adresse de départ correcte |
+|:-:|:---|:-:|:-:|:-:|:---|
+| a | `192.168.1.160` | /26 | 64 | non | `192.168.1.192` |
+| b | `192.168.1.96` | /27 | 32 | oui | `192.168.1.96` |
+| c | `192.168.1.200` | /28 | 16 | non | `192.168.1.208` |
+| d | `192.168.1.44` | /30 | 4 | oui | `192.168.1.44` |
+| e | `10.1.6.0` | /23 | 2 (3^e^ octet) | oui | `10.1.6.0` |
+| f | `10.1.5.0` | /22 | 4 (3^e^ octet) | non | `10.1.8.0` |
+| g | `192.168.1.128` | /25 | 128 | oui | `192.168.1.128` |
+| h | `10.1.4.1` | /22 | 4 (3^e^ octet) | non | `10.1.8.0` |
+
+Pourquoi l’alignement compte-t-il ? Prenez le cas a. Avec le masque /26,
+160 ET 192 = 128. Le bloc serait `192.168.1.128/26`. Il chevaucherait les
+adresses `.128` à `.159`, déjà occupées.
+
+### Exercice 5
+
+**5.1** On compare chaque adresse aux bornes du plan de l’exercice 3.
+
+| Adresse | Segment | Réseau du segment | Nature de l’adresse |
+|:---|:-:|:---|:---|
+| `192.168.50.170` | LAN C | `192.168.50.160/28` | utilisable (`.161` – `.174`) |
+| `192.168.50.186` | L1 | `192.168.50.184/30` | utilisable : interface d’un routeur |
+| `192.168.50.183` | LAN D | `192.168.50.176/29` | diffusion du LAN D |
+| `192.168.50.130` | LAN B | `192.168.50.128/27` | utilisable (`.129` – `.158`) |
+| `192.168.50.200` | aucun | — | espace libre `192.168.50.192/26` |
+
+**5.2** ET logique :
+
+```text
+170     = 1010|1010
+masque  = 1111|0000   (/28 : 240)
+ET      = 1010|0000  = 160   ->  192.168.50.160, le LAN C
+
+183     = 10110|111
+masque  = 11111|000   (/29 : 248)
+ET      = 10110|000  = 176   ->  192.168.50.176, le LAN D
+```
+
+Pour 170 : 170 = 128 + 32 + 8 + 2. Pour 183 : 183 = 128 + 32 + 16 + 4 +
+2 + 1.
+
+**5.3** Non, vous refusez. Dans 183 = `10110|111`, les 3 bits hôtes valent
+tous 1. C’est la diffusion du LAN D. Les PC de l’accueil prennent leurs
+adresses de `.177` à `.182`, passerelle comprise.
+
+### Exercice 6
+
+**6.1 et 6.2** Les quatre erreurs :
+
+- **LAN 1 : le routeur reçoit la diffusion.** Point de la grille :
+  interfaces uniques, ni réseau ni diffusion. 127 = `0|1111111` : ses
+  7 bits hôtes sont à 1. R1 doit prendre une adresse utilisable, par
+  exemple `.1`.
+- **LAN 2 : pas assez d’adresses.** Point de la grille : assez
+  d’adresses. Le besoin vaut 40 + 1 = 41 adresses. Un /27 n’en offre que
+  30. Il faut h = 6, donc un /26 de 62 adresses utilisables.
+- **LAN 3 : bloc non aligné, d’où un chevauchement.** Points de la grille :
+  blocs alignés ; blocs disjoints et contenus dans le parent. Le pas d’un
+  /27 vaut 32, et 144 / 32 = 4,5. Avec le masque, 144 ET 224 = 128. Le
+  seul /27 qui contient `.144` est donc `.128/27` : utilisables `.129` à
+  `.158`, diffusion `.159`. Ces adresses appartiennent déjà au LAN 2. Les
+  bornes du stagiaire sont fausses elles aussi. `.175` n’est la diffusion
+  d’aucun /27 qui contient `.144`. Sa plage `.145` – `.174` traverse la
+  frontière `.160` entre deux /27.
+- **Liaison R1–R2 : R1 reçoit l’adresse réseau.** Point de la grille :
+  interfaces uniques, ni réseau ni diffusion. 176 = `101100|00` : ses
+  2 bits hôtes sont à 0. Les
+  seules adresses utilisables sont `.177` et `.178`.
+
+Le bloc /30 de la liaison, lui, est aligné : 176 = 44 × 4.
+
+**6.3** On repart de l’étape 1.
+
+| Segment | Adresses requises | h | Préfixe | Taille de bloc |
+|:---|:-:|:-:|:-:|:-:|
+| LAN 1 | 90 + 1 = 91 | 7 | /25 | 128 |
+| LAN 2 | 40 + 1 = 41 | 6 | /26 | 64 |
+| LAN 3 | 20 + 1 = 21 | 5 | /27 | 32 |
+| R1–R2 | 2 | 2 | /30 | 4 |
+
+Le total vaut 128 + 64 + 32 + 4 = 228 ≤ 256 : le plan tient. On place les
+blocs à la suite :
+
+```text
+Segment  Candidat         Pas  Aligné ?        Réseau             Diffusion
+LAN 1    .0 (parent)      128  0 = 0 x 128     0|0000000 =   0    0|1111111 = 127
+LAN 2    127 + 1 = 128     64  128 = 2 x 64    10|000000 = 128    10|111111 = 191
+LAN 3    191 + 1 = 192     32  192 = 6 x 32    110|00000 = 192    110|11111 = 223
+R1-R2    223 + 1 = 224      4  224 = 56 x 4    111000|00 = 224    111000|11 = 227
+```
+
+Plan corrigé :
+
+| Segment | Besoin | Réseau | Utilisables | Diffusion | Interfaces de routeur |
+|:---|:---|:---|:---|:-:|:---|
+| LAN 1 | 90 PC + R1 | `192.168.60.0/25` | `.1` – `.126` | `.127` | R1 : `.1` |
+| LAN 2 | 40 PC + R1 | `192.168.60.128/26` | `.129` – `.190` | `.191` | R1 : `.129` |
+| LAN 3 | 20 PC + R2 | `192.168.60.192/27` | `.193` – `.222` | `.223` | R2 : `.193` |
+| R1–R2 | 2 interfaces | `192.168.60.224/30` | `.225` – `.226` | `.227` | R1 : `.225` ; R2 : `.226` |
+
+Les adresses de `.228` à `.255` restent libres, soit 28 adresses. Elles
+forment trois blocs alignés : `192.168.60.228/30` (228 = 57 × 4),
+`192.168.60.232/29` (232 = 29 × 8) et `192.168.60.240/28`
+(240 = 15 × 16).
+
+### Exercice 7
+
+**7.1**
+
+| Segment | Adresses requises | h | Préfixe | Taille de bloc |
+|:---|:-:|:-:|:-:|:-:|
+| LAN de 120 PC | 120 + 1 = 121 | 7 | /25 | 128 |
+| LAN de 60 PC (1) | 60 + 1 = 61 | 6 | /26 | 64 |
+| LAN de 60 PC (2) | 60 + 1 = 61 | 6 | /26 | 64 |
+| Liaison 1 | 2 | 2 | /30 | 4 |
+| Liaison 2 | 2 | 2 | /30 | 4 |
+
+Pour les LAN de 60 PC : h = 6 donne 62 ≥ 61, suffisant.
+
+**7.2** Total : 128 + 64 + 64 + 4 + 4 = **264** adresses. Or 264 > 256.
+Les trois LAN occupent déjà les 256 adresses du /24 : les deux /30 ne
+tiennent plus. Le plan est **impossible**. Il manque 8 adresses.
+
+**7.3** Deux solutions :
+
+a. **Agrandir le parent.** Un /24 offre 256 adresses, et 256 < 264 ≤ 512.
+   Le plus petit bloc parent qui suffit compte donc 512 = 2^9^ adresses. Il faut 9 bits hôtes, donc un **/23**, par
+   exemple `172.20.8.0/23` (8 = 4 × 2, aligné). Il va de `172.20.8.0` à
+   `172.20.9.255`.
+b. **Réduire un LAN de 60 PC** pour qu’il passe en /27. Un /27 offre
+   30 adresses utilisables. L’interface du routeur en prend une. Le LAN
+   peut donc garder au plus 30 − 1 = **29 PC**. Total :
+   128 + 64 + 32 + 4 + 4 = 232 ≤ 256. Le plan tient, et il reste
+   24 adresses libres. Avec 30 PC, le besoin vaut 31 : on retombe sur un
+   /26.
+
+## Synthèse
+
+**Les méthodes à retenir**
+
+- **Besoin = PC + interfaces de routeur.** Une liaison point à point
+  demande 2 adresses, donc un /30 classique.
+- **A. Dimensionner.** Plus petit h tel que 2^h^ − 2 ≥ besoin, puis
+  préfixe = 32 − h. Faites-le pour tous les segments avant de placer.
+- **Taille de bloc = 2^h^.** Triez les segments par taille décroissante.
+  Si le total des blocs ne dépasse pas la taille du parent, tout tient.
+  Conditions : partir de l’adresse réseau du parent, placer les blocs par
+  taille décroissante, à la suite, sans trou.
+- **B. Placer.** Candidat = diffusion précédente + 1. Il est aligné si
+  l’octet significatif est un multiple du pas **et** si les octets
+  suivants valent 0. **Pas = 256 − octet significatif.**
+- **Bornes.** Bits hôtes à 0 : réseau. Bits hôtes à 1 : diffusion.
+  Utilisables : du réseau + 1 à la diffusion − 1.
+- **Adresse ET masque = réseau.** C’est le test d’appartenance à un
+  segment.
+- **Relisez chaque plan avec la grille en cinq points.**
+
+**Les erreurs fréquentes**
+
+| Erreur | Le bon réflexe |
+|:---|:---|
+| Oublier l’interface du routeur | Ajoutez-la avant l’étape 2 : 30 PC + 1 routeur ne tiennent pas dans un /27. |
+| Placer les blocs sans les trier | Placez du plus grand au plus petit : les grands blocs ont les contraintes d’alignement les plus fortes. |
+| Prendre le candidat sans contrôle | Divisez par le pas. Si le résultat n’est pas entier, sautez au multiple suivant. |
+| Oublier les octets suivants | Pour /23 ou /22, le 4^e^ octet doit valoir 0. |
+| Donner le réseau ou la diffusion à une interface | Une interface prend une adresse entre réseau + 1 et diffusion − 1. |
+
+## Pour aller plus loin
+
+**Question supplémentaire.** Le siège ouvre un LAN E de 50 PC, derrière
+R3. Peut-on le placer dans le plan de l’exercice 3 sans rien déplacer ?
+
+**Réponse.** Besoin : 50 + 1 = 51 adresses. h = 5 donne 30, trop peu ;
+h = 6 donne 62, suffisant : un /26. L’espace libre est justement
+`192.168.50.192/26`, aligné (192 = 3 × 64). Le LAN E y tient : utilisables
+de `.193` à `.254`, diffusion `.255`. Le /24 est alors entièrement occupé.
+
+La série 2 prolongera cet entraînement. Vous appliquerez ensuite la
+méthode au réseau fil rouge dans le [TP 4 — Mettre en œuvre le plan VLSM](../tp-application-vlsm/index.qmd).
+
+Sources :
+
+- [RFC 1878 — Variable Length Subnet Table For IPv4](https://www.rfc-editor.org/rfc/rfc1878.html),
+  RFC historique, utile comme table des préfixes et de leurs tailles.
+- [RFC 4632 — CIDR](https://www.rfc-editor.org/rfc/rfc4632.html), qui définit
+  la notation /n.
+- [RFC 1918 — adresses privées](https://www.rfc-editor.org/rfc/rfc1918.html),
+  dont les plages `192.168.0.0/16` et `172.16.0.0/12` utilisées dans cette
+  série.
+- [RFC 3021 — préfixes /31 sur les liaisons point à point](https://www.rfc-editor.org/rfc/rfc3021.html).
+  Cette série garde, comme le cours, la convention du /30 classique.
