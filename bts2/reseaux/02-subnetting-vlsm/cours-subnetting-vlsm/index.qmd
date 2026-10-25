@@ -28,7 +28,7 @@ sous-réseau, vous saurez trouver le réseau, les adresses utilisables et la
 diffusion.
 
 Vous devez connaître la notation IPv4 et savoir convertir un octet en binaire.
-Ses bits valent, de gauche à droite, 128, 64, 32, 16, 8, 4, 2 et 1.
+Les bits d’un octet valent, de gauche à droite, 128, 64, 32, 16, 8, 4, 2 et 1.
 
 ## Situation de départ
 
@@ -42,8 +42,8 @@ Une agence possède le réseau `192.168.1.0/24` pour quatre services :
 | Wi-Fi invité | 40 |
 
 Une adresse de **diffusion** désigne toutes les machines du réseau. Dans ce
-réseau unique, les diffusions atteignent tous les services. Sans filtrage,
-un poste invité peut aussi atteindre la comptabilité.
+réseau unique, les messages de diffusion atteignent tous les services.
+Sans filtrage, un poste invité peut aussi atteindre la comptabilité.
 
 Chaque service aura son sous-réseau et son VLAN : les diffusions restent
 dans le service. Le routeur sera configuré pour filtrer ce qui passe entre services.
@@ -91,7 +91,7 @@ Emprunter 1 bit donne 2 sous-réseaux ; en emprunter 2 en donne 4. En général,
 Sur la règle ci-dessus, les réseaux commencent à 0, 64, 128 et 192 : ils
 avancent de **64 en 64**. Chaque bloc contient **64 adresses**.
 
-Ce nombre d’adresses est la **taille de bloc** ; l’écart entre deux débuts
+Ce nombre d’adresses est la **taille de bloc**. L’écart entre deux débuts
 de blocs est le **pas d’avancement**, ici dans le dernier octet.
 
 La **taille de bloc = 2^h^ adresses**, où h est le nombre de bits hôtes :
@@ -226,7 +226,7 @@ On découpe `192.168.50.0/24` en six sous-réseaux égaux.
 
 1. **A. Trouver le masque.** Besoin : 6. Il faut 3 bits empruntés, car
    2^2^ = 4 est trop petit et 2^3^ = 8 suffit. Il reste 5 bits hôtes.
-   Le masque est `/27`, `255.255.255.224`. La taille vaut 32 adresses et
+   Le masque est `/27`, `255.255.255.224`. La taille de bloc vaut 32 adresses et
    il y en a 30 utilisables.
 2. **B. Trouver les bornes.** Le pas vaut 256 − 224 = 32.
 
