@@ -182,7 +182,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Relecteur : 1 constat A (À CORRIGER : libellé de la source RFC 1918 limité à « plages privées », corrigé par Codex), 1 réécriture R1 gardée ; calculs refaits, tous justes
 - Vérification finale : CONFORME (contenu ; rendu non contrôlable en local)
 - Relance du relecteur : non
-- Pull request : à renseigner
+- Pull request : #54
 - Points à relire par l'enseignant : tenue des énoncés sur une page dans le PDF de la CI
 
 ### 2026-10-25 — cours/bts2-cours-subnetting-court et cours/bts2-cours-vlsm-court
