@@ -130,7 +130,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - cours-acl : la source usurpée n'est détruite que hors du VLAN 30 ; un invité qui usurpe l'adresse d'un autre invité est traité comme lui ; phrase sur RSA reformulée (reprise de la réécriture laissée en attente)
 - Vérificateur : CONFORME pour les deux (1 mineur corrigé sur l'ACL)
 - Codex : aucun constat ; 1 réécriture gardée (ACL, phrase coupée en deux)
-- Pull requests : à renseigner
+- Pull requests : #44 (VLSM), #45 (ACL)
 
 ### 2026-10-25 — cours/bts2-exercices-vlsm-2
 
