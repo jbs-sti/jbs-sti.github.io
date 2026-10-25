@@ -1,6 +1,6 @@
 ---
 name: verificateur
-description: Contrôle le fond d'une ressource en lecture seule (exactitude technique, niveau, conformité au schéma et au gabarit, rendu HTML/PDF) et rend un verdict CONFORME ou À REPRENDRE. À utiliser après le rédacteur et après chaque modification de Codex.
+description: Contrôle le fond d'une ressource en lecture seule (exactitude technique, niveau, conformité au schéma et au gabarit, rendu HTML/PDF) et rend un verdict CONFORME ou À REPRENDRE. À utiliser après chaque rédaction ou correction par Codex (ou le rédacteur de secours) et après le relecteur.
 tools: Read, Glob, Grep, Bash
 model: inherit
 ---

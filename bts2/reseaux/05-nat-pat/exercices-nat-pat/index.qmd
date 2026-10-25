@@ -1,0 +1,832 @@
+---
+title: "NAT et PAT : exercices"
+description: "Huit exercices progressifs sur la traduction d'adresses : classer des adresses, lire une table NAT, choisir un mode, écrire l'ACL, compléter puis dépanner une configuration Cisco."
+type: exercices
+domaine: reseaux
+chapitre: "05 — Traduction d'adresses (NAT et PAT)"
+categories: [exercices, reseaux]
+mots-cles: [NAT, PAT, NAT overload, adresse privée, adresse publique, RFC 1918, inside local, inside global, outside local, outside global, table NAT, NAT statique, NAT dynamique, pool NAT, redirection de port, masque générique, ACL, dépannage, Packet Tracer]
+objectifs:
+  - "Classer une adresse IPv4 comme privée, publique ou spéciale, en justifiant par la plage."
+  - "Nommer les quatre types d'adresses Cisco sur un échange aller et retour."
+  - "Choisir entre NAT statique, redirection de port, NAT dynamique et PAT selon un besoin."
+  - "Lire une table NAT : qui communique avec qui, dans quel mode, avec quels ports."
+  - "Écrire l'ACL et le masque générique qui désignent un réseau à traduire."
+  - "Compléter, puis dépanner, une configuration NAT sur un routeur Cisco."
+prerequis:
+  - "Cours « La traduction d'adresses : NAT et PAT »"
+  - "Fiche « Le NAT et le PAT : la méthode pas à pas »"
+duree: "1 h 30"
+order: 16
+date-modified: 2026-10-25
+draft: true
+lang: fr
+---
+
+## Objectifs et prérequis
+
+Cette série vous entraîne à la **traduction d'adresses**. Chaque exercice
+travaille une compétence du cours. Les exercices vont de la lecture
+d'adresses jusqu'au dépannage complet d'un routeur : faites-les dans
+l'ordre.
+
+Vous devez connaître le
+[cours sur le NAT et le PAT](../cours-nat-pat/index.qmd) du chapitre. Vous
+devez aussi savoir écrire un masque générique, vu au chapitre 04 avec les
+ACL.
+
+Toutes les configurations visent **Cisco Packet Tracer 9.0.1**, avec un
+routeur **Cisco 2911** sous **IOS 15.1**. Comme dans le cours,
+GigabitEthernet0/0 est l'interface côté LAN et GigabitEthernet0/1
+l'interface côté FAI.
+
+::: {.callout-tip}
+## Support autorisé
+
+Gardez sous les yeux la fiche « Le NAT et le PAT : la méthode pas à pas ».
+Elle reprend les commandes des trois modes et la check-list de dépannage.
+:::
+
+| Exercice | Compétence | Durée indicative |
+|:-:|:---|:-:|
+| 1 | Classer des adresses | 10 min |
+| 2 | Nommer les quatre types d'adresses | 10 min |
+| 3 | Choisir un mode de traduction | 10 min |
+| 4 | Lire une table NAT | 15 min |
+| 5 | Écrire l'ACL qui désigne un réseau | 10 min |
+| 6 | Compléter une configuration | 10 min |
+| 7 | Prévoir l'épuisement d'un pool | 10 min |
+| 8 | Dépanner une configuration | 15 min |
+| | **Total** | **1 h 30** |
+
+## Situation de départ
+
+Vous êtes en stage chez **Armor Réseaux Services**, un prestataire qui
+gère les réseaux de plusieurs clients. Chaque client possède un routeur
+de périphérie 2911 qui fait la traduction d'adresses.
+
+| Client | LAN privé | Adresses publiques | Exercices |
+|:---|:---|:---|:-:|
+| Pharmacie du Port | `10.20.0.0/24` | `192.0.2.66` | 2 |
+| Transports Le Gall | `10.30.0.0/24` | bloc `192.0.2.32/29` | 4 et 5 |
+| Clinique vétérinaire des Tilleuls | `172.18.4.0/23` | bloc `203.0.113.16/28` | 5 et 6 |
+| Médiathèque municipale | `192.168.50.0/26` | bloc `192.0.2.192/27` | 5 et 7 |
+| Agence immobilière Kerhoas | `192.168.20.0/22` | bloc `198.51.100.64/29` | 8 |
+
+Les adresses publiques de la série appartiennent aux plages de
+documentation de la RFC 5737. Elles jouent ici le rôle d'adresses
+publiques, comme dans le cours.
+
+## Exercices
+
+### Exercice 1 — Privée, publique ou spéciale ?
+
+Un client vous transmet une liste d'adresses relevées dans ses journaux.
+
+**1.1** Pour chaque adresse, indiquez si elle est **privée** (RFC 1918),
+**publique** ou **spéciale**. Pour une adresse privée ou spéciale, donnez
+la plage qui la contient.
+
+| Cas | Adresse | Nature | Plage |
+|:-:|:---|:---|:---|
+| a | `10.255.0.1` | | |
+| b | `172.31.255.254` | | |
+| c | `172.32.0.10` | | |
+| d | `192.168.255.1` | | |
+| e | `100.64.12.7` | | |
+| f | `100.128.0.1` | | |
+| g | `169.254.33.2` | | |
+| h | `11.0.0.1` | | |
+| i | `192.167.10.1` | | |
+| j | `224.0.0.5` | | |
+| k | `127.10.0.1` | | |
+| l | `203.0.113.9` | | |
+
+**1.2** Montrez par le calcul que la plage `172.16.0.0/12` s'arrête à
+`172.31.255.255`. Faites de même pour l'espace partagé `100.64.0.0/10`.
+
+**1.3** Un poste de la clinique affiche l'adresse `169.254.33.2` avec
+`ipconfig`. Que s'est-il passé ? Ce poste peut-il accéder à Internet ?
+
+::: {.callout-note}
+## Coup de pouce
+
+Un préfixe /12 fixe les 8 bits du 1^er^ octet et les 4 premiers bits du
+2^e^. Dans le 2^e^ octet, le bloc compte donc 2^4^ = 16 valeurs.
+:::
+
+### Exercice 2 — Les quatre types d'adresses
+
+À la Pharmacie du Port, le poste de comptabilité `10.20.0.15` consulte en
+HTTPS le site du grossiste, `198.51.100.25`. Le routeur RP fait du PAT
+avec l'adresse de son interface G0/1, `192.0.2.66`.
+
+Le poste choisit le port source 50123. RP n'a pas besoin de le changer :
+il le conserve.
+
+**2.1** Complétez le tableau des quatre étapes de l'échange. La première
+ligne est donnée.
+
+| Étape | Trajet | Source | Destination |
+|:-:|:---|:---|:---|
+| 1 | poste → RP, côté LAN | `10.20.0.15:50123` | `198.51.100.25:443` |
+| 2 | RP → grossiste, côté Internet | | |
+| 3 | grossiste → RP, côté Internet | | |
+| 4 | RP → poste, côté LAN | | |
+
+**2.2** Quelle adresse RP modifie-t-il à l'aller ? Et au retour ?
+
+**2.3** Nommez, du point de vue de RP, chacune des adresses `10.20.0.15`,
+`192.0.2.66` et `198.51.100.25` : inside local, inside global, outside
+local ou outside global. Une adresse peut porter deux noms.
+
+**2.4** Écrivez la ligne que `show ip nat translations` affiche sur RP
+pour cet échange.
+
+**2.5** Le serveur du grossiste se trouve en réalité derrière un autre
+routeur, RG. Son adresse privée est `172.16.5.10`. RG le publie par un
+NAT statique sous `198.51.100.25`. Remplissez la ligne de la table NAT
+**de RG** pour le même échange.
+
+| Pro | Inside global | Inside local | Outside local | Outside global |
+|:---|:---|:---|:---|:---|
+| tcp | | | | |
+
+### Exercice 3 — Quel mode de traduction ?
+
+Pour chaque situation, choisissez le mode : **NAT statique**,
+**redirection de port**, **NAT dynamique** ou **PAT**. Justifiez en une
+phrase.
+
+a. Un cabinet de 15 postes doit accéder au web. Le FAI fournit une seule
+   adresse publique, attribuée par DHCP à l'interface G0/1.
+b. Le serveur de messagerie d'un client doit être joignable depuis
+   Internet, sur tous ses services, à l'adresse fixe `198.51.100.40`.
+c. Une PME n'a qu'une adresse publique, déjà utilisée par les postes pour
+   sortir. Elle veut publier son serveur web interne, sur le port 443
+   seulement.
+d. Un laboratoire de trois postes de test dispose de trois adresses
+   publiques. Chaque poste doit sortir sous sa propre adresse
+   publique, peu importe laquelle. Aucun accès entrant n'est demandé.
+e. Un lycée de 600 postes dispose de deux adresses publiques. Tous les
+   postes doivent pouvoir naviguer en même temps.
+
+### Exercice 4 — Lire une table NAT
+
+Chez Transports Le Gall, le routeur RT relie le LAN `10.30.0.0/24` au
+FAI. Son interface G0/1 porte l'adresse `192.0.2.34/29`. Le serveur web
+interne `10.30.0.200` est publié par un NAT statique. En fin de matinée,
+le technicien relève la table de RT :
+
+```text
+RT# show ip nat translations
+Pro  Inside global      Inside local       Outside local      Outside global
+---  192.0.2.37         10.30.0.200        ---                ---
+tcp  192.0.2.37:443     10.30.0.200:443    203.0.113.77:52814 203.0.113.77:52814
+tcp  192.0.2.34:49720   10.30.0.21:49720   203.0.113.50:80    203.0.113.50:80
+tcp  192.0.2.34:1024    10.30.0.22:49720   203.0.113.50:80    203.0.113.50:80
+udp  192.0.2.34:51500   10.30.0.21:51500   203.0.113.53:53    203.0.113.53:53
+icmp 192.0.2.34:7       10.30.0.40:7       198.51.100.10:7    198.51.100.10:7
+```
+
+Les lignes sont numérotées de 1 à 6, de haut en bas, sans compter
+l'en-tête.
+
+**4.1** Pour les lignes 2 à 6, complétez le tableau.
+
+| Ligne | Hôte interne (adresse réelle) | Adresse vue sur Internet | Hôte externe | Protocole et service |
+|:-:|:---|:---|:---|:---|
+| 2 | | | | |
+| 3 | | | | |
+| 4 | | | | |
+| 5 | | | | |
+| 6 | | | | |
+
+**4.2** Quelles lignes relèvent du NAT statique ? Lesquelles relèvent du
+PAT ? Justifiez par les colonnes *Inside global* et *Inside local*.
+
+**4.3** Pourquoi la ligne 1 ne contient-elle ni protocole ni adresse
+externe ?
+
+**4.4** Comparez les lignes 3 et 4. Les deux postes ont choisi le même
+port source. Quel port RT a-t-il conservé, lequel a-t-il changé ? Comment
+RT renvoie-t-il au bon poste une réponse adressée à `192.0.2.34:1024` ?
+
+**4.5** Ligne 2 : qui a ouvert la connexion, l'hôte interne ou l'hôte
+externe ? Cette connexion aurait-elle été possible avec le seul PAT ?
+
+**4.6** Ligne 6 : que représente le nombre 7 placé après les
+deux-points ?
+
+**4.7** Le technicien tape `clear ip nat translation *`. Quelles lignes
+restent dans la table ? Pourquoi ?
+
+### Exercice 5 — L'ACL qui désigne le réseau à traduire
+
+En NAT dynamique comme en PAT, une ACL désigne le trafic à traduire.
+
+**5.1** Pour chaque réseau, donnez le masque, le masque générique, la
+première et la dernière adresse couvertes.
+
+| Cas | Réseau | Masque | Masque générique | Première adresse | Dernière adresse |
+|:-:|:---|:---|:---|:---|:---|
+| a | `10.30.0.0/24` | | | | |
+| b | `10.8.0.0/16` | | | | |
+| c | `172.18.4.0/23` | | | | |
+| d | `10.50.16.0/20` | | | | |
+| e | `192.168.50.0/26` | | | | |
+
+**5.2** Pour le cas d, écrivez l'ACL standard numéro 10 qui désigne le
+LAN. Écrivez ensuite la commande qui l'utilise pour un PAT sur l'adresse
+de G0/1.
+
+**5.3** Pour ce même LAN `10.50.16.0/20`, un collègue a écrit :
+
+```text
+! Packet Tracer, 2911 (IOS 15.1), mode de configuration globale
+access-list 10 permit 10.50.16.0 0.0.7.255
+```
+
+Quelles adresses du LAN sont traduites ? Lesquelles ne le sont pas ? Que
+deviennent les paquets de ces dernières vers Internet ?
+
+**5.4** Un autre collègue a écrit le masque de sous-réseau à la place du
+masque générique :
+
+```text
+! Packet Tracer, 2911 (IOS 15.1), mode de configuration globale
+access-list 10 permit 10.50.16.0 255.255.240.0
+```
+
+Un poste du LAN est-il désigné par cette ligne ? Justifiez par le rôle
+des bits à 1 du masque générique.
+
+::: {.callout-note}
+## Coup de pouce
+
+Masque générique = `255.255.255.255` − masque, octet par octet. Un bit à
+0 doit correspondre ; un bit à 1 est ignoré.
+:::
+
+### Exercice 6 — Compléter une configuration
+
+À la clinique vétérinaire, le routeur RV relie le LAN `172.18.4.0/23` au
+FAI. Le FAI a attribué le bloc `203.0.113.16/28`. Il en occupe la
+première adresse utilisable, `203.0.113.17`, comme passerelle.
+
+Hypothèse : les interfaces de RV sont déjà actives (`no shutdown`). Seules
+les commandes NAT et la route par défaut sont étudiées.
+
+Le cahier des charges :
+
+- G0/0 : `172.18.4.1/23`, côté LAN ; G0/1 : `203.0.113.18/28`, côté FAI ;
+- les postes sortent en **PAT sur un pool** de deux adresses,
+  `203.0.113.20` et `203.0.113.21`, nommé `CLINIQUE` ;
+- l'ACL standard numéro 20 désigne tout le LAN ;
+- le serveur de rendez-vous `172.18.4.10` est publié sous `203.0.113.25` ;
+- RV envoie tout le trafic vers Internet au FAI.
+
+**6.1** Complétez les douze trous de la configuration.
+
+```text
+! Packet Tracer, RV (2911, IOS 15.1), mode de configuration globale
+interface GigabitEthernet0/0
+ ip address 172.18.4.1 255.255.254.0
+ ip nat ____(1)
+interface GigabitEthernet0/1
+ ip address 203.0.113.18 255.255.255.240
+ ip nat ____(2)
+exit
+ip route 0.0.0.0 0.0.0.0 ____(3)
+ip nat pool CLINIQUE ____(4) ____(5) netmask ____(6)
+access-list 20 permit 172.18.4.0 ____(7)
+ip nat inside source list ____(8) pool ____(9) ____(10)
+ip nat inside source static ____(11) ____(12)
+```
+
+**6.2** Combien d'adresses utilisables le bloc `203.0.113.16/28`
+compte-t-il ? Dressez la liste de celles qui sont déjà employées, avec
+leur rôle.
+
+**6.3** Avant tout trafic, que doit afficher `show ip nat translations` ?
+
+**6.4** Que se passerait-il si l'on oubliait le trou (10) ?
+
+### Exercice 7 — Quand le pool s'épuise
+
+À la médiathèque, 40 postes occupent le LAN `192.168.50.0/26`. Un
+technicien a configuré un NAT dynamique sur le routeur RM :
+
+```text
+! Packet Tracer, RM (2911, IOS 15.1), mode de configuration globale
+ip nat pool MEDIA 192.0.2.200 192.0.2.204 netmask 255.255.255.224
+access-list 5 permit 192.168.50.0 0.0.0.63
+ip nat inside source list 5 pool MEDIA
+```
+
+Les interfaces sont déjà déclarées inside et outside. La route par défaut
+est en place.
+
+**7.1** Combien d'adresses le pool contient-il ? Combien de postes
+peuvent sortir **en même temps** ?
+
+**7.2** À l'ouverture, six postes, de `192.168.50.11` à `192.168.50.16`,
+lancent un navigateur dans cet ordre. Le pool était vide. Complétez le
+tableau.
+
+| Poste (inside local) | Inside global attribuée |
+|:---|:---|
+| `192.168.50.11` | |
+| `192.168.50.12` | |
+| `192.168.50.13` | |
+| `192.168.50.14` | |
+| `192.168.50.15` | |
+| `192.168.50.16` | |
+
+**7.3** Quelle commande montre l'utilisation du pool ?
+
+**7.4** Une demi-heure plus tard, les cinq premiers usagers ont fermé leur
+navigateur. Le sixième peut-il sortir aussitôt ? Justifiez.
+
+**7.5** Proposez deux corrections qui permettent aux 40 postes de
+naviguer en même temps. Écrivez la commande de chacune.
+
+### Exercice 8 — Dépanner une configuration
+
+À l'agence immobilière Kerhoas, le LAN `192.168.20.0/22` compte
+200 postes. Le FAI a attribué le bloc `198.51.100.64/29` et occupe
+`198.51.100.65`. Un collègue a saisi ces commandes sur le routeur RK :
+
+```text
+! Packet Tracer, RK (2911, IOS 15.1), commandes saisies
+interface GigabitEthernet0/0
+ ip address 192.168.20.1 255.255.252.0
+ ip nat outside
+interface GigabitEthernet0/1
+ ip address 198.51.100.66 255.255.255.248
+ ip nat inside
+exit
+ip nat pool SORTIE 198.51.100.69 198.51.100.70 netmask 255.255.255.248
+access-list 30 permit 192.168.20.0 0.0.0.255
+ip nat inside source list 30 pool Sortie
+```
+
+Rappel : G0/0 est côté LAN, G0/1 côté FAI. Hypothèse : les interfaces
+sont déjà adressées et actives (`no shutdown`). Seules les commandes NAT
+et la route par défaut sont étudiées. Le client veut que ses
+200 postes naviguent en même temps, avec les deux adresses du pool.
+Résultat : aucun poste n'accède à Internet, et `show ip nat translations`
+reste vide.
+
+**8.1** Cette configuration contient **cinq erreurs**. Trouvez-les en
+suivant la check-list de dépannage du cours.
+
+**8.2** Pour chaque erreur, décrivez le symptôme qu'elle produirait si
+elle était la seule.
+
+**8.3** Écrivez les commandes qui corrigent la configuration, en gardant
+le pool `SORTIE`.
+
+::: {.callout-note}
+## Coup de pouce
+
+La check-list : interfaces inside et outside ; ACL et masque générique ;
+noms identiques ; taille du pool ; route par défaut ; apparition des
+traductions.
+:::
+
+## Corrigé
+
+### Exercice 1
+
+**1.1**
+
+| Cas | Adresse | Nature | Plage |
+|:-:|:---|:---|:---|
+| a | `10.255.0.1` | privée | `10.0.0.0/8` |
+| b | `172.31.255.254` | privée | `172.16.0.0/12`, presque à la fin |
+| c | `172.32.0.10` | publique | aucune : `172.32` est après `172.31` |
+| d | `192.168.255.1` | privée | `192.168.0.0/16` |
+| e | `100.64.12.7` | spéciale | espace partagé des opérateurs `100.64.0.0/10` |
+| f | `100.128.0.1` | publique | aucune : `100.128` est après `100.127` |
+| g | `169.254.33.2` | spéciale | lien local `169.254.0.0/16` (APIPA) |
+| h | `11.0.0.1` | publique | aucune : `11` sort de `10.0.0.0/8` |
+| i | `192.167.10.1` | publique | aucune : `192.167` est avant `192.168` |
+| j | `224.0.0.5` | spéciale | multicast `224.0.0.0/4` |
+| k | `127.10.0.1` | spéciale | bouclage `127.0.0.0/8` |
+| l | `203.0.113.9` | spéciale | documentation, RFC 5737 |
+
+Le cas l est un piège. Cette adresse est réservée à la documentation : elle
+n'appartient à personne. Dans cette série, elle joue le rôle d'une adresse
+publique.
+
+**1.2** Le préfixe /12 fixe 8 + 4 bits. Le 2^e^ octet garde donc
+4 bits fixes et 4 bits libres :
+
+```text
+16 = 0001|0000   premier 2e octet de la plage
+31 = 0001|1111   dernier 2e octet de la plage
+32 = 0010|0000   les 4 bits fixes changent : hors plage
+```
+
+Le bloc compte 2^4^ = 16 valeurs, de 16 à 16 + 16 − 1 = 31. La plage va
+de `172.16.0.0` à `172.31.255.255`.
+
+Le préfixe /10 fixe 8 + 2 bits. Dans le 2^e^ octet, le bloc compte
+2^6^ = 64 valeurs : de 64 à 64 + 64 − 1 = 127. L'espace partagé va de
+`100.64.0.0` à `100.127.255.255`.
+
+**1.3** Le poste n'a pas reçu de réponse DHCP. Il s'est attribué lui-même
+une adresse du lien local : c'est l'APIPA. Cette adresse spéciale ne
+sert que sur le réseau local : le poste n'accède pas à Internet. Il faut
+d'abord rétablir le DHCP.
+
+### Exercice 2
+
+**2.1** RP traduit la source à l'aller, la destination au retour.
+
+| Étape | Trajet | Source | Destination |
+|:-:|:---|:---|:---|
+| 1 | poste → RP, côté LAN | `10.20.0.15:50123` | `198.51.100.25:443` |
+| 2 | RP → grossiste, côté Internet | **`192.0.2.66:50123`** | `198.51.100.25:443` |
+| 3 | grossiste → RP, côté Internet | `198.51.100.25:443` | `192.0.2.66:50123` |
+| 4 | RP → poste, côté LAN | `198.51.100.25:443` | **`10.20.0.15:50123`** |
+
+**2.2** À l'aller, RP modifie l'**adresse source** : le paquet entre par
+l'inside et sort par l'outside. Au retour, il modifie l'**adresse
+destination** : le paquet entre par l'outside.
+
+**2.3** Du point de vue de RP :
+
+- `10.20.0.15` est l'**inside local** : l'adresse réelle du poste
+  interne ;
+- `192.0.2.66` est l'**inside global** : l'adresse sous laquelle le poste
+  apparaît sur Internet ;
+- `198.51.100.25` est à la fois l'**outside local** et l'**outside
+  global**. RP ne connaît le serveur que par cette adresse publique.
+
+**2.4** La ligne de RP :
+
+```text
+RP# show ip nat translations
+Pro  Inside global      Inside local       Outside local      Outside global
+tcp  192.0.2.66:50123   10.20.0.15:50123   198.51.100.25:443  198.51.100.25:443
+```
+
+**2.5** Pour RG, les rôles s'inversent : le serveur est inside, le poste
+de la pharmacie est outside.
+
+| Pro | Inside global | Inside local | Outside local | Outside global |
+|:---|:---|:---|:---|:---|
+| tcp | `198.51.100.25:443` | `172.16.5.10:443` | `192.0.2.66:50123` | `192.0.2.66:50123` |
+
+RG ignore l'adresse privée `10.20.0.15` du poste. Il ne le connaît que
+par `192.0.2.66`. De même, RP ignorait `172.16.5.10`.
+
+### Exercice 3
+
+a. **PAT.** Tous les postes partagent l'unique adresse publique grâce aux
+   ports. La commande cite l'interface G0/1 : elle fonctionne même si
+   l'adresse vient du DHCP.
+b. **NAT statique.** Le serveur doit être joignable en permanence, à une
+   adresse fixe, sur tous ses services. Il faut donc une correspondance
+   un pour un, permanente.
+c. **Redirection de port.** Seul le port 443 de l'adresse publique est
+   redirigé vers le serveur. Les autres ports restent disponibles pour le
+   PAT des postes.
+d. **NAT dynamique.** Chaque poste reçoit une adresse libre du pool, en
+   un pour un. Trois adresses suffisent pour trois postes simultanés.
+e. **PAT sur un pool**, avec `overload`. En NAT dynamique, seuls deux
+   postes sortiraient en même temps. Le PAT distingue les flux par les
+   ports.
+
+### Exercice 4
+
+**4.1**
+
+| Ligne | Hôte interne (adresse réelle) | Adresse vue sur Internet | Hôte externe | Protocole et service |
+|:-:|:---|:---|:---|:---|
+| 2 | `10.30.0.200` | `192.0.2.37` | `203.0.113.77` | TCP 443, HTTPS, vers le serveur interne |
+| 3 | `10.30.0.21` | `192.0.2.34` | `203.0.113.50` | TCP 80, HTTP |
+| 4 | `10.30.0.22` | `192.0.2.34` | `203.0.113.50` | TCP 80, HTTP |
+| 5 | `10.30.0.21` | `192.0.2.34` | `203.0.113.53` | UDP 53, DNS |
+| 6 | `10.30.0.40` | `192.0.2.34` | `198.51.100.10` | ICMP, un ping |
+
+Le service se lit sur le port de l'hôte externe. Ligne 2, c'est le
+serveur interne qui offre le service, sur son port 443.
+
+**4.2** Les lignes 1 et 2 relèvent du **NAT statique** : leur inside
+global, `192.0.2.37`, est l'adresse que la ligne 1 associe en
+permanence au serveur. Elle correspond à une seule inside local, `10.30.0.200`. Les lignes 3 à 6
+relèvent du **PAT** : la même inside global, `192.0.2.34`, est partagée
+par trois inside local différentes, `10.30.0.21`, `10.30.0.22` et
+`10.30.0.40`. De plus, la ligne 4 montre un port source changé.
+
+Une même inside global avec des ports différents ne suffit pas à
+conclure au PAT. Plusieurs connexions vers le serveur publié donneraient
+aussi plusieurs lignes en `192.0.2.37`, avec des ports différents. Le
+critère du PAT : plusieurs inside local derrière une même inside
+global.
+
+Attention, les lignes 1 et 2 ne sont pas de même nature. La ligne 2 est
+une entrée de flux, créée par le trafic entrant vers l'adresse statique.
+Elle est dynamique et expire, alors que la ligne 1 reste.
+
+**4.3** La ligne 1 est l'entrée statique. Elle existe dès la
+configuration, sans aucun trafic. Elle n'est liée à aucun flux : les
+colonnes outside restent vides, notées `---`.
+
+Une correspondance de NAT dynamique, sans ports, s'afficherait de la même
+façon. Ici, vous savez que la ligne 1 est statique grâce à la
+configuration décrite dans l'énoncé. Vous pourriez aussi le constater :
+elle reste après `clear ip nat translation *`.
+
+**4.4** Les deux postes ont choisi le port 49720. RT a conservé 49720
+pour `10.30.0.21`, ligne 3. Ce port était alors pris : RT a attribué 1024
+au flux de `10.30.0.22`, ligne 4. Quand une réponse arrive sur
+`192.0.2.34:1024`, RT lit la ligne 4. Il retrouve `10.30.0.22:49720` et
+lui renvoie la réponse.
+
+**4.5** C'est l'hôte externe `203.0.113.77` qui a ouvert la connexion. Il
+a contacté le port 443 de `192.0.2.37`, l'adresse publique du serveur.
+Avec le seul PAT, c'était impossible : un hôte externe ne peut pas ouvrir
+de connexion vers un hôte interne. Il faut un NAT statique ou une
+redirection de port.
+
+**4.6** Pour ICMP, le nombre après les deux-points est l'**identifiant de
+la requête**, pas un numéro de port.
+
+**4.7** Seule la ligne 1 reste. La commande vide les entrées
+**dynamiques**, créées par le trafic : lignes 2 à 6. L'entrée statique,
+issue de la configuration, est permanente.
+
+### Exercice 5
+
+**5.1** Le masque générique vaut `255.255.255.255` − masque, octet par
+octet.
+
+| Cas | Réseau | Masque | Masque générique | Première adresse | Dernière adresse |
+|:-:|:---|:---|:---|:---|:---|
+| a | `10.30.0.0/24` | `255.255.255.0` | `0.0.0.255` | `10.30.0.0` | `10.30.0.255` |
+| b | `10.8.0.0/16` | `255.255.0.0` | `0.0.255.255` | `10.8.0.0` | `10.8.255.255` |
+| c | `172.18.4.0/23` | `255.255.254.0` | `0.0.1.255` | `172.18.4.0` | `172.18.5.255` |
+| d | `10.50.16.0/20` | `255.255.240.0` | `0.0.15.255` | `10.50.16.0` | `10.50.31.255` |
+| e | `192.168.50.0/26` | `255.255.255.192` | `0.0.0.63` | `192.168.50.0` | `192.168.50.63` |
+
+Calcul de la dernière adresse, cas d : le 3^e^ octet vaut 16 + 15 = 31.
+Cas c : 4 + 1 = 5. Cas e : 0 + 63 = 63.
+
+**5.2** Une solution :
+
+```text
+! Packet Tracer, 2911 (IOS 15.1), mode de configuration globale
+access-list 10 permit 10.50.16.0 0.0.15.255
+! désigne 10.50.16.0 à 10.50.31.255, soit le /20
+ip nat inside source list 10 interface GigabitEthernet0/1 overload
+! PAT sur l'adresse de G0/1
+```
+
+**5.3** Le masque générique `0.0.7.255` correspond à un /21. Il couvre de
+`10.50.16.0` à `10.50.23.255`, car 16 + 7 = 23. Ces adresses sont
+traduites.
+
+Les adresses de `10.50.24.0` à `10.50.31.255` ne sont pas désignées.
+Leurs paquets ne sont pas détruits : le routeur les route sans traduction, avec
+leur adresse privée. Sur Internet, ils seraient rejetés, et aucune réponse
+ne reviendrait. La moitié du LAN reste donc sans accès.
+
+**5.4** Non, aucun poste n'est désigné. Les bits à 1 du masque générique
+sont ignorés. Ici, ce sont les 20 premiers bits : ceux qui identifient
+le LAN. Les 12 derniers bits, eux, doivent valoir ceux de `10.50.16.0`,
+c'est-à-dire 0. Dans le LAN, seule l'adresse réseau `10.50.16.0` a ses
+12 bits hôtes à 0. Aucun poste n'est donc traduit.
+
+### Exercice 6
+
+**6.1**
+
+| Trou | Valeur | Raison |
+|:-:|:---|:---|
+| (1) | `inside` | G0/0 est côté LAN |
+| (2) | `outside` | G0/1 est côté FAI |
+| (3) | `203.0.113.17` | passerelle du FAI |
+| (4) | `203.0.113.20` | première adresse du pool |
+| (5) | `203.0.113.21` | dernière adresse du pool |
+| (6) | `255.255.255.240` | masque du bloc /28 |
+| (7) | `0.0.1.255` | masque générique du /23 |
+| (8) | `20` | numéro de l'ACL |
+| (9) | `CLINIQUE` | nom exact du pool, majuscules comprises |
+| (10) | `overload` | active la traduction de port |
+| (11) | `172.18.4.10` | inside local, toujours en premier |
+| (12) | `203.0.113.25` | inside global |
+
+La configuration complète :
+
+```text
+! Packet Tracer, RV (2911, IOS 15.1), mode de configuration globale
+interface GigabitEthernet0/0
+ ip address 172.18.4.1 255.255.254.0
+ ip nat inside
+interface GigabitEthernet0/1
+ ip address 203.0.113.18 255.255.255.240
+ ip nat outside
+exit
+ip route 0.0.0.0 0.0.0.0 203.0.113.17
+ip nat pool CLINIQUE 203.0.113.20 203.0.113.21 netmask 255.255.255.240
+access-list 20 permit 172.18.4.0 0.0.1.255
+ip nat inside source list 20 pool CLINIQUE overload
+ip nat inside source static 172.18.4.10 203.0.113.25
+```
+
+**6.2** Un /28 compte 2^4^ = 16 adresses, dont 16 − 2 = **14
+utilisables** : de `203.0.113.17` à `203.0.113.30`. Le réseau est
+`203.0.113.16`, la diffusion `203.0.113.31`.
+
+| Adresse | Rôle |
+|:---|:---|
+| `203.0.113.17` | passerelle du FAI |
+| `203.0.113.18` | interface G0/1 de RV |
+| `203.0.113.20` et `203.0.113.21` | pool `CLINIQUE`, pour le PAT des postes |
+| `203.0.113.25` | serveur de rendez-vous, NAT statique |
+
+**6.3** Seule l'entrée statique apparaît, avec les colonnes outside
+vides. Sortie type :
+
+```text
+RV# show ip nat translations
+Pro  Inside global      Inside local       Outside local      Outside global
+---  203.0.113.25       172.18.4.10        ---                ---
+```
+
+Les entrées du PAT n'apparaîtront qu'avec le trafic des postes.
+
+**6.4** Sans `overload`, RV ferait du NAT dynamique. Chaque poste actif
+occuperait une adresse du pool. Deux postes seulement pourraient sortir
+en même temps.
+
+### Exercice 7
+
+**7.1** Le pool va de `.200` à `.204` : il contient 204 − 200 + 1 =
+**5 adresses**. N'oubliez pas le « + 1 ». En NAT dynamique, la
+correspondance est un pour un : **5 postes** au plus sortent en même
+temps.
+
+**7.2** RM attribue à chaque poste la première adresse libre du pool.
+
+| Poste (inside local) | Inside global attribuée |
+|:---|:---|
+| `192.168.50.11` | `192.0.2.200` |
+| `192.168.50.12` | `192.0.2.201` |
+| `192.168.50.13` | `192.0.2.202` |
+| `192.168.50.14` | `192.0.2.203` |
+| `192.168.50.15` | `192.0.2.204` |
+| `192.168.50.16` | aucune : le pool est épuisé |
+
+Le sixième poste ne peut pas sortir.
+
+**7.3** `show ip nat statistics`, en mode privilégié. Elle indique
+l'utilisation du pool.
+
+**7.4** Non, en général. Les cinq correspondances ne disparaissent pas à
+la fermeture du navigateur. Elles expirent après une période
+d'inactivité : 24 h par défaut sous IOS pour un NAT dynamique sans ports.
+Packet Tracer peut s'écarter de ce délai. L'administrateur peut aussi
+vider la table avec `clear ip nat translation *`.
+
+**7.5** Il faut passer au PAT. Deux solutions :
+
+```text
+! Packet Tracer, RM (2911, IOS 15.1), mode de configuration globale
+ip nat inside source list 5 pool MEDIA overload
+! solution 1 : PAT sur le pool existant
+```
+
+```text
+! Packet Tracer, RM (2911, IOS 15.1), mode de configuration globale
+ip nat inside source list 5 interface GigabitEthernet0/1 overload
+! solution 2 : PAT sur l'adresse de G0/1, sans pool
+```
+
+Dans les deux cas, retirez d'abord l'ancienne liaison avec
+`no ip nat inside source list 5 pool MEDIA`. Si le routeur refuse, videz
+d'abord la table avec `clear ip nat translation *`. Pour 40 postes, une
+seule adresse publique suffit largement : la solution 2 libère le pool.
+
+### Exercice 8
+
+**8.1 et 8.2** Les cinq erreurs, dans l'ordre de la check-list :
+
+| Erreur | Symptôme si elle était la seule |
+|:---|:---|
+| 1. Interfaces inversées : G0/0, côté LAN, est déclarée `outside` ; G0/1 est déclarée `inside`. | Les paquets des postes entrent par une interface outside : leur source n'est pas traduite. La table reste vide et aucun poste ne sort. |
+| 2. ACL trop étroite : `0.0.0.255` désigne un /24, de `192.168.20.0` à `192.168.20.255`. | Les postes en `192.168.20.x` sortent. Ceux de `192.168.21.0` à `192.168.23.255` partent sans traduction et n'obtiennent aucune réponse. |
+| 3. Noms différents : le pool s'appelle `SORTIE`, la liaison cite `Sortie`. | La liaison désigne un pool qui n'existe pas. Aucune traduction n'a lieu. |
+| 4. `overload` manquant : NAT dynamique avec deux adresses pour 200 postes. | Deux postes seulement sortent en même temps. Les suivants attendent qu'une correspondance expire. |
+| 5. Route par défaut absente. | RK ne sait pas où envoyer les paquets destinés à Internet : il les rejette. Le NAT ne remplace pas le routage. |
+
+Le masque générique correct pour un /22 : `255.255.252.0` donne
+`0.0.3.255`. La plage va de `192.168.20.0` à `192.168.23.255`, car
+20 + 3 = 23.
+
+**8.3** Une solution :
+
+```text
+! Packet Tracer, RK (2911, IOS 15.1), mode de configuration globale
+interface GigabitEthernet0/0
+ no ip nat outside
+ ip nat inside
+! G0/0 : côté LAN
+interface GigabitEthernet0/1
+ no ip nat inside
+ ip nat outside
+! G0/1 : côté FAI
+exit
+no access-list 30
+access-list 30 permit 192.168.20.0 0.0.3.255
+! désigne tout le /22
+no ip nat inside source list 30 pool Sortie
+ip nat inside source list 30 pool SORTIE overload
+! nom exact du pool et traduction de port
+ip route 0.0.0.0 0.0.0.0 198.51.100.65
+! route par défaut vers le FAI
+```
+
+Contrôlez ensuite avec un ping d'un poste vers Internet, puis
+`show ip nat translations` : des entrées en `198.51.100.69` ou
+`198.51.100.70` doivent apparaître.
+
+## Synthèse
+
+**Les méthodes à retenir**
+
+- **Privée ou publique.** Les trois plages RFC 1918 : `10.0.0.0/8`,
+  `172.16.0.0/12` (de `172.16` à `172.31`), `192.168.0.0/16`. Méfiez-vous
+  aussi des plages spéciales : bouclage, lien local, multicast, espace
+  partagé `100.64.0.0/10`.
+- **Les quatre noms se donnent du point de vue du routeur.** Inside
+  local : adresse réelle de l'hôte interne. Inside global : son adresse
+  vue d'Internet. Outside local et outside global sont presque toujours
+  égales.
+- **Aller : la source change. Retour : la destination change.**
+- **Choisir le mode.** Serveur publié : NAT statique, ou redirection de
+  port pour un seul service. Accès Internet des postes : PAT.
+- **Lire une table.** Une ligne `---`, sans ports ni adresse externe,
+  est une correspondance d'adresse à adresse, statique ou dynamique.
+  Elle est statique si la configuration contient
+  `ip nat inside source static`, ou si elle reste après
+  `clear ip nat translation *`. Plusieurs inside local derrière une même
+  inside global : PAT.
+- **Masque générique = `255.255.255.255` − masque.** Vérifiez la
+  dernière adresse couverte.
+- **Dépanner dans l'ordre de la check-list** : interfaces, ACL, noms,
+  pool, route par défaut, traductions.
+
+**Les erreurs fréquentes**
+
+| Erreur | Le bon réflexe |
+|:---|:---|
+| Croire que `172.32.x.x` est privée | La plage s'arrête à `172.31.255.255` : c'est un /12. |
+| Écrire le masque de sous-réseau dans l'ACL | Écrivez le masque générique : `0.0.15.255` pour un /20. |
+| Inverser inside et outside | Inside : côté LAN privé. Outside : côté FAI. |
+| Oublier `overload` | Sans lui, une adresse publique ne sert qu'un poste à la fois. |
+| Changer la casse d'un nom | `SORTIE` et `Sortie` sont deux noms différents. |
+| Oublier la route par défaut | Le NAT ne remplace pas le routage. |
+| Compter un pool sans le « + 1 » | De `.200` à `.204`, il y a 5 adresses. |
+
+## Pour aller plus loin
+
+**Question supplémentaire.** Chez Transports Le Gall, le serveur
+`10.30.0.200` ne doit plus être publié que pour HTTPS, sur l'adresse de
+G0/1. Quelle commande remplace le NAT statique ? Que devient l'adresse
+`192.0.2.37` ?
+
+**Réponse.** Une redirection de port :
+
+```text
+! Packet Tracer, RT (2911, IOS 15.1), mode de configuration globale
+ip nat inside source static tcp 10.30.0.200 443 192.0.2.34 443
+! TCP vers 192.0.2.34, port 443 -> serveur 10.30.0.200, port 443
+```
+
+Retirez d'abord l'ancienne ligne avec
+`no ip nat inside source static 10.30.0.200 192.0.2.37`. L'adresse
+`192.0.2.37` est alors libre pour un autre usage. Les autres ports de
+`192.0.2.34` restent disponibles pour le PAT des postes.
+
+Le TP du chapitre vous fera appliquer ces configurations dans Packet
+Tracer.
+
+Sources :
+
+- [RFC 1918 — Address Allocation for Private Internets](https://www.rfc-editor.org/rfc/rfc1918.html),
+  les trois plages privées.
+- [RFC 3022 — Traditional IP Network Address Translator](https://www.rfc-editor.org/rfc/rfc3022.html),
+  le NAT de base et le NAPT.
+- [RFC 5737 — IPv4 Address Blocks Reserved for Documentation](https://www.rfc-editor.org/rfc/rfc5737.html),
+  les adresses publiques des exercices.
+- [RFC 6598 — IANA-Reserved IPv4 Prefix for Shared Address Space](https://www.rfc-editor.org/rfc/rfc6598.html),
+  l'espace `100.64.0.0/10`.
+- [Registre IANA des adresses IPv4 à usage spécial](https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml),
+  pour vérifier si une adresse est spéciale.
+- La référence des commandes intégrée à Packet Tracer, menu *Help*, pour
+  le routeur 2911.

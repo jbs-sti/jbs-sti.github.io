@@ -114,8 +114,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Le site vouvoie le lecteur.
 - Une ressource n'a pas de bloc `format:` : elle hérite des formats du
   projet (html, vintage-pdf).
-- Codex relit en `workspace-write` après commit du premier jet ; le chef de
-  projet contrôle ses changements dans `git diff`.
+- Rôles (décision de l'enseignant, 2026-10-25) : Codex écrit en
+  `workspace-write` d'après `.review/consigne.md` (`docs/redaction-codex.md`),
+  le `verificateur` contrôle, le sous-agent `relecteur` relit et réécrit
+  après commit du premier jet (`docs/relecture.md`) ; le chef de projet
+  contrôle ses changements dans `git diff`. Le `redacteur` Claude n'écrit
+  qu'en secours si Codex est indisponible. Fiche, exercices et TP 7 NAT/PAT
+  finissent avec l'ancien protocole ; le nouveau s'applique à partir du
+  chapitre 06.
 - Les ancres (tests, schéma, scripts de vérification, CI) ne sont jamais
   modifiées par un agent.
 - Progression BTS2 réseaux, validée par l'enseignant : 01 VLAN et inter-VLAN
@@ -163,6 +169,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Relance Codex : non (aucune des trois)
 - Pull request : #50
 - Points à relire par l'enseignant : voir « À faire » ; rendu PDF (Quarto absent en local)
+
+### 2026-10-25 — infra/codex-redacteur
+
+- Demande de l'enseignant : Codex écrit, Claude relit
+- `CLAUDE.md` : nouveau déroulé (consigne → rédaction Codex → vérificateur → corrections par Codex via `.review/constats.md` → commit → relecteur → contrôle du diff → tableau → vérification → PR → journal) et secours par le `redacteur`
+- `docs/redaction-codex.md` (nouveau) : consignes de rédaction et de correction pour Codex
+- `docs/relecture-codex.md` renommé `docs/relecture.md`, adressé au sous-agent `relecteur` (mêmes critères, plafonds et interdits)
+- `.claude/agents/relecteur.md` (nouveau) ; descriptions de `redacteur` (secours) et `verificateur` mises à jour
+- `.claude/settings.json` inchangé (non modifiable par un agent) : la sortie de Codex garde `-o .review/codex.md`, déjà autorisée
+- Pull request : #47
 
 ### 2026-10-25 — cours/bts2-cours-nat-pat
 
