@@ -27,7 +27,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   FAI et serveur public, PR #50). Le chapitre est complet.
 - Réécriture courte des cours par Codex (nouveau protocole, PR #47 et #51) :
   cours subnetting (PR #52, publié, 558 → 257 lignes, 3 SVG), cours VLSM
-  (PR à venir, 518 → 230 lignes, 2 SVG nouveaux). Ensuite, selon
+  (PR #53, 518 → 230 lignes, 2 SVG nouveaux). Ensuite, selon
   l'enseignant : cours NAT/PAT au même format, puis chapitre 06 pare-feu
   et DMZ (ASA 5506-X).
 
@@ -173,7 +173,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - **Subnetting** `bts2/reseaux/02-subnetting-vlsm/cours-subnetting-vlsm/index.qmd` : 558 → 257 lignes, SVG `frontiere`, `blocs`, `bornes` ; vérificateur À REPRENDRE (18 constats, dont 1 BLOQUANT : le découpage IP ne limite pas seul les diffusions), puis CONFORME (3 retouches mineures du chef de projet) ; relecteur : R1, R2 gardées, 2 constats A appliqués par le chef de projet ; CONFORME ; PR #52 (journal porté par la PR suivante)
 - **VLSM** `bts2/reseaux/02-subnetting-vlsm/cours-vlsm/index.qmd` : 518 → 230 lignes, SVG `ordre-blocs`, `plan-vlsm` (nouveaux), `topologie-exemple` gardé, `topologie-exercice` supprimé (aucune référence) ; vérificateur À REPRENDRE (8 constats, dont 1 BLOQUANT : propriété « placés à la suite, chaque candidat tombe aligné » retirée alors que la série d'approfondissement s'y réfère), puis CONFORME ; relecteur : R1, R2, R3, P1 gardées, 2 constats A (piège redondant supprimé, phrase précisée) corrigés par Codex ; CONFORME après une nuance d'un mot du chef de projet
 - Branche VLSM recalée sur `main` (aucun commit propre) avant le premier commit, pour éviter un conflit sur le journal
-- Pull request : à renseigner
+- Pull request : #53
 - Points à relire par l'enseignant : voir « À faire » ; rendu PDF (Quarto absent en local)
 
 ### 2026-10-25 — cours/bts2-tp-nat-pat (et entrées de la fiche et des exercices)
