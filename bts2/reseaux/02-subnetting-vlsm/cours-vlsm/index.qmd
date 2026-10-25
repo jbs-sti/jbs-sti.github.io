@@ -34,8 +34,8 @@ Vous devez aussi savoir convertir un octet en binaire et connaître le rôle du 
 ## Situation de départ
 
 Dans le cours précédent, l’accueil reçoit 62 adresses utilisables pour
-20 postes et une passerelle. Beaucoup restent inutilisées. Une liaison entre
-deux routeurs est une liaison **point à point** : elle ne relie que deux équipements.
+20 postes et une passerelle. Beaucoup restent inutilisées. Le gaspillage serait pire sur une liaison
+entre deux routeurs, dite **point à point** : elle ne relie que deux équipements.
 Elle n’a besoin que de **2 adresses**, une par interface.
 
 Pourquoi donner la même taille à tous les blocs ? Un LAN de 50 postes et
@@ -69,13 +69,14 @@ soit `255.255.255.192`. La **taille de bloc = 2^h^**, ici 64 adresses.
 
 Un bloc ne commence pas à n’importe quelle adresse. Un `/26` contient
 64 adresses : dans le dernier octet, ses débuts possibles sont 0, 64, 128 et 192.
-Ainsi, `192.168.10.128/26` est **aligné** : 128 = 2 × 64.
+Ainsi, `192.168.10.128/26` est possible : 128 = 2 × 64.
 
 Un bloc est **aligné** quand son adresse de départ est un multiple de sa taille.
-Dans l’octet significatif, le départ est un **multiple du pas** ; les octets
-suivants sont **à 0**. Le **pas d’avancement** (le pas) vaut
-**256 − octet significatif du masque**, le premier octet qui n’est pas 255.
-Pour `/26`, il vaut 256 − 192 = 64 dans le dernier octet.
+Pour le vérifier, utilisez le **pas d’avancement** (le pas). L’octet significatif
+du masque est son premier octet qui n’est pas 255. Le pas vaut
+**256 − octet significatif du masque** : pour `/26`, 256 − 192 = 64 dans le dernier octet.
+Un départ aligné est un **multiple du pas** dans l’octet significatif ; les octets
+suivants sont **à 0**.
 
 Placez les blocs **du plus grand au plus petit**. Comme dans la fiche, poursuivez avec les étapes 4 et 5 :
 
@@ -95,7 +96,7 @@ Deux petits blocs dispersés peuvent empêcher de placer un grand bloc, même s�
 assez d’adresses au total. Un `/25` ne commence qu’en `.0` ou `.128`.
 Si vous partez du réseau parent et placez les blocs à la suite, du plus grand au plus petit,
 chaque candidat « diffusion + 1 » tombe aligné.
-Vérifiez quand même : un plan qu’on complète ne respecte pas toujours cet ordre.
+Vérifiez quand même : quand vous ajoutez un bloc à un plan déjà construit, l’ordre décroissant peut ne plus être respecté.
 
 ![Les grands blocs d’abord évitent de fragmenter l’espace libre.](img/ordre-blocs.svg){fig-alt="Deux règles de 192.168.10.0/24, de 0 à 256. En haut, deux /30 occupent .0 à .3 et .128 à .131. Chacun bloque un des deux emplacements possibles d’un /25 : aucun /25 ne tient, malgré 248 adresses libres. En bas, un /25 occupe .0 à .127, puis les /30 occupent .128 à .131 et .132 à .135. Tous tiennent. La borne 256 marque la fin du /24, pas une valeur d’octet."}
 
@@ -113,7 +114,7 @@ Les adresses `.32` à `.63` restent disponibles pour de plus petits blocs.
 
 Trois LAN comptent **100, 50 et 25 PC**, chacun derrière son routeur.
 Deux liaisons point à point relient R1 à R2, puis R2 à R3 : il faut **5 segments**.
-Avec des blocs égaux, il faudrait cinq `/25`. Un `/24` n’en contient que deux.
+Avec des blocs égaux, taillés pour le plus grand LAN, il faudrait cinq `/25`. Un `/24` n’en contient que deux.
 
 ![Topologie de l’exemple guidé, avec les adresses des interfaces.](img/topologie-exemple.svg){fig-alt="R1, R2 et R3 sont reliés en chaîne. R1–R2 : réseau 192.168.10.224/30, R1 en .225 et R2 en .226. R2–R3 : réseau 192.168.10.228/30, R2 en .229 et R3 en .230. Chaque routeur dessert un LAN via un commutateur. LAN A : 100 PC, 192.168.10.0/25, passerelle .1. LAN B : 50 PC, 192.168.10.128/26, passerelle .129. LAN C : 25 PC, 192.168.10.192/27, passerelle .193."}
 
@@ -154,15 +155,6 @@ Il reste **24 adresses libres**, de `192.168.10.232` à `192.168.10.255`.
 Chaque routeur prend la **première adresse utilisable de son LAN**.
 Sur chaque liaison, le routeur au plus petit numéro prend la première adresse.
 La topologie indique toutes ces adresses.
-
-::: {.callout-warning}
-## Piège : « diffusion + 1 » ne suffit pas
-
-Dans un autre plan, un bloc finit en `192.168.20.79` : le candidat est `.80`.
-Pour ajouter un `/27`, il faut un multiple de 32 : 80 ne convient pas.
-Le premier départ aligné est `.96` ; vérifiez que ce bloc est libre.
-Contrôlez l’alignement avant d’écrire l’adresse réseau.
-:::
 
 ### Vérifier son plan : la grille en cinq points
 
