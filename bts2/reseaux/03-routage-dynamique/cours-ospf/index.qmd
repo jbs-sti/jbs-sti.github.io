@@ -42,7 +42,7 @@ Chaque routeur connaît ses réseaux directement connectés. Il lui manque les r
 | R3 Marseille | `192.168.3.1/24` | `10.0.23.2/30` vers R2 | `10.0.13.2/30` vers R1 |
 
 Chaque PC reçoit l’adresse `.10/24` dans son LAN ; sa passerelle est l’adresse G0/0 du routeur local.
-Les interfaces utilisées sont déjà adressées et activées avec `no shutdown`.
+Les interfaces utilisées sont déjà adressées et activées avec `no shutdown`, sauf G0/2 de R1 et de R3 (liaison R1–R3), ajoutées plus loin pour la redondance.
 
 ## Comprendre le mécanisme
 
