@@ -42,14 +42,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (192.168.80.0/24, 10.10.20.0/24, 172.20.0.0/22 avec un /23), colonne
   « Ordre » pour le tri, corrigé après saut de page. Le cours VLSM reste
   tel quel (décision de l'enseignant).
-- Page « Examen » BTS2 (`bts2/examen/index.qmd`, brouillon, PR #58) : tableau de bord des annales E4 option A
+- Page « Examen » BTS2 (`bts2/examen/index.qmd`, **publiée à la demande de l'enseignant**, PR #58) : tableau de bord des annales E4 option A
   (BTS SN 2016-2019 et 2021-2024, BTS CIEL 2025-2026), 20 thèmes réseaux,
   terrain/IoT et UML, comptés sur le domaine professionnel des sujets
   (corrigés non lus).
 
 **À faire**
 
-- `bts2/examen` (brouillon) : vérifier dans la CI le HTML (graphique
+- `bts2/examen` (publiée) : vérifier sur le site le HTML (graphique
   cliquable) et le PDF, et la place de « Examen » dans la barre latérale ;
   cliquer les 8 liens éduscol (non vérifiés : éduscol répondait 503) ;
   chercher les pages 2016 et 2017 (Codex propose
@@ -204,6 +204,11 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-26 — cours/bts2-examen-publication
+
+- Ressource : `bts2/examen/index.qmd` : `draft: false`, à la demande explicite de l'enseignant (« passe la page Examen en draft: false »), après la fusion de la PR #58 ; PDF de la CI de la PR #58 contrôlé (7 pages, tableaux complets)
+- Pull request : #59
 
 ### 2026-10-26 — cours/bts2-examen-annales
 
