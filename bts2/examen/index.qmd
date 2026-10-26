@@ -1,0 +1,513 @@
+---
+title: "Examen"
+description: "Les thèmes réseaux et UML des sujets d'E4 (option A) de 2016 à 2026, classés par fréquence, avec les questions posées."
+date-modified: 2026-10-26
+draft: true
+lang: fr
+---
+
+## Tableau de bord
+
+Dix sujets de l'épreuve E4, option A Informatique et réseaux, ont été relus :
+2016 à 2019 et 2021 à 2024 pour le BTS SN, 2025 et 2026 pour le BTS CIEL.
+Seule la partie « domaine professionnel » est prise en compte.
+
+Une question compte pour un thème si y répondre demande ce savoir. Un thème
+seulement cité dans l'énoncé ne compte pas : un plan d'adressage pour des
+VLAN relève de l'adressage, pas des VLAN.
+
+::: {.content-visible when-format="html"}
+
+```{=html}
+<div id="annales-tdb">
+  <p class="annales-aide">Cliquez sur un thème pour voir les années où il est tombé, puis sur une année pour voir les questions.</p>
+  <div id="annales-graphique"></div>
+  <div id="annales-detail" aria-live="polite"></div>
+</div>
+
+<style>
+#annales-tdb { margin: 1rem 0 2rem; }
+#annales-tdb .annales-aide { font-style: italic; }
+#annales-tdb .annales-famille {
+  font-weight: bold; margin: 1.25rem 0 .5rem; padding-bottom: .2rem;
+  border-bottom: 1px solid var(--bs-border-color);
+}
+#annales-tdb .annales-barre {
+  display: grid; grid-template-columns: minmax(9rem, 17rem) 1fr 3.5rem;
+  align-items: center; gap: .6rem; width: 100%; margin: .2rem 0;
+  padding: .25rem .4rem; border: 1px solid transparent; border-radius: .3rem;
+  background: none; color: var(--bs-body-color); text-align: left; cursor: pointer;
+  font: inherit;
+}
+#annales-tdb .annales-barre:hover,
+#annales-tdb .annales-barre:focus-visible { border-color: var(--bs-border-color); }
+#annales-tdb .annales-barre[aria-pressed="true"] {
+  border-color: var(--bs-primary); background: var(--bs-secondary-bg);
+  box-shadow: inset 0 0 0 1px var(--bs-primary); font-weight: bold;
+}
+#annales-tdb .annales-piste {
+  height: 1rem; background: var(--bs-secondary-bg);
+  border: 1px solid var(--bs-border-color); border-radius: .2rem;
+}
+#annales-tdb .annales-plein { display: block; height: 100%; background: var(--bs-primary); }
+#annales-tdb .annales-compte { font-variant-numeric: tabular-nums; text-align: right; }
+#annales-tdb .annales-panneau {
+  margin-top: 1.25rem; padding: 1rem; border: 1px solid var(--bs-border-color);
+  border-radius: .4rem;
+}
+#annales-tdb .annales-titre { font-size: 1.1rem; font-weight: bold; margin-top: 0; }
+#annales-tdb .annales-annees { display: flex; flex-wrap: wrap; gap: .4rem; margin: .75rem 0; }
+#annales-tdb .annales-annee {
+  padding: .15rem .6rem; border: 1px solid var(--bs-primary); border-radius: 1rem;
+  background: none; color: var(--bs-body-color); font: inherit; cursor: pointer;
+}
+#annales-tdb .annales-annee[aria-pressed="true"] {
+  background: var(--bs-primary); color: var(--bs-body-bg); font-weight: bold;
+}
+#annales-tdb .annales-annee:disabled {
+  border-style: dashed; border-color: var(--bs-border-color);
+  color: var(--bs-secondary-color); cursor: default;
+}
+#annales-tdb .annales-questions { margin: .5rem 0; }
+#annales-tdb .annales-questions dt { font-weight: bold; }
+#annales-tdb .annales-questions dd { margin: 0 0 .5rem 1rem; }
+@media (max-width: 576px) {
+  #annales-tdb .annales-barre { grid-template-columns: 1fr 3.5rem; }
+  #annales-tdb .annales-libelle { grid-column: 1 / -1; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var graphique = document.getElementById('annales-graphique');
+  var detail = document.getElementById('annales-detail');
+  if (!graphique || !detail) return;
+
+  // Les données viennent des tableaux de la page (sections « Les sujets »
+  // et « Détail par thème »), qui servent aussi à la version PDF.
+  var texte = function (noeud) { return noeud ? noeud.textContent.trim() : ''; };
+
+  var sujets = [];
+  document.querySelectorAll('.annales-sujets table tbody tr').forEach(function (tr) {
+    var lien = tr.cells[3] && tr.cells[3].querySelector('a');
+    sujets.push({
+      annee: texte(tr.cells[0]),
+      diplome: texte(tr.cells[1]),
+      systeme: texte(tr.cells[2]),
+      lien: lien ? lien.href : null
+    });
+  });
+
+  var familles = [
+    { id: 'reseaux-ip', nom: 'Réseaux IP' },
+    { id: 'terrain-iot', nom: 'Réseaux de terrain et IoT' },
+    { id: 'uml', nom: 'UML et SysML' }
+  ];
+
+  var themes = [];
+  document.querySelectorAll('.annales-theme').forEach(function (div) {
+    var lignes = [];
+    div.querySelectorAll('table tbody tr').forEach(function (tr) {
+      lignes.push({
+        annee: texte(tr.cells[0]),
+        questions: texte(tr.cells[1]),
+        demande: texte(tr.cells[2])
+      });
+    });
+    themes.push({ nom: texte(div.querySelector('strong')), famille: div.dataset.famille, lignes: lignes });
+  });
+  if (!sujets.length || !themes.length) return;
+
+  var total = sujets.length;
+  var boutons = [];
+
+  // Crée un élément avec sa classe et son texte (jamais de innerHTML).
+  function element(balise, classe, contenu) {
+    var e = document.createElement(balise);
+    if (classe) e.className = classe;
+    if (contenu) e.textContent = contenu;
+    return e;
+  }
+
+  function afficherAnnee(theme, annee, conteneur) {
+    var ligne = theme.lignes.find(function (l) { return l.annee === annee; });
+    var sujet = sujets.find(function (s) { return s.annee === annee; });
+    conteneur.replaceChildren();
+    var titre = element('p');
+    titre.appendChild(element('strong', '', annee + ' — ' +
+      (sujet ? sujet.systeme + ' (' + sujet.diplome + ')' : '')));
+    conteneur.appendChild(titre);
+    var dl = element('dl', 'annales-questions');
+    dl.append(element('dt', '', ligne.questions), element('dd', '', ligne.demande));
+    conteneur.appendChild(dl);
+    var source = element('p');
+    if (sujet && sujet.lien) {
+      var a = element('a', '', 'Sujet officiel ' + annee + ' (éduscol)');
+      a.href = sujet.lien;
+      source.appendChild(a);
+    } else {
+      source.textContent = 'Lien officiel non trouvé pour ce sujet.';
+    }
+    conteneur.appendChild(source);
+  }
+
+  function afficherTheme(theme) {
+    boutons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.theme === theme)); });
+    detail.replaceChildren();
+    var panneau = element('div', 'annales-panneau');
+    // Pas de vraie balise de titre : la table des matières de la page
+    // reste celle des sections écrites dans le source.
+    var h = element('p', 'annales-titre', theme.nom);
+    h.setAttribute('role', 'heading');
+    h.setAttribute('aria-level', '3');
+    var n = theme.lignes.length;
+    var resume = element('p', '', 'Présent dans ' + n + ' sujet' + (n > 1 ? 's' : '') + ' sur ' + total + '.');
+    var annees = element('div', 'annales-annees');
+    annees.setAttribute('role', 'group');
+    annees.setAttribute('aria-label', 'Années');
+    var contenu = element('div');
+    var puces = [];
+    sujets.forEach(function (s) {
+      var b = element('button', 'annales-annee', s.annee);
+      b.type = 'button';
+      var presente = theme.lignes.some(function (l) { return l.annee === s.annee; });
+      if (!presente) {
+        b.disabled = true;
+        b.title = 'Thème absent en ' + s.annee;
+      } else {
+        b.setAttribute('aria-pressed', 'false');
+        b.addEventListener('click', function () {
+          puces.forEach(function (p) { p.setAttribute('aria-pressed', String(p === b)); });
+          afficherAnnee(theme, s.annee, contenu);
+        });
+        puces.push(b);
+      }
+      annees.appendChild(b);
+    });
+    panneau.append(h, resume, annees, contenu);
+    detail.appendChild(panneau);
+    if (puces.length) puces[puces.length - 1].click();
+  }
+
+  familles.forEach(function (famille) {
+    var liste = themes.filter(function (t) { return t.famille === famille.id; });
+    if (!liste.length) return;
+    liste.sort(function (a, b) { return b.lignes.length - a.lignes.length || a.nom.localeCompare(b.nom, 'fr'); });
+    var titre = element('p', 'annales-famille', famille.nom);
+    titre.setAttribute('role', 'heading');
+    titre.setAttribute('aria-level', '3');
+    graphique.appendChild(titre);
+    liste.forEach(function (theme) {
+      var n = theme.lignes.length;
+      var b = element('button', 'annales-barre');
+      b.type = 'button';
+      b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('aria-label', theme.nom + ' : ' + n + ' sujet' + (n > 1 ? 's' : '') + ' sur ' + total);
+      var piste = element('span', 'annales-piste');
+      piste.setAttribute('aria-hidden', 'true');
+      var plein = element('span', 'annales-plein');
+      plein.style.width = (100 * n / total) + '%';
+      piste.appendChild(plein);
+      var compte = element('span', 'annales-compte', n + '/' + total);
+      compte.setAttribute('aria-hidden', 'true');
+      b.append(element('span', 'annales-libelle', theme.nom), piste, compte);
+      b.theme = theme;
+      b.addEventListener('click', function () { afficherTheme(theme); });
+      boutons.push(b);
+      graphique.appendChild(b);
+    });
+  });
+});
+</script>
+```
+
+:::
+
+::: {.content-visible unless-format="html"}
+Sur le site, cette section est un graphique interactif : une barre par
+thème, de longueur proportionnelle au nombre de sujets où il apparaît. Un
+clic sur une barre montre les années concernées, puis les questions posées.
+Dans cette version imprimable, les mêmes informations figurent dans les
+sections « Les sujets » et « Détail par thème » ci-dessous.
+:::
+
+## Les sujets
+
+Les sujets et leurs éléments de correction sont publiés sur éduscol STI.
+Aucune session 2020 ne figure dans les annales relues.
+
+::: {.annales-sujets}
+
+| Année | Diplôme | Système étudié | Sujet officiel |
+|:----:|:-------|:-----------------------------|:-----------|
+| 2016 | BTS SN | Test et suivi de cartes électroniques de panneaux à message variable | Lien non trouvé |
+| 2017 | BTS SN | Supervision de panneaux photovoltaïques sur un train régional | Lien non trouvé |
+| 2018 | BTS SN | Prévision des crues : stations de mesure reliées par Sigfox | [Page éduscol](https://sti.eduscol.education.fr/concours_examens/epreuve-e4-bts-sn-2018-informatique-et-reseaux) |
+| 2019 | BTS SN | Localisation d'avions au sol par des flammes connectées | [Page éduscol](https://sti.eduscol.education.fr/concours_examens/epreuve-e4-bts-sn-2019-informatique-et-reseaux) |
+| 2021 | BTS SN | Gestion technique d'un bâtiment (GTB) | [Page éduscol](https://sti.eduscol.education.fr/concours_examens/epreuve-e4-bts-sn-2021-metropole-informatique-et-reseaux) |
+| 2022 | BTS SN | Éclairage facturé à l'usage (eLIGHT) | [Page éduscol](https://sti.eduscol.education.fr/concours_examens/epreuve-e4-bts-sn-2022-metropole-informatique-et-reseaux) |
+| 2023 | BTS SN | Panneaux à messages lumineux pilotés par SMS | [Page éduscol](https://sti.eduscol.education.fr/concours_examens/epreuve-e4-bts-sn-2023-metropole-informatique-et-reseaux) |
+| 2024 | BTS SN | Surveillance de la qualité de l'eau d'une rivière (LoRaWAN) | [Page éduscol](https://sti.eduscol.education.fr/concours_examens/epreuve-e4-bts-sn-2024-metropole-informatique-et-reseaux) |
+| 2025 | BTS CIEL | Affichage des places libres d'un parking | [Page éduscol](https://sti.eduscol.education.fr/concours_examens/epreuve-e4-bts-ciel-2025-metropole-option-informatique-et-reseaux) |
+| 2026 | BTS CIEL | Paiement sans contact sur un festival (Cashless Online) | [Page éduscol](https://sti.eduscol.education.fr/concours_examens/epreuve-e4-bts-ciel-2026-metropole-option-informatique-et-reseaux) |
+
+:::
+
+::: {.content-visible unless-format="html"}
+Pour retrouver un sujet sans cliquer : sur le site éduscol STI, rubrique
+« Concours et examens », chercher « Épreuve E4 BTS SN *année* Informatique
+et réseaux » (jusqu'en 2024) ou « Épreuve E4 BTS CIEL *année* » (à partir
+de 2025).
+:::
+
+## Détail par thème
+
+Les questions sont résumées, pas recopiées. Pour l'énoncé exact, ouvrez le
+sujet officiel.
+
+### Réseaux IP
+
+::: {.annales-theme famille="reseaux-ip"}
+**Adressage IPv4 et sous-réseaux** — 10 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2016 | Q19 à Q22 | Adresse, masque et passerelle de chaque équipement du LAN et de la DMZ, puis découpage du LAN en deux sous-réseaux égaux (masque, nombre d'hôtes, adresses de réseau et de diffusion). |
+| 2017 | Q27 | Adresse IP et masque en notation décimale pointée de chaque équipement, dans trois VLAN en /24. |
+| 2018 | Q20, Q22 | Deux sous-réseaux /20 à choisir dans 172.16.0.0/16 (masque, diffusion, plage utilisable), puis correction d'un poste dont la passerelle est hors de son réseau. |
+| 2019 | Q21, Q25 | Écrire en notation décimale pointée l'IPv4 contenue dans une adresse multicast IPv6, puis découper 10.31.48.0/20 pour trente compagnies. |
+| 2021 | Q6, Q22 | Configuration IP d'un PC sans serveur DHCP, puis découpage de 192.168.10.0/24 en quatre sous-réseaux égaux. |
+| 2022 | Q26 à Q28 | Découpage de 192.168.121.0/24 en huit sous-réseaux égaux, capacité de chaque VLAN, adresse la plus haute de la DMZ. |
+| 2023 | Q6 à Q8, Q18, Q20 | Découpage de 172.16.88.0/24 en 64 sous-réseaux, adresse IPv4 convertie en entier de 32 bits, adresse privée comme clé primaire. |
+| 2024 | Q22, Q23 | Découpage de 172.20.0.0/16 en au moins dix sous-réseaux, puis bornes des quatre premiers. |
+| 2025 | Q28, Q29 | Découpage de 192.168.7.0/24 en huit sous-réseaux pour les VLAN, la passerelle prenant la dernière adresse utilisable. |
+| 2026 | Q28, Q29 | Adresses des réseaux déduites de la configuration d'un pare-feu, puis sous-réseaux de 30 machines au plus pour trois VLAN. |
+:::
+
+::: {.annales-theme famille="reseaux-ip"}
+**DMZ, NAT et pare-feu** — 8 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2016 | Q18 | Expliquer le rôle d'une DMZ. |
+| 2018 | Q23 | Justifier le placement du service web de collecte dans la DMZ. |
+| 2019 | Q23, Q24 | Écrire une règle ip6tables qui laisse passer le multicast temporaire, puis retrouver les interfaces côté Internet et côté DMZ. |
+| 2022 | Q32 | Justifier le placement du serveur de l'entreprise dans la DMZ. |
+| 2023 | Q17 | Retrouver adresses et ports de part et d'autre d'une translation d'adresses (NAT) dans une capture. |
+| 2024 | Q24 | Remplir le tableau de redirection de ports (HTTP 80, HTTPS 443) vers un serveur de la DMZ. |
+| 2025 | Q30 | Rôle du switch administrable, du VLAN de sauvegarde, du routeur, de la DMZ et du VPN dans la nouvelle architecture. |
+| 2026 | Q27, Q28 | Fonctions d'un pare-feu Cisco ASA qui créent une DMZ, puis configuration de ses interfaces outside, dmz1 et inside. |
+:::
+
+::: {.annales-theme famille="reseaux-ip"}
+**Analyse de trames et de captures** — 7 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2017 | Q30 à Q32 | Décoder une trame 802.1Q donnée en hexadécimal (MAC, VLAN, protocole, IP), trouver qui communique et juger le VLAN ID. |
+| 2019 | Q26, Q27 | Relever dans une capture HTTP les adresses IP, la date et la position, puis identifier l'émetteur. |
+| 2021 | Q23, Q24, Q26 à Q30 | Trame DHCP (adresses, ports, émetteur), puis capture MQTT (topics, adresses IP, trame utile, protocoles par couche, valeur transportée). |
+| 2022 | Q29 | Lire le début d'une trame 802.1Q en hexadécimal : adresses MAC, priorité, VLAN ID, service concerné. |
+| 2023 | Q17 | Dans une capture TCP prise dans le VPN, retrouver les adresses IP et les ports du panneau, de la zone et du service. |
+| 2024 | Q17 | Relever adresses MAC, adresses IP et ports dans la capture d'un abonnement MQTT. |
+| 2026 | Q11, Q12, Q34 à Q37 | Échange TLS 1.3 avec reprise de session, puis capture TCP et WebSocket : adresses, ports, connexion TCP, acquittements, trame démasquée, durée mesurée. |
+:::
+
+::: {.annales-theme famille="reseaux-ip"}
+**HTTP, HTTPS, API REST et WebSocket** — 6 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2016 | Q24, Q25 | Serveur Apache qui n'écoute que sur 127.0.0.1:80 : expliquer la panne et corriger la directive Listen. |
+| 2019 | Q26, Q27 | Server-Sent Events : lire une réponse HTTP et dire quel équipement l'émet. |
+| 2021 | Q7, Q8 | Protocole à privilégier pour accéder au serveur web, puis méthode HTTP (GET ou POST) pour lire une mesure et pour changer une consigne. |
+| 2022 | Q20, Q21 | Callback HTTP du serveur Sigfox : variables à transmettre et URL avec ses paramètres. |
+| 2025 | Q16, Q36 | Protocole utilisé quand le navigateur signale une connexion non sécurisée, puis protocole à mettre en place sur le serveur de la DMZ. |
+| 2026 | Q14 à Q22, Q35, Q36 | API REST : domaine, méthodes HTTP, corps JSON, code 200, clé d'API, horodatage, session ; passage de HTTP à WebSocket et masquage des trames. |
+:::
+
+::: {.annales-theme famille="reseaux-ip"}
+**Supports, câblage, Wi-Fi et PoE** — 5 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2016 | Q17 | Dessiner le schéma de câblage : routeur, switch, point d'accès Wi-Fi, serveurs, DMZ. |
+| 2021 | Q19 à Q21 | Budget PoE : puissance d'un point d'accès, d'un port et du commutateur entier. |
+| 2024 | Q2 | Expliquer pourquoi le Bluetooth et le Wi-Fi ne conviennent pas aux stations de mesure. |
+| 2025 | Q10 | Retrouver chaque équipement et son type de liaison (Ethernet, RS485…). |
+| 2026 | Q5, Q10, Q31, Q32 | Couche physique utilisée, choix d'un contrôleur Wi-Fi, technologie de liaison selon la distance, devis d'une liaison en fibre optique. |
+:::
+
+::: {.annales-theme famille="reseaux-ip"}
+**Modèle OSI et TCP/IP** — 4 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2017 | Q26 | Placer HTTP, TCP, IP, Ethernet, Wi-Fi et le point d'accès sur un schéma en couches. |
+| 2021 | Q29 | Donner le protocole de chaque couche TCP/IP dans une trame MQTT. |
+| 2023 | Q9, Q10 | Couche au-dessus de laquelle se situe SSL/TLS ; couche encapsulée par IPsec. |
+| 2026 | Q5, Q6, Q30 | Couche physique entre terminaux et serveur, protocoles nécessaires et leur couche, place du SSID, de HTTPS, du sous-réseau et du VLAN. |
+:::
+
+::: {.annales-theme famille="reseaux-ip"}
+**VLAN et 802.1Q** — 4 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2017 | Q28 à Q32 | Technologie qui fait passer plusieurs réseaux de niveau 2 sur un même lien, marquage des trames, décodage d'une trame étiquetée. |
+| 2022 | Q29 | Lire le VLAN ID d'une trame 802.1Q et en déduire le service. |
+| 2025 | Q15, Q31 à Q35 | Séparer les flux de téléphonie et de comptage, puis configurer et vérifier les VLAN du switch. |
+| 2026 | Q30 | Place du VLAN dans le modèle OSI. |
+:::
+
+::: {.annales-theme famille="reseaux-ip"}
+**DHCP et DNS** — 3 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2016 | Q23 | Expliquer le rôle des services DNS et DHCP. |
+| 2017 | Q33 | Nommer les services qui distribuent la configuration IP et résolvent les noms. |
+| 2021 | Q23, Q24 | Lire une trame DHCP (adresses, ports) et dire quel équipement l'a envoyée. |
+:::
+
+::: {.annales-theme famille="reseaux-ip"}
+**Routage et passerelle par défaut** — 3 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2018 | Q21, Q22 | Compléter la table de routage statique d'un routeur, puis corriger la passerelle d'un poste. |
+| 2019 | Q22 | Donner les adresses MAC et IP d'une trame sur chaque segment traversé (pare-feu, routeur central). |
+| 2022 | Q30, Q31 | Sens de 0.0.0.0/0 dans une table de routage Cisco, puis équipement et interface de la route par défaut. |
+:::
+
+::: {.annales-theme famille="reseaux-ip"}
+**Sécurité des échanges : VPN, TLS et IPsec** — 3 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2023 | Q5, Q9, Q10 | Atout d'un APN privé, puis place de SSL/TLS et d'IPsec dans le modèle OSI (VPN IPsec). |
+| 2025 | Q30, Q36 | Rôle du VPN dans l'architecture, puis HTTPS pour supprimer l'alerte du navigateur. |
+| 2026 | Q11 à Q13 | Montrer qu'un échange est en TLS 1.3 avec reprise de session, donner la suite de chiffrement, distinguer hachage et chiffrement. |
+:::
+
+::: {.annales-theme famille="reseaux-ip"}
+**Configuration d'équipements Cisco** — 2 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2025 | Q31 à Q35 | Commandes d'un switch : interface VLAN d'administration, création d'un VLAN, ports d'accès, trunk, commande de vérification. |
+| 2026 | Q28 | Lire la configuration des interfaces d'un pare-feu ASA et la reporter sur le schéma du réseau. |
+:::
+
+::: {.annales-theme famille="reseaux-ip"}
+**IPv6** — 2 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2019 | Q20, Q21, Q23 | Caractériser une adresse multicast (temporaire, portée), en extraire une IPv4, filtrer ce multicast avec ip6tables. |
+| 2024 | Q25, Q26 | Construire une adresse IPv6 à partir d'une adresse MAC, puis l'écrire en forme simplifiée. |
+:::
+
+::: {.annales-theme famille="reseaux-ip"}
+**MQTT** — 2 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2021 | Q25 à Q30 | Nom du serveur (broker), puis capture : topics, adresses IP, trame de publication, couches, valeur transportée. |
+| 2024 | Q16, Q17 | Commande d'abonnement à tous les topics avec identifiants, puis capture de cet abonnement. |
+:::
+
+### Réseaux de terrain et IoT
+
+::: {.annales-theme famille="terrain-iot"}
+**Bus de terrain et liaisons série** — 8 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2016 | Q9 à Q13 | Bus RS485 maître/esclave : rôle du maître, choix de RS485, rôle du BCC, durée de transmission, construction d'une trame. |
+| 2017 | Q5, Q6, Q8 | Bus CAN : rôle des champs SOF, EOF et CRC, trame de requête en binaire, décodage des données. |
+| 2018 | Q3 à Q9 | SDI-12 : caractéristiques du bus, capteurs compatibles et adaptateur, commande de changement d'adresse, réponse du capteur, décodage des mesures. |
+| 2019 | Q3 à Q5 | Trames NMEA d'un GPS : validité de la position, durée de transmission à 9 600 bauds, trame de configuration. |
+| 2021 | Q9 à Q11 | Télégramme KNX : champs, octet de sécurité, valeur de température. |
+| 2023 | Q12, Q13 | Protocole des panneaux lumineux : taille des champs, construction d'une trame. |
+| 2024 | Q8, Q9 | SDI-12 : commandes de mesure, puis décodage des réponses. |
+| 2025 | Q6 à Q9 | Trames RS485 « adresse/commande/donnée » : interpréter, écrire une série, décoder une capture. |
+:::
+
+::: {.annales-theme famille="terrain-iot"}
+**IoT et réseaux radio** — 4 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2018 | Q13 | Contenu hexadécimal de la charge utile Sigfox de 10 octets. |
+| 2019 | Q9 | Décoder une trame Sigfox de 12 octets (latitude, longitude, batterie). |
+| 2022 | Q9 à Q11 | Réseau radio propriétaire : adresse MAC de diffusion, octet de consigne, trame d'envoi. |
+| 2024 | Q1, Q2, Q4, Q13, Q14 | Architecture LoRaWAN, choix de la technologie et de la fréquence, codage et décodage de la charge utile. |
+:::
+
+### UML et SysML
+
+::: {.annales-theme famille="uml"}
+**Diagramme de cas d'utilisation** — 7 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2016 | Q2 | Compléter les liens entre cas d'utilisation et leurs stéréotypes. |
+| 2017 | Q1 à Q3 | Lire le diagramme (vrai ou faux), justifier une relation include et une relation extend. |
+| 2019 | Q6 | Ajouter un nouveau besoin et ses relations avec les acteurs. |
+| 2021 | Q2 | Relations entre cas d'utilisation et entre acteurs. |
+| 2023 | Q1, Q2 | Relations entre acteurs et cas, puis nouvel acteur et cas spécialisé. |
+| 2025 | Q1 | Compléter le diagramme, nommer les acteurs principaux et secondaires. |
+| 2026 | Q1, Q2 | Relations entre cas, puis ajout de deux cas et de leurs liaisons. |
+:::
+
+::: {.annales-theme famille="uml"}
+**Diagramme de classes** — 7 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2016 | Q3 | Compléter une classe à partir de sa déclaration C++ : attributs, méthodes, visibilités. |
+| 2017 | Q9 à Q14 | Relation entre deux classes, accès à un attribut, associations et cardinalités, méthodes à appeler. |
+| 2018 | Q10, Q11 | Relations, rôles et multiplicités, puis ajout d'une classe spécialisée. |
+| 2019 | Q28 | Trouver la classe et la méthode qui réalisent un algorithme donné. |
+| 2022 | Q12, Q13 | Types de relations entre classes, type d'une association. |
+| 2025 | Q20 à Q22 | Attributs d'une classe avec ses compositions, accès aux méthodes selon leur visibilité. |
+| 2026 | Q40, Q41 | Méthode d'une classe et droit d'accès d'une autre classe, accès à un attribut. |
+:::
+
+::: {.annales-theme famille="uml"}
+**Diagramme de déploiement** — 6 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2017 | Q4 | Liaisons, composants manquants, cardinalités et supports. |
+| 2021 | Q3 | Types de relations et cardinalités. |
+| 2022 | Q3 | Types d'associations et multiplicités. |
+| 2023 | Q3, Q4 | Caractériser les liaisons, puis cardinalités. |
+| 2025 | Q4, Q5 | Compléter le diagramme, puis nœud et cardinalités d'un package. |
+| 2026 | Q3 | Liaisons entre nœuds, supports et cardinalités. |
+:::
+
+::: {.annales-theme famille="uml"}
+**SysML : exigences et blocs** — 4 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2019 | Q1, Q2 | Nommer des blocs d'un diagramme de définition de blocs, contrainte tirée du diagramme d'exigences. |
+| 2022 | Q8 | Vérifier que deux exigences sont respectées. |
+| 2024 | Q3, Q7 | Placer des blocs, compléter le texte de deux exigences. |
+| 2025 | Q2, Q26 | Ajouter une exigence et ses relations, analyser un « problem ». |
+:::
+
+::: {.annales-theme famille="uml"}
+**Diagramme de séquence** — 3 sujets sur 10
+
+| Année | Questions | Ce qui est demandé |
+|:----:|:-----------|:------------------------------------|
+| 2018 | Q1 | Compléter un diagramme de séquence système. |
+| 2024 | Q11 | Ajouter les appels de méthodes manquants. |
+| 2025 | Q23 | Écrire le message qui fait afficher un texte. |
+:::
+
+Ne sont pas comptées en UML les questions de C++ écrites à partir d'un
+diagramme de classes ou de séquence : elles relèvent de la programmation.
