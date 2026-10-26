@@ -42,8 +42,20 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (192.168.80.0/24, 10.10.20.0/24, 172.20.0.0/22 avec un /23), colonne
   « Ordre » pour le tri, corrigé après saut de page. Le cours VLSM reste
   tel quel (décision de l'enseignant).
+- Page « Examen » BTS2 (`bts2/examen/index.qmd`, brouillon, branche
+  `cours/bts2-examen-annales`) : tableau de bord des annales E4 option A
+  (BTS SN 2016-2019 et 2021-2024, BTS CIEL 2025-2026), 20 thèmes réseaux,
+  terrain/IoT et UML, comptés sur le domaine professionnel des sujets
+  (corrigés non lus).
 
 **À faire**
+
+- `bts2/examen` (brouillon) : vérifier dans la CI le HTML (graphique
+  cliquable) et le PDF, et la place de « Examen » dans la barre latérale ;
+  cliquer les 8 liens éduscol (non vérifiés : éduscol répondait 503) ;
+  chercher les pages 2016 et 2017 (Codex propose
+  `epreuve-e4-bts-sn-2016-informatique-et-reseaux` et `…-2017-…`, non
+  vérifiées) ; numérotation des questions 2019 reconstituée.
 
 - `bts2/reseaux/02-subnetting-vlsm/exercices-vlsm-fiche` (publiée) :
   vérifier sur le PDF de la CI que les énoncés tiennent sur une page et que
@@ -171,6 +183,12 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Pare-feu des TP : ASA 5506-X dans Packet Tracer.
 - Les séries d'exercices gardent un corrigé (décision de l'enseignant,
   2026-10-24) ; les TP n'en ont pas.
+- `bts2/examen/` est une page de section hors schéma des ressources
+  (décision de l'enseignant, 2026-10-26) : ni métadonnées obligatoires ni
+  gabarit. Ses tableaux « Détail par thème » sont la source unique du
+  graphique ; un thème compte pour un sujet si une question demande ce
+  savoir, pas s'il est seulement cité. Les corrigés des annales ne sont pas
+  lus (consigne de l'enseignant).
 
 ## Historique
 
@@ -187,6 +205,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-26 — cours/bts2-examen-annales
+
+- Ressource : `bts2/examen/index.qmd` (page de section, hors schéma), écrite par Claude ; sources : 10 sujets E4 option A de l'archive de l'enseignant et sujet 2026 (mes-cours.fr), domaine professionnel seul, corrigés non lus
+- Contenu : graphique en barres (JavaScript intégré, sans dépendance) lisant les tableaux « Détail par thème », clic thème → années → questions et lien éduscol ; équivalent PDF statique
+- Vérificateur : CONFORME (6 retouches appliquées), puis CONFORME après relecture
+- Codex : 5 constats A (dont 4 BLOQUANT), 2 réécritures gardées (R1 intro, R2 note C++) ; A1-A2 (schéma, gabarit) rejetés (décision de l'enseignant), A3 (2017 Q4 en Supports) rejeté (déjà compté en déploiement UML), A4 (2021 Q7 en Sécurité, 3 → 4/10) accepté, A5 (liens 2016-2017) non appliqué faute de vérification. Codex dit avoir consulté une page de corrigé : signalé à l'enseignant
+- Relance Codex : non
+- Rendu : Quarto absent en local, test du script avec un mini-DOM Node (scratchpad) ; rendu à confirmer dans la CI
+- Pull request : à renseigner
 
 ### 2026-10-26 — cours/bts2-cours-ospf-publication
 
