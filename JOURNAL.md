@@ -208,7 +208,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 ### 2026-10-26 — cours/bts2-examen-publication
 
 - Ressource : `bts2/examen/index.qmd` : `draft: false`, à la demande explicite de l'enseignant (« passe la page Examen en draft: false »), après la fusion de la PR #58 ; PDF de la CI de la PR #58 contrôlé (7 pages, tableaux complets)
-- Pull request : à renseigner
+- Pull request : #59
 
 ### 2026-10-26 — cours/bts2-examen-annales
 
