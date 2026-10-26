@@ -225,7 +225,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Format « page + PDF » choisi par l'enseignant, à la place d'une conversion en `index.qmd` : la ressource n'est pas passée par le circuit rédacteur / Codex / vérificateur ; le TP a été relu par Claude Code (cohérence technique, mise en page) dans la session
 - `draft: false` à la demande explicite de l'enseignant (« mets le TP en ligne »)
 - Corrigé non publié (dépôt public)
-- Pull request : à compléter
+- Pull request : #60
 
 ### 2026-10-26 — cours/bts2-examen-publication
 
