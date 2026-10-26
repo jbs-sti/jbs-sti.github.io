@@ -59,9 +59,9 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 - `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique`
   (publié) : le PDF de `fichiers/` est compilé à la main (pdfLaTeX) ; le
-  recompiler et le recopier après toute modification du `.tex`. Le sujet
-  numérote ses séances « TP 1 » à « TP 5 », à ne pas confondre avec la
-  numérotation des TP du site (TP 5 = fil rouge OSPF).
+  recompiler et le recopier après toute modification du `.tex`. Les
+  séances sont nommées « Séance 1 » à « Séance 5 » pour ne pas se
+  confondre avec la numérotation des TP du site (TP 5 = fil rouge OSPF).
 
 - `bts2/examen` (publiée) : vérifier sur le site le HTML (graphique
   cliquable) et le PDF, et la place de « Examen » dans la barre latérale ;
@@ -225,6 +225,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Format « page + PDF » choisi par l'enseignant, à la place d'une conversion en `index.qmd` : la ressource n'est pas passée par le circuit rédacteur / Codex / vérificateur ; le TP a été relu par Claude Code (cohérence technique, mise en page) dans la session
 - `draft: false` à la demande explicite de l'enseignant (« mets le TP en ligne »)
 - Corrigé non publié (dépôt public)
+- Séances renommées « TP 1…5 » → « Séance 1…5 » (accord de l'enseignant)
 - Pull request : #60
 
 ### 2026-10-26 — cours/bts2-examen-publication

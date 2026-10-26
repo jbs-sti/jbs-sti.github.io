@@ -26,7 +26,7 @@
 \renewcommand{\arraystretch}{1.15}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small\color{vert}BTS CIEL — Routage}
-\fancyhead[R]{\small TP progressifs}
+\fancyhead[R]{\small TP en cinq séances}
 \fancyfoot[L]{\small Ahmed Bachir Diedhiou}
 \fancyfoot[R]{\small\thepage/\pageref{LastPage}}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -85,7 +85,7 @@
 \begin{titlepage}\pagecolor{vert}\color{creme}
 \vspace*{3cm}{\Large BTS CIEL — Deuxième année}\par\vspace{1cm}
 {\Huge\bfseries Du routage statique\\[3mm]au routage dynamique}\par\vspace{8mm}
-{\Large Cinq TP Packet Tracer guidés, de RIP à OSPF}\par\vspace{1cm}
+{\Large Un TP Packet Tracer en cinq séances, de RIP à OSPF}\par\vspace{1cm}
 {\color{or}\rule{\linewidth}{2pt}}\par\vspace{1cm}
 {\large 9 heures — situations-problèmes, manipulation, observation, explication}\par
 \vfill
@@ -99,17 +99,17 @@
 \section{Le réseau HexaTech~: projet commun}
 HexaTech possède d'abord deux sites (Paris et Lyon), puis ouvre Marseille. Vous configurerez la même infrastructure tout au long des cinq séances.
 \begin{center}\begin{tabularx}{\linewidth}{lXr}\toprule
-TP 1 & Deux sites et routes statiques & 1 h 30\\
-TP 2 & Troisième site et limites du statique & 1 h 30\\
-TP 3 & Découverte et configuration de RIPv2 & 2 h\\
-TP 4 & Redondance et convergence & 1 h 30\\
-TP 5 & Découverte et configuration d'OSPF & 2 h 30\\\bottomrule\end{tabularx}\end{center}
+Séance 1 & Deux sites et routes statiques & 1 h 30\\
+Séance 2 & Troisième site et limites du statique & 1 h 30\\
+Séance 3 & Découverte et configuration de RIPv2 & 2 h\\
+Séance 4 & Redondance et convergence & 1 h 30\\
+Séance 5 & Découverte et configuration d'OSPF & 2 h 30\\\bottomrule\end{tabularx}\end{center}
 \textbf{Matériel~:} Packet Tracer, trois routeurs Cisco 2911, trois switches 2960, trois PC, câbles Ethernet. Chaque routeur utilise G0/0 pour le LAN~; les autres interfaces sont précisées sur les schémas.\par
 \textbf{Règle de travail~:} enregistrer une copie distincte à chaque séance. Les tests se font d'abord en mode Realtime, puis en mode Simulation lorsque demandé.\par
 \textbf{Commandes IOS~:} sauf mention contraire, les commandes de configuration se saisissent après \texttt{enable} puis \texttt{configure terminal}~; les commandes \texttt{show} se saisissent en mode privilégié (\texttt{Router\#}).
 
-% ---------------------------------------------------------------- TP 1
-\clearpage\section[TP 1 — Deux sites doivent communiquer]{TP 1 — Deux sites doivent communiquer\duree{1 h 30}}
+% ---------------------------------------------------------------- Séance 1
+\clearpage\section[Séance 1 — Deux sites doivent communiquer]{Séance 1 — Deux sites doivent communiquer\duree{1 h 30}}
 \begin{probleme}Le bureau de Paris doit échanger des données avec le bureau de Lyon. Chaque LAN fonctionne, mais les deux PC n'arrivent pas à communiquer. Pourquoi~?\end{probleme}
 \topologie{1}{.56\linewidth}
 \textbf{Objectifs~:} configurer les interfaces, tester la connectivité, lire la table de routage, créer les routes statiques nécessaires.
@@ -145,13 +145,13 @@ Refaites le ping entre les PC et consultez \texttt{show ip route}.
 \question{Quelle lettre distingue maintenant les nouvelles routes dans la table~?}
 \begin{bilan}Une route statique est \dotfill\\Un routeur connaît initialement \dotfill\\Le prochain saut désigne \dotfill\end{bilan}
 
-% ---------------------------------------------------------------- TP 2
-\clearpage\section[TP 2 — L'entreprise ouvre Marseille]{TP 2 — L'entreprise ouvre Marseille\duree{1 h 30}}
+% ---------------------------------------------------------------- Séance 2
+\clearpage\section[Séance 2 — L'entreprise ouvre Marseille]{Séance 2 — L'entreprise ouvre Marseille\duree{1 h 30}}
 \begin{probleme}Un troisième site ouvre à Marseille. Le responsable annonce ensuite vingt nouvelles implantations. La méthode utilisée précédemment pourra-t-elle être conservée sans difficulté~?\end{probleme}
 \topologie{2}{\linewidth}
 
 \etape{Étape 1 — Ajouter le troisième site.}
-Reprenez une copie du TP 1. Ajoutez R3, SW3 et PC Marseille. Sur R2, configurez \textbf{G0/2} vers R3~; sur R3, configurez \textbf{G0/1} vers R2 et \textbf{G0/0} vers son LAN. Attribuez toutes les IP figurant sur le schéma.
+Reprenez une copie du fichier de la séance 1. Ajoutez R3, SW3 et PC Marseille. Sur R2, configurez \textbf{G0/2} vers R3~; sur R3, configurez \textbf{G0/1} vers R2 et \textbf{G0/0} vers son LAN. Attribuez toutes les IP figurant sur le schéma.
 \question{Quels nouveaux réseaux apparaissent dans la table de R2~?}
 
 \etape{Étape 2 — Tester avant de configurer les routes.}
@@ -159,7 +159,7 @@ Depuis PC Paris, lancez \texttt{ping 192.168.3.10}. Consultez ensuite les tables
 \question[2]{Quels routeurs ne connaissent pas encore de chemin vers un LAN distant~? Lesquels leur manquent~?}
 
 \etape{Étape 3 — Compléter les routes statiques.}
-Ajoutez les routes nécessaires sur R1, R2 et R3, en tenant compte des routes du TP 1. Testez Paris–Marseille, Lyon–Marseille et les trajets retour.
+Ajoutez les routes nécessaires sur R1, R2 et R3, en tenant compte des routes de la séance 1. Testez Paris–Marseille, Lyon–Marseille et les trajets retour.
 \question[2]{Combien de nouvelles routes avez-vous créées~? Quelles erreurs de configuration seraient possibles~?}
 
 \etape{Étape 4 — Prendre du recul.}
@@ -168,8 +168,8 @@ L'entreprise prévoit désormais vingt sites supplémentaires.
 \question[2]{Imaginez un moyen pour que les routeurs apprennent eux-mêmes les réseaux connus de leurs voisins.}
 \begin{bilan}La principale limite du routage statique dans un grand réseau est \dotfill\\Nous aurions besoin que les routeurs \dotfill\end{bilan}
 
-% ---------------------------------------------------------------- TP 3
-\clearpage\section[TP 3 — Découvrir et configurer RIPv2]{TP 3 — Découvrir et configurer RIPv2\duree{2 h}}
+% ---------------------------------------------------------------- Séance 3
+\clearpage\section[Séance 3 — Découvrir et configurer RIPv2]{Séance 3 — Découvrir et configurer RIPv2\duree{2 h}}
 \begin{probleme}Le service informatique veut réduire la maintenance manuelle des routes. Comment R1 pourrait-il apprendre le réseau de Marseille grâce aux annonces de R2~?\end{probleme}
 \topologie{2}{.9\linewidth}
 \begin{notion}Un routeur peut annoncer à ses voisins les réseaux qu'il sait atteindre~; les voisins utilisent ces annonces pour mettre à jour leur table~: c'est le \textbf{routage dynamique}. \textbf{RIP} (Routing Information Protocol) est un protocole à \emph{vecteur de distance}~; RIPv2 annonce aussi les masques. Sa métrique est le \textbf{nombre de sauts}~: une métrique de 16 signifie « inaccessible ».\end{notion}
@@ -179,7 +179,7 @@ R3 possède le LAN Marseille~: R2 l'apprend en métrique 1, R1 en métrique 2.
 \question{Pourquoi R1 doit-il envoyer les paquets à R2 pour atteindre Marseille dans cette topologie~?}
 
 \etape{Étape 2 — Préparer une expérience correcte.}
-Dupliquez le TP 2. Sur chaque routeur, consultez \texttt{show ip route static}, puis supprimez les routes statiques des TP 1 et 2 avec \texttt{no ip route RESEAU MASQUE IP\_PROCHAIN\_SAUT}.
+Dupliquez le fichier de la séance 2. Sur chaque routeur, consultez \texttt{show ip route static}, puis supprimez les routes statiques des séances 1 et 2 avec \texttt{no ip route RESEAU MASQUE IP\_PROCHAIN\_SAUT}.
 \question{Pourquoi faut-il retirer ces routes avant d'étudier les routes apprises par RIP~?}
 
 \etape{Étape 3 — Configurer RIP sur R1.}
@@ -212,13 +212,13 @@ En \textbf{Simulation}, filtrez \textbf{RIP} et ouvrez une annonce (toutes les 3
 \question{Quelles informations sont transmises~? À quoi servent-elles à un routeur voisin~?}
 \begin{bilan}RIP~: famille \makebox[5cm]{\dotfill}~; métrique \dotfill\\Lettre d'une route RIP dans la table~: \makebox[4cm]{\dotfill}\end{bilan}
 
-% ---------------------------------------------------------------- TP 4
-\clearpage\section[TP 4 — Une liaison tombe en panne]{TP 4 — Une liaison tombe en panne\duree{1 h 30}}
+% ---------------------------------------------------------------- Séance 4
+\clearpage\section[Séance 4 — Une liaison tombe en panne]{Séance 4 — Une liaison tombe en panne\duree{1 h 30}}
 \begin{probleme}Une liaison directe Paris–Marseille est créée pour disposer de plusieurs chemins. Que se passe-t-il si elle tombe en panne~?\end{probleme}
 \topologie{3}{\linewidth}
 
 \etape{Étape 1 — Ajouter le chemin direct.}
-Reprenez le TP 3. Reliez \textbf{R1 G0/2} à \textbf{R3 G0/2}, configurez les IP indiquées sur le schéma, puis \texttt{no shutdown}. Les interfaces en 10.0.13.0/30 sont déjà couvertes par \texttt{network 10.0.0.0} dans RIP.
+Reprenez le fichier de la séance 3. Reliez \textbf{R1 G0/2} à \textbf{R3 G0/2}, configurez les IP indiquées sur le schéma, puis \texttt{no shutdown}. Les interfaces en 10.0.13.0/30 sont déjà couvertes par \texttt{network 10.0.0.0} dans RIP.
 \question{Combien de chemins physiques relient maintenant Paris à Marseille~?}
 
 \etape{Étape 2 — Observer le trajet normal.}
@@ -241,8 +241,8 @@ Sur R1 G0/2~: \texttt{no shutdown}. Attendez la convergence et observez la table
 \question{Pourquoi le chemin préféré change-t-il à nouveau~?}
 \begin{bilan}La redondance signifie \dotfill\\La convergence correspond à \dotfill\end{bilan}
 
-% ---------------------------------------------------------------- TP 5
-\clearpage\section[TP 5 — Découvrir et configurer OSPF]{TP 5 — Découvrir et configurer OSPF\duree{2 h 30}}
+% ---------------------------------------------------------------- Séance 5
+\clearpage\section[Séance 5 — Découvrir et configurer OSPF]{Séance 5 — Découvrir et configurer OSPF\duree{2 h 30}}
 \begin{probleme}Le chemin qui passe par le moins de routeurs n'est pas toujours le plus intéressant. Comment choisir selon le coût des liaisons plutôt que selon le seul nombre de sauts~?\end{probleme}
 \topologie{3}{.72\linewidth}
 \begin{notion}\textbf{OSPF} (\emph{Open Shortest Path First}) est un protocole à \textbf{état de liens}~: les routeurs découvrent leurs voisins (messages \textbf{Hello}), échangent la topologie de leur aire, puis calculent les chemins de coût minimal (algorithme SPF de Dijkstra). Ici, une seule aire~: \textbf{area 0}.\end{notion}
