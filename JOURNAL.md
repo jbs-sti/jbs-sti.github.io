@@ -42,8 +42,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (192.168.80.0/24, 10.10.20.0/24, 172.20.0.0/22 avec un /23), colonne
   « Ordre » pour le tri, corrigé après saut de page. Le cours VLSM reste
   tel quel (décision de l'enseignant).
-- Page « Examen » BTS2 (`bts2/examen/index.qmd`, brouillon, branche
-  `cours/bts2-examen-annales`) : tableau de bord des annales E4 option A
+- Page « Examen » BTS2 (`bts2/examen/index.qmd`, brouillon, PR #58) : tableau de bord des annales E4 option A
   (BTS SN 2016-2019 et 2021-2024, BTS CIEL 2025-2026), 20 thèmes réseaux,
   terrain/IoT et UML, comptés sur le domaine professionnel des sujets
   (corrigés non lus).
@@ -214,7 +213,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Codex : 5 constats A (dont 4 BLOQUANT), 2 réécritures gardées (R1 intro, R2 note C++) ; A1-A2 (schéma, gabarit) rejetés (décision de l'enseignant), A3 (2017 Q4 en Supports) rejeté (déjà compté en déploiement UML), A4 (2021 Q7 en Sécurité, 3 → 4/10) accepté, A5 (liens 2016-2017) non appliqué faute de vérification. Codex dit avoir consulté une page de corrigé : signalé à l'enseignant
 - Relance Codex : non
 - Rendu : Quarto absent en local, test du script avec un mini-DOM Node (scratchpad) ; rendu à confirmer dans la CI
-- Pull request : à renseigner
+- Pull request : #58
 
 ### 2026-10-26 — cours/bts2-cours-ospf-publication
 
