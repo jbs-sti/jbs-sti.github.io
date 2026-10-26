@@ -28,7 +28,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Réécriture courte des cours par Codex (nouveau protocole, PR #47 et #51) :
   cours subnetting (PR #52, publié, 558 → 257 lignes, 3 SVG), cours VLSM
   (PR #53, 518 → 230 lignes, 2 SVG nouveaux), cours routage dynamique
-  (`cours-ospf`, brouillon, PR #56, 776 → 292 lignes, progression du PDF
+  (`cours-ospf`, **publié par l'enseignant**, PR #56, 776 → 292 lignes, progression du PDF
   `Routage_dynamique.pdf` : statique → RIPv2 → redondance → OSPF,
   exemple HexaTech, 4 SVG dont `rip-sauts` nouveau). Ensuite, selon
   l'enseignant : cours NAT/PAT au même format, puis chapitre 06 pare-feu
@@ -119,7 +119,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - `bts2/reseaux/04-acl/tp-acl` (brouillon) : relire le PDF de la CI ;
   confirmer en salle que R1 perd aussi FW pendant la panne (INIT), et le
   comportement de `ipconfig /renew` (T1).
-- `bts2/reseaux/03-routage-dynamique/cours-ospf` (brouillon, réécrit court
+- `bts2/reseaux/03-routage-dynamique/cours-ospf` (publié, réécrit court
   par Codex) : relire le PDF de la CI et les 4 SVG (`topologie`,
   `rip-sauts`, `arbre-spf`, `voisinage`) ; confirmer dans Packet Tracer
   la ligne `R 192.168.3.0/24 [120/2] via 10.0.12.2` et la bascule RIP par
@@ -187,6 +187,11 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-26 — cours/bts2-cours-ospf-publication
+
+- Ressource : `bts2/reseaux/03-routage-dynamique/cours-ospf/index.qmd` : `draft: false`, modification faite par l'enseignant après la fusion de la PR #56 ; commitée telle quelle par le chef de projet
+- Pull request : à renseigner
 
 ### 2026-10-26 — cours/bts2-cours-routage-dynamique
 
