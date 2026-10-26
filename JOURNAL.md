@@ -27,7 +27,10 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   FAI et serveur public, PR #50). Le chapitre est complet.
 - Réécriture courte des cours par Codex (nouveau protocole, PR #47 et #51) :
   cours subnetting (PR #52, publié, 558 → 257 lignes, 3 SVG), cours VLSM
-  (PR #53, 518 → 230 lignes, 2 SVG nouveaux). Ensuite, selon
+  (PR #53, 518 → 230 lignes, 2 SVG nouveaux), cours routage dynamique
+  (`cours-ospf`, brouillon, PR #56, 776 → 292 lignes, progression du PDF
+  `Routage_dynamique.pdf` : statique → RIPv2 → redondance → OSPF,
+  exemple HexaTech, 4 SVG dont `rip-sauts` nouveau). Ensuite, selon
   l'enseignant : cours NAT/PAT au même format, puis chapitre 06 pare-feu
   et DMZ (ASA 5506-X).
 - Fiche d'exercices courte « classes A, B et C »
@@ -116,8 +119,11 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - `bts2/reseaux/04-acl/tp-acl` (brouillon) : relire le PDF de la CI ;
   confirmer en salle que R1 perd aussi FW pendant la panne (INIT), et le
   comportement de `ipconfig /renew` (T1).
-- `bts2/reseaux/03-routage-dynamique/cours-ospf` (brouillon) : relire le PDF
-  de la CI ; confirmer dans Packet Tracer les sorties `show` (reconstituées).
+- `bts2/reseaux/03-routage-dynamique/cours-ospf` (brouillon, réécrit court
+  par Codex) : relire le PDF de la CI et les 4 SVG (`topologie`,
+  `rip-sauts`, `arbre-spf`, `voisinage`) ; confirmer dans Packet Tracer
+  la ligne `R 192.168.3.0/24 [120/2] via 10.0.12.2` et la bascule RIP par
+  R2 après `shutdown` de R1 G0/2.
 - `bts2/reseaux/01-vlan-inter-vlan/fiche-vlan-inter-vlan` (brouillon) :
   décider de la longueur (≈ 4 pages, encadré 3560 à garder ou non).
 - `bts2/reseaux/03-routage-dynamique/tp-ospf` (brouillon) : relire le PDF de
@@ -181,6 +187,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-26 — cours/bts2-cours-routage-dynamique
+
+- Ressource : `bts2/reseaux/03-routage-dynamique/cours-ospf/index.qmd`, réécriture intégrale courte par Codex (776 → 292 lignes), titre « Le routage dynamique avec OSPF » gardé pour le TP 5 ; source : `Routage_dynamique.pdf` de l'enseignant (statique, RIPv2, redondance et convergence, OSPF), exemple HexaTech ; SVG `topologie`, `voisinage`, `arbre-spf` redessinés, `rip-sauts` créé
+- Relecteur : 4 réécritures R et 1 P (vecteur de distance, réseau majeur, convergence, coût OSPF, route par défaut), toutes gardées ; constat A1 (G0/2 R1–R3 donnée pour déjà configurée) corrigé par Codex
+- Vérificateur : 1er passage après relecture À REPRENDRE (V1 router-id employé avant définition, V2 `no shutdown` manquant, V3 LSDB et Null0 non définis ; BLOQUANT « rendu » dû à l'absence de Quarto en local) ; corrigés par Codex ; 2e passage CONFORME, avec une retouche d'une ligne du chef de projet (l. 258 : le TP 5 ne détaille pas la métrique E2)
+- Rapport du premier jet de Codex (section « Incertitudes ») écrasé par les rapports de correction : non repris dans la PR
+- Relance du relecteur : non (corrections de forme)
+- Pull request : #56
+- Points à relire par l'enseignant : rendu PDF de la CI et SVG ; sortie RIP et bascule après panne dans Packet Tracer
 
 ### 2026-10-25 — cours/bts2-fiche-vlsm-exercices
 

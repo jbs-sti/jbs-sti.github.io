@@ -1,71 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
-<title id="title">Topologie du fil rouge OSPF</title>
-<desc id="desc">Trois routeurs R1, R2 et R3 reliés en triangle par des liaisons Ethernet en /30. Chaque routeur dessert un réseau local en /24. R1 est aussi relié au routeur du fournisseur d’accès par une liaison série.</desc>
-<rect width="800" height="600" fill="white"/>
-<!-- Liaisons Ethernet : traits pleins -->
-<g fill="none" stroke="#222" stroke-width="3">
-<path d="M400 170 L200 390"/>
-<path d="M400 170 L600 390"/>
-<path d="M200 390 H600"/>
-<path d="M400 170 H260"/>
-<path d="M200 390 V470"/>
-<path d="M600 390 V470"/>
-</g>
-<!-- Liaison série : tirets -->
-<path d="M400 170 H600" fill="none" stroke="#222" stroke-width="3" stroke-dasharray="10 6"/>
-<!-- Routeurs -->
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="365" viewBox="0 0 900 365" role="img" aria-labelledby="title desc">
+<title id="title">HexaTech : trois sites et une liaison de secours</title>
+<desc id="desc">Paris R1, Lyon R2 et Marseille R3 en chaîne. La future liaison directe Paris–Marseille est en tirets. Un LAN /24 dessert chaque site.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#222"/></marker></defs>
+<rect width="900" height="365" fill="white"/>
+<g font-family="sans-serif" font-size="18" fill="#111" text-anchor="middle">
+
+<path d="M150 160 H750" fill="none" stroke="#222" stroke-width="3"/>
+<path d="M150 120 V45 H750 V120" fill="none" stroke="#222" stroke-width="3" stroke-dasharray="10 7"/>
+<rect x="265" y="28" width="370" height="35" fill="white"/>
+<text x="450" y="52">R1–R3 : 10.0.13.0/30 (ajoutée ensuite)</text>
+<text x="300" y="140">10.0.12.0/30</text>
+<text x="600" y="140">10.0.23.0/30</text>
 <g fill="white" stroke="#111" stroke-width="3">
-<circle cx="400" cy="170" r="38"/>
-<circle cx="200" cy="390" r="38"/>
-<circle cx="600" cy="390" r="38"/>
+<circle cx="150" cy="160" r="40"/><circle cx="450" cy="160" r="40"/><circle cx="750" cy="160" r="40"/>
+<path d="M150 200 V210 M150 242 V257 M450 200 V210 M450 242 V257 M750 200 V210 M750 242 V257"/>
 </g>
-<g font-family="sans-serif" fill="#111" text-anchor="middle">
-<text x="400" y="168" font-size="21" font-weight="bold">R1</text>
-<text x="400" y="188" font-size="13">1.1.1.1</text>
-<text x="200" y="388" font-size="21" font-weight="bold">R2</text>
-<text x="200" y="408" font-size="13">2.2.2.2</text>
-<text x="600" y="388" font-size="21" font-weight="bold">R3</text>
-<text x="600" y="408" font-size="13">3.3.3.3</text>
+<g font-weight="bold" font-size="22">
+<text x="150" y="167">R1</text><text x="450" y="167">R2</text><text x="750" y="167">R3</text>
 </g>
-<!-- Réseaux locaux et FAI -->
-<g fill="#eee" stroke="#111" stroke-width="2">
-<rect x="40" y="135" width="220" height="70"/>
-<rect x="100" y="470" width="200" height="70"/>
-<rect x="500" y="470" width="200" height="70"/>
-<rect x="600" y="135" width="170" height="70" stroke-dasharray="6 4"/>
+<text x="150" y="235">Paris</text><text x="450" y="235">Lyon</text><text x="750" y="235">Marseille</text>
+<g fill="#eee" stroke="#222" stroke-width="2">
+<rect x="30" y="257" width="240" height="60" rx="5"/>
+<rect x="330" y="257" width="240" height="60" rx="5"/>
+<rect x="630" y="257" width="240" height="60" rx="5"/>
 </g>
-<g font-family="sans-serif" fill="#111" text-anchor="middle" font-size="16">
-<text x="150" y="162" font-weight="bold">LAN1</text>
-<text x="150" y="186">192.168.1.0/24 · PC1 .10</text>
-<text x="200" y="497" font-weight="bold">LAN2</text>
-<text x="200" y="521">192.168.2.0/24 · PC2 .10</text>
-<text x="600" y="497" font-weight="bold">LAN3</text>
-<text x="600" y="521">192.168.3.0/24 · PC3 .10</text>
-<text x="685" y="162" font-weight="bold">FAI</text>
-<text x="685" y="186">203.0.113.1</text>
-</g>
-<!-- Sous-réseaux des liaisons -->
-<g font-family="sans-serif" fill="#111" font-size="16" font-weight="bold">
-<text x="285" y="285" text-anchor="end">10.0.0.0/30</text>
-<text x="515" y="285" text-anchor="start">10.0.0.8/30</text>
-<text x="400" y="420" text-anchor="middle">10.0.0.4/30</text>
-<text x="520" y="196" text-anchor="middle">203.0.113.0/30</text>
-</g>
-<!-- Interfaces -->
-<g font-family="sans-serif" fill="#111" font-size="15">
-<text x="310" y="160" text-anchor="middle">G0/0 .1</text>
-<text x="520" y="160" text-anchor="middle">S0/0/0 .2</text>
-<text x="338" y="226" text-anchor="end">G0/1 .1</text>
-<text x="462" y="226" text-anchor="start">G0/2 .9</text>
-<text x="225" y="350" text-anchor="end">G0/1 .2</text>
-<text x="575" y="350" text-anchor="start">G0/2 .10</text>
-<text x="246" y="380" text-anchor="start">G0/2 .5</text>
-<text x="554" y="380" text-anchor="end">G0/1 .6</text>
-<text x="208" y="456" text-anchor="start">G0/0 .1</text>
-<text x="608" y="456" text-anchor="start">G0/0 .1</text>
-</g>
-<g font-family="sans-serif" fill="#111" font-size="14" text-anchor="middle">
-<text x="400" y="572">Trait plein : liaison GigabitEthernet ; tirets : liaison série vers le FAI.</text>
-<text x="400" y="592">Sous chaque nom de routeur : son router-id.</text>
+<text x="150" y="294">192.168.1.0/24</text>
+<text x="450" y="294">192.168.2.0/24</text>
+<text x="750" y="294">192.168.3.0/24</text>
+<text x="450" y="349" font-size="16">Trait plein : liaison initiale ; tirets : futur chemin de secours. G0/0 dessert chaque LAN.</text>
+
 </g>
 </svg>
