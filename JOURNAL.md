@@ -191,7 +191,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 ### 2026-10-26 — cours/bts2-cours-ospf-publication
 
 - Ressource : `bts2/reseaux/03-routage-dynamique/cours-ospf/index.qmd` : `draft: false`, modification faite par l'enseignant après la fusion de la PR #56 ; commitée telle quelle par le chef de projet
-- Pull request : à renseigner
+- Pull request : #57
 
 ### 2026-10-26 — cours/bts2-cours-routage-dynamique
 
