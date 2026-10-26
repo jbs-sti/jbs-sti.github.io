@@ -46,8 +46,22 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (BTS SN 2016-2019 et 2021-2024, BTS CIEL 2025-2026), 20 thèmes réseaux,
   terrain/IoT et UML, comptés sur le domaine professionnel des sujets
   (corrigés non lus).
+- TP « Du routage statique au routage dynamique »
+  (`bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique`,
+  order 15, **publié à la demande de l'enseignant**) : TP LaTeX de
+  l'enseignant (cinq séances HexaTech, 9 h, une page par séance), mis en
+  ligne sous forme de page de présentation + PDF téléchargeable
+  (`fichiers/`), source `.tex` jointe. Le corrigé
+  (`tp_routage_dynamique_corrige.tex`, non suivi à la racine) n'est pas
+  publié : dépôt public.
 
 **À faire**
+
+- `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique`
+  (publié) : le PDF de `fichiers/` est compilé à la main (pdfLaTeX) ; le
+  recompiler et le recopier après toute modification du `.tex`. Les
+  séances sont nommées « Séance 1 » à « Séance 5 » pour ne pas se
+  confondre avec la numérotation des TP du site (TP 5 = fil rouge OSPF).
 
 - `bts2/examen` (publiée) : vérifier sur le site le HTML (graphique
   cliquable) et le PDF, et la place de « Examen » dans la barre latérale ;
@@ -204,6 +218,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-26 — cours/bts2-tp-routage-statique-dynamique
+
+- Ressource : `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique/index.qmd` : page de présentation + `fichiers/tp-routage-statique-dynamique.pdf` (9 pages, une page par séance, compilé avec pdfLaTeX) et sa source `.tex` ; niveau passé de « Première » à « Deuxième année » (choix de l'enseignant)
+- Format « page + PDF » choisi par l'enseignant, à la place d'une conversion en `index.qmd` : la ressource n'est pas passée par le circuit rédacteur / Codex / vérificateur ; le TP a été relu par Claude Code (cohérence technique, mise en page) dans la session
+- `draft: false` à la demande explicite de l'enseignant (« mets le TP en ligne »)
+- Corrigé non publié (dépôt public)
+- Séances renommées « TP 1…5 » → « Séance 1…5 » (accord de l'enseignant)
+- Pull request : #60
 
 ### 2026-10-26 — cours/bts2-examen-publication
 

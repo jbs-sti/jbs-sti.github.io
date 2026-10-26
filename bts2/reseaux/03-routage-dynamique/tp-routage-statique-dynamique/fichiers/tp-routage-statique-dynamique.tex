@@ -1,0 +1,299 @@
+\documentclass[10pt,a4paper]{article}
+% BTS CIEL 2e année — Overleaf : pdfLaTeX (deux compilations)
+% Mise en page : chaque TP tient sur une seule page. Le corrigé est dans
+% tp_routage_dynamique_corrige.tex.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french,provide=*]{babel}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,hmargin=1.4cm,top=1.3cm,bottom=1.4cm,includehead,headheight=13pt,headsep=4mm,footskip=6mm]{geometry}
+\usepackage{xcolor,tabularx,booktabs,array,enumitem,fancyhdr,lastpage}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{listings,hyperref,titlesec}
+\definecolor{vert}{HTML}{1C322D}
+\definecolor{creme}{HTML}{F8F3EE}
+\definecolor{or}{HTML}{EBB552}
+\definecolor{rose}{HTML}{F1CDBE}
+\definecolor{rouge}{HTML}{B03A2E}
+\definecolor{gris}{HTML}{697672}
+\hypersetup{colorlinks=true,linkcolor=vert,urlcolor=vert}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlist[enumerate]{leftmargin=*,itemsep=4pt}
+\setlist[itemize]{leftmargin=*,itemsep=2pt}
+\renewcommand{\arraystretch}{1.15}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{vert}BTS CIEL — Routage}
+\fancyhead[R]{\small TP en cinq séances}
+\fancyfoot[L]{\small Ahmed Bachir Diedhiou}
+\fancyfoot[R]{\small\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\titleformat{\section}{\Large\bfseries\color{vert}}{\thesection.}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{vert}}{\thesubsection}{.55em}{}
+\titlespacing*{\section}{0pt}{0pt}{4pt}
+\tcbset{compact/.style={enhanced,breakable,arc=2mm,boxsep=1mm,left=2mm,right=2mm,top=.5mm,bottom=.5mm,toptitle=.3mm,bottomtitle=.3mm,before skip=2.5mm,after skip=4pt}}
+% Le titre de chaque encadré ouvre son texte, pour gagner une ligne.
+\newtcolorbox{probleme}{compact,colback=creme,colframe=or,before upper={{\bfseries\color{vert}Situation-problème —}\enspace}}
+\newtcolorbox{notion}{compact,colback=creme,colframe=vert,before upper={{\bfseries\color{vert}Comprendre avant d'agir —}\enspace}}
+\newtcolorbox{bilan}{compact,colback=white,colframe=vert,before upper={{\bfseries\color{vert}Synthèse à compléter —}\enspace}}
+% Lignes de réponse : l'espace d'écriture est au-dessus de chaque trait.
+\newcommand{\lignes}[1][1]{\par\foreach \k in {1,...,#1}{\vspace{3.5mm}\noindent\rule{\linewidth}{.3pt}\par}\vspace{-1mm}}
+\newcommand{\question}[2][1]{\par\textbf{\color{vert}Question —} #2\lignes[#1]}
+\newcommand{\etape}[1]{\par\vspace{1pt}{\bfseries\color{vert}#1\enspace}}
+\newcommand{\duree}[1]{\hfill{\normalsize\mdseries #1}}
+\lstset{basicstyle=\ttfamily\footnotesize,backgroundcolor=\color{creme},frame=single,rulecolor=\color{gris},columns=fullflexible,keepspaces=true,breaklines=true,showstringspaces=false,xleftmargin=2mm,xrightmargin=2mm,aboveskip=3pt,belowskip=3pt}
+
+% Un même schéma sert aux trois états du projet. Les étiquettes montrent
+% volontairement les IP exactes des interfaces, les ports, les PC et les LAN.
+% #1 : état (1, 2 ou 3) ; #2 : largeur du schéma.
+\newcommand{\topologie}[2]{%
+\par{\centering\resizebox{#2}{!}{%
+\begin{tikzpicture}[font=\sffamily\scriptsize,>=Latex,yscale=.8,
+ routeur/.style={circle,draw=vert,fill=vert,text=white,minimum size=11mm,font=\bfseries},
+ pc/.style={draw=vert,fill=creme,rounded corners=1mm,align=center,minimum width=29mm,minimum height=10mm},
+ commut/.style={draw=vert,fill=rose,rounded corners=1mm,align=center,minimum width=18mm,minimum height=7mm}]
+\node[routeur] (r1) at (0,0) {R1};
+\node[routeur] (r2) at (8,0) {R2};
+\node[commut] (s1) at (0,-1.65) {SW1};
+\node[commut] (s2) at (8,-1.65) {SW2};
+\node[pc] (p1) at (0,-3.05) {PC Paris\\192.168.1.10/24\\GW 192.168.1.1};
+\node[pc] (p2) at (8,-3.05) {PC Lyon\\192.168.2.10/24\\GW 192.168.2.1};
+\draw[thick] (r1)--node[right,align=left]{G0/0\\192.168.1.1/24}(s1);
+\draw[thick] (s1)--(p1);
+\draw[thick] (r2)--node[right,align=left]{G0/0\\192.168.2.1/24}(s2);
+\draw[thick] (s2)--(p2);
+\draw[line width=1.5pt,or] (r1)--node[above]{10.0.12.0/30} node[pos=.12,below,align=center]{G0/1\\10.0.12.1} node[pos=.88,below,align=center]{G0/1\\10.0.12.2}(r2);
+\ifnum#1>1
+\node[routeur] (r3) at (16,0) {R3};
+\node[commut] (s3) at (16,-1.65) {SW3};
+\node[pc] (p3) at (16,-3.05) {PC Marseille\\192.168.3.10/24\\GW 192.168.3.1};
+\draw[thick] (r3)--node[right,align=left]{G0/0\\192.168.3.1/24}(s3);
+\draw[thick] (s3)--(p3);
+\draw[line width=1.5pt,or] (r2)--node[above]{10.0.23.0/30} node[pos=.12,below,align=center]{G0/2\\10.0.23.1} node[pos=.88,below,align=center]{G0/1\\10.0.23.2}(r3);
+\fi
+\ifnum#1>2
+\draw[line width=1.6pt,or] (r1.north) .. controls (2.5,2.1) and (13.5,2.1) .. (r3.north)
+ node[pos=.5,above]{Liaison de secours~: 10.0.13.0/30};
+\node[anchor=south east,align=right] at (r1.north west) {R1 G0/2\\10.0.13.1};
+\node[anchor=south west,align=left] at (r3.north east) {R3 G0/2\\10.0.13.2};
+\fi
+\end{tikzpicture}}\par}\smallskip}
+
+\begin{document}
+\begin{titlepage}\pagecolor{vert}\color{creme}
+\vspace*{3cm}{\Large BTS CIEL — Deuxième année}\par\vspace{1cm}
+{\Huge\bfseries Du routage statique\\[3mm]au routage dynamique}\par\vspace{8mm}
+{\Large Un TP Packet Tracer en cinq séances, de RIP à OSPF}\par\vspace{1cm}
+{\color{or}\rule{\linewidth}{2pt}}\par\vspace{1cm}
+{\large 9 heures — situations-problèmes, manipulation, observation, explication}\par
+\vfill
+\begin{tcolorbox}[colback=creme,colframe=or]
+\color{vert}\textbf{Question directrice~:} comment permettre aux routeurs d'apprendre les chemins et de s'adapter aux changements du réseau~?
+\end{tcolorbox}
+\vfill Ahmed Bachir Diedhiou
+\end{titlepage}\nopagecolor\color{black}
+\tableofcontents\clearpage
+
+\section{Le réseau HexaTech~: projet commun}
+HexaTech possède d'abord deux sites (Paris et Lyon), puis ouvre Marseille. Vous configurerez la même infrastructure tout au long des cinq séances.
+\begin{center}\begin{tabularx}{\linewidth}{lXr}\toprule
+Séance 1 & Deux sites et routes statiques & 1 h 30\\
+Séance 2 & Troisième site et limites du statique & 1 h 30\\
+Séance 3 & Découverte et configuration de RIPv2 & 2 h\\
+Séance 4 & Redondance et convergence & 1 h 30\\
+Séance 5 & Découverte et configuration d'OSPF & 2 h 30\\\bottomrule\end{tabularx}\end{center}
+\textbf{Matériel~:} Packet Tracer, trois routeurs Cisco 2911, trois switches 2960, trois PC, câbles Ethernet. Chaque routeur utilise G0/0 pour le LAN~; les autres interfaces sont précisées sur les schémas.\par
+\textbf{Règle de travail~:} enregistrer une copie distincte à chaque séance. Les tests se font d'abord en mode Realtime, puis en mode Simulation lorsque demandé.\par
+\textbf{Commandes IOS~:} sauf mention contraire, les commandes de configuration se saisissent après \texttt{enable} puis \texttt{configure terminal}~; les commandes \texttt{show} se saisissent en mode privilégié (\texttt{Router\#}).
+
+% ---------------------------------------------------------------- Séance 1
+\clearpage\section[Séance 1 — Deux sites doivent communiquer]{Séance 1 — Deux sites doivent communiquer\duree{1 h 30}}
+\begin{probleme}Le bureau de Paris doit échanger des données avec le bureau de Lyon. Chaque LAN fonctionne, mais les deux PC n'arrivent pas à communiquer. Pourquoi~?\end{probleme}
+\topologie{1}{.56\linewidth}
+\textbf{Objectifs~:} configurer les interfaces, tester la connectivité, lire la table de routage, créer les routes statiques nécessaires.
+
+\etape{Étape 1 — Construire et adresser.}
+Placez deux routeurs 2911, deux switches 2960 et deux PC, reliez-les et adressez les PC comme sur le schéma. Sur R1 comme sur R2, configurez \textbf{G0/0} (LAN) et \textbf{G0/1} (liaison entre routeurs), puis activez-les~:
+\begin{lstlisting}
+enable
+configure terminal
+interface gigabitEthernet 0/0
+ ip address ADRESSE MASQUE
+ no shutdown
+exit
+\end{lstlisting}
+\question{Pourquoi les interfaces G0/0 et G0/1 d'un même routeur n'ont-elles pas des adresses dans le même réseau~?}
+
+\etape{Étape 2 — Vérifier les interfaces.}
+Sur les deux routeurs, lancez \texttt{show ip interface brief}.
+\question{Quels états doivent apparaître dans les colonnes \texttt{Status} et \texttt{Protocol} pour une liaison opérationnelle~?}
+
+\etape{Étape 3 — Constater le problème.}
+Depuis PC Paris, exécutez \texttt{ping 192.168.1.1}, puis \texttt{ping 192.168.2.10}.
+\question[2]{Quel test fonctionne~? Formulez une hypothèse expliquant l'échec de l'autre test.}
+
+\etape{Étape 4 — Vérifier l'hypothèse.}
+Sur R1 puis R2, exécutez \texttt{show ip route}. Repérez les réseaux précédés de \texttt{C} (connecté) et de \texttt{L} (adresse locale d'interface).
+\question{R1 possède-t-il une route vers \texttt{192.168.2.0/24}~? Et R2 vers \texttt{192.168.1.0/24}~?}
+
+\etape{Étape 5 — Corriger avec des routes statiques.}
+Sur R1, complétez puis saisissez \texttt{ip route RESEAU\_DESTINATION MASQUE IP\_PROCHAIN\_SAUT}~; faites l'équivalent sur R2.
+\question{Pourquoi faut-il prévoir une route dans chaque sens~?}
+Refaites le ping entre les PC et consultez \texttt{show ip route}.
+\question{Quelle lettre distingue maintenant les nouvelles routes dans la table~?}
+\begin{bilan}Une route statique est \dotfill\\Un routeur connaît initialement \dotfill\\Le prochain saut désigne \dotfill\end{bilan}
+
+% ---------------------------------------------------------------- Séance 2
+\clearpage\section[Séance 2 — L'entreprise ouvre Marseille]{Séance 2 — L'entreprise ouvre Marseille\duree{1 h 30}}
+\begin{probleme}Un troisième site ouvre à Marseille. Le responsable annonce ensuite vingt nouvelles implantations. La méthode utilisée précédemment pourra-t-elle être conservée sans difficulté~?\end{probleme}
+\topologie{2}{\linewidth}
+
+\etape{Étape 1 — Ajouter le troisième site.}
+Reprenez une copie du fichier de la séance 1. Ajoutez R3, SW3 et PC Marseille. Sur R2, configurez \textbf{G0/2} vers R3~; sur R3, configurez \textbf{G0/1} vers R2 et \textbf{G0/0} vers son LAN. Attribuez toutes les IP figurant sur le schéma.
+\question{Quels nouveaux réseaux apparaissent dans la table de R2~?}
+
+\etape{Étape 2 — Tester avant de configurer les routes.}
+Depuis PC Paris, lancez \texttt{ping 192.168.3.10}. Consultez ensuite les tables des trois routeurs.
+\question[2]{Quels routeurs ne connaissent pas encore de chemin vers un LAN distant~? Lesquels leur manquent~?}
+
+\etape{Étape 3 — Compléter les routes statiques.}
+Ajoutez les routes nécessaires sur R1, R2 et R3, en tenant compte des routes de la séance 1. Testez Paris–Marseille, Lyon–Marseille et les trajets retour.
+\question[2]{Combien de nouvelles routes avez-vous créées~? Quelles erreurs de configuration seraient possibles~?}
+
+\etape{Étape 4 — Prendre du recul.}
+L'entreprise prévoit désormais vingt sites supplémentaires.
+\question[2]{Quelles tâches l'administrateur devra-t-il répéter à chaque extension~?}
+\question[2]{Imaginez un moyen pour que les routeurs apprennent eux-mêmes les réseaux connus de leurs voisins.}
+\begin{bilan}La principale limite du routage statique dans un grand réseau est \dotfill\\Nous aurions besoin que les routeurs \dotfill\end{bilan}
+
+% ---------------------------------------------------------------- Séance 3
+\clearpage\section[Séance 3 — Découvrir et configurer RIPv2]{Séance 3 — Découvrir et configurer RIPv2\duree{2 h}}
+\begin{probleme}Le service informatique veut réduire la maintenance manuelle des routes. Comment R1 pourrait-il apprendre le réseau de Marseille grâce aux annonces de R2~?\end{probleme}
+\topologie{2}{.9\linewidth}
+\begin{notion}Un routeur peut annoncer à ses voisins les réseaux qu'il sait atteindre~; les voisins utilisent ces annonces pour mettre à jour leur table~: c'est le \textbf{routage dynamique}. \textbf{RIP} (Routing Information Protocol) est un protocole à \emph{vecteur de distance}~; RIPv2 annonce aussi les masques. Sa métrique est le \textbf{nombre de sauts}~: une métrique de 16 signifie « inaccessible ».\end{notion}
+
+\etape{Étape 1 — Prédire la métrique.}
+R3 possède le LAN Marseille~: R2 l'apprend en métrique 1, R1 en métrique 2.
+\question{Pourquoi R1 doit-il envoyer les paquets à R2 pour atteindre Marseille dans cette topologie~?}
+
+\etape{Étape 2 — Préparer une expérience correcte.}
+Dupliquez le fichier de la séance 2. Sur chaque routeur, consultez \texttt{show ip route static}, puis supprimez les routes statiques des séances 1 et 2 avec \texttt{no ip route RESEAU MASQUE IP\_PROCHAIN\_SAUT}.
+\question{Pourquoi faut-il retirer ces routes avant d'étudier les routes apprises par RIP~?}
+
+\etape{Étape 3 — Configurer RIP sur R1.}
+Saisissez, dans l'ordre, les commandes du tableau~:\par\smallskip
+{\small\begin{tabularx}{\linewidth}{>{\ttfamily}p{.37\linewidth}X}\toprule
+\normalfont\textbf{Commande}&\textbf{Rôle}\\\midrule
+router rip&Active le processus RIP.\\
+version 2&Utilise RIPv2, dont les annonces incluent les masques.\\
+network 192.168.1.0&Active RIP sur l'interface du LAN Paris.\\
+network 10.0.0.0&Active RIP sur les interfaces du réseau majeur 10.0.0.0/8.\\
+no auto-summary&Désactive le résumé automatique aux frontières des réseaux majeurs.\\
+passive-interface gigabitEthernet 0/0&Pas d'annonces RIP vers les PC~; le LAN reste annoncé.\\\bottomrule
+\end{tabularx}}\par
+\textbf{Attention~:} \texttt{network} ne crée aucune route~: il désigne les interfaces RIP (réseau majeur, d'où \texttt{10.0.0.0}).
+\question{Pourquoi le LAN Paris est-il annoncé, alors que l'interface G0/0 est passive~?}
+
+\etape{Étape 4 — Reproduire en comprenant.}
+Sur R2 puis R3, configurez RIP en adaptant le réseau du LAN.
+\question{Quelles commandes sont identiques sur les trois routeurs~? Lesquelles changent et pourquoi~?}
+
+\etape{Étape 5 — Vérifier l'apprentissage.}
+Sur R1, exécutez \texttt{show ip protocols} et \texttt{show ip route}, puis testez le ping Paris–Marseille dans les deux sens. Extrait attendu~:
+\begin{lstlisting}
+R    192.168.3.0/24 [120/2] via 10.0.12.2, 00:00:12, GigabitEthernet0/1
+\end{lstlisting}
+\question{Interprétez la lettre R, les valeurs 120 et 2, puis l'adresse 10.0.12.2.}
+
+\etape{Étape 6 — Voir RIP fonctionner.}
+En \textbf{Simulation}, filtrez \textbf{RIP} et ouvrez une annonce (toutes les 30 s, UDP 520, vers 224.0.0.9).
+\question{Quelles informations sont transmises~? À quoi servent-elles à un routeur voisin~?}
+\begin{bilan}RIP~: famille \makebox[5cm]{\dotfill}~; métrique \dotfill\\Lettre d'une route RIP dans la table~: \makebox[4cm]{\dotfill}\end{bilan}
+
+% ---------------------------------------------------------------- Séance 4
+\clearpage\section[Séance 4 — Une liaison tombe en panne]{Séance 4 — Une liaison tombe en panne\duree{1 h 30}}
+\begin{probleme}Une liaison directe Paris–Marseille est créée pour disposer de plusieurs chemins. Que se passe-t-il si elle tombe en panne~?\end{probleme}
+\topologie{3}{\linewidth}
+
+\etape{Étape 1 — Ajouter le chemin direct.}
+Reprenez le fichier de la séance 3. Reliez \textbf{R1 G0/2} à \textbf{R3 G0/2}, configurez les IP indiquées sur le schéma, puis \texttt{no shutdown}. Les interfaces en 10.0.13.0/30 sont déjà couvertes par \texttt{network 10.0.0.0} dans RIP.
+\question{Combien de chemins physiques relient maintenant Paris à Marseille~?}
+
+\etape{Étape 2 — Observer le trajet normal.}
+Attendez la convergence puis, depuis PC Paris, exécutez \texttt{tracert 192.168.3.10}.
+\question[2]{Quel chemin est utilisé~? Expliquez ce choix à partir de la métrique RIP.}
+
+\etape{Étape 3 — Provoquer et observer une panne.}
+Sur R1, désactivez G0/2~:
+\begin{lstlisting}
+configure terminal
+interface gigabitEthernet 0/2
+ shutdown
+\end{lstlisting}
+Après convergence, consultez \texttt{show ip route}, puis relancez le ping et le traceroute.
+\question[2]{Par quel routeur les paquets passent-ils maintenant~? La communication est-elle nécessairement ininterrompue pendant la convergence~?}
+\begin{notion}La \textbf{convergence} est le processus par lequel les routeurs prennent connaissance d'un changement et mettent à jour leurs routes. Le routage dynamique ne crée pas de nouvelle liaison~: pour contourner une panne, un chemin alternatif doit déjà exister.\end{notion}
+
+\etape{Étape 4 — Rétablir la liaison.}
+Sur R1 G0/2~: \texttt{no shutdown}. Attendez la convergence et observez la table de R1.
+\question{Pourquoi le chemin préféré change-t-il à nouveau~?}
+\begin{bilan}La redondance signifie \dotfill\\La convergence correspond à \dotfill\end{bilan}
+
+% ---------------------------------------------------------------- Séance 5
+\clearpage\section[Séance 5 — Découvrir et configurer OSPF]{Séance 5 — Découvrir et configurer OSPF\duree{2 h 30}}
+\begin{probleme}Le chemin qui passe par le moins de routeurs n'est pas toujours le plus intéressant. Comment choisir selon le coût des liaisons plutôt que selon le seul nombre de sauts~?\end{probleme}
+\topologie{3}{.72\linewidth}
+\begin{notion}\textbf{OSPF} (\emph{Open Shortest Path First}) est un protocole à \textbf{état de liens}~: les routeurs découvrent leurs voisins (messages \textbf{Hello}), échangent la topologie de leur aire, puis calculent les chemins de coût minimal (algorithme SPF de Dijkstra). Ici, une seule aire~: \textbf{area 0}.\end{notion}
+
+\etape{Étape 1 — Faire une hypothèse.}
+Coûts prévus~: R1–R2 = 10~; R2–R3 = 10~; R1–R3 = 30. Le coût du LAN de R3, commun aux deux chemins, ne change pas le choix.
+\question{Comparez les coûts des trajets R1–R3 et R1–R2–R3~: quel chemin OSPF devrait-il préférer vers Marseille~?}
+
+\etape{Étape 2 — Configurer OSPF sur R1.}
+Rétablissez toutes les interfaces, supprimez RIP partout (\texttt{no router rip}), puis saisissez sur R1~:\par\smallskip
+{\small\begin{tabularx}{\linewidth}{>{\ttfamily}p{.37\linewidth}X}\toprule
+\normalfont\textbf{Commande}&\textbf{Rôle}\\\midrule
+router ospf 1&Active le processus OSPF 1 (numéro local, propre au routeur).\\
+network 192.168.1.0 0.0.0.255 area 0&Place l'interface du LAN de R1 dans l'aire 0.\\
+network 10.0.12.0 0.0.0.3 area 0&Place l'interface de R1 vers R2 dans l'aire 0.\\
+network 10.0.13.0 0.0.0.3 area 0&Place l'interface de R1 vers R3 dans l'aire 0.\\
+passive-interface gigabitEthernet 0/0&Pas de voisinage OSPF sur le LAN, qui reste annoncé.\\\bottomrule
+\end{tabularx}}\par
+\textbf{Masque générique (wildcard)} = \texttt{255.255.255.255 - masque} (/24~: \texttt{0.0.0.255}~; /30~: \texttt{0.0.0.3}).
+
+\etape{Étape 3 — Adapter aux autres routeurs.}
+Sur R2 et R3, adaptez les trois lignes \texttt{network} aux réseaux de leurs interfaces~; G0/0 reste passive.
+\question{Quelles interfaces doivent établir des voisinages OSPF~? Pourquoi pas G0/0~?}
+
+\etape{Étape 4 — Observer les voisins et les routes.}
+Sur R1, exécutez \texttt{show ip ospf neighbor}, puis \texttt{show ip route}.
+\question{Combien de voisins R1 découvre-t-il~? Quelle lettre désigne les routes OSPF~? Recopiez la route vers \texttt{192.168.3.0/24}.}
+
+\etape{Étape 5 — Appliquer les coûts.}
+En mode interface, sur R1~: \texttt{ip ospf cost 10} sur G0/1, \texttt{ip ospf cost 30} sur G0/2~; R2~: 10 sur G0/1 et G0/2~; R3~: 10 sur G0/1, 30 sur G0/2. Vérifiez avec \texttt{show ip ospf interface}, relisez la route vers \texttt{192.168.3.0/24} et lancez \texttt{tracert 192.168.3.10} depuis PC Paris.
+\question[2]{Qu'est-ce qui a changé dans la route~? Que représentent les deux nombres entre crochets~? Le chemin choisi confirme-t-il votre hypothèse~?}
+
+\etape{Étape 6 — Couper une liaison.}
+Coupez R1 G0/1 (vers R2), relancez \texttt{show ip route} et le traceroute après convergence, puis réactivez.
+\question{Quel chemin de secours OSPF utilise-t-il~? Pourquoi~?}
+\begin{bilan}OSPF~: famille \makebox[4.5cm]{\dotfill}~; voisins découverts par \dotfill\\Métrique \makebox[4.5cm]{\dotfill}~; aire configurée dans ce TP \makebox[4cm]{\dotfill}\end{bilan}
+
+% ---------------------------------------------------------------- Bilan
+\clearpage\section{Bilan final}
+\begin{center}\begin{tabularx}{\linewidth}{lXXX}\toprule
+Critère & Statique & RIPv2 & OSPF\\\midrule
+Apprentissage & Manuel & Annonces de routes & État de liens\\
+Choix de chemin & Route configurée & Nombre de sauts & Coût\\
+Code Cisco & S & R & O\\
+Adaptation aux pannes & Secours à prévoir & Convergence RIP & Convergence OSPF\\\bottomrule\end{tabularx}\end{center}
+\textbf{Questions de vérification~:}
+\begin{enumerate}
+\item Pourquoi une route statique n'est-elle pas automatiquement mise à jour lorsqu'un nouveau réseau est créé~?\lignes
+\item Un protocole dynamique peut-il restaurer la communication sans chemin physique de secours~?\lignes
+\item Dans RIP, que signifie une métrique de 16~?\lignes
+\item Dans OSPF, pourquoi un trajet à deux liaisons peut-il être préféré à un trajet direct~?\lignes
+\item Quelle commande permet d'observer les voisins OSPF~?\lignes
+\end{enumerate}
+\end{document}

@@ -1,0 +1,87 @@
+---
+title: "Du routage statique au routage dynamique"
+description: "Cinq séances Packet Tracer sur le réseau HexaTech : routes statiques, limites du statique, RIPv2, redondance et convergence, puis OSPF et coût des liaisons."
+type: tp
+domaine: reseaux
+chapitre: "03 — Routage dynamique"
+categories: [tp, reseaux]
+mots-cles: [routage statique, routage dynamique, RIPv2, OSPF, métrique, distance administrative, convergence, redondance, coût OSPF, Packet Tracer]
+objectifs:
+  - "Configurer des routes statiques et lire une table de routage."
+  - "Expliquer les limites du routage statique quand le réseau grandit."
+  - "Configurer RIPv2 et interpréter une route apprise (lettre, distance administrative, métrique, prochain saut)."
+  - "Observer la convergence après la panne d'une liaison redondante."
+  - "Configurer OSPF en aire 0 et prévoir le chemin choisi à partir des coûts."
+prerequis:
+  - "Adressage IPv4 et masques"
+  - "Configuration de base d'un routeur Cisco"
+  - "Cours « Le routage dynamique avec OSPF »"
+duree: "9 h"
+order: 15
+date-modified: 2026-10-26
+draft: false
+lang: fr
+---
+
+## Objectifs et prérequis
+
+Ce TP suit le cours « Le routage dynamique avec OSPF ». Vous construirez
+pas à pas le réseau de l'entreprise HexaTech, d'abord avec des routes
+statiques, puis avec RIPv2 et enfin avec OSPF. À chaque séance, vous ferez
+une hypothèse, la vérifierez dans Packet Tracer et l'expliquerez.
+
+Il faut savoir adresser un réseau IPv4 et configurer les interfaces d'un
+routeur Cisco.
+
+## Situation de départ
+
+HexaTech possède deux sites, Paris et Lyon, puis ouvre Marseille. La
+question directrice est la suivante : comment permettre aux routeurs
+d'apprendre les chemins et de s'adapter aux changements du réseau ?
+
+Le sujet complet tient en une page par séance, avec le schéma, les
+consignes, les questions et les lignes de réponse :
+
+**[Télécharger le sujet (PDF)](fichiers/tp-routage-statique-dynamique.pdf)**
+
+## Matériel et environnement
+
+- Cisco Packet Tracer.
+- Trois routeurs Cisco 2911, trois switches 2960, trois PC, câbles Ethernet.
+- Chaque routeur utilise G0/0 pour son LAN ; les liaisons entre routeurs
+  sont précisées sur le schéma de chaque séance.
+- Enregistrez une copie distincte du fichier `.pkt` à chaque séance.
+
+## Travail à réaliser
+
+| Séance | Thème | Durée |
+|---|---|---|
+| 1 | Deux sites et routes statiques | 1 h 30 |
+| 2 | Troisième site et limites du statique | 1 h 30 |
+| 3 | Découverte et configuration de RIPv2 | 2 h |
+| 4 | Redondance et convergence | 1 h 30 |
+| 5 | Découverte et configuration d'OSPF | 2 h 30 |
+
+: Déroulé des cinq séances {tbl-colwidths="[15,65,20]"}
+
+Chaque séance suit la même démarche : une situation-problème, une
+hypothèse, la manipulation, l'observation des tables de routage, puis une
+synthèse à compléter.
+
+## Vérification et compte rendu
+
+Le compte rendu est le sujet lui-même, complété : réponses aux questions et
+synthèse de chaque séance. Les tests de connectivité (`ping`, `tracert`)
+et les sorties `show ip route` doivent confirmer chaque réponse.
+
+## Synthèse
+
+Le bilan final du sujet compare routage statique, RIPv2 et OSPF :
+mode d'apprentissage, choix du chemin, code de la route dans la table et
+réaction aux pannes.
+
+## Pour aller plus loin
+
+Le TP 5 « Router le fil rouge avec OSPF » réinvestit OSPF sur le réseau
+fil rouge du TP 4, avec un identifiant de routeur, une route par
+défaut et l'élection DR/BDR.
