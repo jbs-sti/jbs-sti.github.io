@@ -1,0 +1,122 @@
+---
+title: "Comment une page Web arrive dans le navigateur"
+description: "Distinguer Internet et le Web, lire une URL et expliquer un échange entre navigateur et serveur."
+type: cours
+domaine: snt
+chapitre: "03 — Web"
+categories: [cours, snt]
+mots-cles: [Web, Internet, navigateur, serveur, URL, HTTP, HTTPS]
+objectifs:
+  - "Distinguer Internet, le Web, un navigateur et un moteur de recherche."
+  - "Repérer le schéma, le nom d’hôte et le chemin dans une URL simple."
+  - "Décrire le rôle du navigateur et du serveur dans un échange Web."
+prerequis:
+  - "Savoir ouvrir un navigateur et repérer sa barre d’adresse."
+duree: "30 min"
+order: 10
+date-modified: 2026-10-27
+draft: true
+lang: fr
+---
+
+## Objectifs et prérequis
+
+À la fin de cette séance, vous pourrez raconter ce qui se passe entre la saisie d’une adresse Web et l’affichage d’une page. Aucun compte, aucune installation et aucune commande ne sont nécessaires.
+
+**Déroulement (30 minutes)** : situation de départ 3 min, notions 10 min, activité guidée 7 min, exercices et correction 7 min, synthèse 3 min. Les prolongements sont hors séance.
+
+## Situation de départ
+
+Lina veut lire une page sur le club robotique de son lycée. Elle ouvre Firefox et saisit une adresse dans la barre d’adresse.
+
+**À discuter (3 min)** : la page se trouvait-elle déjà dans Firefox ? Firefox est-il un moteur de recherche ? Peut-on utiliser Internet sans consulter de page Web ?
+
+Nous étudions d’abord le cas simple d’une page qui n’est pas déjà conservée dans le navigateur.
+
+## Comprendre le mécanisme
+
+### Internet n’est pas le Web
+
+**Internet** est un ensemble de réseaux interconnectés qui permet de transporter des données entre appareils. **Le Web** est un service qui utilise ces réseaux pour accéder à des ressources, notamment des pages reliées par des liens hypertextes. Le courrier électronique est un autre usage d’Internet.
+
+| Terme | Rôle | Exemple |
+|---|---|---|
+| Navigateur | Logiciel qui demande des ressources et affiche des pages | Firefox |
+| Moteur de recherche | Service qui aide à trouver des pages à partir de mots-clés | Un service consulté dans le navigateur |
+| Serveur Web | Logiciel qui reçoit des requêtes et fournit des réponses, sur une machine distante ou locale | Le serveur qui fournit la page du lycée |
+
+La barre d’adresse peut aussi transmettre des mots-clés à un moteur de recherche. Cela ne fait pas du navigateur et du moteur le même outil.
+
+### Lire une adresse Web
+
+Une **URL** indique comment accéder à une ressource. Voici un exemple fictif à analyser, **sans le visiter** :
+
+```text
+https://lycee.example/clubs/robotique.html
+```
+
+- `https` : le schéma indique ici un accès par HTTPS.
+- `lycee.example` : le nom d’hôte désigne le serveur à contacter dans cet exemple.
+- `/clubs/robotique.html` : le chemin désigne la ressource demandée sur ce serveur. Il ne correspond pas forcément à un fichier réellement stocké sous ce nom.
+
+Le suffixe `.example` est réservé aux exemples. Cette adresse ne représente pas un site réel à consulter. D’autres URL peuvent contenir des paramètres ou un fragment : nous ne les étudions pas aujourd’hui.
+
+### Du navigateur au serveur, puis retour
+
+1. Le navigateur détermine le serveur à contacter. Le **DNS** permet notamment d’associer un nom d’hôte à une adresse IP, utilisée pour acheminer les données.
+2. Le navigateur envoie une **requête HTTP** : il demande une ressource au serveur.
+3. Le serveur renvoie une **réponse HTTP** : un état et, selon le cas, le contenu demandé ou un message d’erreur.
+4. Le navigateur interprète le contenu reçu et construit l’affichage. Une page peut nécessiter plusieurs requêtes pour ses images, ses styles et ses autres ressources.
+
+**HTTP** définit des règles d’échange entre client et serveur. **HTTPS** protège ces échanges par chiffrement et permet au navigateur de vérifier l’identité du serveur au moyen d’un certificat. Cela ne garantit pas que les informations de la page soient vraies ni que le site soit honnête.
+
+Le **HTML** décrit la structure du contenu, le **CSS** sa présentation et le **JavaScript** peut ajouter des comportements. Ces rôles se complètent, mais une page simple n’a pas besoin de JavaScript.
+
+::: {.callout-note}
+## À retenir
+Le navigateur ne reçoit pas une photographie de la page : il reçoit des données qu’il interprète pour l’afficher. Le modèle de base est **requête du client → réponse du serveur**.
+:::
+
+## Observer et appliquer
+
+**Activité guidée (7 min), en binôme.** Le document suffit : aucune connexion n’est nécessaire. Sur ordinateur, vous pouvez simplement repérer la barre d’adresse dans votre navigateur habituel, sans visiter l’adresse fictive.
+
+1. Dans l’URL de Lina, soulignez le schéma, entourez le nom d’hôte et encadrez le chemin.
+2. Écrivez une phrase pour chaque sens de l’échange : navigateur vers serveur, puis serveur vers navigateur.
+3. Lina clique sur un lien vers `/clubs/photo.html` sur le même hôte. Quelle partie de l’URL change ?
+4. La page contient une image distincte du document HTML. Pourquoi une seule requête ne suffit-elle pas nécessairement ?
+
+**Mise en commun** : le schéma est `https`, l’hôte `lycee.example` et le chemin `/clubs/robotique.html`. Le navigateur demande une ressource, le serveur répond. Pour le club photo, seul le chemin change dans cet exemple. Une image distincte peut demander une requête supplémentaire.
+
+## Exercices de vérification
+
+**Questions (4 min)**
+
+1. « Internet et le Web sont deux noms pour la même chose. » Vrai ou faux ? Justifiez.
+2. Dans `https://lycee.example/aide/contact.html`, identifiez le nom d’hôte et le chemin.
+3. Qui envoie la requête : le navigateur ou le serveur ? Qui construit l’affichage de la page ?
+4. Un site accessible en HTTPS publie une rumeur. Le chiffrement permet-il de conclure que cette rumeur est vraie ?
+5. Une ressource est introuvable et le serveur renvoie l’état HTTP `404`. Cela prouve-t-il que la connexion à Internet est coupée ?
+
+### Corrigé commun HTML et PDF (3 min)
+
+1. **Faux.** Internet relie des réseaux ; le Web est un des services qui l’utilisent. Le courrier électronique est un autre usage.
+2. Hôte : `lycee.example`. Chemin : `/aide/contact.html`.
+3. Le **navigateur** envoie la requête et construit l’affichage à partir de la réponse du serveur et des autres ressources reçues.
+4. **Non.** HTTPS protège la communication, pas la véracité du contenu. Il faut vérifier l’auteur, la date et recouper les informations.
+5. **Non.** Une réponse HTTP a été reçue. L’état `404` signifie que le serveur n’a pas trouvé la ressource demandée ; il peut s’agir d’un lien incorrect ou d’une page supprimée.
+
+## Synthèse
+
+**En trois phrases (3 min)** : Internet transporte les données et le Web est l’un de ses usages. Une URL permet d’identifier une ressource et la manière d’y accéder. Le navigateur demande des ressources au serveur, puis interprète les réponses pour afficher la page.
+
+**Limites du modèle** : le navigateur peut réutiliser des ressources déjà conservées en cache ; une page peut contacter plusieurs serveurs. Le DNS n’est donc pas nécessairement interrogé de nouveau à chaque clic. Nous ne détaillons ici ni le transport des paquets ni les différentes versions de HTTP.
+
+**Question de sortie** : expliquez à un camarade pourquoi un navigateur, un moteur de recherche et Internet ne sont pas interchangeables.
+
+## Pour aller plus loin
+
+- MDN Web Docs, [Comment fonctionne le Web](https://developer.mozilla.org/fr/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works) : clients, serveurs, URL et échanges HTTP (consulté le 27 octobre 2026).
+- IANA, [Special-Use Domain Names](https://www.iana.org/assignments/special-use-domain-names/special-use-domain-names.xhtml) : domaines réservés, dont `example.` (consulté le 27 octobre 2026).
+
+**Prolongement** : imaginer une page de club et distinguer ce qui relève de son contenu, de sa présentation et d’un comportement interactif. Aucune création de compte n’est nécessaire.
