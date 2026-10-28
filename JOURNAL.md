@@ -48,10 +48,21 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   Internet est devenu `snt/03-internet` (renumérotation demandée). Livrets 1,
   3 et 4 à venir ; `connexion.php` et `demo-web-corrige` réservés au livret 3
   et au poste de l'enseignant.
-- Page « Examen » BTS2 (`bts2/examen/index.qmd`, brouillon, PR #58) : tableau de bord des annales E4 option A
+  Le brouillon `cours-fonctionnement-web` (PR #61, créé en `snt/03-web`) a été
+  déplacé dans `snt/02-web` (champ `chapitre` corrigé), les deux cours ont
+  `order: 10` : à départager.
+- Page « Examen » BTS2 (`bts2/examen/index.qmd`, **publiée à la demande de l'enseignant**, PR #58) : tableau de bord des annales E4 option A
   (BTS SN 2016-2019 et 2021-2024, BTS CIEL 2025-2026), 20 thèmes réseaux,
   terrain/IoT et UML, comptés sur le domaine professionnel des sujets
   (corrigés non lus).
+- TP « Du routage statique au routage dynamique »
+  (`bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique`,
+  order 15, **publié à la demande de l'enseignant**) : TP LaTeX de
+  l'enseignant (cinq séances HexaTech, 9 h, une page par séance), mis en
+  ligne sous forme de page de présentation + PDF téléchargeable
+  (`fichiers/`), source `.tex` jointe. Le corrigé
+  (`tp_routage_dynamique_corrige.tex`, non suivi à la racine) n'est pas
+  publié : dépôt public.
 
 **À faire**
 
@@ -60,7 +71,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   d'attente `photo.svg` (à remplacer par une vraie photo du lycée) et le
   texte d'ajout sous le document 6 (couleurs non montrées).
 
-- `bts2/examen` (brouillon) : vérifier dans la CI le HTML (graphique
+- `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique`
+  (publié) : le PDF de `fichiers/` est compilé à la main (pdfLaTeX) ; le
+  recompiler et le recopier après toute modification du `.tex`. Les
+  séances sont nommées « Séance 1 » à « Séance 5 » pour ne pas se
+  confondre avec la numérotation des TP du site (TP 5 = fil rouge OSPF).
+
+- `bts2/examen` (publiée) : vérifier sur le site le HTML (graphique
   cliquable) et le PDF, et la place de « Examen » dans la barre latérale ;
   cliquer les 8 liens éduscol (non vérifiés : éduscol répondait 503) ;
   chercher les pages 2016 et 2017 (Codex propose
@@ -225,6 +242,20 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Relecteur (Codex n'est pas intervenu : sous-agent `relecteur`) : 0 réécriture ; A1 (lien en gras sur le rendu, erreur de la consigne) et A2 (couleurs non montrées, mention ajoutée) corrigés ; A3 (`domaine: snt`) sans objet, c'est la convention de la fiche de référence
 - Rendu : Quarto absent en local ; `verifier_sources.py` : 0 erreur ; rendu à confirmer dans la CI
 - Pull request : #62
+
+### 2026-10-26 — cours/bts2-tp-routage-statique-dynamique
+
+- Ressource : `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique/index.qmd` : page de présentation + `fichiers/tp-routage-statique-dynamique.pdf` (9 pages, une page par séance, compilé avec pdfLaTeX) et sa source `.tex` ; niveau passé de « Première » à « Deuxième année » (choix de l'enseignant)
+- Format « page + PDF » choisi par l'enseignant, à la place d'une conversion en `index.qmd` : la ressource n'est pas passée par le circuit rédacteur / Codex / vérificateur ; le TP a été relu par Claude Code (cohérence technique, mise en page) dans la session
+- `draft: false` à la demande explicite de l'enseignant (« mets le TP en ligne »)
+- Corrigé non publié (dépôt public)
+- Séances renommées « TP 1…5 » → « Séance 1…5 » (accord de l'enseignant)
+- Pull request : #60
+
+### 2026-10-26 — cours/bts2-examen-publication
+
+- Ressource : `bts2/examen/index.qmd` : `draft: false`, à la demande explicite de l'enseignant (« passe la page Examen en draft: false »), après la fusion de la PR #58 ; PDF de la CI de la PR #58 contrôlé (7 pages, tableaux complets)
+- Pull request : #59
 
 ### 2026-10-26 — cours/bts2-examen-annales
 
