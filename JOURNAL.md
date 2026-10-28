@@ -9,11 +9,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
-- Chapitre SNT « 02 — Le Web » (`snt/02-web/`, 5 ressources **publiées par l'enseignant** (PR #64 et #65), conversion
-  fidèle des documents de l'enseignant, décision SNT : pas de méthode courte) :
-  séance 2 (HTML/CSS, Beamer), livret 3 et séance 3 (client, serveur, HTTP),
-  livret 4 et séance 4 (chercher, publier, se protéger). Livrets en version
-  élève seulement. Livrets 1 et 2 non publiés (aucun lien vers eux).
+- Chapitre SNT « 02 — Le Web » : 5 ressources (`seance-2-texte-vers-page-web`,
+  `livret-3` et `seance-3-client-serveur-http`, `livret-4` et
+  `seance-4-chercher-publier-proteger`), **publiées par l'enseignant**
+  (PR #64 et #65), puis ramenées au format « page + PDF » (PR #67) : la
+  conversion Quarto avait modifié la forme, l'enseignant veut ses documents
+  « tels quels ». Livrets en version élève seulement. Livrets 1 et 2 non
+  publiés. Sources `.tex` et PDF sur la branche `cours/snt-web-sources`
+  (`publication/`, hors `main`).
 - Série subnetting / VLSM du chapitre 02 BTS2 : cours subnetting (PR #32),
   fiche méthode subnetting (`fiche-subnetting-methode`, order 15 ; longueur
   à contrôler sur le PDF de la CI), exercices 1 (PR #34) et 2
@@ -72,13 +75,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **À faire**
 
-- `snt/02-web` (publié) : les 15 encadrés « Note de l'enseignant » (séance 3)
-  et 8 « Note de présentation » (séance 4) sont publiés tels quels, choix de
-  l'enseignant, certains donnent la réponse ; l'activité 2.3 (séance 2) cite
-  `demo-web` sans lien (fichier dans `cours-html-css/fichiers/`) ; vérifier le rendu
-  HTML/PDF dans la CI (Quarto absent en local : cadres vides des activités du
-  livret 3, ~40 images de cellules vides du livret 4). Relecture croisée
-  non faite (réécritures contraires à « tels quels »).
+- `snt/02-web` (5 pages « page + PDF », PR #67) : vérifier sur le site que
+  le déploiement de la PR #67 est passé et que les 5 PDF s'ouvrent ; le PDF
+  de la séance 2 est compilé depuis une copie où 3 barres obliques en trop
+  du `.tex` ont été retirées (`\Télécharger`, `\HTML`, `\Changer`) ; PDF
+  compilés en local (XeLaTeX), pas sur Overleaf ; `objectifs`, `mots-cles`
+  et `duree: "1 h 30"` des pages viennent de la conversion, pas de
+  l'enseignant. Branche `cours/snt-web-sources` : contient les corrigés
+  (`.tex`) sur un dépôt public, à supprimer si l'enseignant le souhaite.
 
 - `snt/02-web/cours-html-css` (publié) : relire le rendu HTML et PDF de la
   CI (numéros de ligne du document 6, cases du tableau 2.4, 5 SVG), la photo
@@ -252,7 +256,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Ressources : les 5 pages de `snt/02-web/` (séances 2 à 4, livrets 3 et 4) passent du texte converti en Quarto au format « page + PDF » : le PDF de l'enseignant, tel quel, en téléchargement (`fichiers/`). Demande explicite : « tels quels », la conversion Quarto avait modifié la forme (vues, schémas, fusion des apparitions).
 - PDF compilés avec XeLaTeX à partir des `.tex` de l'enseignant, versions élève des livrets ; seule retouche : 3 barres obliques en trop retirées dans une copie du Beamer séance 2 (`\Télécharger`, `\HTML`, `\Changer`, mots supprimés par LaTeX), le `.tex` n'est pas modifié.
 - Corrigés et `.tex` non publiés dans le site (dépôt public) ; les `.tex` sont sur la branche `cours/snt-web-sources`, hors `main`.
-- Pull request : voir PR
+- Pull request : #67
 
 ### 2026-10-28 — cours/snt-web
 
