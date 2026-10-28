@@ -3,7 +3,7 @@ title: "Comment une page Web arrive dans le navigateur"
 description: "Distinguer Internet et le Web, lire une URL et expliquer un échange entre navigateur et serveur."
 type: cours
 domaine: snt
-chapitre: "03 — Web"
+chapitre: "02 — Le Web"
 categories: [cours, snt]
 mots-cles: [Web, Internet, navigateur, serveur, URL, HTTP, HTTPS]
 objectifs:

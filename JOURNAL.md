@@ -42,6 +42,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (192.168.80.0/24, 10.10.20.0/24, 172.20.0.0/22 avec un /23), colonne
   « Ordre » pour le tri, corrigé après saut de page. Le cours VLSM reste
   tel quel (décision de l'enseignant).
+- SNT, thème Le Web (`snt/02-web/`, chapitre « 02 — Le Web ») : cours
+  `cours-html-css` (livret 2 de l'enseignant, HTML et CSS, brouillon,
+  version élève seule, repris tel quel : règles SNT ≠ BTS). Le chapitre
+  Internet est devenu `snt/03-internet` (renumérotation demandée). Livrets 1,
+  3 et 4 à venir ; `connexion.php` et `demo-web-corrige` réservés au livret 3
+  et au poste de l'enseignant.
+  Le brouillon `cours-fonctionnement-web` (PR #61, créé en `snt/03-web`) a été
+  déplacé dans `snt/02-web` (champ `chapitre` corrigé), les deux cours ont
+  `order: 10` : à départager.
 - Page « Examen » BTS2 (`bts2/examen/index.qmd`, **publiée à la demande de l'enseignant**, PR #58) : tableau de bord des annales E4 option A
   (BTS SN 2016-2019 et 2021-2024, BTS CIEL 2025-2026), 20 thèmes réseaux,
   terrain/IoT et UML, comptés sur le domaine professionnel des sujets
@@ -56,6 +65,11 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   publié : dépôt public.
 
 **À faire**
+
+- `snt/02-web/cours-html-css` (brouillon) : relire le rendu HTML et PDF de la
+  CI (numéros de ligne du document 6, cases du tableau 2.4, 5 SVG), la photo
+  d'attente `photo.svg` (à remplacer par une vraie photo du lycée) et le
+  texte d'ajout sous le document 6 (couleurs non montrées).
 
 - `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique`
   (publié) : le PDF de `fichiers/` est compilé à la main (pdfLaTeX) ; le
@@ -218,6 +232,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-28 — cours/snt-web-html-css
+
+- Ressource : `snt/02-web/cours-html-css/index.qmd` (SNT, cours avec activités), écrite par Codex ; source : livret 2 de l'enseignant, version élève seule (corrigés et notes enseignant exclus), conversion fidèle sans raccourcissement (décision de l'enseignant)
+- Infrastructure touchée sur demande : `snt/02-internet` renommé `snt/03-internet` (titre et champ `chapitre` de la fiche d'adressage IPv4)
+- Fichiers : `fichiers/demo-web.zip` (index.html, style.css, connexion.html, photo.svg) ; `photo.jpg` remplacée par `photo.svg` (cours et archive) ; `connexion.php` laissé hors de l'archive
+- Vérificateur : CONFORME (3 retouches : lien Marcotte non sourcé retiré, image d'attente inutile supprimée, balises img en `<code>` car le script de contrôle lit les `<img>` du texte)
+- Relecteur (Codex n'est pas intervenu : sous-agent `relecteur`) : 0 réécriture ; A1 (lien en gras sur le rendu, erreur de la consigne) et A2 (couleurs non montrées, mention ajoutée) corrigés ; A3 (`domaine: snt`) sans objet, c'est la convention de la fiche de référence
+- Rendu : Quarto absent en local ; `verifier_sources.py` : 0 erreur ; rendu à confirmer dans la CI
+- Pull request : #62
 
 ### 2026-10-26 — cours/bts2-tp-routage-statique-dynamique
 
@@ -600,5 +624,5 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Cause : les PDF passent par lualatex depuis la PR #14, mais les runners n'avaient pas de TeX ; vérification de la PR #14 et publications #12 et #14 en échec
 - Correctif : installation de TeX Live par apt, contrôle kpsewhich des fichiers requis
 - Vérificateur, Codex : sans objet (infrastructure)
-- Pull request : à renseigner
+- Pull request : #62
 - Points à relire par l'enseignant : liste des paquets TeX Live (non testée en local, la CI de la PR fait foi)

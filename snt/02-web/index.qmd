@@ -1,6 +1,6 @@
 ---
-title: "03 — Web"
-description: "Ressources du chapitre « 03 — Web »."
+title: "02 — Le Web"
+description: "Ressources du chapitre « 02 — Le Web »."
 format:
   html: default
 listing:

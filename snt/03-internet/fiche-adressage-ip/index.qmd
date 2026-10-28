@@ -3,7 +3,7 @@ title: "L'adressage IPv4"
 description: "Lire une adresse IPv4 et son masque pour identifier le réseau et la machine."
 type: fiche
 domaine: snt
-chapitre: 02 — Internet
+chapitre: 03 — Internet
 categories:
 - fiche
 - snt

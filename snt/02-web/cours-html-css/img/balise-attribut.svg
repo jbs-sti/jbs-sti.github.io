@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="270" viewBox="0 0 960 270" role="img" aria-labelledby="titre description">
+<title id="titre">Une balise avec un attribut</title>
+<desc id="description">Dans &lt;a href=&quot;contact.html&quot;&gt;Contact&lt;/a&gt;, href=&quot;contact.html&quot; indique la destination du lien, Contact est le texte sur lequel on clique.</desc>
+<rect width="960" height="270" fill="#fff"/>
+<rect x="150" y="22" width="660" height="70" rx="5" fill="#f7f7f7" stroke="#222" stroke-width="2"/>
+<rect x="224" y="34" width="346" height="46" fill="#ddd"/>
+<path d="M399 92V140H255V164 M650 92V140H706V164" fill="none" stroke="#222" stroke-width="2"/>
+<g font-family="monospace" font-size="30" fill="#111">
+<text x="174" y="68">&lt;a </text><text x="228" y="68">href="contact.html"</text><text x="570" y="68">&gt;</text><text x="588" y="68">Contact</text><text x="714" y="68">&lt;/a&gt;</text>
+</g>
+<g font-family="sans-serif" font-size="24" text-anchor="middle" fill="#111">
+<text x="255" y="199" font-weight="bold">l’attribut</text>
+<text x="255" y="235">la destination du lien</text>
+<text x="706" y="199">le texte sur lequel</text><text x="706" y="235">on clique</text>
+</g>
+</svg>
