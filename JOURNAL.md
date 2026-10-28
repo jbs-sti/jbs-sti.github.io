@@ -9,6 +9,11 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
+- Chapitre SNT « 02 — Le Web » (`snt/02-web/`, 5 brouillons, conversion
+  fidèle des documents de l'enseignant, décision SNT : pas de méthode courte) :
+  séance 2 (HTML/CSS, Beamer), livret 3 et séance 3 (client, serveur, HTTP),
+  livret 4 et séance 4 (chercher, publier, se protéger). Livrets en version
+  élève seulement. Livrets 1 et 2 non publiés (aucun lien vers eux).
 - Série subnetting / VLSM du chapitre 02 BTS2 : cours subnetting (PR #32),
   fiche méthode subnetting (`fiche-subnetting-methode`, order 15 ; longueur
   à contrôler sur le PDF de la CI), exercices 1 (PR #34) et 2
@@ -48,7 +53,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   Internet est devenu `snt/03-internet` (renumérotation demandée). Livrets 1,
   3 et 4 à venir ; `connexion.php` et `demo-web-corrige` réservés au livret 3
   et au poste de l'enseignant.
-  Le brouillon `cours-fonctionnement-web` (PR #61, créé en `snt/03-web`) a été
+  Le brouillon `cours-fonctionnement-web` (PR #61, créé en `snt/02-web`) a été
   déplacé dans `snt/02-web` (champ `chapitre` corrigé). Les deux cours sont
   **publiés à la demande de l'enseignant** (PR de publication) : fonctionnement
   du Web `order: 10`, HTML et CSS `order: 20`.
@@ -66,6 +71,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   publié : dépôt public.
 
 **À faire**
+
+- `snt/02-web` : décider du sort des 15 encadrés « Note de l'enseignant »
+  (séance 3) et 8 « Note de présentation » (séance 4), visibles des élèves ;
+  fournir `demo-web.zip` pour l'activité 2.3 (séance 2) ; vérifier le rendu
+  HTML/PDF dans la CI (Quarto absent en local : cadres vides des activités du
+  livret 3, ~40 images de cellules vides du livret 4). Relecture croisée
+  non faite (réécritures contraires à « tels quels »).
 
 - `snt/02-web/cours-html-css` (publié) : relire le rendu HTML et PDF de la
   CI (numéros de ligne du document 6, cases du tableau 2.4, 5 SVG), la photo
@@ -233,6 +245,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-28 — cours/snt-web
+
+- Ressources : snt/02-web/cours-{seance-2-texte-vers-page-web,livret-3-client-serveur-http,seance-3-client-serveur-http,livret-4-chercher-publier-proteger,seance-4-chercher-publier-proteger}/index.qmd (référence : snt/02-internet/fiche-adressage-ip)
+- Rédaction : Codex (conversion fidèle de publication/*.tex)
+- Vérificateur : CONFORME (5/5) après 1 passage, sans rendu (Quarto absent)
+- Relecteur : non lancé (conversion fidèle voulue par l'enseignant)
+- Pull request : voir PR
+- Points à relire : notes enseignant visibles (séances 3 et 4), durées 1 h 30 déduites, corrigés non publiés
 
 ### 2026-10-28 — cours/snt-web-publication
 
