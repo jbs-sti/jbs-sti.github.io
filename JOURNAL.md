@@ -9,7 +9,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
-- Chapitre SNT « 02 — Le Web » (`snt/02-web/`, 5 brouillons, conversion
+- Chapitre SNT « 02 — Le Web » (`snt/02-web/`, 5 ressources **publiées par l'enseignant** (PR #64 et #65), conversion
   fidèle des documents de l'enseignant, décision SNT : pas de méthode courte) :
   séance 2 (HTML/CSS, Beamer), livret 3 et séance 3 (client, serveur, HTTP),
   livret 4 et séance 4 (chercher, publier, se protéger). Livrets en version
@@ -72,9 +72,10 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **À faire**
 
-- `snt/02-web` : décider du sort des 15 encadrés « Note de l'enseignant »
-  (séance 3) et 8 « Note de présentation » (séance 4), visibles des élèves ;
-  fournir `demo-web.zip` pour l'activité 2.3 (séance 2) ; vérifier le rendu
+- `snt/02-web` (publié) : les 15 encadrés « Note de l'enseignant » (séance 3)
+  et 8 « Note de présentation » (séance 4) sont publiés tels quels, choix de
+  l'enseignant, certains donnent la réponse ; l'activité 2.3 (séance 2) cite
+  `demo-web` sans lien (fichier dans `cours-html-css/fichiers/`) ; vérifier le rendu
   HTML/PDF dans la CI (Quarto absent en local : cadres vides des activités du
   livret 3, ~40 images de cellules vides du livret 4). Relecture croisée
   non faite (réécritures contraires à « tels quels »).
@@ -252,7 +253,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Rédaction : Codex (conversion fidèle de publication/*.tex)
 - Vérificateur : CONFORME (5/5) après 1 passage, sans rendu (Quarto absent)
 - Relecteur : non lancé (conversion fidèle voulue par l'enseignant)
-- Pull request : voir PR
+- Pull request : #64 (fusion), puis #65 (`draft: false` sur les 5 ressources, demande explicite de l'enseignant)
 - Points à relire : notes enseignant visibles (séances 3 et 4), durées 1 h 30 déduites, corrigés non publiés
 
 ### 2026-10-28 — cours/snt-web-publication
