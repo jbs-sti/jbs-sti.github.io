@@ -3,7 +3,7 @@ title: "Livret 4 : chercher, publier, se protéger"
 description: "Retrouver et évaluer des pages Web, connaître les droits de publication et régler son navigateur pour se protéger."
 type: cours
 domaine: snt
-chapitre: "03 — Le Web"
+chapitre: "02 — Le Web"
 categories: [cours, snt]
 mots-cles:
   - moteur de recherche

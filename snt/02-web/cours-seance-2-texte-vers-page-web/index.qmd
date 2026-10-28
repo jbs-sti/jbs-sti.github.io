@@ -3,7 +3,7 @@ title: "Du texte à la page Web"
 description: "Expérimenter dans le navigateur pour comprendre la structure HTML et la présentation CSS d'une page Web."
 type: cours
 domaine: snt
-chapitre: "03 — Le Web"
+chapitre: "02 — Le Web"
 categories: [cours, snt]
 mots-cles: [Web, navigateur, HTML, CSS, balise, attribut, lien, responsive web design]
 objectifs:
@@ -15,7 +15,7 @@ prerequis:
   - "Ouvrir une page Web dans un navigateur."
   - "Ouvrir et modifier un fichier texte dans un éditeur."
 duree: "1 h 30"
-order: 20
+order: 25
 date-modified: 2026-10-28
 draft: true
 lang: fr

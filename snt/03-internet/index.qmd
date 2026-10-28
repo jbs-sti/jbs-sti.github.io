@@ -1,5 +1,5 @@
 ---
-title: "02 — Internet"
+title: "03 — Internet"
 description: "Ressources du thème Internet du programme de SNT."
 format:
   html: default

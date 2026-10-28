@@ -3,7 +3,7 @@ title: "Livret 3 : client, serveur et HTTP"
 description: "Découvrir qui fournit une page Web, comment le navigateur la demande et ce qui s'exécute chez soi ou ailleurs."
 type: cours
 domaine: snt
-chapitre: "03 — Le Web"
+chapitre: "02 — Le Web"
 categories: [cours, snt]
 mots-cles:
   - client

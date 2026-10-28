@@ -3,7 +3,7 @@ title: "Chercher, publier, se protéger"
 description: "Recherche, droit d'auteur, hameçonnage et navigateur : trois problèmes du quotidien, des règles à construire."
 type: cours
 domaine: snt
-chapitre: "03 — Le Web"
+chapitre: "02 — Le Web"
 categories: [cours, snt]
 mots-cles:
   - moteur de recherche

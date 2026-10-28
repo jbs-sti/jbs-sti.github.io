@@ -2,7 +2,7 @@
 title: "Examen"
 description: "Les thèmes réseaux et UML des sujets d'E4 (option A) de 2016 à 2026, classés par fréquence, avec les questions posées."
 date-modified: 2026-10-26
-draft: true
+draft: false
 lang: fr
 ---
 

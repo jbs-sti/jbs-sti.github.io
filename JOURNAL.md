@@ -9,7 +9,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
-- Chapitre SNT « 03 — Le Web » (`snt/03-web/`, 5 brouillons, conversion
+- Chapitre SNT « 02 — Le Web » (`snt/02-web/`, 5 brouillons, conversion
   fidèle des documents de l'enseignant, décision SNT : pas de méthode courte) :
   séance 2 (HTML/CSS, Beamer), livret 3 et séance 3 (client, serveur, HTTP),
   livret 4 et séance 4 (chercher, publier, se protéger). Livrets en version
@@ -47,21 +47,50 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (192.168.80.0/24, 10.10.20.0/24, 172.20.0.0/22 avec un /23), colonne
   « Ordre » pour le tri, corrigé après saut de page. Le cours VLSM reste
   tel quel (décision de l'enseignant).
-- Page « Examen » BTS2 (`bts2/examen/index.qmd`, brouillon, PR #58) : tableau de bord des annales E4 option A
+- SNT, thème Le Web (`snt/02-web/`, chapitre « 02 — Le Web ») : cours
+  `cours-html-css` (livret 2 de l'enseignant, HTML et CSS, brouillon,
+  version élève seule, repris tel quel : règles SNT ≠ BTS). Le chapitre
+  Internet est devenu `snt/03-internet` (renumérotation demandée). Livrets 1,
+  3 et 4 à venir ; `connexion.php` et `demo-web-corrige` réservés au livret 3
+  et au poste de l'enseignant.
+  Le brouillon `cours-fonctionnement-web` (PR #61, créé en `snt/02-web`) a été
+  déplacé dans `snt/02-web` (champ `chapitre` corrigé). Les deux cours sont
+  **publiés à la demande de l'enseignant** (PR de publication) : fonctionnement
+  du Web `order: 10`, HTML et CSS `order: 20`.
+- Page « Examen » BTS2 (`bts2/examen/index.qmd`, **publiée à la demande de l'enseignant**, PR #58) : tableau de bord des annales E4 option A
   (BTS SN 2016-2019 et 2021-2024, BTS CIEL 2025-2026), 20 thèmes réseaux,
   terrain/IoT et UML, comptés sur le domaine professionnel des sujets
   (corrigés non lus).
+- TP « Du routage statique au routage dynamique »
+  (`bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique`,
+  order 15, **publié à la demande de l'enseignant**) : TP LaTeX de
+  l'enseignant (cinq séances HexaTech, 9 h, une page par séance), mis en
+  ligne sous forme de page de présentation + PDF téléchargeable
+  (`fichiers/`), source `.tex` jointe. Le corrigé
+  (`tp_routage_dynamique_corrige.tex`, non suivi à la racine) n'est pas
+  publié : dépôt public.
 
 **À faire**
 
-- `snt/03-web` : décider du sort des 15 encadrés « Note de l'enseignant »
+- `snt/02-web` : décider du sort des 15 encadrés « Note de l'enseignant »
   (séance 3) et 8 « Note de présentation » (séance 4), visibles des élèves ;
   fournir `demo-web.zip` pour l'activité 2.3 (séance 2) ; vérifier le rendu
   HTML/PDF dans la CI (Quarto absent en local : cadres vides des activités du
   livret 3, ~40 images de cellules vides du livret 4). Relecture croisée
   non faite (réécritures contraires à « tels quels »).
 
-- `bts2/examen` (brouillon) : vérifier dans la CI le HTML (graphique
+- `snt/02-web/cours-html-css` (publié) : relire le rendu HTML et PDF de la
+  CI (numéros de ligne du document 6, cases du tableau 2.4, 5 SVG), la photo
+  d'attente `photo.svg` (à remplacer par une vraie photo du lycée) et le
+  texte d'ajout sous le document 6 (couleurs non montrées).
+
+- `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique`
+  (publié) : le PDF de `fichiers/` est compilé à la main (pdfLaTeX) ; le
+  recompiler et le recopier après toute modification du `.tex`. Les
+  séances sont nommées « Séance 1 » à « Séance 5 » pour ne pas se
+  confondre avec la numérotation des TP du site (TP 5 = fil rouge OSPF).
+
+- `bts2/examen` (publiée) : vérifier sur le site le HTML (graphique
   cliquable) et le PDF, et la place de « Examen » dans la barre latérale ;
   cliquer les 8 liens éduscol (non vérifiés : éduscol répondait 503) ;
   chercher les pages 2016 et 2017 (Codex propose
@@ -219,12 +248,42 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 ### 2026-10-28 — cours/snt-web
 
-- Ressources : snt/03-web/cours-{seance-2-texte-vers-page-web,livret-3-client-serveur-http,seance-3-client-serveur-http,livret-4-chercher-publier-proteger,seance-4-chercher-publier-proteger}/index.qmd (référence : snt/02-internet/fiche-adressage-ip)
+- Ressources : snt/02-web/cours-{seance-2-texte-vers-page-web,livret-3-client-serveur-http,seance-3-client-serveur-http,livret-4-chercher-publier-proteger,seance-4-chercher-publier-proteger}/index.qmd (référence : snt/02-internet/fiche-adressage-ip)
 - Rédaction : Codex (conversion fidèle de publication/*.tex)
 - Vérificateur : CONFORME (5/5) après 1 passage, sans rendu (Quarto absent)
 - Relecteur : non lancé (conversion fidèle voulue par l'enseignant)
 - Pull request : voir PR
 - Points à relire : notes enseignant visibles (séances 3 et 4), durées 1 h 30 déduites, corrigés non publiés
+
+### 2026-10-28 — cours/snt-web-publication
+
+- Ressources : `snt/02-web/cours-html-css` et `snt/02-web/cours-fonctionnement-web` : `draft: false`, à la demande explicite de l'enseignant (« les deux ») ; `order` : 10 pour le fonctionnement du Web, 20 pour HTML et CSS (proposition du chef de projet, non contestée)
+- Rendu : workflow « Publier le site » réussi après la PR #62 ; `cours-fonctionnement-web` n'est passé ni par le vérificateur ni par le relecteur dans cette session (brouillon de la PR #61)
+- Pull request : #63
+
+### 2026-10-28 — cours/snt-web-html-css
+
+- Ressource : `snt/02-web/cours-html-css/index.qmd` (SNT, cours avec activités), écrite par Codex ; source : livret 2 de l'enseignant, version élève seule (corrigés et notes enseignant exclus), conversion fidèle sans raccourcissement (décision de l'enseignant)
+- Infrastructure touchée sur demande : `snt/02-internet` renommé `snt/03-internet` (titre et champ `chapitre` de la fiche d'adressage IPv4)
+- Fichiers : `fichiers/demo-web.zip` (index.html, style.css, connexion.html, photo.svg) ; `photo.jpg` remplacée par `photo.svg` (cours et archive) ; `connexion.php` laissé hors de l'archive
+- Vérificateur : CONFORME (3 retouches : lien Marcotte non sourcé retiré, image d'attente inutile supprimée, balises img en `<code>` car le script de contrôle lit les `<img>` du texte)
+- Relecteur (Codex n'est pas intervenu : sous-agent `relecteur`) : 0 réécriture ; A1 (lien en gras sur le rendu, erreur de la consigne) et A2 (couleurs non montrées, mention ajoutée) corrigés ; A3 (`domaine: snt`) sans objet, c'est la convention de la fiche de référence
+- Rendu : Quarto absent en local ; `verifier_sources.py` : 0 erreur ; rendu à confirmer dans la CI
+- Pull request : #62
+
+### 2026-10-26 — cours/bts2-tp-routage-statique-dynamique
+
+- Ressource : `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique/index.qmd` : page de présentation + `fichiers/tp-routage-statique-dynamique.pdf` (9 pages, une page par séance, compilé avec pdfLaTeX) et sa source `.tex` ; niveau passé de « Première » à « Deuxième année » (choix de l'enseignant)
+- Format « page + PDF » choisi par l'enseignant, à la place d'une conversion en `index.qmd` : la ressource n'est pas passée par le circuit rédacteur / Codex / vérificateur ; le TP a été relu par Claude Code (cohérence technique, mise en page) dans la session
+- `draft: false` à la demande explicite de l'enseignant (« mets le TP en ligne »)
+- Corrigé non publié (dépôt public)
+- Séances renommées « TP 1…5 » → « Séance 1…5 » (accord de l'enseignant)
+- Pull request : #60
+
+### 2026-10-26 — cours/bts2-examen-publication
+
+- Ressource : `bts2/examen/index.qmd` : `draft: false`, à la demande explicite de l'enseignant (« passe la page Examen en draft: false »), après la fusion de la PR #58 ; PDF de la CI de la PR #58 contrôlé (7 pages, tableaux complets)
+- Pull request : #59
 
 ### 2026-10-26 — cours/bts2-examen-annales
 
@@ -593,5 +652,5 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Cause : les PDF passent par lualatex depuis la PR #14, mais les runners n'avaient pas de TeX ; vérification de la PR #14 et publications #12 et #14 en échec
 - Correctif : installation de TeX Live par apt, contrôle kpsewhich des fichiers requis
 - Vérificateur, Codex : sans objet (infrastructure)
-- Pull request : à renseigner
+- Pull request : #62
 - Points à relire par l'enseignant : liste des paquets TeX Live (non testée en local, la CI de la PR fait foi)
