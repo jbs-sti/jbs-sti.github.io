@@ -104,10 +104,12 @@ Le fichier index.html ouvert dans l'éditeur de texte (lignes numérotées de 1 
 </html>
 ```
 
-![La même page affichée par le navigateur.](img/rendu-index.svg){fig-alt="Fenêtre du navigateur : onglet Ma première page, adresse file:///…/demo-web/index.html. Le titre Bienvenue sur ma page est centré. Le mot lycée est en gras. Le lien page de connexion est en gras et souligné." width=100%}
+![La même page affichée par le navigateur.](img/rendu-index.svg){fig-alt="Fenêtre du navigateur : onglet Ma première page, adresse file:///…/demo-web/index.html. Le titre Bienvenue sur ma page est centré. Le mot lycée est en gras. Le lien page de connexion est souligné. Les couleurs ne sont pas représentées." width=100%}
 
 Lignes 3 à 7 : l'**en-tête** (head), des informations *sur* la page ; seul le titre de l'onglet s'affiche.
 Lignes 8 à 15 : le **corps** (body), le contenu affiché dans la fenêtre.
+
+*Le schéma est en noir et blanc : les couleurs de la feuille de style (titre bleu marine, lien vert) n'y apparaissent pas.*
 
 ### Document 7 — Comment s'écrit une balise
 
