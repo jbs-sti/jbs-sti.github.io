@@ -15,7 +15,7 @@ prerequis:
 duree: "30 min"
 order: 10
 date-modified: 2026-10-27
-draft: true
+draft: false
 lang: fr
 ---
 

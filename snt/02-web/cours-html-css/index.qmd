@@ -22,9 +22,9 @@ objectifs:
 prerequis:
   - "Livret 1 de la thématique Le Web"
 duree: "1 h 30"
-order: 10
+order: 20
 date-modified: '2026-10-28'
-draft: true
+draft: false
 lang: fr
 ---
 
