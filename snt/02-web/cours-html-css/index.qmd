@@ -119,7 +119,7 @@ Lignes 8 à 15 : le **corps** (body), le contenu affiché dans la fenêtre.
 
     ![Une balise avec un attribut.](img/balise-attribut.svg){fig-alt='Dans <a href="contact.html">Contact</a>, href="contact.html" est l’attribut indiquant la destination du lien. Contact est le texte sur lequel on clique.' width=100%}
 
-3. **Quelques balises n'ont pas de balise fermante**, car elles n'entourent rien : `<br>` (passage à la ligne) et `<img src="photo.svg" alt="Une photo du lycée">` (une image : `src` donne le fichier, `alt` un texte affiché si l'image manque).
+3. **Quelques balises n'ont pas de balise fermante**, car elles n'entourent rien : `<br>` (passage à la ligne) et <code>&lt;img src="photo.svg" alt="Une photo du lycée"&gt;</code> (une image : `src` donne le fichier, `alt` un texte affiché si l'image manque).
 
 ### Activité 2.2 — Lire le code d'une page
 
@@ -136,7 +136,7 @@ Lignes 8 à 15 : le **corps** (body), le contenu affiché dans la fenêtre.
 | `<strong>` … `</strong>` | |
 | `<a href="…">` … `</a>` | |
 | `<br>` | |
-| `<img src="…" alt="…">` | |
+| <code>&lt;img src="…" alt="…"&gt;</code> | |
 
 ::: {.callout-note title="À retenir" icon="false" appearance="simple"}
 
