@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="230" viewBox="0 0 1000 230" role="img" aria-labelledby="title">
-<title id="title">Le titre change à l&#x27;écran</title>
-<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#333333"/></marker></defs>
-<rect width="1000" height="230" fill="#ffffff"/>
-<rect x="160" y="15" width="680" height="140" rx="12" fill="#ffffff" stroke="#333333" stroke-width="2"/>
-<text x="500" y="62" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="30" font-weight="normal" fill="#222222">&lt;h2&gt;Ahmed&lt;/h2&gt;</text>
-<text x="500" y="124" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="48" font-weight="bold" fill="#222222">Ahmed</text>
-<text x="500" y="205" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="30" font-weight="normal" fill="#222222">Le titre change à l&#x27;écran.</text>
-</svg>
