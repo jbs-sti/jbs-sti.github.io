@@ -49,8 +49,9 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   3 et 4 à venir ; `connexion.php` et `demo-web-corrige` réservés au livret 3
   et au poste de l'enseignant.
   Le brouillon `cours-fonctionnement-web` (PR #61, créé en `snt/03-web`) a été
-  déplacé dans `snt/02-web` (champ `chapitre` corrigé), les deux cours ont
-  `order: 10` : à départager.
+  déplacé dans `snt/02-web` (champ `chapitre` corrigé). Les deux cours sont
+  **publiés à la demande de l'enseignant** (PR de publication) : fonctionnement
+  du Web `order: 10`, HTML et CSS `order: 20`.
 - Page « Examen » BTS2 (`bts2/examen/index.qmd`, **publiée à la demande de l'enseignant**, PR #58) : tableau de bord des annales E4 option A
   (BTS SN 2016-2019 et 2021-2024, BTS CIEL 2025-2026), 20 thèmes réseaux,
   terrain/IoT et UML, comptés sur le domaine professionnel des sujets
@@ -66,7 +67,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **À faire**
 
-- `snt/02-web/cours-html-css` (brouillon) : relire le rendu HTML et PDF de la
+- `snt/02-web/cours-html-css` (publié) : relire le rendu HTML et PDF de la
   CI (numéros de ligne du document 6, cases du tableau 2.4, 5 SVG), la photo
   d'attente `photo.svg` (à remplacer par une vraie photo du lycée) et le
   texte d'ajout sous le document 6 (couleurs non montrées).
@@ -232,6 +233,12 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-28 — cours/snt-web-publication
+
+- Ressources : `snt/02-web/cours-html-css` et `snt/02-web/cours-fonctionnement-web` : `draft: false`, à la demande explicite de l'enseignant (« les deux ») ; `order` : 10 pour le fonctionnement du Web, 20 pour HTML et CSS (proposition du chef de projet, non contestée)
+- Rendu : workflow « Publier le site » réussi après la PR #62 ; `cours-fonctionnement-web` n'est passé ni par le vérificateur ni par le relecteur dans cette session (brouillon de la PR #61)
+- Pull request : à renseigner
 
 ### 2026-10-28 — cours/snt-web-html-css
 
