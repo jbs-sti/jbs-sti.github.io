@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="250" viewBox="0 0 960 250" role="img" aria-labelledby="titre description">
+<title id="titre">Comment lire une règle CSS</title>
+<desc id="description">Dans h1 { color: navy; }, h1 répond à À qui ? : les titres h1 ; color à Quoi ? : la couleur du texte ; navy à Comment ? : en bleu marine.</desc>
+<rect width="960" height="250" fill="#fff"/>
+<rect x="148" y="24" width="664" height="66" rx="5" fill="#f5f5f5" stroke="#222" stroke-width="2"/>
+<g font-family="monospace" font-size="34" fill="#111">
+<text x="180" y="68">h1</text><text x="290" y="68">{</text><text x="385" y="68">color:</text><text x="595" y="68">navy;</text><text x="760" y="68">}</text>
+</g>
+<path d="M200 90V137H162V154 M438 90V154 M640 90V137H787V154" fill="none" stroke="#222" stroke-width="2"/>
+<g font-family="sans-serif" font-size="25" text-anchor="middle" fill="#111">
+<text x="162" y="188" font-weight="bold">À qui ?</text><text x="162" y="226">les titres h1</text>
+<text x="438" y="188" font-weight="bold">Quoi ?</text><text x="438" y="226">la couleur du texte</text>
+<text x="787" y="188" font-weight="bold">Comment ?</text><text x="787" y="226">en bleu marine</text>
+</g>
+</svg>
