@@ -238,7 +238,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 - Ressources : `snt/02-web/cours-html-css` et `snt/02-web/cours-fonctionnement-web` : `draft: false`, à la demande explicite de l'enseignant (« les deux ») ; `order` : 10 pour le fonctionnement du Web, 20 pour HTML et CSS (proposition du chef de projet, non contestée)
 - Rendu : workflow « Publier le site » réussi après la PR #62 ; `cours-fonctionnement-web` n'est passé ni par le vérificateur ni par le relecteur dans cette session (brouillon de la PR #61)
-- Pull request : à renseigner
+- Pull request : #63
 
 ### 2026-10-28 — cours/snt-web-html-css
 
