@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="104" viewBox="0 0 960 104">
+  <title>Espace de réponse : 2 lignes</title>
+  <rect width="960" height="104" fill="white"/>
+  <g stroke="#777" stroke-width="1">
+  <line x1="1" y1="48" x2="959" y2="48"/>
+  <line x1="1" y1="96" x2="959" y2="96"/>
+  </g>
+</svg>

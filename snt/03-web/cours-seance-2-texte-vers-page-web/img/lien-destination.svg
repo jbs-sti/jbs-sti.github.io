@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="220" viewBox="0 0 1000 220" role="img" aria-labelledby="title">
+<title id="title">Un lien : du texte et une destination</title>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#333333"/></marker></defs>
+<rect width="1000" height="220" fill="#ffffff"/>
+<rect x="15" y="55" width="340" height="135" rx="12" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+<text x="185" y="108" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="40" font-weight="normal" fill="#222222">Wikipédia</text>
+<text x="185" y="153" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="27" font-weight="normal" fill="#222222">texte cliquable</text>
+<rect x="545" y="55" width="440" height="135" rx="12" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+<text x="765" y="110" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="26" font-weight="normal" fill="#222222">https://fr.wikipedia.org</text>
+<text x="765" y="153" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="27" font-weight="normal" fill="#222222">destination</text>
+<path d="M370,120 L530,120" fill="none" stroke="#333333" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="450" y="91" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="28" font-weight="normal" fill="#222222">href</text>
+</svg>

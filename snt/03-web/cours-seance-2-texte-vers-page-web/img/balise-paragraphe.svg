@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="210" viewBox="0 0 1000 210" role="img" aria-labelledby="title">
+<title id="title">Ouverture, contenu, fermeture</title>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#333333"/></marker></defs>
+<rect width="1000" height="210" fill="#ffffff"/>
+<rect x="25" y="25" width="260" height="100" rx="12" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+<rect x="285" y="25" width="430" height="100" rx="0" fill="#dddddd" stroke="#333333" stroke-width="2"/>
+<rect x="715" y="25" width="260" height="100" rx="12" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+<text x="155" y="89" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="40" font-weight="normal" fill="#222222">&lt;p&gt;</text>
+<text x="500" y="89" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="40" font-weight="normal" fill="#222222">Bonjour</text>
+<text x="845" y="89" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="40" font-weight="normal" fill="#222222">&lt;/p&gt;</text>
+<text x="155" y="180" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="29" font-weight="normal" fill="#222222">Ouverture</text>
+<text x="500" y="180" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="29" font-weight="normal" fill="#222222">Contenu</text>
+<text x="845" y="180" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="29" font-weight="normal" fill="#222222">Fermeture</text>
+</svg>

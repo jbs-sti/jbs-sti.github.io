@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="535" viewBox="0 0 1000 535" role="img" aria-labelledby="title">
+<title id="title">La carte mentale de la séance</title>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#333333"/></marker></defs>
+<rect width="1000" height="535" fill="#ffffff"/>
+<rect x="330" y="15" width="340" height="100" rx="12" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+<text x="500" y="76" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="34" font-weight="normal" fill="#222222">Fichiers du site</text>
+<rect x="30" y="210" width="400" height="120" rx="12" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+<text x="230" y="258" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="38" font-weight="normal" fill="#222222">HTML</text>
+<text x="230" y="301" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="normal" fill="#222222">structure et contenu</text>
+<rect x="570" y="210" width="400" height="120" rx="12" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+<text x="770" y="258" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="38" font-weight="normal" fill="#222222">CSS</text>
+<text x="770" y="301" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="normal" fill="#222222">présentation</text>
+<rect x="330" y="410" width="340" height="110" rx="12" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+<text x="500" y="457" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="35" font-weight="normal" fill="#222222">Navigateur</text>
+<text x="500" y="499" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="normal" fill="#222222">page affichée</text>
+<path d="M412,119 L267,199" fill="none" stroke="#333333" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M588,119 L733,199" fill="none" stroke="#333333" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M275,340 L412,399" fill="none" stroke="#333333" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M725,340 L588,399" fill="none" stroke="#333333" stroke-width="3" marker-end="url(#arrow)"/>
+</svg>

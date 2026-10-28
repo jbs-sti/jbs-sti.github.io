@@ -1,0 +1,13 @@
+---
+title: "Le Web"
+description: "Ressources du chapitre « 03 — Web »."
+format:
+  html: default
+listing:
+  # Seules les ressources, pas les index de domaine ni de chapitre.
+  contents: "*/index.qmd"
+  type: grid
+  categories: true
+  sort: "order"
+  fields: [title, description, categories]
+---

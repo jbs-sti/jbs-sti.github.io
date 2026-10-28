@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" width="1000" height="660">
+  <title>Documents 13 et 14 — 1995 : JavaScript et PHP ; 2001 : le DOM</title>
+  <rect width="1000" height="660" fill="#fff"/>
+  <path d="M 500 30 V 625" stroke="#888" stroke-width="8"/>
+  <path d="M 485 620 L 500 646 L 515 620 Z" fill="#888"/>
+  <g stroke="#333" stroke-width="2" fill="#fff">
+    <circle cx="500" cy="57" r="8"/>
+    <circle cx="500" cy="294" r="8"/>
+    <path d="M 492 57 H 475 M 508 294 H 525"/>
+    <rect x="15" y="75" width="460" height="435"/>
+    <rect x="525" y="312" width="460" height="308"/>
+  </g>
+  <g font-family="sans-serif" fill="#111" font-size="22">
+    <g font-size="27" font-weight="bold">
+      <text x="470" y="58" text-anchor="end">1995</text>
+      <text x="530" y="296">2001</text>
+    </g>
+    <text x="33" y="108" font-weight="bold">
+      <tspan x="33">Document 13 — Des pages</tspan>
+      <tspan x="33" dy="29">qui réagissent et se fabriquent</tspan>
+    </text>
+    <text x="33" y="177">
+      <tspan x="33">En 1995, deux langages donnent vie</tspan>
+      <tspan x="33" dy="29">aux pages. <tspan font-weight="bold">Brendan Eich</tspan>, de la</tspan>
+      <tspan x="33" dy="29">société Netscape, crée <tspan font-weight="bold">JavaScript</tspan> :</tspan>
+      <tspan x="33" dy="29">le navigateur l'exécute pour faire</tspan>
+      <tspan x="33" dy="29">réagir la page (menus, vérification</tspan>
+      <tspan x="33" dy="29">d'un formulaire…). Le 8 juin 1995,</tspan>
+      <tspan x="33" dy="29" font-weight="bold">Rasmus Lerdorf<tspan font-weight="normal">&#160;annonce&#160;</tspan>PHP<tspan font-weight="normal">&#160;: c'est</tspan></tspan>
+      <tspan x="33" dy="29">le serveur qui l'exécute, pour</tspan>
+      <tspan x="33" dy="29">fabriquer la page au moment de la</tspan>
+      <tspan x="33" dy="29">demande. Une page n'est plus</tspan>
+      <tspan x="33" dy="29">forcément un fichier fixe.</tspan>
+    </text>
+    <text x="543" y="345" font-weight="bold">Document 14 — Le DOM</text>
+    <text x="543" y="384" font-size="20">
+      <tspan x="543">En 2001, le <tspan font-weight="bold">DOM</tspan> (<tspan font-style="italic">Document Object</tspan></tspan>
+      <tspan x="543" dy="28"><tspan font-style="italic">Model</tspan>) est standardisé. Le navigateur</tspan>
+      <tspan x="543" dy="28">représente la page comme un ensemble</tspan>
+      <tspan x="543" dy="28">d'éléments (titres, paragraphes, liens…)</tspan>
+      <tspan x="543" dy="28">qu'un programme peut lire et modifier,</tspan>
+      <tspan x="543" dy="28">de la même façon dans tous les</tspan>
+      <tspan x="543" dy="28">navigateurs. L'outil « Inspecter » affiche</tspan>
+      <tspan x="543" dy="28">et modifie cette représentation.</tspan>
+    </text>
+  </g>
+</svg>
