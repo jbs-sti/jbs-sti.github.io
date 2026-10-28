@@ -1,0 +1,342 @@
+% SNT Seconde - Web, seance 2 - Beamer First Principles
+% Compiler avec XeLaTeX sur Overleaf.
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Sans}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+\usepackage{polyglossia}
+\setmainlanguage{french}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{foret}{HTML}{1C322D}
+\definecolor{creme}{HTML}{F8F3EE}
+\definecolor{or}{HTML}{EBB552}
+\definecolor{rose}{HTML}{F1CDBE}
+\definecolor{vertclair}{HTML}{DDE9DF}
+\definecolor{encre}{HTML}{24372E}
+\setbeamercolor{normal text}{fg=creme,bg=foret}
+\setbeamercolor{frametitle}{fg=or,bg=foret}
+\setbeamercolor{title}{fg=creme}
+\setbeamercolor{block title}{fg=foret,bg=or}
+\setbeamercolor{block body}{fg=encre,bg=creme}
+\setbeamercolor{alerted text}{fg=or}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\hfill\color{or}\insertframenumber\hspace{0.5cm}\vspace{0.25cm}}
+\setbeamertemplate{frametitle}{\vspace{0.35cm}\insertframetitle\par\vspace{0.15cm}\color{or}\rule{\linewidth}{0.6pt}}
+\setlength{\parskip}{5pt}
+\lstdefinestyle{webcode}{basicstyle=\ttfamily\small,keywordstyle=\color{foret},stringstyle=\color{foret},
+  backgroundcolor=\color{creme},frame=single,rulecolor=\color{or},framerule=1pt,
+  xleftmargin=5pt,xrightmargin=5pt,columns=fullflexible,keepspaces=true,showstringspaces=false}
+\newcommand{\question}[1]{\begin{beamercolorbox}[rounded=true,sep=12pt]{block body}\Large\textbf{#1}\end{beamercolorbox}}
+\newcommand{\reponse}[1]{\uncover<2->{\vspace{5mm}\begin{beamercolorbox}[rounded=true,sep=8pt]{block body}\textbf{À retenir :} #1\end{beamercolorbox}}}
+\newcommand{\etiquette}[1]{{\color{or}\small\MakeUppercase{#1}}}
+\newcommand{\webwindow}[2]{\begin{tikzpicture}[x=1cm,y=1cm]
+  \fill[creme,rounded corners=3pt] (0,0) rectangle (10,3.3);
+  \fill[vertclair] (0,2.83) rectangle (10,3.3);
+  \fill[rose] (.25,3.07) circle (.07);\fill[or] (.49,3.07) circle (.07);
+  \node[anchor=west,text=encre,font=\scriptsize\ttfamily] at (.85,3.07) {#1};
+  \node[anchor=center,text=foret,align=center,text width=9cm] at (5,1.6) {#2};
+  \end{tikzpicture}}
+\title{Du texte à la page Web}
+\subtitle{SNT Seconde · Le Web · HTML et CSS}
+\author{Séance 2 · Expérimenter, observer, comprendre}
+\date{}
+\begin{document}
+
+\begin{frame}[plain]
+  \vfill
+  {\color{or}\Large SCIENCES NUMÉRIQUES ET TECHNOLOGIE}\par\vspace{9mm}
+  {\Huge\bfseries Du texte à la page Web}\par\vspace{4mm}
+  {\Large HTML et CSS, pas à pas}\par\vspace{12mm}
+  \begin{tikzpicture}[node distance=5mm]
+    \node[draw=or,rounded corners,fill=creme,text=foret,inner sep=10pt] (a) {\texttt{<h1>Bonjour</h1>}};
+    \node[right=10mm of a,draw=or,rounded corners,fill=creme,text=foret,inner sep=10pt] (b) {\Large\bfseries Bonjour};
+    \draw[-{Stealth},or,thick] (a)--(b);
+  \end{tikzpicture}\vfill
+\end{frame}
+
+\begin{frame}{La question de départ}
+  \etiquette{Problème concret}\par\vspace{5mm}
+  \question{Peut-on changer ce qu'affiche un site Web sans changer le véritable site ?}
+  \vspace{8mm}
+  \begin{center}\webwindow{lasallesaintdenis.com}{\Huge\bfseries LE MOT DES DIRECTEURS}\end{center}
+  \vspace{2mm}{\color{rose}Expérience : ouvrir le site du lycée et choisir un titre.}
+\end{frame}
+
+\begin{frame}{Expérience : modifier un titre}
+  \begin{columns}[T]
+  \column{.50\linewidth}
+    \begin{block}{Dans le navigateur}
+      \begin{enumerate}
+      \item Clic droit sur le titre, puis \textbf{Inspecter}.
+      \item Cliquer sur la flèche dans le \textbf{carré en pointillés}.
+      \item Cliquer sur le titre de la page.
+      \item Double-cliquer sur son texte dans le code.
+      \item Écrire son prénom, puis Entrée.
+      \end{enumerate}
+    \end{block}
+  \column{.45\linewidth}
+    \vspace{1cm}
+    \begin{tikzpicture}
+      \node[draw=or,fill=creme,text=foret,rounded corners,minimum width=4.5cm,minimum height=1.4cm,align=center] (n) {\footnotesize\texttt{<h2>Ahmed</h2>}\\\Huge\bfseries Ahmed};
+      \node[below=5mm of n,text=rose,align=center] {Le titre change\textbf{à l'écran}.};
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Une prédiction avant F5}
+  \question{Si je recharge la page avec F5, le prénom restera-t-il ?}
+  \vspace{10mm}
+  \begin{enumerate}
+    \item Oui, car j'ai changé le code du site.
+    \item Non, car j'ai changé seulement mon affichage.
+    \item Tous les visiteurs verront mon prénom.
+  \end{enumerate}
+  \reponse{Réponse 2. F5 reconstruit la page à partir des ressources d'origine ou du cache. La modification locale disparaît.}
+\end{frame}
+
+\begin{frame}{Où se trouve la page d'origine ?}
+  \begin{center}
+  \begin{tikzpicture}[>=Stealth,node distance=1.4cm,
+  box/.style={draw=or,fill=creme,text=foret,rounded corners,minimum height=1.6cm,text width=3.2cm,align=center}]
+    \node[box] (s) {\Large Serveur Web\\\small fichiers du site};
+    \node[box,right=3cm of s] (b) {\Large Navigateur\\\small copie affichée};
+    \draw[->,very thick,or] ([yshift=3mm]s.east)--node[above,align=center,text=creme]{ressources\small HTML et CSS} ([yshift=3mm]b.west);
+    \draw[<-,thick,rose] ([yshift=-4mm]s.east)--node[below,text=creme]{requête} ([yshift=-4mm]b.west);
+    \node[below=1.0cm of b,draw=rose,rounded corners,text=creme,text width=4cm,align=center] {Inspecter modifie la représentation locale de la page.};
+  \end{tikzpicture}
+  \end{center}
+  \pause\begin{block}{Pourquoi est-ce important ?}Une capture d'écran peut montrer un contenu modifié localement.\end{block}
+\end{frame}
+
+\begin{frame}{Un nouveau problème : trois phrases}
+  \begin{block}{Un fichier texte}
+    Bienvenue sur mon site\\[2mm]
+    Je suis élève de seconde.\\[2mm]
+    Wikipédia
+  \end{block}
+  \vspace{7mm}
+  \question{Comment le navigateur peut-il savoir ce qui est un titre, un paragraphe ou un lien ?}
+  \reponse{Il faut décrire le rôle de chaque élément. C'est le principe du HTML.}
+\end{frame}
+
+\begin{frame}[fragile]{HTML : donner une structure au texte}
+  \begin{columns}[T]
+  \column{.52\linewidth}
+  \etiquette{Le fichier texte}\par
+  \begin{lstlisting}[style=webcode]
+<h1>Bienvenue sur mon site</h1>
+<p>Je suis eleve de seconde.</p>
+  \end{lstlisting}
+  \column{.44\linewidth}
+  \etiquette{Ce que le navigateur affiche}\par
+  \begin{beamercolorbox}[sep=12pt,rounded=true]{block body}
+    {\Large\bfseries Bienvenue sur mon site}\par\vspace{5mm}
+    Je suis élève de seconde.
+  \end{beamercolorbox}
+  \end{columns}
+  \vspace{8mm}\pause
+  \begin{block}{Principe}\texttt{<h1>} annonce un titre principal. \texttt{<p>} annonce un paragraphe.\end{block}
+\end{frame}
+
+\begin{frame}{Une balise ouvre et ferme un contenu}
+  \begin{center}
+  \begin{tikzpicture}[node distance=0mm]
+    \node[draw=or,fill=creme,text=foret,rounded corners,minimum height=1.4cm,text width=2.5cm,align=center] (a) {\Large\ttfamily <p>};
+    \node[right=0mm of a,draw=or,fill=vertclair,text=foret,minimum height=1.4cm,text width=4.2cm,align=center] (b) {\Large\ttfamily Bonjour};
+    \node[right=0mm of b,draw=or,fill=creme,text=foret,rounded corners,minimum height=1.4cm,text width=2.5cm,align=center] (c) {\Large\ttfamily </p>};
+    \node[below=4mm of a,text=or] {Ouverture};
+    \node[below=4mm of b,text=or] {Contenu};
+    \node[below=4mm of c,text=or] {Fermeture};
+  \end{tikzpicture}
+  \end{center}
+  \vspace{14mm}\question{À quoi sert la barre oblique dans \texttt{</p>} ?}
+  \reponse{Elle indique que le paragraphe se termine.}
+\end{frame}
+
+\begin{frame}[fragile]{Le squelette d'une page HTML}
+  \begin{columns}[T]
+  \column{.53\linewidth}
+  \begin{lstlisting}[style=webcode]
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title>Ma premiere page</title>
+  </head>
+  <body>
+    <h1>Bienvenue</h1>
+    <p>Bonjour !</p>
+  </body>
+</html>
+  \end{lstlisting}
+  \column{.43\linewidth}
+  \begin{block}{\texttt{head}}Informations sur la page. Le texte de \texttt{title} apparaît dans l'onglet.\end{block}
+  \begin{block}{\texttt{body}}Contenu que le navigateur affiche dans la fenêtre.\end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Six balises à reconnaître}
+  \begin{columns}[T]
+  \column{.49\linewidth}
+    \begin{block}{Contenu}
+    \texttt{<h1>} : titre principal\\[2mm]
+    \texttt{<p>} : paragraphe\\[2mm]
+    \texttt{<strong>} : texte important
+    \end{block}
+  \column{.49\linewidth}
+    \begin{block}{Navigation et média}
+    \texttt{<a href="...">} : lien\\[2mm]
+    \texttt{<br>} : retour à la ligne\\[2mm]
+    \texttt{<img src="..." alt="...">} : image
+    \end{block}
+  \end{columns}
+  \vspace{5mm}\pause
+  \begin{block}{À observer}\texttt{br} et \texttt{img} n'entourent pas de contenu. Ils n'ont pas de balise fermante.\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Un lien : du texte et une destination}
+  \begin{lstlisting}[style=webcode]
+<a href="https://fr.wikipedia.org">Wikipedia</a>
+  \end{lstlisting}
+  \vspace{7mm}
+  \begin{center}\begin{tikzpicture}[>=Stealth]
+  \node[draw=or,fill=creme,text=foret,rounded corners,text width=4cm,align=center,minimum height=1.4cm] (t) {\Large Wikipédia\\\small texte cliquable};
+  \node[draw=or,fill=creme,text=foret,rounded corners,text width=4cm,align=center,minimum height=1.4cm,right=1.6cm of t] (u) {\ttfamily https://fr.wikipedia.org\\\small destination};
+  \draw[->,very thick,or] (t)--node[above,text=creme]{\ttfamily href} (u);
+  \end{tikzpicture}\end{center}
+  \pause\begin{block}{Deux mots de vocabulaire}\texttt{a} est une balise. \texttt{href} est un attribut qui précise la destination.\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Les trois destinations d'un lien}
+  \begin{block}{1. Un autre site}
+  \texttt{href="https://fr.wikipedia.org"}
+  \end{block}
+  \begin{block}{2. Une page du même site}
+  \texttt{href="connexion.html"}
+  \end{block}
+  \begin{block}{3. Un endroit de la page actuelle}
+  \texttt{href="\#haut"} vise un élément qui porte \texttt{id="haut"}.
+  \end{block}
+  \vspace{3mm}\etiquette{Question orale : quelle destination pour contact.html ?}
+\end{frame}
+
+\begin{frame}{Changer durablement son propre fichier}
+  \begin{center}
+  \begin{tikzpicture}[>=Stealth,node distance=14mm,
+    bx/.style={draw=or,fill=creme,text=foret,rounded corners,text width=3cm,minimum height=1.5cm,align=center}]
+    \node[bx] (e) {\Large Geany / VS Code\\\small modifier \texttt{index.html}};
+    \node[bx,right=of e] (f) {\Large Ctrl+S\\\small enregistrer};
+    \node[bx,right=of f] (n) {\Large Navigateur\\\small F5 pour afficher};
+    \draw[->,thick,or] (e)--(f);\draw[->,thick,or] (f)--(n);
+  \end{tikzpicture}
+  \end{center}
+  \vspace{8mm}
+  \begin{block}{Activité 2.3}\Télécharger \texttt{demo-web}, ouvrir \texttt{index.html} dans l'éditeur et dans le navigateur, modifier une phrase, créer un lien, puis afficher \texttt{photo.jpg}.\end{block}
+\end{frame}
+
+\begin{frame}{Le problème des 500 pages}
+  \question{Un site possède 500 pages avec un titre bleu. Comment rendre tous ces titres rouges rapidement ?}
+  \vspace{9mm}
+  \begin{center}
+  \begin{tikzpicture}[>=Stealth]
+  \foreach \i in {0,1,2,3,4}{\node[draw=or,fill=creme,text=foret,rounded corners,minimum width=1.25cm,minimum height=2cm] at (1.5*\i,0) {\ttfamily h1};}
+  \node[text=creme] at (8.7,0) {\Large ... 500};
+  \end{tikzpicture}
+  \end{center}
+  \reponse{On écrit une règle de présentation commune dans un fichier CSS.}
+\end{frame}
+
+\begin{frame}[fragile]{CSS : une règle pour la présentation}
+  \begin{columns}[T]
+  \column{.45\linewidth}
+  \begin{lstlisting}[style=webcode]
+h1 {
+  color: red;
+}
+  \end{lstlisting}
+  \column{.52\linewidth}
+  \begin{block}{Lire la règle}
+    \textbf{À qui ?} \texttt{h1}, les titres\\[2mm]
+    \textbf{Quoi ?} \texttt{color}, la couleur du texte\\[2mm]
+    \textbf{Comment ?} \texttt{red}, en rouge
+  \end{block}
+  \end{columns}
+  \vspace{8mm}\question{Pour centrer tous les titres, change-t-on le HTML ou le CSS ?}
+  \reponse{Le CSS, avec \texttt{text-align: center;}.}
+\end{frame}
+
+\begin{frame}{Le même contenu, deux présentations}
+  \begin{columns}
+  \column{.48\linewidth}
+  \begin{beamercolorbox}[rounded=true,sep=12pt]{block body}
+  {\color{blue}\Large\bfseries Mon lycée}\par\vspace{4mm}
+  {\color{black}Je suis élève de seconde.}
+  \end{beamercolorbox}
+  \centering\etiquette{Style A}
+  \column{.48\linewidth}
+  \begin{beamercolorbox}[rounded=true,sep=12pt]{block body}
+  {\color{red}\Large\bfseries Mon lycée}\par\vspace{4mm}
+  {\color{black}\large Je suis élève de seconde.}
+  \end{beamercolorbox}
+  \centering\etiquette{Style B}
+  \end{columns}
+  \vspace{12mm}\pause
+  \begin{block}{Séparation des rôles}\HTML décrit ce que contient la page. CSS décrit son apparence.\end{block}
+\end{frame}
+
+\begin{frame}{Une feuille de style partagée}
+  \begin{center}
+  \begin{tikzpicture}[>=Stealth,
+   page/.style={draw=or,rounded corners,fill=creme,text=foret,text width=3.0cm,minimum height=1.5cm,align=center}]
+   \node[page] (a) at (0,1.3) {\ttfamily index.html};
+   \node[page] (b) at (0,-1.3) {\ttfamily connexion.html};
+   \node[page,fill=rose] (c) at (6,0) {\ttfamily style.css\\\small règle commune};
+   \draw[->,very thick,or] (a.east)--(c.north west);
+   \draw[->,very thick,or] (b.east)--(c.south west);
+  \end{tikzpicture}
+  \end{center}
+  \vspace{4mm}
+  \begin{block}{Expérience}\Changer \texttt{navy} en \texttt{red} dans \texttt{style.css}, enregistrer, puis recharger les deux pages.\end{block}
+\end{frame}
+
+\begin{frame}{Un site lisible sur téléphone ?}
+  \question{Faut-il créer une deuxième version de tout le site pour les petits écrans ?}
+  \vspace{8mm}
+  \begin{center}\begin{tikzpicture}
+  \node[draw=or,fill=creme,text=foret,minimum width=5cm,minimum height=2.4cm,align=center] at (0,0) {\Huge\bfseries Titre\\Texte de la page};
+  \node[draw=or,fill=creme,text=foret,rounded corners=7pt,minimum width=1.7cm,minimum height=3.2cm,align=center] at (6,0) {\bfseries Titre\\\small Texte};
+  \end{tikzpicture}\end{center}
+  \reponse{Une seule page HTML peut utiliser des règles CSS adaptées à la largeur de l'écran. C'est le responsive web design, popularisé par Ethan Marcotte en 2010.}
+\end{frame}
+
+\begin{frame}{Mini-QCM : qui fait quoi ?}
+  \question{Pour chaque demande, choisis HTML ou CSS.}
+  \vspace{5mm}
+  \begin{enumerate}
+  \item Ajouter une photo du lycée.
+  \item Mettre tous les liens en vert.
+  \item Changer le texte d'un bouton.
+  \item Adapter la taille du texte au téléphone.
+  \end{enumerate}
+  \uncover<2->{\begin{block}{Correction expliquée}1. HTML : ajouter du contenu. \quad 2. CSS : modifier la couleur.\\3. HTML : changer les mots. \quad 4. CSS : adapter la présentation.\end{block}}
+\end{frame}
+
+\begin{frame}{La carte mentale de la séance}
+  \begin{center}
+  \begin{tikzpicture}[>=Stealth,node distance=8mm,
+   n/.style={draw=or,fill=creme,text=foret,rounded corners,align=center,text width=3cm,minimum height=1.35cm}]
+   \node[n] (f) {\Large Fichiers du site};
+   \node[n,below left=1cm and 1.7cm of f] (h) {\Large HTML\\\small structure et contenu};
+   \node[n,below right=1cm and 1.7cm of f] (c) {\Large CSS\\\small présentation};
+   \node[n,below=2.5cm of f] (b) {\Large Navigateur\\\small page affichée};
+   \draw[->,thick,or] (f)--(h);\draw[->,thick,or] (f)--(c);
+   \draw[->,thick,or] (h)--(b);\draw[->,thick,or] (c)--(b);
+  \end{tikzpicture}
+  \end{center}
+  \vspace{3mm}\centering{\color{rose}Observer, expérimenter, comprendre.}
+\end{frame}
+
+\end{document}

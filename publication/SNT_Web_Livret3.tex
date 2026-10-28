@@ -1,0 +1,383 @@
+% =====================================================================
+%  SNT — Seconde — Thématique : le Web — Livret 3 (séance 3 : client, serveur et HTTP)
+%  Source unique : version élève / version professeur (corrigé)
+%  Préambule identique au livret 2.
+%
+%  Compilation (XeLaTeX, deux passes pour « page x/y ») :
+%    version élève : xelatex -jobname=SNT_Web_Livret3_eleve SNT_Web_Livret3.tex
+%    version prof  : xelatex -jobname=SNT_Web_Livret3_prof "\def\PROF{}\input{SNT_Web_Livret3.tex}"
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=18mm,top=22mm,headheight=14pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setmonofont{Latin Modern Mono}
+\usepackage{polyglossia}
+\setmainlanguage{french}
+\usepackage{amssymb,pifont}
+\usepackage[table]{xcolor}
+\usepackage{tabularx,array,colortbl,multirow}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{fancyhdr,lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{calc,shadows,arrows.meta,fit,backgrounds,decorations.pathreplacing}
+\usepackage[edges]{forest}
+\usepackage{fancyvrb}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Version élève / professeur -------------------------------
+\newif\ifprof
+\ifdefined\PROF \proftrue \fi
+
+% ---------- Couleurs -------------------------------------------------
+\definecolor{navy}{HTML}{1F3864}
+\definecolor{bleuclair}{HTML}{DCE6F2}
+\definecolor{jaune}{HTML}{FFF6D5}
+\definecolor{jauneb}{HTML}{E3B31C}
+\definecolor{orangeT}{HTML}{C98A00}
+\definecolor{gris}{HTML}{EFEFEF}
+\definecolor{grisb}{HTML}{9A9A9A}
+\definecolor{vert}{HTML}{3A8A2E}
+\definecolor{corr}{HTML}{C00000}
+\definecolor{urlproto}{HTML}{D0312D}
+\definecolor{urldom}{HTML}{2E5FB8}
+\definecolor{urlchem}{HTML}{3A8A2E}
+\definecolor{urlparam}{HTML}{D9822B}
+\definecolor{dossier}{HTML}{F4B183}
+\definecolor{fichier}{HTML}{C5E0B4}
+\definecolor{fondpage}{HTML}{F5F5F5}\definecolor{cssnavy}{HTML}{000080}
+\definecolor{lienvert}{HTML}{008000}
+
+% ---------- Mise en page ---------------------------------------------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{3em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small SNT — Seconde — Thématique : le Web — livret 3\ifprof\ — \textcolor{corr}{\textbf{CORRIGÉ PROFESSEUR}}\fi}
+\fancyhead[R]{\small page \thepage/\pageref*{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlist{itemsep=1pt,topsep=2pt}
+
+% ---------- Titres de section (numérotation manuelle, globale aux 4 livrets)
+\newcommand{\sect}[1]{%
+  \par\addvspace{10pt}%
+  {\color{navy}\Large\bfseries #1\par}\vspace{3pt}%
+  {\color{navy}\hrule height 0.6pt}\vspace{6pt}}
+\newcommand{\soussect}[1]{\par\addvspace{6pt}{\color{navy}\large\bfseries #1\par}\vspace{3pt}}
+
+% ---------- Trous et réponses ----------------------------------------
+\newcommand{\trou}[2][3cm]{\ifprof\textcolor{corr}{\underline{\textbf{\,#2\,}}}\else\underline{\hspace{#1}}\fi}
+\newcommand{\rep}[1]{\ifprof\textcolor{corr}{#1}\fi}
+\newcommand{\repcell}[2]{\ifprof\textcolor{corr}{#2}\else\rule{0pt}{#1}\fi}
+\newcommand{\lignes}[1]{\par\foreach \i in {1,...,#1}{\vspace{8.5mm}\hrule height 0.3pt}\vspace{2mm}}
+\newcommand{\reponse}[2]{\ifprof\par{\raggedright\textcolor{corr}{#2}\par}\else\lignes{#1}\fi}
+
+% ---------- Encadrés -------------------------------------------------
+\newtcolorbox{mots}{enhanced,colback=jaune,colframe=jauneb,boxrule=0.5pt,arc=2pt,
+  left=5pt,right=5pt,top=3pt,bottom=3pt,before skip=6pt,after skip=6pt}
+\newcommand{\motsproposes}[1]{\begin{mots}\small\textcolor{orangeT}{$\blacksquare$ \textbf{Mots proposés :}} \textit{#1}\end{mots}}
+
+\newtcolorbox{retenir}{enhanced,colback=gris,colframe=grisb,boxrule=0.5pt,arc=2pt,
+  left=5pt,right=5pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newcommand{\aretenir}[1]{\begin{retenir}\raggedright\textbf{À retenir :} #1\end{retenir}}
+
+\newtcolorbox{verifie}[1][\ding{51}~Vérifie que tu as compris.]{enhanced,colback=white,colframe=vert!70!black,
+  boxrule=0.5pt,arc=2pt,left=5pt,right=5pt,top=4pt,bottom=4pt,before skip=8pt,after skip=8pt,
+  fontupper=\normalsize,before upper={\textcolor{vert}{\textbf{#1}}\ }}
+
+\newcommand{\activite}[1]{%
+  \Needspace{6\baselineskip}%
+  \begin{tcolorbox}[enhanced,colback=bleuclair,colframe=navy!70,boxrule=0.5pt,arc=3pt,
+    left=6pt,top=3pt,bottom=3pt,before skip=10pt,after skip=6pt]
+  \textcolor{navy}{$\blacktriangleright$ \textbf{#1}}\end{tcolorbox}}
+
+\newcommand{\seance}[1]{%
+  \par\addvspace{6pt}\noindent\colorbox{navy}{\parbox{\dimexpr\linewidth-2\fboxsep}{\color{white}#1}}\par\vspace{4pt}}
+
+% Document (même aspect que les documents TikZ du livret 1 : cadre gris, ombre)
+\newtcolorbox{docbox}[1]{enhanced,colback=white,colframe=grisb,boxrule=0.4pt,sharp corners,
+  drop shadow={opacity=0.35},left=5pt,right=5pt,top=4pt,bottom=4pt,before skip=8pt,after skip=8pt,
+  fontupper=\small,before upper={\textbf{#1}\par\smallskip}}
+
+% Note enseignant (version professeur seulement)
+\newcommand{\ensei}[1]{\ifprof\begin{tcolorbox}[enhanced,colback=gris,colframe=corr!60,boxrule=0.5pt,arc=2pt,
+  left=5pt,right=5pt,top=3pt,bottom=3pt,before skip=6pt,after skip=6pt,fontupper=\small]
+  \textcolor{corr}{\textbf{Note enseignant.}} #1\end{tcolorbox}\fi}
+
+% Repère « ce que tu dois voir » des étapes sur ordinateur
+\newcommand{\voir}[1]{\par{\small\textcolor{vert}{\ding{51}~\textbf{Ce que tu dois voir :}} #1}\par}
+
+% ---------- Tableaux -------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{M}[1]{>{\raggedright\arraybackslash}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcommand{\entete}{\rowcolor{navy}}
+\newcommand{\hd}[1]{\textcolor{white}{\textbf{#1}}}
+\renewcommand{\arraystretch}{1.25}
+
+% ---------- Numéro cerclé, cases ---------------------------------------
+\newcommand{\numc}[1]{{\large\ding{\numexpr171+#1\relax}}}
+\newcommand{\numcs}[1]{{\ding{\numexpr171+#1\relax}}}
+\newcommand{\case}{$\square$}
+
+% ---------- Code : verbatim numéroté ------------------------------------
+\fvset{fontsize=\footnotesize,numbers=left,numbersep=4pt,xleftmargin=12pt}
+\renewcommand{\theFancyVerbLine}{\textcolor{grisb}{\tiny\arabic{FancyVerbLine}}}
+
+% ---------- Fenêtre de navigateur stylisée (TikZ) ------------------------
+% \navigateur{largeur}{adresse}{onglet}{contenu}
+\newcommand{\navigateur}[4]{%
+  \begin{tikzpicture}
+    \node[draw=grisb, fill=fondpage, text width=#1, inner sep=6pt, anchor=north west,
+          align=left, font=\footnotesize] (corps) at (0,0) {#4};
+    \fill[gris] ($(corps.north west)+(0,0.95)$) rectangle (corps.north east);
+    \draw[grisb] ($(corps.north west)+(0,0.95)$) rectangle (corps.south east);
+    \draw[grisb, fill=white] ($(corps.north west)+(0.12,0.12)$) rectangle ($(corps.north east)+(-0.12,0.45)$);
+    \node[font=\tiny\ttfamily, anchor=west, text=black!70] at ($(corps.north west)+(0.18,0.285)$) {#2};
+    \draw[grisb, fill=fondpage, rounded corners=1.5pt] ($(corps.north west)+(0.12,0.52)$) rectangle ++(3.2,0.36);
+    \node[font=\tiny, anchor=west] at ($(corps.north west)+(0.18,0.70)$) {#3};
+  \end{tikzpicture}}
+
+% =====================================================================
+% ---------- Cadre de dessin (version élève seulement) et frise -------------
+\newcommand{\cadre}[1]{\par\vspace{1mm}\noindent\framebox[\linewidth]{\rule{0pt}{#1}}\par\vspace{1mm}}
+\definecolor{frise}{HTML}{8A97B3}
+
+\begin{document}
+
+\begin{center}
+  {\small SCIENCES NUMÉRIQUES ET TECHNOLOGIE — SECONDE}\\[2pt]
+  {\color{navy}\LARGE\bfseries Thématique : LE WEB}\\[2pt]
+  {\color{navy}\large Livret 3 — séance 3\ifprof\ — \textcolor{corr}{version professeur}\fi}
+\end{center}
+
+\noindent\begin{tabularx}{\linewidth}{|Y|Y|Y|Y|}\hline
+\textbf{Nom :} & \textbf{Prénom :} & \textbf{Classe :} & \textbf{Date :}\\\hline
+\end{tabularx}
+
+\medskip
+Ce document se remplit \textbf{en classe, en même temps que le cours}, puis en autonomie pour les activités.
+Aujourd'hui, tu vas découvrir qui fournit une page Web, comment ton navigateur la demande, et ce qui s'exécute chez toi ou ailleurs.
+Range ce livret avec les livrets 1 et 2 : tu en auras besoin pour le bilan.
+
+\seance{\textbf{SÉANCE 3 (1 h 30)} — Client, serveur et HTTP \hfill \textbf{En salle informatique}}
+
+\begin{tcolorbox}[enhanced,colback=white,colframe=navy!60,boxrule=0.5pt,arc=2pt,left=5pt,right=5pt,top=4pt,bottom=4pt,
+  title={\textbf{Avant de commencer}}, coltitle=navy, colbacktitle=bleuclair, fonttitle=\normalsize]
+\begin{enumerate}[leftmargin=*,label=\textbf{\arabic*.}]
+\item Dans « Mes mots à éclaircir » du livret 1, coche les mots qui ont été expliqués au livret 2.
+\item Relis l'activité 2.1 du livret 2 (« Inspecter » puis F5) : la question c) est restée sans réponse. C'est elle qui ouvre la séance.
+\end{enumerate}
+\end{tcolorbox}
+
+
+\ensei{\textbf{Minutage indicatif} (72 min d'activité effective ; installation, appel et relances en plus) :
+\begin{itemize}[nosep,leftmargin=*,label=--]
+\item « Avant de commencer », §9 (client / serveur) et document 11 : 10 min ;
+\item §10, document 12, activité 3.1 (décomposer une requête) : 15 min ;
+\item activité 3.2 (observer les vraies requêtes, F12) : 12 min ;
+\item §11, documents 13 et 14 (1995 et 2001) : 8 min ;
+\item activité 3.3 (inspecter \texttt{connexion.html}) : 15 min ;
+\item activité 3.4 (client ou serveur ?, à l'oral) : 6 min ;
+\item À retenir et fin de séance : 6 min.
+\end{itemize}
+Pas de test d'entrée du livret 2 à refaire : on ouvre directement sur la question laissée ouverte à l'activité 2.1.\par
+\textbf{Préparation.} Chaque élève a déjà une copie du dossier \texttt{demo-web} (livret 2) ; \texttt{connexion.html} et \texttt{connexion.php} y figurent, inchangés. Prévoir une page choisie à l'avance pour l'activité 3.2 et des captures d'écran de secours : les outils de développement diffèrent d'un navigateur à l'autre (Firefox : F12, onglet « Réseau »). Si la salle n'est pas disponible, l'activité 3.2 se fait en démonstration au vidéoprojecteur.\par
+\textbf{Démonstration avec un vrai serveur (facultatif).} Sur le poste du professeur, avec PHP installé : \texttt{php -S localhost:8000} dans le dossier, puis \texttt{http://localhost:8000/connexion.html} (identifiant \texttt{eleve@monlycee.fr}, mot de passe \texttt{snt2026}). L'onglet « Réseau » montre alors la requête POST, le code 200 ou 403 et l'en-tête \texttt{Set-Cookie}.\par
+\textbf{Variante sans salle.} Activités 3.2 et 3.3 au vidéoprojecteur, à partir d'une démonstration commentée.}
+
+% =====================================================================
+\sect{9. Le modèle client / serveur}
+
+À l'activité 2.1, tu as modifié ce que ton navigateur affichait, et F5 a tout remis comme avant. Où se trouve donc la page d'origine, et qui la fournit ?
+
+\motsproposes{client\enspace\textbullet\enspace serveur\enspace\textbullet\enspace requête\enspace\textbullet\enspace réponse\enspace\textbullet\enspace allumé}
+
+Reviens au tableau du §1 du livret 1 : le problème \textbf{1} demandait où le document est stocké. Il doit être disponible à toute heure : il est donc rangé sur un ordinateur toujours \trou[2cm]{allumé} et connecté à Internet, le \trou[2cm]{serveur}. Ton navigateur est le \trou[2cm]{client} : il envoie une \trou[2cm]{requête} (« donne-moi la page \texttt{/index.html} ») et le serveur renvoie une \trou[2cm]{réponse} (le fichier HTML, puis le CSS, les images…).
+
+Un même serveur répond à des milliers de clients ; un même client interroge des dizaines de serveurs en une seule visite.
+
+\begin{docbox}{Document 11 — Le dialogue entre le client et le serveur}
+\begin{center}
+\begin{tikzpicture}[
+  boite/.style={draw, rounded corners, minimum width=3.2cm, minimum height=1.3cm, align=center, font=\small},
+  fleche/.style={-{Stealth[length=3mm]}, thick},
+  etiq/.style={font=\small, align=center, fill=white, inner sep=2pt}]
+\node[boite, fill=bleuclair] (c) at (0,0) {\textbf{CLIENT}\\ navigateur};
+\node[boite, fill=gris]      (s) at (9,0) {\textbf{SERVEUR}\\ \texttt{www.monlycee.fr}};
+\draw[fleche] ([yshift=3mm]c.east) -- ([yshift=3mm]s.west)
+   node[etiq, midway, above=1mm] {requête : \texttt{GET /index.html}};
+\draw[fleche] ([yshift=-3mm]s.west) -- ([yshift=-3mm]c.east)
+   node[etiq, midway, below=1mm] {réponse : \texttt{200 OK} + fichier HTML};
+\end{tikzpicture}
+\end{center}
+\end{docbox}
+
+% =====================================================================
+\Needspace{14\baselineskip}
+\sect{10. La requête HTTP}
+
+Le client et le serveur doivent parler le même langage, avec une forme exacte pour demander et pour répondre. C'est le rôle du protocole \textbf{HTTP} (\emph{HyperText Transfer Protocol}).
+
+\motsproposes{GET\enspace\textbullet\enspace POST\enspace\textbullet\enspace en-têtes\enspace\textbullet\enspace code\enspace\textbullet\enspace 404\enspace\textbullet\enspace cookies}
+
+\begin{docbox}{Document 12 — Une requête HTTP et le début de la réponse}
+\textit{Requête envoyée par le navigateur :}
+\begin{Verbatim}[fontsize=\scriptsize,xleftmargin=10pt]
+GET /search?q=snt+seconde&lang=fr HTTP/1.1
+Host: www.moteur.fr
+User-Agent: Mozilla/5.0 (Windows NT 10.0) Firefox/128.0
+Accept-Language: fr-FR
+Cookie: session=a8f3e2; theme=sombre
+
+\end{Verbatim}
+\textit{Réponse du serveur :}
+\begin{Verbatim}[fontsize=\scriptsize,xleftmargin=10pt]
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Set-Cookie: derniere_recherche=snt
+
+<!DOCTYPE html> <html> ...
+\end{Verbatim}
+{\footnotesize Une \textbf{ligne vide} sépare les en-têtes (lignes 2 à 5 de la requête, 2 et 3 de la réponse) du reste : dans la réponse, ce qui suit la ligne vide est la page elle-même. Exemple simplifié : une vraie requête contient d'autres en-têtes.}
+\end{docbox}
+
+\begin{itemize}
+\item La première ligne commence par la \textbf{méthode} : \trou[1.5cm]{GET} pour demander une ressource (les paramètres sont dans l'URL, donc visibles) ; \trou[1.5cm]{POST} pour envoyer des données (formulaire, mot de passe) : elles sont alors dans le corps de la requête, pas dans l'URL. Attention : POST ne chiffre rien. Les données n'apparaissent ni dans la barre d'adresse ni dans l'historique, mais seul HTTPS protège leur transmission.
+\item Les lignes suivantes sont les \trou[2.5cm]{en-têtes} : elles renseignent le serveur sur le client (navigateur, langue, \trou[2cm]{cookies} déjà reçus…).
+\item La réponse commence par un \trou[2cm]{code} : \texttt{200} = succès, \texttt{301} = page déplacée, \trou[1.5cm]{404} = page introuvable, \texttt{403} = accès interdit, \texttt{500} = erreur du serveur.
+\end{itemize}
+
+\activite{Activité 3.1 — Décomposer une requête HTTP}
+
+\emph{(Doc. 12)} Réponds aux questions.
+
+\begin{enumerate}[leftmargin=*,label=\alph*)]
+\item Quelle est la méthode ? Quelle ressource (chemin) est demandée ?
+\reponse{1}{GET ; \texttt{/search}.}
+\item Quels sont les paramètres passés, et leurs valeurs ?
+\reponse{1}{\texttt{q} = « snt seconde » (le \texttt{+} code l'espace) et \texttt{lang} = « fr ».}
+\item Qu'apprend le serveur sur l'utilisateur, avant même de répondre ? Cite trois informations.
+\reponse{2}{Le système d'exploitation (\texttt{Windows NT 10.0}, c'est-à-dire Windows 10 ou 11 : l'en-tête ne les distingue pas), le navigateur (Firefox 128), la langue préférée (français), et qu'il a déjà visité le site (cookies \texttt{session} et \texttt{theme}).}
+\item Dans la réponse, à quoi sert la ligne \texttt{Set-Cookie} ? Que se passera-t-il à la prochaine requête vers ce site ?
+\reponse{2}{Le serveur demande au navigateur de stocker un petit fichier texte ; le navigateur le renverra automatiquement dans l'en-tête \texttt{Cookie} de chaque requête suivante vers ce domaine. Le serveur peut ainsi « reconnaître » l'utilisateur d'une requête à l'autre : HTTP seul n'a pas de mémoire.}
+\end{enumerate}
+
+\ensei{Précisions : le \texttt{+} de \texttt{q=snt+seconde} code l'espace ; la requête réelle du navigateur contient davantage d'en-têtes (\texttt{Accept}, \texttt{Accept-Encoding}, \texttt{Referer}…), l'exemple est simplifié. \texttt{Windows NT 10.0} désigne Windows 10 \emph{ou} 11. POST ne chiffre rien : c'est HTTPS qui protège la transmission (vu au livret 1).}
+
+% =====================================================================
+\activite{Activité 3.2 — Observer les vraies requêtes de son navigateur (sur ordinateur)}
+
+Ouvre \textbf{Firefox} et accède au site \texttt{https://www.lasallesaintdenis.com}. Appuie sur \textbf{F12}, sélectionne l'onglet \textbf{Réseau}, puis recharge la page avec \textbf{F5}.
+
+\begin{enumerate}[leftmargin=*,label=\alph*)]
+\item Combien de requêtes une seule page a-t-elle déclenchées ? Vers combien de serveurs (domaines) différents ? (Le résultat dépend du site : note simplement ce que tu observes.)
+\reponse{1}{Résultat variable. Ordre de grandeur : de 20 à 200 requêtes, de 3 à 30 domaines.}
+\item Repère la requête correspondant à la page HTML principale (type \texttt{html}). Relève sa méthode HTTP et son code de réponse. Clique ensuite sur cette requête, ouvre les \textbf{En-têtes} et relève la valeur de \texttt{Content-Type}.
+\reponse{1}{Pour la page principale du site proposé : généralement GET, \texttt{200} et \texttt{text/html} (éventuellement suivi de \texttt{charset=utf-8}). Les valeurs peuvent varier.}
+\item Trouve une requête vers un domaine qui n'est \emph{pas} celui du site visité. À ton avis, à quoi sert-elle ?
+\reponse{2}{Requêtes « tierces » : publicité, mesure d'audience, polices de caractères, vidéos intégrées, réseaux de diffusion de contenu (CDN).}
+\end{enumerate}
+
+\ensei{Présenter ces résultats comme des variables, sans valeur attendue : elles changent d'un site, d'un navigateur et d'un jour à l'autre. Les requêtes tierces préparent la section sur les cookies tiers (livret 4) et renvoient au modèle économique vu au chapitre sur les réseaux sociaux.}
+
+% =====================================================================
+\Needspace{14\baselineskip}
+\sect{11. Ce qui s'exécute chez toi, ce qui s'exécute ailleurs}
+
+\motsproposes{JavaScript\enspace\textbullet\enspace PHP\enspace\textbullet\enspace source\enspace\textbullet\enspace base de données\enspace\textbullet\enspace DOM}
+
+Au début, une page Web était un simple fichier fixe. Depuis 1995, elle peut aussi contenir ou fabriquer du code :
+\begin{itemize}
+\item du code \trou[2.5cm]{JavaScript} est envoyé au navigateur et \textbf{exécuté par le client} : menus déroulants, vérification d'un formulaire, animations. On peut le lire dans le code \trou[2cm]{source} de la page (clic droit $\to$ « Code source de la page », ou Ctrl+U) ;
+\item du code (\trou[1.5cm]{PHP}, Python…) est \textbf{exécuté par le serveur} avant l'envoi : il fabrique la page à la demande, par exemple en interrogeant une \trou[3cm]{base de données} (résultats de recherche, fil d'actualité, panier). Le client ne voit \textbf{jamais} ce code : il ne reçoit que le HTML produit.
+\end{itemize}
+
+\Needspace{14\baselineskip}
+\begin{center}
+\begin{tikzpicture}[docf/.style={draw=grisb, fill=white, drop shadow={opacity=0.35}, inner sep=4pt,
+    text width=0.40\linewidth, align=justify, font=\small}]
+  \coordinate (c) at (0.5\linewidth,0);
+  \node[docf, anchor=north east] (g) at ($(c)+(-5mm,0)$) {%
+    \textbf{Document 13 — Des pages qui réagissent et se fabriquent}\par\smallskip
+    En 1995, deux langages donnent vie aux pages. \textbf{Brendan Eich}, de la société Netscape, crée \textbf{JavaScript} : le navigateur l'exécute pour faire réagir la page (menus, vérification d'un formulaire…). Le 8 juin 1995, \textbf{Rasmus Lerdorf} annonce \textbf{PHP} : c'est le serveur qui l'exécute, pour fabriquer la page au moment de la demande. Une page n'est plus forcément un fichier fixe.};
+  \node[docf, anchor=north west] (d) at ($(c)+(5mm,-2.8cm)$) {%
+    \textbf{Document 14 — Le DOM}\par\smallskip
+    En 2001, le \textbf{DOM} (\emph{Document Object Model}) est standardisé. Le navigateur représente la page comme un ensemble d'éléments (titres, paragraphes, liens…) qu'un programme peut lire et modifier, de la même façon dans tous les navigateurs. L'outil « Inspecter » affiche et modifie cette représentation.};
+  \node[anchor=south east, font=\large\bfseries, text=navy, inner sep=2pt] at (g.north east) {1995};
+  \node[anchor=south west, font=\large\bfseries, text=navy, inner sep=2pt] at (d.north west) {2001};
+  \coordinate (hg) at (c |- g.north);
+  \coordinate (hd) at (c |- d.north);
+  \coordinate (bas) at (c |- d.south);
+  \begin{scope}[on background layer]
+    \fill[frise] ($(hg)+(-1.5mm,9mm)$) rectangle ($(bas)+(1.5mm,-1mm)$);
+    \fill[frise] ($(bas)+(-4mm,-1mm)$) -- ($(bas)+(4mm,-1mm)$) -- ($(bas)+(0,-6mm)$) -- cycle;
+  \end{scope}
+  \node[circle, draw=navy, fill=white, line width=1pt, inner sep=2pt] at ($(hg)+(0,4mm)$) {};
+  \node[circle, draw=navy, fill=white, line width=1pt, inner sep=2pt] at ($(hd)+(0,4mm)$) {};
+\end{tikzpicture}
+\end{center}
+
+\begin{verifie}
+\begin{enumerate}[leftmargin=*,label=\alph*)]
+\item \emph{(Doc. 13)} Quel langage est exécuté par le navigateur ? Lequel par le serveur ?
+\reponse{1}{JavaScript : par le navigateur (client). PHP : par le serveur.}
+\item \emph{(Doc. 14 et activité 2.1)} Quand tu as remplacé un titre par ton prénom avec « Inspecter », qu'as-tu modifié : le fichier du serveur ou la représentation de la page dans ton navigateur ?
+\reponse{2}{La représentation de la page dans mon navigateur (le DOM), sur mon ordinateur. Le fichier du serveur n'a pas changé.}
+\end{enumerate}
+\end{verifie}
+
+\ensei{Dates du programme (BO spécial n\textsuperscript{o}1 du 22/01/2019) : 1995 pour JavaScript et PHP, 2001 pour la standardisation du DOM. Vérifié : PHP est annoncé par Rasmus Lerdorf le 8 juin 1995 (groupe de discussion \texttt{comp.infosystems.www.authoring.cgi}) ; JavaScript est créé en 1995 par Brendan Eich chez Netscape (le jour exact n'est pas donné aux élèves). Pour le DOM, le W3C a publié le niveau~1 en 1998 et la recommandation \emph{DOM Level 2 Core} le 13 novembre 2000 ; 2001 est la date retenue par le programme, que le document 14 reprend sans la commenter. Le lien avec l'outil « Inspecter » de l'activité 2.1 justifie la question b).}
+
+\activite{Activité 3.3 — Inspecter le code d'une page (sur ordinateur)}
+
+Dans ton dossier \texttt{demo-web}, suis les étapes dans l'ordre.
+
+\begin{enumerate}[leftmargin=*,label=\textbf{Étape \arabic*.},itemsep=4pt]
+\item \textbf{Observer.} Ouvre \texttt{connexion.html} dans le navigateur. Clique sur « Se connecter » sans rien remplir.
+\voir{un message d'erreur en rouge, tout de suite, sans que la page se recharge.}
+Le navigateur affiche ce message \emph{avant d'envoyer} le formulaire. Qui a fabriqué ce message : le client ou le serveur ?
+\reponse{2}{Le client : le message apparaît avant tout envoi, la page n'est pas rechargée, aucune requête n'est partie vers un serveur.}
+\item \textbf{Trouver le code client.} Affiche le code source de la page (\textbf{Ctrl+U}). Trouve la balise \texttt{<script>}. Que fait ce code, et qui l'exécute ?
+\reponse{2}{Il vérifie, avant l'envoi, que les deux champs sont remplis et que l'identifiant contient un \texttt{@}, sinon il affiche un message. Il est exécuté par le navigateur (client), et on peut le lire en entier.}
+\item \textbf{Identifier où sont envoyées les données.} Dans le code source de \texttt{connexion.html}, repère la balise \texttt{<form>}.
+  \begin{enumerate}[leftmargin=*,label=\alph*)]
+  \item Quelle est la valeur de l'attribut \texttt{action} ? Quel fichier recevra les données du formulaire ?
+  \item Quelle est la valeur de l'attribut \texttt{method} ? Quelle méthode HTTP sera utilisée pour envoyer ces données ?
+  \end{enumerate}
+\reponse{2}{a) \texttt{action="connexion.php"} : les données sont destinées à \texttt{connexion.php}. b) \texttt{method="post"} : le navigateur utilise la méthode HTTP POST.}
+\item \textbf{Comprendre le rôle du serveur.} Ouvre le fichier \texttt{connexion.php} avec un éditeur de texte.
+  \begin{enumerate}[leftmargin=*,label=\alph*)]
+  \item Ce fichier contient du code PHP. Qui exécute normalement ce code : le navigateur ou le serveur ?
+  \item Tu peux lire ce code parce que tu possèdes une copie du fichier sur ton ordinateur. Si ce fichier était hébergé sur un serveur Web, un visiteur pourrait-il consulter son code PHP avec \textbf{Ctrl+U} ? Explique pourquoi.
+  \end{enumerate}
+\reponse{3}{a) Le serveur exécute le code PHP. b) Non, dans une configuration normale : le serveur exécute le PHP et renvoie au navigateur le résultat produit (par exemple du HTML), pas le code source PHP. La copie locale est consultable parce qu'elle est accessible à l'élève comme fichier.}
+\end{enumerate}
+
+\ensei{Sans serveur PHP, le navigateur affiche \texttt{connexion.php} tel quel ou propose de le télécharger quand on clique sur « Se connecter » avec des champs valides : faire remarquer que c'est justement \emph{le serveur} qui manque. Avec \texttt{php -S localhost:8000} (poste du professeur), on voit dans l'onglet « Réseau » la requête POST, le code 200 ou 403 et \texttt{Set-Cookie} ; avec Ctrl+U sur la page de réponse, le code PHP n'apparaît pas. Le mot de passe attendu n'est écrit que dans \texttt{connexion.php} : c'est ce qui justifie que la vérification soit faite par le serveur.}
+
+\activite{Activité 3.4 — Client ou serveur ? (à l'oral, avec la classe)}
+
+Pour chaque opération, dis si elle est réalisée par le client (navigateur) ou par le serveur, et justifie en une phrase.
+
+\smallskip
+\noindent\begin{tabularx}{\linewidth}{|Y|C{1.6cm}|C{1.6cm}|}\hline
+\entete \hd{Opération} & \hd{Client} & \hd{Serveur}\\\hline
+Afficher « champ obligatoire » quand on oublie de remplir son e-mail, avant l'envoi du formulaire & \rep{\ding{51}} & \\\hline
+Vérifier que le mot de passe saisi est le bon & & \rep{\ding{51}}\\\hline
+Calculer la liste des vidéos recommandées à un utilisateur & & \rep{\ding{51}}\\\hline
+Agrandir une photo quand on passe la souris dessus & \rep{\ding{51}} & \\\hline
+\end{tabularx}
+
+\ensei{Idée à faire émerger : tout ce qui concerne des données \emph{partagées} ou \emph{secrètes} (mots de passe, recommandations, commentaires enregistrés) reste côté serveur ; ce qui est un effet immédiat sur la page affichée se fait côté client.}
+
+\aretenir{\textbf{Client} (navigateur) et \textbf{serveur} dialoguent selon le protocole \textbf{HTTP} : le client envoie une \emph{requête} (méthode, ressource, paramètres, en-têtes), le serveur renvoie une \emph{réponse} (code, en-têtes, page). Le JavaScript (1995) s'exécute dans le navigateur et se lit dans le code source ; le PHP s'exécute sur le serveur et ne se voit jamais. Un cookie est un petit fichier que le serveur demande au navigateur de garder et de lui renvoyer.}
+
+\end{document}
+% Livret 4 : pas de test d'entrée du livret 3 ; ouvrir sur la question « comment retrouver une page dont on ne connaît pas l'URL ? » (problème 5) ;
+% les requêtes tierces de l'activité 3.2 préparent la section cookies tiers ; bilan final du chapitre au §15.

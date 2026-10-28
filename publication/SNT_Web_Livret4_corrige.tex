@@ -1,0 +1,469 @@
+% =====================================================================
+%  SNT — Seconde — Thématique : le Web — Livret 4 (séance 4 : chercher, publier, se protéger + bilan)
+%  Source unique : version élève / version professeur (corrigé)
+%  Préambule identique au livret 2.
+%
+%  Compilation (XeLaTeX, deux passes pour « page x/y ») :
+%    version élève : xelatex -jobname=SNT_Web_Livret4_eleve SNT_Web_Livret4.tex
+%    version prof  : xelatex -jobname=SNT_Web_Livret4_prof "\def\PROF{}\input{SNT_Web_Livret4.tex}"
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=18mm,top=22mm,headheight=14pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setmonofont{Latin Modern Mono}
+\usepackage{polyglossia}
+\setmainlanguage{french}
+\usepackage{amssymb,pifont}
+\usepackage[table]{xcolor}
+\usepackage{tabularx,array,colortbl,multirow}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{fancyhdr,lastpage}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{calc,shadows,arrows.meta,fit,backgrounds,decorations.pathreplacing}
+\usepackage[edges]{forest}
+\usepackage{fancyvrb}
+\usepackage[hidelinks]{hyperref}
+
+% ---------- Version élève / professeur -------------------------------
+\newif\ifprof
+\ifdefined\PROF \proftrue \fi
+
+% ---------- Couleurs -------------------------------------------------
+\definecolor{navy}{HTML}{1F3864}
+\definecolor{bleuclair}{HTML}{DCE6F2}
+\definecolor{jaune}{HTML}{FFF6D5}
+\definecolor{jauneb}{HTML}{E3B31C}
+\definecolor{orangeT}{HTML}{C98A00}
+\definecolor{gris}{HTML}{EFEFEF}
+\definecolor{grisb}{HTML}{9A9A9A}
+\definecolor{vert}{HTML}{3A8A2E}
+\definecolor{corr}{HTML}{C00000}
+\definecolor{urlproto}{HTML}{D0312D}
+\definecolor{urldom}{HTML}{2E5FB8}
+\definecolor{urlchem}{HTML}{3A8A2E}
+\definecolor{urlparam}{HTML}{D9822B}
+\definecolor{dossier}{HTML}{F4B183}
+\definecolor{fichier}{HTML}{C5E0B4}
+\definecolor{fondpage}{HTML}{F5F5F5}\definecolor{cssnavy}{HTML}{000080}
+\definecolor{lienvert}{HTML}{008000}
+
+% ---------- Mise en page ---------------------------------------------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{3em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small SNT — Seconde — Thématique : le Web — livret 4\ifprof\ — \textcolor{corr}{\textbf{CORRIGÉ PROFESSEUR}}\fi}
+\fancyhead[R]{\small page \thepage/\pageref*{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlist{itemsep=1pt,topsep=2pt}
+
+% ---------- Titres de section (numérotation manuelle, globale aux 4 livrets)
+\newcommand{\sect}[1]{%
+  \par\addvspace{10pt}%
+  {\color{navy}\Large\bfseries #1\par}\vspace{3pt}%
+  {\color{navy}\hrule height 0.6pt}\vspace{6pt}}
+\newcommand{\soussect}[1]{\par\addvspace{6pt}{\color{navy}\large\bfseries #1\par}\vspace{3pt}}
+
+% ---------- Trous et réponses ----------------------------------------
+\newcommand{\trou}[2][3cm]{\ifprof\textcolor{corr}{\underline{\textbf{\,#2\,}}}\else\underline{\hspace{#1}}\fi}
+\newcommand{\rep}[1]{\ifprof\textcolor{corr}{#1}\fi}
+\newcommand{\repcell}[2]{\ifprof\textcolor{corr}{#2}\else\rule{0pt}{#1}\fi}
+\newcommand{\lignes}[1]{\par\foreach \i in {1,...,#1}{\vspace{8.5mm}\hrule height 0.3pt}\vspace{2mm}}
+\newcommand{\reponse}[2]{\ifprof\par{\raggedright\textcolor{corr}{#2}\par}\else\lignes{#1}\fi}
+
+% ---------- Encadrés -------------------------------------------------
+\newtcolorbox{mots}{enhanced,colback=jaune,colframe=jauneb,boxrule=0.5pt,arc=2pt,
+  left=5pt,right=5pt,top=3pt,bottom=3pt,before skip=6pt,after skip=6pt}
+\newcommand{\motsproposes}[1]{\begin{mots}\small\textcolor{orangeT}{$\blacksquare$ \textbf{Mots proposés :}} \textit{#1}\end{mots}}
+
+\newtcolorbox{retenir}{enhanced,colback=gris,colframe=grisb,boxrule=0.5pt,arc=2pt,
+  left=5pt,right=5pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newcommand{\aretenir}[1]{\begin{retenir}\raggedright\textbf{À retenir :} #1\end{retenir}}
+
+\newtcolorbox{verifie}[1][\ding{51}~Vérifie que tu as compris.]{enhanced,colback=white,colframe=vert!70!black,
+  boxrule=0.5pt,arc=2pt,left=5pt,right=5pt,top=4pt,bottom=4pt,before skip=8pt,after skip=8pt,
+  fontupper=\normalsize,before upper={\textcolor{vert}{\textbf{#1}}\ }}
+
+\newcommand{\activite}[1]{%
+  \Needspace{6\baselineskip}%
+  \begin{tcolorbox}[enhanced,colback=bleuclair,colframe=navy!70,boxrule=0.5pt,arc=3pt,
+    left=6pt,top=3pt,bottom=3pt,before skip=10pt,after skip=6pt]
+  \textcolor{navy}{$\blacktriangleright$ \textbf{#1}}\end{tcolorbox}}
+
+\newcommand{\seance}[1]{%
+  \par\addvspace{6pt}\noindent\colorbox{navy}{\parbox{\dimexpr\linewidth-2\fboxsep}{\color{white}#1}}\par\vspace{4pt}}
+
+% Document (même aspect que les documents TikZ du livret 1 : cadre gris, ombre)
+\newtcolorbox{docbox}[1]{enhanced,colback=white,colframe=grisb,boxrule=0.4pt,sharp corners,
+  drop shadow={opacity=0.35},left=5pt,right=5pt,top=4pt,bottom=4pt,before skip=8pt,after skip=8pt,
+  fontupper=\small,before upper={\textbf{#1}\par\smallskip}}
+
+% Note enseignant (version professeur seulement)
+\newcommand{\ensei}[1]{\ifprof\begin{tcolorbox}[enhanced,colback=gris,colframe=corr!60,boxrule=0.5pt,arc=2pt,
+  left=5pt,right=5pt,top=3pt,bottom=3pt,before skip=6pt,after skip=6pt,fontupper=\small]
+  \textcolor{corr}{\textbf{Note enseignant.}} #1\end{tcolorbox}\fi}
+
+% Repère « ce que tu dois voir » des étapes sur ordinateur
+\newcommand{\voir}[1]{\par{\small\textcolor{vert}{\ding{51}~\textbf{Ce que tu dois voir :}} #1}\par}
+
+% ---------- Tableaux -------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{M}[1]{>{\raggedright\arraybackslash}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcommand{\entete}{\rowcolor{navy}}
+\newcommand{\hd}[1]{\textcolor{white}{\textbf{#1}}}
+\renewcommand{\arraystretch}{1.25}
+
+% ---------- Numéro cerclé, cases ---------------------------------------
+\newcommand{\numc}[1]{{\large\ding{\numexpr171+#1\relax}}}
+\newcommand{\numcs}[1]{{\ding{\numexpr171+#1\relax}}}
+\newcommand{\case}{$\square$}
+
+% ---------- Code : verbatim numéroté ------------------------------------
+\fvset{fontsize=\footnotesize,numbers=left,numbersep=4pt,xleftmargin=12pt}
+\renewcommand{\theFancyVerbLine}{\textcolor{grisb}{\tiny\arabic{FancyVerbLine}}}
+
+% ---------- Fenêtre de navigateur stylisée (TikZ) ------------------------
+% \navigateur{largeur}{adresse}{onglet}{contenu}
+\newcommand{\navigateur}[4]{%
+  \begin{tikzpicture}
+    \node[draw=grisb, fill=fondpage, text width=#1, inner sep=6pt, anchor=north west,
+          align=left, font=\footnotesize] (corps) at (0,0) {#4};
+    \fill[gris] ($(corps.north west)+(0,0.95)$) rectangle (corps.north east);
+    \draw[grisb] ($(corps.north west)+(0,0.95)$) rectangle (corps.south east);
+    \draw[grisb, fill=white] ($(corps.north west)+(0.12,0.12)$) rectangle ($(corps.north east)+(-0.12,0.45)$);
+    \node[font=\tiny\ttfamily, anchor=west, text=black!70] at ($(corps.north west)+(0.18,0.285)$) {#2};
+    \draw[grisb, fill=fondpage, rounded corners=1.5pt] ($(corps.north west)+(0.12,0.52)$) rectangle ++(3.2,0.36);
+    \node[font=\tiny, anchor=west] at ($(corps.north west)+(0.18,0.70)$) {#3};
+  \end{tikzpicture}}
+
+% =====================================================================
+% ---------- Cadre de dessin (version élève seulement) et frise -------------
+\newcommand{\cadre}[1]{\par\vspace{1mm}\noindent\framebox[\linewidth]{\rule{0pt}{#1}}\par\vspace{1mm}}
+\definecolor{frise}{HTML}{8A97B3}
+
+\begin{document}
+
+\begin{center}
+  {\small SCIENCES NUMÉRIQUES ET TECHNOLOGIE — SECONDE}\\[2pt]
+  {\color{navy}\LARGE\bfseries Thématique : LE WEB}\\[2pt]
+  {\color{navy}\large Livret 4 — séance 4\ifprof\ — \textcolor{corr}{version professeur}\fi}
+\end{center}
+
+\noindent\begin{tabularx}{\linewidth}{|Y|Y|Y|Y|}\hline
+\textbf{Nom :} & \textbf{Prénom :} & \textbf{Classe :} & \textbf{Date :}\\\hline
+\end{tabularx}
+
+\medskip
+Ce document se remplit \textbf{en classe, en même temps que le cours}, puis en autonomie pour les activités.
+Aujourd'hui, tu vas comprendre comment on retrouve une page sans connaître son adresse, ce que tu as le droit de publier, et comment te protéger : adresses trompeuses, cookies, réglages du navigateur. Le livret se termine par le \textbf{bilan de toute la thématique} : garde les livrets 1, 2 et 3 sous la main.
+
+\seance{\textbf{SÉANCE 4 (1 h 30)} — Chercher, publier, se protéger \hfill \textbf{En salle informatique}}
+
+\begin{tcolorbox}[enhanced,colback=white,colframe=navy!60,boxrule=0.5pt,arc=2pt,left=5pt,right=5pt,top=4pt,bottom=4pt,
+  title={\textbf{Avant de commencer}}, coltitle=navy, colbacktitle=bleuclair, fonttitle=\normalsize]
+\begin{enumerate}[leftmargin=*,label=\textbf{\arabic*.}]
+\item Dans « Mes mots à éclaircir » du livret 1, coche les mots qui ont été expliqués au livret 3.
+\item Relis l'encadré « À retenir » qui termine le §5 du livret 1 (HTTPS et honnêteté d'un site) : nous y revenons aujourd'hui.
+\end{enumerate}
+\end{tcolorbox}
+
+
+\ensei{\textbf{Minutage indicatif} (75 min d'activité effective ; installation, appel et relances en plus) :
+\begin{itemize}[nosep,leftmargin=*,label=--]
+\item « Avant de commencer », §12 et document 15 (moteurs de recherche) : 8 min ;
+\item activité 4.1 (indexer à la main) : 6 min ;
+\item activité 4.2 (popularité d'une page, un seul tour) : 10 min ;
+\item activité 4.3 (analyser deux sources) : 10 min ;
+\item §13 et activité 4.4 (notions juridiques) : 10 min ;
+\item §14, document 17 et activité 4.5 (adresses trompeuses) : 14 min ;
+\item activité 4.6 (régler et observer son navigateur), question a) en classe : 7 min ;
+\item §15 (bilan : frise et trois tâches) : 10 min ; l'auto-évaluation se fait à la maison.
+\end{itemize}
+Pas de test d'entrée du livret 3 : on ouvre sur le problème 5 (« comment retrouver une page dont on ne connaît pas l'URL ? »). La comparaison de deux moteurs (activité 4.3, partie facultative) se donne à la maison, ainsi que les questions b) et c) de l'activité 4.6.\par
+\textbf{Évaluation suggérée} (séance suivante, 30 min) : une URL à décomposer, une requête HTTP à lire, un mini-graphe de 4 pages pour le classement, trois situations juridiques, une adresse suspecte à analyser, deux questions sur les cookies, une modification HTML/CSS très courte sur un extrait de code fourni (changer la couleur des titres, ajouter un lien) et le choix argumenté d'une source parmi deux (auteur, date, preuves). Les trois tâches du bilan servent de test blanc.\par
+\textbf{Couverture du programme} (BO spécial n\textsuperscript{o}1 du 22/01/2019, thématique « Le Web ») : repères historiques (livrets 1 à 3 et frise du §15), notions juridiques (§13), hypertexte (livrets 1 et 2), HTML et CSS (livret 2), URL (livret 1), requête HTTP et modèle client/serveur (livret 3), moteurs de recherche (§12, activités 4.1 à 4.3), adresses trompeuses et paramètres de sécurité du navigateur (§14, activités 4.5 et 4.6).}
+
+% =====================================================================
+\sect{12. Les moteurs de recherche}
+
+Problème n°5 du tableau du livret 1 : il existe des milliards de pages, et tu ne connais pas l'URL de celle que tu cherches. Comment un moteur de recherche te la trouve-t-il ?
+
+\motsproposes{robot\enspace\textbullet\enspace index\enspace\textbullet\enspace classement\enspace\textbullet\enspace liens entrants\enspace\textbullet\enspace publicité\enspace\textbullet\enspace référencement}
+
+Un moteur de recherche travaille en trois étapes :
+\begin{enumerate}
+\item \textbf{Exploration} : un programme appelé \trou[2cm]{robot} (\emph{crawler}) parcourt le Web de lien en lien et télécharge les pages.
+\item \textbf{Indexation} : pour chaque mot, le moteur construit un \trou[2cm]{index} : la liste des pages qui contiennent ce mot, comme l'index à la fin d'un livre.
+\item \textbf{Classement} : à une requête, des milliers de pages répondent. Le moteur les trie selon des centaines de critères ; l'un des plus célèbres, le \textbf{PageRank} de Google (1998), mesure la popularité d'une page par le nombre et la qualité de ses \trou[3cm]{liens entrants}.
+\end{enumerate}
+
+\begin{docbox}{Document 15 — Du Web à la liste de résultats}
+\begin{center}
+\begin{tikzpicture}[
+  boite/.style={draw, rounded corners, minimum width=2.6cm, minimum height=1.1cm, align=center, font=\small},
+  fleche/.style={-{Stealth[length=3mm]}, thick}]
+\node[boite, fill=gris] (w) at (0,0) {\textbf{le Web}\\ des milliards de pages};
+\node[boite, fill=bleuclair] (r) at (4.2,0) {\textbf{1. robot}\\ explore, télécharge};
+\node[boite, fill=jaune, draw=jauneb] (i) at (8.4,0) {\textbf{2. index}\\ mot $\to$ pages};
+\node[boite, fill=fichier] (c) at (12.6,0) {\textbf{3. classement}\\ ordre des résultats};
+\draw[fleche] (w) -- (r); \draw[fleche] (r) -- (i); \draw[fleche] (i) -- (c);
+\node[font=\footnotesize\itshape, align=center] at (4.2,-1.25) {fait à l'avance, en continu};
+\node[font=\footnotesize\itshape, align=center] at (10.5,-1.25) {fait quand tu tapes une requête};
+\draw[decorate, decoration={brace, amplitude=4pt, mirror}, grisb] (2.6,-0.9) -- (5.8,-0.9);
+\draw[decorate, decoration={brace, amplitude=4pt, mirror}, grisb] (7.0,-0.9) -- (14.0,-0.9);
+\end{tikzpicture}
+\end{center}
+\end{docbox}
+
+\textbf{Enjeux.} Les premiers résultats sont parfois des \trou[2.2cm]{publicités} (mention « Annonce » ou « Sponsorisé ») ; les entreprises pratiquent le \trou[2.6cm]{référencement} (SEO) pour remonter dans la liste ; les résultats sont \textbf{personnalisés} selon l'historique, la langue, la position : deux personnes qui tapent la même requête n'obtiennent pas la même liste. Enfin, ce qui est publié \emph{peut} être indexé et devenir retrouvable : une photo mise en ligne « pour rire » peut ressortir dix ans plus tard sur une recherche de ton nom.
+
+\begin{verifie}
+Quand tu tapes une requête, le moteur parcourt-il le Web à ce moment-là ? Explique.
+\reponse{2}{Le moteur recherche principalement dans son index, construit et actualisé en continu par des robots. Il ne parcourt pas tout le Web à chaque recherche : cela prendrait trop de temps.}
+\end{verifie}
+
+\activite{Activité 4.1 — Indexer à la main}
+
+Voici trois pages Web très courtes. Construis l'index : pour chacun des mots proposés, indique dans quelles pages il apparaît.
+
+\smallskip
+\noindent\begin{tabularx}{\linewidth}{|L{1cm}|Y|}\hline
+\entete \hd{Page} & \hd{Contenu}\\\hline
+P1 & Le lycée organise un tournoi de robotique en mars. Inscriptions ouvertes.\\\hline
+P2 & Club robotique : programmer un robot en Python, tous les mardis.\\\hline
+P3 & Tournoi de football du lycée : les inscriptions ferment en mars.\\\hline
+\end{tabularx}
+
+\smallskip
+\noindent\begin{tabularx}{\linewidth}{|L{2.5cm}|Y|L{2.5cm}|Y|}\hline
+\entete \hd{Mot} & \hd{Pages} & \hd{Mot} & \hd{Pages}\\\hline
+lycée & \repcell{6mm}{P1, P3} & robotique & \repcell{6mm}{P1, P2}\\\hline
+tournoi & \repcell{6mm}{P1, P3} & Python & \repcell{6mm}{P2}\\\hline
+inscriptions & \repcell{6mm}{P1, P3} & mars & \repcell{6mm}{P1, P3}\\\hline
+\end{tabularx}
+
+\smallskip
+Quelles pages renvoie la requête « tournoi robotique » ? Et la requête « inscriptions mars » ? Laquelle afficher en premier, et pourquoi n'est-ce pas évident ?
+\reponse{3}{« tournoi robotique » : seule P1 contient les deux mots. « inscriptions mars » : P1 et P3 sont à égalité ; l'index seul ne suffit pas à les classer, il faut un critère supplémentaire (popularité, fraîcheur, titre…). C'est l'objet de l'activité suivante.}
+
+% =====================================================================
+\Needspace{16\baselineskip}
+\activite{Activité 4.2 — Calculer la popularité d'une page (informatique débranchée)}
+
+Comme au livret 1 (§4), le Web forme un graphe orienté : les pages sont les sommets, les liens sont des flèches. Cinq pages A, B, C, D, E se font des liens : A $\to$ B, A $\to$ C, B $\to$ C, C $\to$ A, D $\to$ C, E $\to$ C, E $\to$ D.
+
+\begin{enumerate}[leftmargin=*,label=\alph*)]
+\item Dessine le graphe (une flèche par lien).
+\ifprof\par{\textcolor{corr}{Sortants : A vers B et C ; B vers C ; C vers A ; D vers C ; E vers C et D.}}\par\else\cadre{3.6cm}\fi
+\item \textbf{Première idée} : classer les pages par nombre de liens entrants. Complète : A : \trou[1cm]{1}\quad B : \trou[1cm]{1}\quad C : \trou[1cm]{4}\quad D : \trou[1cm]{1}\quad E : \trou[1cm]{0}.
+\item \textbf{Le problème} : avec cette règle, je peux tricher en créant 1\,000 pages bidon qui pointent vers la mienne. \textbf{L'idée de PageRank} : un lien venant d'une page \emph{elle-même populaire} vaut plus, et une page qui fait beaucoup de liens \emph{partage} sa popularité entre eux. Voici une \textbf{version simplifiée en un seul tour} : chaque page part avec un score de 1, puis donne son score, divisé par son nombre de liens sortants, à chacune des pages vers lesquelles elle pointe. \textbf{Exemple guidé :} A reçoit 1 de C, car C ne pointe que vers A. Calcule les autres nouveaux scores :
+\smallskip
+
+\noindent\begin{tabularx}{\linewidth}{|L{1.2cm}|Y|L{2.4cm}|}\hline
+\entete \hd{Page} & \hd{Ce qu'elle reçoit (détail)} & \hd{Nouveau score}\\\hline
+A & de C : $1/1$ & 1\\\hline
+B & \repcell{6mm}{de A : $1/2$} & \repcell{6mm}{0,5}\\\hline
+C & \repcell{6mm}{de A : $1/2$ ; de B : $1/1$ ; de D : $1/1$ ; de E : $1/2$} & \repcell{6mm}{3}\\\hline
+D & \repcell{6mm}{de E : $1/2$} & \repcell{6mm}{0,5}\\\hline
+E & \repcell{6mm}{rien} & \repcell{6mm}{0}\\\hline
+\end{tabularx}
+\item Quel est le classement obtenu ? A et B, qui avaient le même nombre de liens entrants, sont-ils toujours à égalité ? Explique.
+\reponse{3}{Classement : C, puis A, puis B et D à égalité, puis E. A et B ne sont plus à égalité : A reçoit tout le score de C (qui ne fait qu'un lien), alors que B ne reçoit que la moitié du score de A.}
+\end{enumerate}
+
+\ensei{Scores après un tour : A = 1 ; B = 0,5 ; C = 3 ; D = 0,5 ; E = 0 (classement C $>$ A $>$ B = D $>$ E). \textbf{S'en tenir à un seul tour.} Un second tour donnerait A = 3 ; B = 0,5 ; C = 1,5 ; D = 0 ; E = 0 : le classement s'inverse (A devant C) et les pages sans lien entrant, puis celles qu'elles alimentaient, tombent à zéro. Sans amortissement, la suite converge vers A = C = 2, B = 1, D = E = 0. Le vrai PageRank ajoute un facteur d'amortissement (0,85 : chaque page reçoit une petite part fixe, le reste vient des liens) ; avec lui, la limite est C $\approx$ 1,93 $>$ A $\approx$ 1,79 $>$ B $\approx$ 0,91 $>$ D $\approx$ 0,21 $>$ E $\approx$ 0,15, c'est-à-dire le classement du tour 1. Si un élève demande « et si on continue ? », c'est la réponse à donner (hors programme). Prérequis : le graphe vu au chapitre sur les réseaux sociaux (sommets, arêtes) ; ici le graphe est orienté.}
+
+% =====================================================================
+\Needspace{16\baselineskip}
+\activite{Activité 4.3 — Évaluer des sources (sur ordinateur)}
+
+Tape la requête « réchauffement climatique causes » dans un moteur de recherche. Ouvre les deux premiers résultats (hors annonces) et complète le tableau.
+
+\smallskip
+\noindent\begin{tabularx}{\linewidth}{|L{5cm}|Y|Y|}\hline
+\entete \hd{Question} & \hd{Résultat 1} & \hd{Résultat 2}\\\hline
+Qui parle ? (auteur, organisme) & \repcell{6mm}{} & \repcell{6mm}{}\\\hline
+Date de publication ou de mise à jour & \repcell{5mm}{} & \repcell{5mm}{}\\\hline
+Des preuves ? (chiffres, références, sources citées) & \repcell{6mm}{} & \repcell{6mm}{}\\\hline
+Objectif de la page (informer, vendre, convaincre, divertir…) & \repcell{6mm}{} & \repcell{6mm}{}\\\hline
+\end{tabularx}
+
+\smallskip
+Quelle source retiendrais-tu pour un exposé, et pourquoi ? Plus généralement, pourquoi faut-il croiser plusieurs sources avant de retenir une information trouvée avec un moteur ?
+\reponse{3}{Pas de bonne réponse unique : on attend une justification par l'auteur, la date et les preuves, jamais par la position dans la liste, qui ne dit rien de la fiabilité. On croise les sources parce qu'un moteur classe par popularité, pas par exactitude, et que les résultats peuvent être payés ou personnalisés.}
+
+\emph{Pour aller plus loin (facultatif, à la maison).} Refais la même recherche dans un second moteur (Qwant, DuckDuckGo, Bing, Ecosia…). Compare le nombre de résultats sponsorisés, les trois premiers sites, le type de source en première position, et ce que dit la page « confidentialité » du moteur sur l'usage de tes données.
+
+\ensei{C'est l'analyse critique qui est évaluée, pas le choix de la source. Pour la partie facultative : les résultats diffèrent (index, classement et personnalisation différents) ; les moteurs « respectueux de la vie privée » (Qwant, DuckDuckGo) ne personnalisent pas, ou peu.}
+
+% =====================================================================
+\Needspace{8\baselineskip}
+\sect{13. Publier sur le Web : notions juridiques}
+
+Publier est facile ; mais tout ce qui est en ligne n'est pas libre pour autant.
+
+\motsproposes{droit d'auteur\enspace\textbullet\enspace licence\enspace\textbullet\enspace droit d'usage\enspace\textbullet\enspace valeur\enspace\textbullet\enspace Creative Commons\enspace\textbullet\enspace domaine public}
+
+\begin{itemize}
+\item Toute création originale (texte, photo, musique, code, vidéo) est protégée par le \trou[2.8cm]{droit d'auteur} dès sa création, sans formalité. En France, les \textbf{droits patrimoniaux} durent généralement jusqu'à 70 ans après la mort de l'auteur. Ensuite, l'œuvre entre dans le \trou[2.8cm]{domaine public}, mais le \textbf{droit moral} (respect de l'œuvre et du nom de l'auteur) demeure. Trouver une image sur Internet ne donne pas automatiquement le droit de la republier.
+\item L'auteur peut accorder une \trou[2cm]{licence} : un contrat qui précise ce que les autres ont le droit de faire. Les licences \trou[3.5cm]{Creative Commons} sont des licences standard (document 16).
+\item Acheter un morceau ou un e-book sous forme de téléchargement donne généralement un \trou[3cm]{droit d'usage} (l'écouter, le lire) défini par les conditions de vente, sans autoriser pour autant sa redistribution libre. Le fait de posséder une copie numérique ne donne pas tous les droits sur l'œuvre.
+\item Un bien numérique se copie à coût nul, et pourtant il a une \trou[2cm]{valeur} : celle du travail de création, et celle des données qu'il permet de collecter. C'est ce qui explique à la fois les modèles payants (abonnement) et les modèles gratuits financés par la publicité, vus au chapitre sur les réseaux sociaux.
+\end{itemize}
+
+\begin{docbox}{Document 16 — Les licences Creative Commons}
+\noindent\begin{tabularx}{\linewidth}{|L{1.6cm}|Y|}\hline
+\entete \hd{Sigle} & \hd{Ce que l'auteur demande}\\\hline
+\textbf{BY} & citer l'auteur (et indiquer la licence)\\\hline
+\textbf{NC} & pas d'usage commercial\\\hline
+\textbf{ND} & pas de modification de l'œuvre\\\hline
+\textbf{SA} & si on modifie l'œuvre, partager le résultat dans les mêmes conditions\\\hline
+\end{tabularx}
+\end{docbox}
+
+\activite{Activité 4.4 — Ai-je le droit ? (à l'oral)}
+
+Pour chaque situation, réponds par oui, non ou « à condition de », et justifie avec le vocabulaire de cette page.
+
+\smallskip
+\noindent\begin{tabularx}{\linewidth}{|Y|L{6.4cm}|}\hline
+\entete \hd{Situation} & \hd{Réponse et justification}\\\hline
+Mettre une photo trouvée sur Internet dans mon exposé publié sur le site du lycée & \repcell{8mm}{Non : droit d'auteur, aucune licence ; chercher une image libre ou demander l'autorisation.}\\\hline
+Utiliser une photo de Wikimedia Commons sous licence CC BY-SA dans ce même exposé & \repcell{8mm}{Oui, à condition de citer l'auteur et la licence (BY). SA ne joue que si la photo est modifiée : la version modifiée doit alors être diffusée sous la même licence.}\\\hline
+Revendre à quelqu'un la copie téléchargée d'un e-book commercial, comme on revendrait un livre papier & \repcell{8mm}{En règle générale, non sans autorisation : les droits sur un téléchargement ne permettent pas librement d'en redistribuer une copie. Cela dépend des droits et conditions applicables.}\\\hline
+Publier sur mon site un poème de Victor Hugo (mort en 1885) & \repcell{8mm}{Oui : l'œuvre est dans le domaine public.}\\\hline
+\end{tabularx}
+
+\ensei{Précisions juridiques (à ne pas donner aux élèves telles quelles) : la protection suppose une œuvre \emph{originale} (CPI, art. L. 112-1) ; les 70 ans après la mort de l'auteur (art. L. 123-1) concernent les droits patrimoniaux, le droit moral (paternité, respect de l'œuvre, art. L. 121-1) est perpétuel. Pour CC BY-SA : l'exposé qui incorpore simplement la photo inchangée n'est pas, du seul fait de cette incorporation, soumis à la clause SA ; si la photo est adaptée, l'adaptation diffusée doit respecter la clause SA. Revente d'e-books : CJUE, \emph{Tom Kabinet}, C-263/18, 19 décembre 2019 (mise à disposition d'un e-book par téléchargement). Éviter d'étendre cette règle indistinctement à tous les biens numériques ou contrats. Les quatre notions du BO sont couvertes : licence, droit d'auteur, droit d'usage, valeur d'un bien.}
+
+% =====================================================================
+\Needspace{8\baselineskip}
+\sect{14. Se protéger sur le Web}
+
+\motsproposes{hameçonnage\enspace\textbullet\enspace nom de domaine\enspace\textbullet\enspace cookie\enspace\textbullet\enspace tiers\enspace\textbullet\enspace historique\enspace\textbullet\enspace navigation privée\enspace\textbullet\enspace mise à jour\enspace\textbullet\enspace extension}
+
+\soussect{Repérer une adresse trompeuse}
+
+Au livret 1, tu as vu que HTTPS protège la communication, mais pas l'honnêteté du site. L'\trou[2.6cm]{hameçonnage} consiste à imiter un site connu (banque, administration, lycée) pour te faire saisir ton mot de passe ou ton numéro de carte. Le meilleur indice est l'adresse : repère d'abord le \textbf{nom d'hôte}, situé après \texttt{https://} (ou \texttt{http://}) et avant le « / » suivant. Lis ensuite ce nom \textbf{de droite à gauche} pour identifier le \trou[3cm]{nom de domaine} principal. Pour notre banque fictive, le domaine attendu est exactement \texttt{mabanque.example}, avec éventuellement \texttt{www.} devant. Un fraudeur peut placer ce nom au début d'un autre domaine.
+
+\begin{docbox}{Document 17 — Quatre adresses pour accéder à « Ma Banque » (site fictif)}
+Le vrai site de la banque a pour nom de domaine \texttt{mabanque.example}. Voici quatre adresses reçues par message.
+\smallskip
+
+\noindent\begin{tabularx}{\linewidth}{|c|Y|}\hline
+\entete \hd{N°} & \hd{Adresse}\\\hline
+A & \texttt{https://www.mabanque.example/compte}\\\hline
+B & \texttt{https://www.mabanque.example.connexion-securisee.example/compte}\\\hline
+C & \texttt{https://www.mabanque-securite.example/compte}\\\hline
+D & \texttt{http://www.mabanque.example/compte}\\\hline
+\end{tabularx}
+\end{docbox}
+
+\activite{Activité 4.5 — Repérer une adresse trompeuse}
+
+\emph{(Doc. 17)} Complète le tableau : repère d'abord le nom d'hôte (entre \texttt{https://} ou \texttt{http://} et le « / » suivant), puis décide s'il correspond au domaine principal attendu.
+
+\smallskip
+\noindent\begin{tabularx}{\linewidth}{|c|Y|C{2.4cm}|C{2.6cm}|}\hline
+\entete \hd{N°} & \hd{Nom d'hôte (avant le / du chemin)} & \hd{Domaine attendu ?} & \hd{HTTPS ?}\\\hline
+A & \repcell{8mm}{{\small\texttt{www.mabanque.example}}} & \repcell{8mm}{oui} & \repcell{8mm}{oui}\\\hline
+B & \repcell{8mm}{{\small\texttt{www.mabanque.example.connexion-securisee.example}}} & \repcell{8mm}{non} & \repcell{8mm}{oui}\\\hline
+C & \repcell{8mm}{{\small\texttt{www.mabanque-securite.example}}} & \repcell{8mm}{non} & \repcell{8mm}{oui}\\\hline
+D & \repcell{8mm}{{\small\texttt{www.mabanque.example}}} & \repcell{8mm}{oui} & \repcell{8mm}{non}\\\hline
+\end{tabularx}
+
+\smallskip
+\begin{enumerate}[leftmargin=*,label=\alph*)]
+\item Quelles adresses sont en HTTPS et pourtant frauduleuses ? Que montre cet exemple ?
+\reponse{2}{B et C. HTTPS indique seulement que la communication est chiffrée, pas que le site est honnête (livret 1). Le vrai site est celui dont le nom de domaine se termine par \texttt{mabanque.example}.}
+\item L'adresse D est bien celle du vrai site. Pourquoi ne faut-il pas y saisir son mot de passe ?
+\reponse{2}{Elle commence par \texttt{http} : la communication n'est pas chiffrée, donc le mot de passe pourrait être lu par une personne qui intercepte l'échange (livret 1, document 5).}
+\item Tu reçois un message qui te demande de te « reconnecter » en cliquant sur un lien. Que fais-tu ?
+\reponse{2}{Je ne clique pas sur le lien : je tape moi-même l'adresse du vrai site (ou j'utilise mon marque-page) et je regarde si mon compte contient vraiment un message.}
+\end{enumerate}
+
+\ensei{Les adresses du document 17 sont fictives : le domaine \texttt{.example} est réservé aux exemples (RFC 2606) et ne désigne aucun site réel. Ne pas confondre nom d'hôte complet (par exemple \texttt{www.mabanque.example}) et domaine principal (\texttt{mabanque.example}). Cas B : le domaine principal est \texttt{connexion-securisee.example} et « mabanque » est placé à gauche pour tromper. Cas C : domaine principal voisin du vrai. Cas D : bon domaine, mais pas de chiffrement HTTP. Pour aller plus loin (non exigible) : faute de frappe volontaire, lien raccourci, pièce jointe piégée. Ressource : \texttt{cybermalveillance.gouv.fr}.}
+
+\aretenir{Pour vérifier une adresse, repère le nom d'hôte \textbf{après \texttt{https://} et avant le « / » du chemin}, puis identifie le domaine principal de droite à gauche. \textbf{HTTPS protège la communication, pas l'honnêteté du site} : un site frauduleux peut être en HTTPS. Dans le doute, ne clique pas sur le lien reçu et tape toi-même l'adresse.}
+
+\soussect{Régler son navigateur}
+
+Tu as vu (§10) que le serveur peut déposer un \trou[2cm]{cookie} dans le navigateur pour reconnaître l'utilisateur. C'est utile (rester connecté, garder un panier). Mais les cookies \trou[2cm]{tiers}, déposés par des domaines \emph{autres} que le site visité (régies publicitaires, comme dans l'activité 3.2), permettent de suivre un internaute de site en site et de construire son profil.
+
+Réglages importants à connaître :
+\begin{itemize}
+\item \textbf{Confidentialité} : bloquer les cookies tiers ; supprimer les cookies et l'\trou[2.2cm]{historique} à la fermeture ; refuser les cookies non essentiels dans les bandeaux. Le RGPD (2018) et la CNIL (recommandation sur les cookies, septembre 2020) exigent un consentement libre : refuser doit être aussi facile qu'accepter.
+\item \textbf{Sécurité} : garder le navigateur à \trou[2.5cm]{jour} (les failles corrigées sont publiées, donc connues des attaquants) ; ne pas installer d'\trou[2cm]{extension} inconnue (elle \emph{peut} lire ce que tu tapes, selon les autorisations demandées) ; vérifier l'adresse avant de saisir un mot de passe (activité 4.5) ; analyser un fichier téléchargé avant de l'ouvrir, et se méfier des doubles extensions : \texttt{facture.pdf.exe} est un programme, pas un document PDF (sous Windows, l'extension \texttt{.exe} peut être masquée).
+\item La \trou[3cm]{navigation privée} n'efface les traces que \emph{sur ton ordinateur} : le site visité sait toujours ce que tu y fais, et le fournisseur d'accès ou le lycée voient toujours \emph{quels sites} tu contactes (le nom de domaine), même s'ils ne peuvent pas lire le contenu des pages en HTTPS.
+\end{itemize}
+
+\begin{verifie}
+Un cookie tiers est déposé par qui ? À quoi sert-il ?
+\reponse{2}{Par un domaine autre que le site visité (régie publicitaire, outil de mesure d'audience) ; à reconnaître le même internaute de site en site et à construire son profil.}
+\end{verifie}
+
+\activite{Activité 4.6 — Régler et observer son navigateur (sur ordinateur)}
+
+\begin{enumerate}[leftmargin=*,label=\alph*)]
+\item Dans les paramètres du navigateur (Firefox : \emph{Vie privée et sécurité}), trouve où l'on bloque les cookies tiers, où l'on efface l'historique, et où l'on gère les autorisations (caméra, micro, localisation, notifications). Note le chemin des menus.
+\reponse{1}{Réponse variable selon le navigateur et sa version. Firefox : Paramètres $\to$ Vie privée et sécurité (protection renforcée contre le pistage, cookies et données de sites, historique, autorisations).}
+\item Dans Firefox, ouvre un site, puis les outils de développement (\textbf{F12} $\to$ \textbf{Stockage} $\to$ \textbf{Cookies}). Note le nombre de cookies visibles et le ou les domaines auxquels ils sont associés. Si aucun cookie n'apparaît, note-le également : c'est une observation valable.
+\reponse{2}{Résultat variable : des cookies peuvent être présents, absents ou bloqués. Les domaines affichés dans Stockage ne sont pas nécessairement identiques aux domaines de toutes les requêtes réseau.}
+\item Dans Firefox, clique sur le \textbf{bouclier} situé à gauche de l'adresse sur deux sites différents. La protection contre le pistage indique-t-elle des éléments bloqués ? Si oui, relève un exemple. Si rien n'est signalé, écris « aucun élément signalé ».
+\reponse{2}{Résultat variable selon les sites, la version de Firefox et les réglages. Le bouclier signale des protections, sans garantir que tous les traceurs possibles soient affichés.}
+\end{enumerate}
+
+\ensei{Les résultats d'observation (cookies visibles, domaines associés, éléments bloqués) sont variables : ne pas attendre de chiffre précis. \textbf{Distinguer} les cookies stockés, les requêtes vers des domaines tiers et les traqueurs bloqués. Certains sites qui intègrent des services externes peuvent s'afficher incomplètement lorsque leur chargement est bloqué. Les questions b) et c) peuvent rester à la maison comme prévu au minutage, mais prévoir une démonstration si les élèves ne disposent pas du même Firefox. Facultatif : comparer deux navigateurs ou moteurs sur leurs réglages de confidentialité.}
+
+% =====================================================================
+\Needspace{10\baselineskip}
+\sect{15. Bilan de la thématique}
+
+\textbf{1. Les cinq problèmes.} Reviens au tableau du §1 du livret 1 : complète la réponse au problème 5 (retrouver un document sans connaître son adresse), puis relis les cinq réponses et corrige-les avec tes livrets. Dans « Mes mots à éclaircir », tous les mots doivent être cochés ; sinon, pose la question.
+
+\textbf{2. La frise du Web.} Complète-la sans regarder les livrets, puis corrige avec eux.
+
+\smallskip
+\noindent\begin{tabularx}{\linewidth}{|L{1.5cm}|Y|}\hline
+\entete \hd{Année} & \hd{Événement}\\\hline
+1965 & \trou[3cm]{Ted Nelson} invente le mot \emph{hypertexte}.\\\hline
+1989 & Naissance du Web au \trou[2cm]{CERN}, sous l'impulsion de \trou[3cm]{Tim Berners-Lee}.\\\hline
+1993 & Le Web est placé dans le \trou[3cm]{domaine public} ; sortie du navigateur \trou[2.5cm]{Mosaic}.\\\hline
+1994 & Le premier achat \trou[2.5cm]{sécurisé} sur le Web : le numéro de carte bancaire circule \trou[2cm]{chiffré}.\\\hline
+1995 & Apparition de \trou[2.5cm]{JavaScript} (client) et de \trou[1.5cm]{PHP} (serveur).\\\hline
+2001 & Standardisation du \trou[1.5cm]{DOM}.\\\hline
+2010 & Le site \trou[3cm]{adaptatif} (\emph{responsive web design}) : une seule page pour tous les écrans.\\\hline
+2014 & Le nombre de sites Web dépasse un \trou[2.2cm]{milliard}.\\\hline
+\end{tabularx}
+
+\ensei{Dates de la frise : celles du programme (1965 hypertexte, 1989 naissance du Web au CERN, 1993 domaine public et Mosaic, 1995 JavaScript et PHP, 2001 DOM, 2010 technologies pour applications mobiles), auxquelles s'ajoutent deux repères du livret 1 : 1994 (premier achat sécurisé, document 5) et 2014 (un milliard de sites, document 4). 2010 est illustré par le site adaptatif de Marcotte (livret 2, document 10).}
+
+\textbf{3. Trois tâches à faire seul(e), sans regarder le cours.}
+\begin{enumerate}[label=\arabic*.]
+\item Décompose l'URL \texttt{https://www.cnil.fr/fr/cookies?lang=fr} : protocole, nom de domaine, chemin, paramètres. La page est-elle sécurisée ?
+\reponse{2}{\texttt{https} / \texttt{www.cnil.fr} / \texttt{/fr/cookies} / \texttt{lang=fr} / oui, la communication est chiffrée.}
+\item Écris la balise HTML qui crée un lien vers \texttt{https://www.cnil.fr} avec le texte « CNIL ».
+\reponse{1}{\texttt{<a href="https://www.cnil.fr">CNIL</a>}}
+\item « Vérifier qu'un mot de passe est correct » : client ou serveur ? Justifie en une phrase.
+\reponse{2}{Serveur : le mot de passe attendu et la base de données ne doivent jamais être envoyés au client.}
+\end{enumerate}
+
+\Needspace{8\baselineskip}
+\textbf{4. Auto-évaluation.}
+
+\smallskip
+\noindent\begin{tabularx}{\linewidth}{|Y|Y|}\hline
+\entete \hd{Ce que j'ai bien compris} & \hd{Ce qu'il me reste à revoir}\\\hline
+\rule{0pt}{16mm} & \\\hline
+\end{tabularx}
+
+\aretenir{\textbf{Auto-évaluation — je sais :} distinguer Web et Internet ; citer les grandes étapes du Web ; décomposer une URL et reconnaître une page sécurisée ; distinguer HTML (contenu) et CSS (présentation) et modifier une page simple ; lire une requête HTTP et ses paramètres ; dire ce qui s'exécute côté client et côté serveur ; expliquer comment un moteur trouve et classe des pages, et évaluer une source ; connaître droit d'auteur, licence et droit d'usage ; régler cookies, historique et confidentialité de mon navigateur.}
+
+\end{document}
