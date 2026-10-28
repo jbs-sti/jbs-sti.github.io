@@ -247,6 +247,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+### 2026-10-28 — cours/snt-web-pdf
+
+- Ressources : les 5 pages de `snt/02-web/` (séances 2 à 4, livrets 3 et 4) passent du texte converti en Quarto au format « page + PDF » : le PDF de l'enseignant, tel quel, en téléchargement (`fichiers/`). Demande explicite : « tels quels », la conversion Quarto avait modifié la forme (vues, schémas, fusion des apparitions).
+- PDF compilés avec XeLaTeX à partir des `.tex` de l'enseignant, versions élève des livrets ; seule retouche : 3 barres obliques en trop retirées dans une copie du Beamer séance 2 (`\Télécharger`, `\HTML`, `\Changer`, mots supprimés par LaTeX), le `.tex` n'est pas modifié.
+- Corrigés et `.tex` non publiés dans le site (dépôt public) ; les `.tex` sont sur la branche `cours/snt-web-sources`, hors `main`.
+- Pull request : voir PR
+
 ### 2026-10-28 — cours/snt-web
 
 - Ressources : snt/02-web/cours-{seance-2-texte-vers-page-web,livret-3-client-serveur-http,seance-3-client-serveur-http,livret-4-chercher-publier-proteger,seance-4-chercher-publier-proteger}/index.qmd (référence : snt/02-internet/fiche-adressage-ip)
