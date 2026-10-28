@@ -224,7 +224,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Vérificateur : CONFORME (3 retouches : lien Marcotte non sourcé retiré, image d'attente inutile supprimée, balises img en `<code>` car le script de contrôle lit les `<img>` du texte)
 - Relecteur (Codex n'est pas intervenu : sous-agent `relecteur`) : 0 réécriture ; A1 (lien en gras sur le rendu, erreur de la consigne) et A2 (couleurs non montrées, mention ajoutée) corrigés ; A3 (`domaine: snt`) sans objet, c'est la convention de la fiche de référence
 - Rendu : Quarto absent en local ; `verifier_sources.py` : 0 erreur ; rendu à confirmer dans la CI
-- Pull request : à renseigner
+- Pull request : #62
 
 ### 2026-10-26 — cours/bts2-examen-annales
 
@@ -593,5 +593,5 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Cause : les PDF passent par lualatex depuis la PR #14, mais les runners n'avaient pas de TeX ; vérification de la PR #14 et publications #12 et #14 en échec
 - Correctif : installation de TeX Live par apt, contrôle kpsewhich des fichiers requis
 - Vérificateur, Codex : sans objet (infrastructure)
-- Pull request : à renseigner
+- Pull request : #62
 - Points à relire par l'enseignant : liste des paquets TeX Live (non testée en local, la CI de la PR fait foi)
