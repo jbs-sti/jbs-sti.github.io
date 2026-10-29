@@ -1,0 +1,40 @@
+---
+title: "Livret 3 : client, serveur et HTTP"
+description: "Découvrir qui fournit une page Web, comment le navigateur la demande et ce qui s'exécute chez soi ou ailleurs."
+type: cours
+domaine: snt
+chapitre: "02 — Le Web"
+categories: [cours, snt]
+mots-cles:
+  - client
+  - serveur
+  - HTTP
+  - requête
+  - réponse
+  - en-têtes
+  - cookies
+  - JavaScript
+  - PHP
+  - DOM
+objectifs:
+  - "Décomposer une requête HTTP et le début de la réponse."
+  - "Observer les requêtes de son navigateur dans l'onglet Réseau."
+  - "Distinguer ce qui s'exécute chez le client et sur le serveur."
+prerequis:
+  - "Livrets 1 et 2 : URL, HTML et CSS."
+  - "Activité 2.1 : modifier une page avec Inspecter puis la recharger."
+  - "Disposer du dossier demo-web contenant connexion.html et connexion.php."
+duree: "1 h 30"
+order: 35
+date-modified: '2026-10-28'
+draft: false
+lang: fr
+formation: "SNT"
+number-sections: false
+---
+
+## Document
+
+Le livret élève de la séance, tel que l'enseignant l'a écrit, est à télécharger en PDF :
+
+**[Télécharger le document (PDF)](fichiers/livret-3-client-serveur-http.pdf)**
