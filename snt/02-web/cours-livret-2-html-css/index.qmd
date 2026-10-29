@@ -30,3 +30,5 @@ number-sections: false
 Le livret élève de la séance, tel que l'enseignant l'a écrit, est à télécharger en PDF :
 
 **[Télécharger le document (PDF)](fichiers/livret-2-html-css.pdf)**
+
+**[Télécharger le diaporama de la séance (PDF)](fichiers/beamer-seance-2-html-css.pdf)**
