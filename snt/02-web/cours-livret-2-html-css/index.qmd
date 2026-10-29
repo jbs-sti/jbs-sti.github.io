@@ -1,0 +1,32 @@
+---
+title: "Livret 2 : HTML et CSS"
+description: "Lire et modifier une page Web en distinguant le contenu HTML de la présentation CSS."
+type: cours
+domaine: snt
+chapitre: "02 — Le Web"
+categories: [cours, snt]
+mots-cles:
+  - HTML
+  - CSS
+  - balise
+  - attribut
+  - feuille de style
+objectifs:
+  - "Lire le code HTML d'une page et reconnaître les balises et les attributs."
+  - "Distinguer le contenu HTML de la présentation CSS."
+prerequis:
+  - "Livret 1 de la thématique Le Web."
+duree: "1 h"
+order: 27
+date-modified: '2026-10-29'
+draft: false
+lang: fr
+formation: "SNT"
+number-sections: false
+---
+
+## Document
+
+Le livret élève de la séance, tel que l'enseignant l'a écrit, est à télécharger en PDF :
+
+**[Télécharger le document (PDF)](fichiers/livret-2-html-css.pdf)**
