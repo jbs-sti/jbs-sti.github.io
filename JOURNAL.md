@@ -9,13 +9,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
-- Chapitre SNT « 02 — Le Web » : **le 2026-10-29, cinq ressources retirées à la demande de l'enseignant ; restent les livrets 3 et 4** (cours-retrait, branche `cours/snt-web-retrait`). Historique : 5 ressources (`seance-2-texte-vers-page-web`,
+- Chapitre SNT « 02 — Le Web » : **le 2026-10-29, cinq ressources retirées à la demande de l'enseignant ; restent les livrets 2, 3 et 4** (cours-retrait, branche `cours/snt-web-retrait`). Historique : 5 ressources (`seance-2-texte-vers-page-web`,
   `livret-3` et `seance-3-client-serveur-http`, `livret-4` et
   `seance-4-chercher-publier-proteger`), **publiées par l'enseignant**
   (PR #64 et #65), puis ramenées au format « page + PDF » (PR #67) : la
   conversion Quarto avait modifié la forme, l'enseignant veut ses documents
-  « tels quels ». Livrets en version élève seulement. Livrets 1 et 2 non
-  publiés. Sources `.tex` et PDF sur la branche `cours/snt-web-sources`
+  « tels quels ». Livrets en version élève seulement. Livret 2 publié
+  (`livret-2-html-css`, order 27) ; livret 1 non publié. Sources `.tex` et PDF sur la branche `cours/snt-web-sources`
   (`publication/`, hors `main`).
 - Série subnetting / VLSM du chapitre 02 BTS2 : cours subnetting (PR #32),
   fiche méthode subnetting (`fiche-subnetting-methode`, order 15 ; longueur
@@ -254,9 +254,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 ### 2026-10-29 — cours/snt-web-retrait
 
 - Ressources supprimées de `snt/02-web/` à la demande explicite de l'enseignant (capture du menu, six entrées barrées, dont le livret 3 ensuite remis) : `cours-fonctionnement-web`, `cours-html-css`, `cours-seance-2-texte-vers-page-web`, `cours-seance-3-client-serveur-http`, `cours-seance-4-chercher-publier-proteger`. Livret 3 remis dans la foulée (PDF compilé de `publication/SNT_Web_Livret3.tex`, identique à l'ancien), au choix de l'enseignant
-- Restent dans le chapitre : `cours-livret-3-client-serveur-http` et `cours-livret-4-chercher-publier-proteger` ; le livret 2 arrive avec la PR #69
+- Restent dans le chapitre : `cours-livret-3-client-serveur-http` et `cours-livret-4-chercher-publier-proteger` ; le livret 2 (PR #69, fusionnée) y figure aussi
 - Vérificateur, Codex : sans objet (suppression)
 - Points à relire par l'enseignant : les sources restent sur `cours/snt-web-sources` et dans l'historique git ; les prérequis du livret 2 et du livret 4 citent encore les livrets 1 à 3
+
+### 2026-10-29 — cours/snt-web-livret-2
+
+- Ressource : snt/02-web/cours-livret-2-html-css/index.qmd (page + PDF de l'enseignant, comme les livrets 3 et 4)
+- PDF : SNT_Web_livret2_eleve.pdf (OneDrive de l'enseignant, daté du 26/09/2026, 3 pages) copié tel quel ; aucune source `.tex` du livret 2 retrouvée
+- Rédaction, vérificateur, Codex : sans objet (publication à la demande de l'enseignant, sans modification ni relecture)
+- Points à relire par l'enseignant : métadonnées de la page (durée « 1 h » et order 27 choisis par défaut) ; ce PDF est peut-être antérieur à une version révisée
 
 ### 2026-10-28 — cours/snt-web-pdf
 
