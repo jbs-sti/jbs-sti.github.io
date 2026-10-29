@@ -9,7 +9,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
-- Chapitre SNT « 02 — Le Web » : 5 ressources (`seance-2-texte-vers-page-web`,
+- Chapitre SNT « 02 — Le Web » : **le 2026-10-29, six ressources retirées à la demande de l'enseignant ; reste le livret 4** (cours-retrait, branche `cours/snt-web-retrait`). Historique : 5 ressources (`seance-2-texte-vers-page-web`,
   `livret-3` et `seance-3-client-serveur-http`, `livret-4` et
   `seance-4-chercher-publier-proteger`), **publiées par l'enseignant**
   (PR #64 et #65), puis ramenées au format « page + PDF » (PR #67) : la
@@ -250,6 +250,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-29 — cours/snt-web-retrait
+
+- Ressources supprimées de `snt/02-web/` à la demande explicite de l'enseignant (capture du menu, six entrées barrées) : `cours-fonctionnement-web`, `cours-html-css`, `cours-seance-2-texte-vers-page-web`, `cours-seance-3-client-serveur-http`, `cours-livret-3-client-serveur-http`, `cours-seance-4-chercher-publier-proteger`
+- Reste dans le chapitre : `cours-livret-4-chercher-publier-proteger` ; le livret 2 arrive avec la PR #69
+- Vérificateur, Codex : sans objet (suppression)
+- Points à relire par l'enseignant : le livret 3 est retiré alors que le livret 4 reste, comme sur la capture ; les sources restent sur `cours/snt-web-sources` et dans l'historique git ; les prérequis du livret 2 et du livret 4 citent encore les livrets 1 à 3
 
 ### 2026-10-28 — cours/snt-web-pdf
 
