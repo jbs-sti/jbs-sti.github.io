@@ -15,7 +15,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (PR #64 et #65), puis ramenées au format « page + PDF » (PR #67) : la
   conversion Quarto avait modifié la forme, l'enseignant veut ses documents
   « tels quels ». Livrets en version élève seulement. Livret 2 publié
-  (`livret-2-html-css`, order 27, nouvelle version du 2026-10-29, branche `cours/snt-web-livret-2-v2`) ; livret 1 publié (`livret-1-relier-documents`, order 15, PR de la branche `cours/snt-web-livret-1`). Sources `.tex` et PDF sur la branche `cours/snt-web-sources`
+  (`livret-2-html-css`, order 27, nouvelle version du 2026-10-29, PDF de l'enseignant, branche `cours/snt-web-livret-2-v3`) ; livret 1 publié (`livret-1-relier-documents`, order 15, PR de la branche `cours/snt-web-livret-1`). Sources `.tex` et PDF sur la branche `cours/snt-web-sources`
   (`publication/`, hors `main`).
 - Série subnetting / VLSM du chapitre 02 BTS2 : cours subnetting (PR #32),
   fiche méthode subnetting (`fiche-subnetting-methode`, order 15 ; longueur
@@ -250,6 +250,12 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-29 — cours/snt-web-livret-2-v3
+
+- Ressource : snt/02-web/cours-livret-2-html-css/ (PDF remplacé)
+- PDF : `SNT_Web_Livret2_eleve.pdf` déposé à la racine par l'enseignant (6 pages), copié tel quel ; il remplace la compilation faite par Claude Code (PR #72), jugée « pas la bonne version »
+- Vérificateur, Codex : sans objet (publication à la demande de l'enseignant)
 
 ### 2026-10-29 — cours/snt-web-livret-2-v2
 
