@@ -16,7 +16,7 @@ objectifs:
   - "Distinguer le contenu HTML de la présentation CSS."
 prerequis:
   - "Livret 1 de la thématique Le Web."
-duree: "1 h"
+duree: "1 h 30"
 order: 27
 date-modified: '2026-10-29'
 draft: false
