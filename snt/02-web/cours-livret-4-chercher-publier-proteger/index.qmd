@@ -39,3 +39,5 @@ formation: "SNT"
 Le livret élève de la séance, tel que l'enseignant l'a écrit, est à télécharger en PDF :
 
 **[Télécharger le document (PDF)](fichiers/livret-4-chercher-publier-proteger.pdf)**
+
+**[Télécharger le diaporama de la séance (PDF)](fichiers/beamer-seance-4-chercher-publier-proteger.pdf)**

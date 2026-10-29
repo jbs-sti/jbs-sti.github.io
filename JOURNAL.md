@@ -9,7 +9,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
-- Chapitre SNT « 02 — Le Web » : **le 2026-10-29, cinq ressources retirées à la demande de l'enseignant ; restent les livrets 2, 3 et 4** (cours-retrait, branche `cours/snt-web-retrait`). Historique : 5 ressources (`seance-2-texte-vers-page-web`,
+- Chapitre SNT « 02 — Le Web » : **le 2026-10-29, cinq ressources retirées à la demande de l'enseignant ; restent les livrets 1 à 4, avec les beamers des séances 2, 3 et 4 (branche `cours/snt-web-beamers`)** (retrait fusionné). Historique : 5 ressources (`seance-2-texte-vers-page-web`,
   `livret-3` et `seance-3-client-serveur-http`, `livret-4` et
   `seance-4-chercher-publier-proteger`), **publiées par l'enseignant**
   (PR #64 et #65), puis ramenées au format « page + PDF » (PR #67) : la
@@ -250,6 +250,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-29 — cours/snt-web-beamers
+
+- Ressources : livrets 2, 3 et 4 de `snt/02-web/` (diaporamas Beamer ajoutés dans `fichiers/`, un lien de plus dans chaque `index.qmd`)
+- PDF copiés tels quels : séance 3 et séance 4 depuis `SNT_Web_Livrets_et_Beamer.zip` (enseignant) ; séance 2 depuis `cours/snt-web-sources` (`publication/pdf/`), le zip ne contenant que son `.tex` (identique à celui de la branche). Pas de beamer pour le livret 1
+- Contrôle : `quarto` absent du poste, rendu laissé à la CI
+- Vérificateur, Codex : sans objet (publication à la demande de l'enseignant, sans modification)
 
 ### 2026-10-29 — cours/snt-web-livret-2-v4
 
