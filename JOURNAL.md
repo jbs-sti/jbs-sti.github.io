@@ -15,7 +15,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (PR #64 et #65), puis ramenées au format « page + PDF » (PR #67) : la
   conversion Quarto avait modifié la forme, l'enseignant veut ses documents
   « tels quels ». Livrets en version élève seulement. Livret 2 publié
-  (`livret-2-html-css`, order 27, nouvelle version du 2026-10-29, PDF de l'enseignant, branche `cours/snt-web-livret-2-v3`) ; livret 1 publié (`livret-1-relier-documents`, order 15, PR de la branche `cours/snt-web-livret-1`). Sources `.tex` et PDF sur la branche `cours/snt-web-sources`
+  (`livret-2-html-css`, order 27, nouvelle version du 2026-10-29, PDF de l'enseignant, branche `cours/snt-web-livret-2-v4`) ; livret 1 publié (`livret-1-relier-documents`, order 15, PR de la branche `cours/snt-web-livret-1`). Sources `.tex` et PDF sur la branche `cours/snt-web-sources`
   (`publication/`, hors `main`).
 - Série subnetting / VLSM du chapitre 02 BTS2 : cours subnetting (PR #32),
   fiche méthode subnetting (`fiche-subnetting-methode`, order 15 ; longueur
@@ -250,6 +250,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-10-29 — cours/snt-web-livret-2-v4
+
+- Ressource : snt/02-web/cours-livret-2-html-css/ (PDF remplacé)
+- PDF : `SNT_Web_Livret2___version_publier.pdf` déposé par l'enseignant (5 pages, compilé le 29/10 à 21 h 53), copié tel quel ; remplace la version de la PR #73
+- Relecture (Claude Code, lecture du texte du PDF, sans modification) : le livret s'arrête à l'activité 2.6 ; plus d'« À retenir » final, ni de « Fin de séance », ni d'étape sur le lien interne `#haut` (le document 8 le présente toujours) ; consignes Geany / VS Code
+- Vérificateur, Codex : sans objet (publication à la demande de l'enseignant)
 
 ### 2026-10-29 — cours/snt-web-livret-2-v3
 
