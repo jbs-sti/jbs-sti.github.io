@@ -1,0 +1,30 @@
+---
+title: "Livret 1 : le Web, relier des documents"
+description: "Comprendre le Web comme un ensemble de documents reliés entre eux, avant de découvrir HTML, CSS et le dialogue client-serveur."
+type: cours
+domaine: snt
+chapitre: "02 — Le Web"
+categories: [cours, snt]
+mots-cles:
+  - Web
+  - lien hypertexte
+  - URL
+  - navigateur
+objectifs:
+  - "Expliquer que le Web relie des documents par des liens."
+  - "Distinguer le Web d'Internet."
+prerequis: []
+duree: "1 h 30"
+order: 15
+date-modified: '2026-10-29'
+draft: false
+lang: fr
+formation: "SNT"
+number-sections: false
+---
+
+## Document
+
+Le livret élève de la séance, tel que l'enseignant l'a écrit, est à télécharger en PDF :
+
+**[Télécharger le document (PDF)](fichiers/livret-1.pdf)**
