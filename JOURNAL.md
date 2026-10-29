@@ -256,6 +256,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Ressource : snt/02-web/cours-livret-2-html-css/ (PDF remplacé)
 - PDF : `SNT_Web_Livret2___version_publier.pdf` déposé par l'enseignant (5 pages, compilé le 29/10 à 21 h 53), copié tel quel ; remplace la version de la PR #73
 - Relecture (Claude Code, lecture du texte du PDF, sans modification) : le livret s'arrête à l'activité 2.6 ; plus d'« À retenir » final, ni de « Fin de séance », ni d'étape sur le lien interne `#haut` (le document 8 le présente toujours) ; consignes Geany / VS Code
+- Pull request : #74 (fusionnée). Déploiement du site à contrôler (PDF en ligne = `SNT_Web_Livret2___version_publier.pdf`)
 - Vérificateur, Codex : sans objet (publication à la demande de l'enseignant)
 
 ### 2026-10-29 — cours/snt-web-livret-2-v3
