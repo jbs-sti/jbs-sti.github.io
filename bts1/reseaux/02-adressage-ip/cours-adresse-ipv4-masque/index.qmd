@@ -1,0 +1,25 @@
+---
+title: "Adresse IPv4 et masque de sous-réseau"
+description: "Diaporama du cours : conversion binaire en décimal, adresse IPv4 et masque de sous-réseau, avec des activités."
+type: cours
+domaine: reseaux
+chapitre: "02 — Adressage IP"
+categories: [cours, reseaux]
+mots-cles: [adresse IPv4, masque de sous-réseau, conversion binaire, décimal]
+objectifs:
+  - "Convertir un nombre binaire en décimal."
+  - "Lire une adresse IPv4 et son masque de sous-réseau."
+prerequis:
+  - "Modèle OSI et TCP/IP"
+duree: "2 h"
+order: 10
+date-modified: 2026-11-01
+draft: true
+lang: fr
+---
+
+## Document
+
+Le diaporama du cours (29 diapositives, avec activités) est à télécharger au format PowerPoint :
+
+**[Télécharger le document (PowerPoint, .pptx)](fichiers/cours-adresse-ipv4-masque.pptx)**
