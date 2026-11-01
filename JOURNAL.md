@@ -11,7 +11,8 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 - BTS CIEL 1, chapitre 01 : cours « Un salut sur Snapchat » (PDF de
   l'enseignant tel quel) et TP « Voir l'encapsulation avec Packet Tracer »
-  (branche `cours/bts1-reseaux-osi-snapchat`, en brouillon). Le `.tex` fourni
+  (branches `cours/bts1-reseaux-osi-snapchat` puis `…-publie` : passés en
+  `draft: false` à la demande expresse de l'enseignant le 2026-11-01). Le `.tex` fourni
   n'avait pas de préambule : le PDF de l'énoncé a été compilé avec un préambule
   reconstitué (mise en page à vérifier). Corrigé non publié, à la demande de
   l'enseignant ; PDF du corrigé gardé dans `OSI/` (non versionné).
@@ -280,6 +281,12 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-01 — cours/bts1-reseaux-osi-snapchat-publie
+
+- Ressources : `cours-snapchat-salut` et `tp-encapsulation-packet-tracer`
+  passés en `draft: false`, à la demande expresse de l'enseignant
+- Vérificateur : non lancé (seule la métadonnée `draft` change)
 
 ### 2026-11-01 — cours/bts1-reseaux-osi-snapchat
 
