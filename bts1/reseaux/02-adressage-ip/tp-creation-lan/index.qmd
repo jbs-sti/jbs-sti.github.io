@@ -18,7 +18,7 @@ prerequis:
 duree: "4 h"
 order: 20
 date-modified: 2026-11-01
-draft: true
+draft: false
 lang: fr
 ---
 
@@ -216,9 +216,9 @@ Note : Pour le commutateur, vous prendrez le « generic switch-PT ». Les points
 
 ::: {.callout-note title="Question 16"}
 **Question 16** : Modifiez votre réseau de façon à avoir le réseau ci-dessous avec l'ajout d'un concentrateur et deux autres postes configurés pour appartenir au même réseau.
+:::
 
 ![Schéma du réseau : un commutateur et un concentrateur.](img/tp2-16.png){fig-alt="Schéma d'un réseau avec un commutateur relié à un concentrateur, chacun portant plusieurs postes."}
-:::
 
 Vous constaterez que vous ne pouvez pas connecter le commutateur au concentrateur car il manque un port FastEthernet au commutateur. Vous allez donc ajouter un port au commutateur. Cliquez sur le commutateur pour ouvrir sa fenêtre de propriétés et choisissez l'onglet « physique » pour visualiser sa face arrière. (1) Éteignez le commutateur en cliquant sur l'interrupteur I/0. (2) Faites glisser un connecteur de type « CFE » (3) vers un emplacement libre de la face arrière du concentrateur.
 

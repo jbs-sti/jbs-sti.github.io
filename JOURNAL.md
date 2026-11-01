@@ -9,6 +9,11 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
+- BTS CIEL 1, publication (branche `cours/bts1-reseaux-publication`) : TP0 à TP4
+  et cours « Adresse IPv4 et masque » passés en `draft: false` à la demande
+  expresse de l'enseignant ; correctif du TP2 (image dans un encadré, échec du
+  PDF en CI). Cours 1, 2 et ARP restent en brouillon. Rappel : le corrigé des
+  questions 11 et 17 du TP4 est dans le texte élève.
 - BTS CIEL 1, cours « Adresse IPv4 et masque de sous-réseau » (diaporama
   `.pptx` de l'enseignant réduit de 101 à 29 diapositives (étapes intermédiaires de construction supprimées ; original conservé à la racine, non versionné), branche
   `cours/bts1-reseaux-masque-ipv4`, empilée sur la PR #79). Pas de PDF : à
