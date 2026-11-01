@@ -1,0 +1,246 @@
+---
+title: "TP0 — Initiation au réseau : identifier sa configuration réseau"
+description: "Relever la configuration réseau d'un poste Windows avec ipconfig, puis tester la connectivité avec ping et tracert."
+type: tp
+domaine: reseaux
+chapitre: "01 — Introduction aux réseaux"
+categories: [tp, reseaux]
+mots-cles: [ipconfig, ping, tracert, adresse IP, masque de sous-réseau, passerelle, DNS, Windows]
+objectifs:
+  - "Utiliser les commandes de base pour analyser votre configuration réseau."
+  - "Comprendre les concepts fondamentaux du réseau (IP, DNS, passerelle)."
+  - "Diagnostiquer des problèmes de connexion simples."
+  - "Interpréter les résultats des tests de connectivité."
+prerequis:
+  - "Introduction aux réseaux"
+duree: "1 h"
+order: 30
+date-modified: 2026-11-01
+draft: true
+lang: fr
+---
+
+*Plateforme : poste Windows 10/11, invite de commandes (`cmd`).*
+
+## Objectifs pédagogiques
+
+- Utiliser les commandes de base pour analyser votre configuration réseau
+- Comprendre les concepts fondamentaux du réseau (IP, DNS, passerelle)
+- Diagnostiquer des problèmes de connexion simples
+- Interpréter les résultats des tests de connectivité
+
+---
+
+## Introduction théorique
+
+### Qu'est-ce qu'un réseau informatique ?
+
+Un réseau informatique permet à plusieurs ordinateurs de communiquer entre eux et de partager des ressources (fichiers, imprimantes, Internet).
+
+### Les éléments clés à retenir :
+
+- **Adresse IP** : L'identité unique de votre ordinateur sur le réseau
+- **Masque de sous-réseau** : Définit quelle partie de l'adresse appartient au réseau local
+- **Passerelle** : Le "portail" vers Internet (généralement votre box/routeur)
+- **DNS** : Le service qui traduit les noms de sites (google.com) en adresses IP
+
+---
+
+## Partie 1 : Découverte de la configuration réseau (15 minutes)
+
+### Étape 1.1 : Ouvrir l'invite de commandes
+
+1. **Windows 10/11** : Appuyez sur `Windows + R`, tapez `cmd` et validez
+2. **Alternative** : Menu Démarrer → tapez "cmd" → Invite de commandes
+
+### Étape 1.2 : Première exploration avec ipconfig
+
+```text
+ipconfig
+```
+
+**Question 1.1** : Combien de cartes réseau voyez-vous ? Lesquelles sont actives ?
+
+- Quel est le **nom de l'ordinateur** ?
+- Quelle est l'**adresse MAC** de la machine ?
+- Quel est le **type de connexion utilisé** (Ethernet ou Wi-Fi) ?
+- Quelle est l'**adresse IPv4** de la machine ?
+- Quel est le **masque de sous-réseau** configuré ?
+- Quelle est la **passerelle par défaut** utilisée ?
+
+### Étape 1.3 : Affichage détaillé
+
+```text
+ipconfig /all
+```
+
+Cette commande affiche TOUTES les informations réseau. C'est plus détaillé !
+
+**À noter dans votre compte-rendu :**
+
+- Nom de l'ordinateur
+- Adresse physique (MAC) de votre carte réseau
+- Configuration DHCP (activée/désactivée)
+
+### Étape 1.4 : Identifier votre carte réseau active
+
+Repérez la carte qui a une adresse IPv4 valide (pas 169.254.x.x).
+
+**Exemple de sortie :**
+
+```text
+Carte Ethernet Ethernet :
+   Suffixe DNS propre à la connexion. . . : ...
+   Adresse IPv6 de liaison locale. . . . .: fe80::62c9:fe40:6dc8:bc4a%8
+   Adresse IPv4. . . . . . . . . . . . . .: 192.168.1.185
+   Masque de sous-réseau. . . . . . . . . : 255.255.255.0
+   Passerelle par défaut. . . . . . . . . : 192.168.1.1
+```
+
+**Question 1** : Votre adresse IP commence-t-elle par 192.168, 10.0, ou 172.16-31 ? Si oui, c'est une IP privée !
+
+Catégories d'adresses IPv4
+
+| **Classe** | **Plage d'adresses** | Utilisation typique |
+|:--|:--|:--|
+| A | 1.0.0.0 à 126.255.255.255 | Très grands réseaux |
+| B | 128.0.0.0 à 191.255.255.255 | Réseaux de taille moyenne |
+| C | 192.0.0.0 à 223.255.255.255 | Petits réseaux (domestiques) |
+
+**Question 2** : Votre adresse IP est de quelle classe ?
+
+Il existe aussi des plages réservées :\
+127.0.0.1 → adresse localhost (permet de simuler une connexion réseau à soi-même)\
+169.254.x.x → adresses automatiques en cas d'erreur DHCP\
+192.168.x.x,10.x.x.x→ adresses privées utilisées dans les LAN
+
+## Partie 2 : Comprendre les informations réseau
+
+### Étape 2.1 : Analyse de votre adresse IPv4
+
+**Question 3 : Complétez le tableau suivant**
+
+| Information | Valeur trouvée | Explication |
+|:--|:--|:--|
+| Adresse IPv4 | | Votre identité sur le réseau local |
+| Masque de sous-réseau | | Définit la taille de votre réseau |
+| Passerelle par défaut | | Adresse de votre box/routeur |
+
+### Étape 2.2 : Calcul du réseau
+
+Avec votre IP et masque, calculons votre réseau :
+
+**Question 4** : Combien d'appareils peuvent se connecter sur votre réseau local ?
+
+---
+
+## Partie 3 : Tests de connectivité
+
+### Étape 3.1 : Vérification de la connectivité locale
+
+La première étape consiste à tester la communication entre votre poste de travail et votre **passerelle par défaut** (généralement votre box Internet ou votre routeur).
+
+La passerelle est l'équipement réseau qui sert de point de sortie de votre ordinateur vers les autres réseaux (notamment Internet). Si votre machine n'arrive pas à communiquer avec la passerelle, vous ne pourrez pas accéder au reste du réseau.
+
+Pour effectuer ce test, on utilise la commande **`ping`** :
+
+```text
+ping [ADRESSE_DE_VOTRE_PASSERELLE]
+```
+
+👉 Remplacez **`[ADRESSE_DE_VOTRE_PASSERELLE]`** par l'adresse IP que vous avez identifiée lors de l'étape précédente (par exemple `192.168.1.1` ou `192.168.0.254`).
+
+---
+
+👉 Quand tu **pinges le routeur** :
+
+- Tu testes la **connexion entre ton poste et le routeur (ou la box)**.
+- Si le ping réussit, cela signifie que ton PC est bien relié physiquement (câble, Wi-Fi) et logiquement (adresse IP, masque, passerelle) au réseau.
+- Si le ping échoue, il faut vérifier le câblage, la configuration IP de ton PC ou l'état du routeur (ou la box).
+
+---
+
+**Question 5** : Quel est votre temps de réponse moyen ?
+
+### Étape 3.2 : Test de la connectivité Internet
+
+Une fois la connexion locale avec la passerelle vérifiée, il faut maintenant s'assurer que votre machine peut accéder à Internet.
+
+Pour cela, on utilise la commande :
+
+```text
+ping 8.8.8.8
+```
+
+---
+
+### 📌 Pourquoi 8.8.8.8 ?
+
+L'adresse **8.8.8.8** correspond à l'un des serveurs DNS publics de Google.
+
+- Cet équipement est situé sur Internet, donc si vous arrivez à le joindre, cela prouve que votre routeur vous permet bien de sortir de votre réseau local.
+- Il est volontairement choisi car il est **très fiable** : il est quasiment toujours en ligne et accessible partout dans le monde.
+
+---
+
+### 📊 Interprétation des résultats
+
+- ✅ **Réponse reçue avec temps de réponse (ex : 20 ms)** :
+  → Votre PC peut communiquer avec Internet. La liaison est opérationnelle.
+- ⚠️ **Délai d'attente dépassé** :
+  → Votre PC n'arrive pas à joindre le serveur. Cela peut être dû à une coupure Internet, un problème de configuration de votre box/routeur, ou une restriction réseau (pare-feu).
+- ❌ **Destination inaccessible** :
+  → Le routeur reçoit bien la requête, mais ne sait pas où l'envoyer. Cela indique souvent un problème de **routage** ou de configuration de la passerelle.
+
+---
+
+Différence entre un `ping` vers une **adresse IP (8.8.8.8)** et un `ping` vers un **nom de domaine (ex : ping www.google.com)**, pour introduire la notion de **résolution DNS** ?
+
+### Étape 3.3 : Test de résolution DNS
+
+```text
+ping www.google.com
+```
+
+**Comparaison des résultats :**
+
+- Si `8.8.8.8` fonctionne MAIS pas `www.google.com` → Problème DNS
+- Si les deux fonctionnent → Tout va bien !
+- Si aucun ne fonctionne → Pas d'Internet
+
+---
+
+## Partie 4 : Diagnostic avancé
+
+### Étape 4.1 : Traçage de route
+
+```text
+tracert 8.8.8.8
+```
+
+Cette commande montre le chemin que prennent vos données pour atteindre Google.
+
+**Question 6** : Combien d'étapes (sauts) votre connexion fait-elle pour atteindre 8.8.8.8 ?
+
+## Partie 5 : Exercices pratiques et dépannage
+
+### Exercice 5.1 : Analyse d'une autre machine
+
+Si vous avez accès à un autre ordinateur/smartphone :
+
+1. Trouvez son adresse IP (sur smartphone : Paramètres → Wi-Fi → Détails) ou l'adresse IP de ton camarade de classe.
+2. Essayez de la pinger depuis votre PC
+
+```text
+ping [IP_AUTRE_APPAREIL]
+```
+
+---
+
+## Questions de compréhension finale
+
+### Questions théoriques :
+
+1. **Quelle est la différence entre une adresse IP privée et publique ?**
+2. **Est-il possible que deux machines aient la même adresse IP sur le réseau local ?**
+3. **Quelle est l'utilité de la passerelle par défaut ?**
