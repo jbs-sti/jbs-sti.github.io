@@ -9,6 +9,12 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
+- BTS CIEL 1, reprise des ressources Notion « Plateforme BTS CIEL 1 » sans
+  réécriture (branche `cours/bts1-reseaux-intro-osi`) : cours 1 (introduction)
+  et 2 (OSI/TCP-IP) en page + PDF, cours ARP remplacé par la page Notion. À
+  faire : page Notion « Adressage logique et physique » (cours, feuilles
+  d'exercices) et TP0 à TP4 (pages Notion non encore lues), dès que
+  l'enseignant dépose les fichiers ; tout va dans `bts1/`.
 - Chapitre SNT « 02 — Le Web » : **le 2026-10-29, cinq ressources retirées à la demande de l'enseignant ; restent les livrets 1 à 4, avec les beamers des séances 2, 3 et 4 (branche `cours/snt-web-beamers`)** (retrait fusionné). Historique : 5 ressources (`seance-2-texte-vers-page-web`,
   `livret-3` et `seance-3-client-serveur-http`, `livret-4` et
   `seance-4-chercher-publier-proteger`), **publiées par l'enseignant**
@@ -250,6 +256,27 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-01 — cours/bts1-reseaux-intro-osi
+
+- Ressources : `bts1/reseaux/01-introduction/cours-introduction-reseaux`
+  (order 10) et `cours-modele-osi-tcp-ip` (order 20) : pages Quarto + PDF de
+  l'enseignant tels quels (modèle : SNT Le Web, PR #67) ; `cours-arp`
+  (`04-couche-liaison`) remplacé par la page Notion de l'enseignant, convertie
+  sans réécriture (6 images PNG ; vidéo `ARP.webm` non reprise : règle « aucune
+  vidéo dans le dépôt »).
+- Vérificateur : CONFORME au premier passage (rendu PDF à contrôler en CI :
+  `quarto` absent du poste).
+- Codex et relecteur : non sollicités (décision de l'enseignant : transfert sans
+  réécriture).
+- Pull request : voir la PR de la branche.
+- Points à relire par l'enseignant : licence des images et du texte ARP
+  (proches d'un module Cisco Networking Academy) ; coquilles reprises de la
+  source (« procotole », « ne expirent », numérotation « III » en double,
+  « décapsule » pour « encapsule », puce « Format et permanence » vide,
+  étiquettes MAC erronées dans `reseau-distant-1.png`) ; durée de vie des
+  entrées ARP « 2 à 20 minutes » (varie selon les systèmes) ; émojis chiffrés
+  dans les titres, à vérifier dans le PDF.
 
 ### 2026-10-29 — cours/snt-web-beamers
 

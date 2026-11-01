@@ -1,0 +1,25 @@
+---
+title: "Introduction aux réseaux"
+description: "Types de réseaux, composants d'un réseau informatique, adresses MAC et adresses IPv4."
+type: cours
+domaine: reseaux
+chapitre: "01 — Introduction aux réseaux"
+categories: [cours, reseaux]
+mots-cles: [réseau, PAN, LAN, MAN, WAN, Internet, adresse MAC, adresse IPv4]
+objectifs:
+  - "Distinguer les types de réseaux PAN, LAN, MAN et WAN."
+  - "Citer les composants d'un réseau : périphériques finaux, périphériques intermédiaires et supports."
+  - "Distinguer l'adresse MAC de l'adresse IPv4."
+prerequis: []
+duree: "2 h"
+order: 10
+date-modified: 2026-11-01
+draft: true
+lang: fr
+---
+
+## Document
+
+Le diaporama du cours, tel que l'enseignant l'a écrit, est à télécharger en PDF :
+
+**[Télécharger le document (PDF)](fichiers/cours-1-introduction-reseaux.pdf)**

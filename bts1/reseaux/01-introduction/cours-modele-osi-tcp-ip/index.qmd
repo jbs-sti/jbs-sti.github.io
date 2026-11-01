@@ -1,0 +1,26 @@
+---
+title: "Modèle OSI et TCP/IP"
+description: "Protocoles de communication, couches des modèles OSI et TCP/IP, encapsulation d'un message."
+type: cours
+domaine: reseaux
+chapitre: "01 — Introduction aux réseaux"
+categories: [cours, reseaux]
+mots-cles: [protocole, modèle OSI, modèle TCP/IP, couche, encapsulation]
+objectifs:
+  - "Expliquer pourquoi des protocoles sont nécessaires pour communiquer."
+  - "Citer les couches des modèles OSI et TCP/IP et leur rôle."
+  - "Décrire l'encapsulation : donnée, segment, paquet, trame, bits."
+prerequis:
+  - "Introduction aux réseaux"
+duree: "2 h"
+order: 20
+date-modified: 2026-11-01
+draft: true
+lang: fr
+---
+
+## Document
+
+Le diaporama du cours, tel que l'enseignant l'a écrit, est à télécharger en PDF :
+
+**[Télécharger le document (PDF)](fichiers/cours-2-modele-osi-tcp-ip.pdf)**
