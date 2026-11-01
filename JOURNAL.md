@@ -9,6 +9,19 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
+- BTS CIEL 1, cours « Adresse IPv4 et masque de sous-réseau » (diaporama
+  `.pptx` de l'enseignant réduit de 101 à 29 diapositives (étapes intermédiaires de construction supprimées ; original conservé à la racine, non versionné), branche
+  `cours/bts1-reseaux-masque-ipv4`, empilée sur la PR #79). Pas de PDF : à
+  fournir par l'enseignant si on veut le même format que les cours 1 et 2.
+- BTS CIEL 1, TP3 (Wireshark, 9 images) et TP4 (ARP bis, 21 images) repris de
+  Notion (branche `cours/bts1-reseaux-tp-3-4`, empilée sur la PR #78). Textes
+  alternatifs écrits après examen de chaque image. Reste : la page « Adressage
+  logique et physique » (fichiers à déposer par l'enseignant).
+- BTS CIEL 1, TP0, TP1 et TP2 repris de Notion (branche
+  `cours/bts1-reseaux-tp-0-4`, PR #78, empilée sur la PR #77).
+  Vérificateur : À REPRENDRE, textes alternatifs corrigés après examen des
+  images ; défauts du texte source (WPA2, numérotation, tutoiement) laissés
+  tels quels, listés dans la PR.
 - BTS CIEL 1, reprise des ressources Notion « Plateforme BTS CIEL 1 » sans
   réécriture (branche `cours/bts1-reseaux-intro-osi`) : cours 1 (introduction)
   et 2 (OSI/TCP-IP) en page + PDF, cours ARP remplacé par la page Notion. À
@@ -256,6 +269,25 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-01 — cours/bts1-reseaux-tp-0-4
+
+- Ressources : `bts1/reseaux/01-introduction/tp-initiation-reseau` (TP0, order 30),
+  `tp-reseau-domestique` (TP1, order 40, 18 captures) et
+  `bts1/reseaux/02-adressage-ip/tp-creation-lan` (TP2, order 20, 23 captures),
+  pages Notion de l'enseignant converties en Quarto sans réécriture (branche
+  empilée sur `cours/bts1-reseaux-intro-osi`, PR #77).
+- Non traités, à reprendre : TP3 « TP wireshark » (page Notion liée au cours 2,
+  9 captures) et TP4 « TP ARP bis » (page liée au cours ARP, 21 captures), ainsi
+  que la page « Adressage logique et physique » (cours et feuilles d'exercices :
+  Google Slides, Google Docs et un `.odp`, à déposer dans le dépôt).
+- Vérificateur : non lancé sur cette branche (contrôle `verifier_sources.py` :
+  0 erreur ; `quarto` absent du poste, rendu laissé à la CI).
+- Points à relire par l'enseignant : textes alternatifs des captures écrits
+  d'après le contexte sans ouvrir chaque image ; fichier Packet Tracer du TP1
+  resté sur Google Drive (lien conservé) ; coquilles reprises de la source ;
+  numérotation des questions du TP1 (16 absente) et du TP2 (12 absente,
+  27 en double).
 
 ### 2026-11-01 — cours/bts1-reseaux-intro-osi
 
