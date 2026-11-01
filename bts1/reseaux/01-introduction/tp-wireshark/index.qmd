@@ -38,7 +38,7 @@ Relevez l'adresse IP de votre PC, l'adresse de la passerelle et la noter
 Lancer Wireshark et sélectionner l'interface de votre connexion réseau.
 :::
 
-![Écran d'accueil de Wireshark : choix de l'interface de capture.](img/tp3-01.png){fig-alt="Capture d'écran de l'écran d'accueil de Wireshark : champ de filtre de capture et liste des interfaces réseau (Wi-Fi, Adapter for loopback traffic capture, plusieurs connexions au réseau local, Bluetooth, vEthernet), avec des traits rouges désignant les interfaces."}
+![Écran d'accueil de Wireshark : choix de l'interface de capture.](img/tp3-01.png){fig-alt="Capture d'écran de l'écran d'accueil de Wireshark : champ de filtre de capture et liste des interfaces réseau (Wi-Fi, Adapter for loopback traffic capture, plusieurs connexions au réseau local, Bluetooth, vEthernet), avec une grande flèche rouge et une accolade rouge désignant la liste des interfaces."}
 
 Vous devez obtenir un résultat similaire à celui-ci-dessous composé de 3 fenêtres
 
@@ -126,7 +126,7 @@ Repérez et sélectionnez le premier message **HTTP** contenant la mention **"OK
 
 Dans la **zone 2** (détails du paquet), cliquez sur la ligne **"Line-based text data: text/html"**, puis faites défiler jusqu'en bas pour lire rapidement le contenu.
 
-![Zone 2 : détail de la réponse HTTP.](img/tp3-07.png){fig-alt="Capture d'écran de Wireshark : détail de la trame 362 en six lignes, Frame, Ethernet II, Internet Protocol Version 4 (source 132.213.9.106, destination 192.168.1.187), Transmission Control Protocol (port source 80), segments TCP réassemblés, Hypertext Transfer Protocol et Line-based text data: text/html."}
+![Zone 2 : détail de la réponse HTTP.](img/tp3-07.png){fig-alt="Capture d'écran de Wireshark : détail de la trame 362 en sept lignes, Frame, Ethernet II, Internet Protocol Version 4 (source 132.213.9.106, destination 192.168.1.187), Transmission Control Protocol (port source 80), segments TCP réassemblés, Hypertext Transfer Protocol et Line-based text data: text/html."}
 
 ::: {.callout-note title="Question 9"}
 Le protocole http est de quelle couche ?

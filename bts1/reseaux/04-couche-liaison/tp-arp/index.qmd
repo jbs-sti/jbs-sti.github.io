@@ -383,7 +383,7 @@ Les entrées de la table ARP sont temporaires car :
     - PC3(3) : 192.168.2.4
 3. Ajoutez un routeur entre les deux commutateurs (câbles droits) (N'oubliez pas de configurer les interfaces du routeur et les passerelles par defaut)
 
-![Topologie : deux réseaux de quatre PC reliés par un routeur.](img/tp4-20.png){fig-alt="Capture d'écran de Packet Tracer : à gauche quatre PC (PC0 à PC3) reliés à Switch1, à droite quatre PC (PC0(1) à PC3(1)) reliés à Switch1(1), et au centre un routeur 2901 (Router1) relié à chacun des deux switches."}
+![Topologie : deux réseaux de quatre PC reliés par un routeur.](img/tp4-20.png){fig-alt="Capture d'écran de Packet Tracer : à gauche quatre PC (PC0 à PC3) reliés à Switch1, à droite quatre PC (PC0(1) à PC3(1)) reliés à Switch1(1), et au centre un routeur 2901 (Router1) relié à chacun des deux switches ; les liaisons entre les switches et le routeur portent des triangles rouges."}
 
 ### 2. Ping inter-réseaux en mode simulation
 
