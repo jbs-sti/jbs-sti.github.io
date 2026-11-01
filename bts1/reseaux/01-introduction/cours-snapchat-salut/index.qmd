@@ -1,0 +1,25 @@
+---
+title: "Un « salut » sur Snapchat : ports, IP et MAC"
+description: "Le trajet d'un message de Alice à Bob via le serveur Snapchat, à travers les couches TCP/IP puis OSI."
+type: cours
+domaine: reseaux
+chapitre: "01 — Introduction aux réseaux"
+categories: [cours, reseaux]
+mots-cles: [modèle OSI, modèle TCP/IP, encapsulation, port, adresse IP, adresse MAC]
+objectifs:
+  - "Suivre un message à travers les couches des modèles TCP/IP et OSI."
+  - "Distinguer le rôle des ports, des adresses IP et des adresses MAC."
+prerequis:
+  - "Modèle OSI et TCP/IP"
+duree: "1 h"
+order: 25
+date-modified: 2026-11-01
+draft: true
+lang: fr
+---
+
+## Document
+
+Le diaporama du cours, tel que l'enseignant l'a écrit, est à télécharger en PDF :
+
+**[Télécharger le document (PDF)](fichiers/un-salut-sur-snapchat.pdf)**

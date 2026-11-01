@@ -9,6 +9,12 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
+- BTS CIEL 1, chapitre 01 : cours « Un salut sur Snapchat » (PDF de
+  l'enseignant tel quel) et TP « Voir l'encapsulation avec Packet Tracer »
+  (branche `cours/bts1-reseaux-osi-snapchat`, en brouillon). Le `.tex` fourni
+  n'avait pas de préambule : le PDF de l'énoncé a été compilé avec un préambule
+  reconstitué (mise en page à vérifier). Corrigé non publié, à la demande de
+  l'enseignant ; PDF du corrigé gardé dans `OSI/` (non versionné).
 - BTS CIEL 1, publication (branche `cours/bts1-reseaux-publication`) : TP0 à TP4
   et cours « Adresse IPv4 et masque » passés en `draft: false` à la demande
   expresse de l'enseignant ; correctif du TP2 (image dans un encadré, échec du
@@ -274,6 +280,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-01 — cours/bts1-reseaux-osi-snapchat
+
+- Ressources : `bts1/reseaux/01-introduction/cours-snapchat-salut/` et
+  `tp-encapsulation-packet-tracer/` (reprise sans réécriture, PDF de
+  l'enseignant ; TP compilé depuis son `.tex` par XeLaTeX)
+- Vérificateur : non lancé (aucun texte rédigé ; `verifier_sources.py` : 0 erreur)
+- Codex : non sollicité (aucune rédaction)
+- Rendu Quarto : non fait en local (quarto absent) ; à confirmer par la CI
+- Points à relire par l'enseignant : mise en page du PDF du TP, `draft: true`
 
 ### 2026-11-01 — cours/bts1-reseaux-tp-0-4
 

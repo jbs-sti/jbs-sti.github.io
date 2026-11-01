@@ -1,0 +1,28 @@
+---
+title: "TP — Voir l'encapsulation avec Packet Tracer"
+description: "Observer en mode Simulation les en-têtes Ethernet, IP et TCP/UDP et le rôle du hub, du switch et du routeur dans le modèle OSI."
+type: tp
+domaine: reseaux
+chapitre: "01 — Introduction aux réseaux"
+categories: [tp, reseaux]
+mots-cles: [Packet Tracer, mode Simulation, encapsulation, PDU, modèle OSI, ARP, ICMP]
+objectifs:
+  - "Lire dans un PDU les en-têtes Ethernet, IP et TCP/UDP."
+  - "Nommer le PDU de chaque couche : donnée, segment, paquet, trame, bits."
+  - "Expliquer pourquoi les adresses MAC changent à chaque routeur alors que les adresses IP restent les mêmes."
+prerequis:
+  - "Modèle OSI et TCP/IP"
+duree: "2 h"
+order: 60
+date-modified: 2026-11-01
+draft: true
+lang: fr
+---
+
+*Plateforme : Cisco Packet Tracer 8.2.*
+
+## Document
+
+Le sujet du TP, tel que l'enseignant l'a écrit, est à télécharger en PDF :
+
+**[Télécharger le sujet (PDF)](fichiers/tp-voir-l-encapsulation.pdf)**
