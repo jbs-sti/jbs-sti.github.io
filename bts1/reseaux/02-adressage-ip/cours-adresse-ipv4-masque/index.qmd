@@ -20,6 +20,6 @@ lang: fr
 
 ## Document
 
-Le diaporama du cours (101 diapositives, avec activités), tel que l'enseignant l'a écrit, est à télécharger au format PowerPoint :
+Le diaporama du cours (29 diapositives, avec activités) est à télécharger au format PowerPoint :
 
 **[Télécharger le document (PowerPoint, .pptx)](fichiers/cours-adresse-ipv4-masque.pptx)**

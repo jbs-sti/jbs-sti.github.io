@@ -10,7 +10,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 **En cours**
 
 - BTS CIEL 1, cours « Adresse IPv4 et masque de sous-réseau » (diaporama
-  `.pptx` de l'enseignant, 101 diapositives, branche
+  `.pptx` de l'enseignant réduit de 101 à 29 diapositives (étapes intermédiaires de construction supprimées ; original conservé à la racine, non versionné), branche
   `cours/bts1-reseaux-masque-ipv4`, empilée sur la PR #79). Pas de PDF : à
   fournir par l'enseignant si on veut le même format que les cours 1 et 2.
 - BTS CIEL 1, TP3 (Wireshark, 9 images) et TP4 (ARP bis, 21 images) repris de
