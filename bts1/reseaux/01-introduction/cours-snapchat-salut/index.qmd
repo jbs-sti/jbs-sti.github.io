@@ -14,7 +14,7 @@ prerequis:
 duree: "1 h"
 order: 25
 date-modified: 2026-11-01
-draft: true
+draft: false
 lang: fr
 ---
 
