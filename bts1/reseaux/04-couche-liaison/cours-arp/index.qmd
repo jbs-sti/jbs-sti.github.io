@@ -5,18 +5,17 @@ type: cours
 domaine: reseaux
 chapitre: "04 — Couche liaison"
 categories: [cours, reseaux]
-mots-cles: [ARP, IPv4, adresse MAC, cache ARP, Ethernet]
+mots-cles: [ARP, IPv4, adresse MAC, cache ARP, table ARP, domaine de diffusion, passerelle par défaut]
 objectifs:
-  - "Expliquer le rôle d’ARP sur un réseau local Ethernet."
-  - "Distinguer une requête diffusée d’une réponse unicast."
-  - "Identifier l’adresse à résoudre pour une destination distante."
-  - "Lire une table de voisins sur Debian GNU/Linux."
+  - "Expliquer le rôle d'ARP dans un réseau local Ethernet."
+  - "Décrire les étapes d'une résolution ARP et le rôle de la table ARP."
+  - "Identifier l'adresse MAC de destination d'une trame pour une destination sur le même réseau ou sur un réseau distant."
 prerequis:
   - "Adressage IPv4 et masque de sous-réseau"
-  - "Rôle d’un commutateur et d’une passerelle"
+  - "Introduction aux réseaux"
 duree: "2 h"
 order: 10
-date-modified: 2026-10-14
+date-modified: 2026-11-01
 draft: true
 lang: fr
 format:
@@ -27,141 +26,183 @@ format:
         #show table.cell.where(y: 0): set text(fill: rgb("#F8F3EE"), weight: "bold")
 ---
 
-## Objectifs et prérequis
+## I. Introduction - Pourquoi ARP ?
 
-À l’issue du cours, vous saurez expliquer un échange ARP, interpréter les
-adresses de ses participants et lire une correspondance IPv4/MAC. Vous devez
-savoir déterminer si deux hôtes appartiennent au même sous-réseau IPv4.
+### 1.1 Le problème à résoudre
 
-## Situation de départ
+- Communication sur un réseau Ethernet nécessite deux types d'adresses
+- Les applications utilisent des adresses IP
+- Le matériel réseau utilise des adresses MAC
+- **Question centrale** : Comment faire le lien entre IP et MAC ?
 
-Le poste A (`192.168.10.10/24`) veut envoyer un paquet IPv4 au poste B
-(`192.168.10.20/24`). Les deux postes sont reliés au même commutateur Ethernet.
-A connaît l’adresse IPv4 de B. Quelle adresse de destination doit-il placer
-dans la trame Ethernet ?
+### 1.2 Les deux types d'adresses
 
-![Deux postes et une passerelle sur un même réseau Ethernet.](img/reseau.svg){fig-alt="A, 192.168.10.10, et B, 192.168.10.20, sont reliés par un commutateur à la passerelle 192.168.10.1 ; le réseau local est 192.168.10.0/24."}
+- **Adresse MAC (physique, couche 2)**
+  - Identifie la carte réseau
+  - Utilisée pour la communication sur le réseau local
+  - Format et permanence
+- **Adresse IP (logique, couche 3)**
+  - Identifie l'hôte sur le réseau
+  - Utilisée pour le routage
+  - Peut être sur le même réseau ou distant
 
-Les adresses MAC de cet exemple sont des adresses locales fictives :
+## II. Destination sur le même réseau
 
-| Équipement | Adresse IPv4 | Adresse MAC |
-|:--|:--|:--|
-| A | `192.168.10.10` | `02:00:00:00:00:0a` |
-| B | `192.168.10.20` | `02:00:00:00:00:0b` |
-| Passerelle G | `192.168.10.1` | `02:00:00:00:00:01` |
+Parfois, un hôte doit envoyer un message, mais il ne connaît que l'adresse IP du périphérique de destination. L'hôte doit connaître l'adresse MAC de ce périphérique, mais comment peut-elle être découverte? C'est là que la résolution des adresses devient critique.
 
-## Comprendre le mécanisme
+Chaque périphérique possède deux adresses principales sur un LAN Ethernet:
 
-### Deux adresses pour deux usages
+- **Adresse physique (l'adresse MAC)** Utilisée pour les communications entre cartes réseau situées sur le même réseau Ethernet.
+- **Adresse logique (l'adresse IP)** Utilisée pour envoyer les paquets depuis le périphérique source vers le périphérique de destination. L'adresse IP de destination peut se trouver soit sur le même réseau IP que la source, soit sur un réseau distant.
 
-Une adresse IPv4 sert à acheminer les paquets entre réseaux. Sur une liaison
-Ethernet, une trame utilise des adresses MAC. Pour envoyer un paquet IPv4 au
-prochain équipement du réseau local, un hôte doit donc obtenir sa MAC.
+Les adresses physiques de couche 2 (c'est-à-dire les adresses MAC Ethernet) sont utilisées pour acheminer la trame de liaison de données avec le paquet IP encapsulé d'une carte réseau à une autre carte réseau sur le même réseau. Si l'adresse IP de destination appartient au même réseau, l'adresse MAC de destination est celle du périphérique de destination.
 
-**ARP**, pour *Address Resolution Protocol*, permet cette résolution IPv4/MAC.
-Une correspondance connue est conservée temporairement dans une table locale,
-appelée cache ARP. Le système évite ainsi de refaire la résolution à chaque
-paquet. Les durées de conservation dépendent de l’implémentation.
+Prenons l'exemple suivant en utilisant des représentations d'adresses MAC simplifiées.
 
-### Une résolution, étape par étape
+![PC1 envoie un paquet à PC2 sur le même réseau.](img/memes-reseau.png){fig-alt="PC1 (192.168.10.10/24, MAC aa-aa-aa) et PC2 (192.168.10.11/24, MAC 55-55-55) sont reliés par un commutateur dans le réseau 192.168.10.0/24. Une trame contient : MAC de destination 55-55-55, MAC source aa-aa-aa, IPv4 source 192.168.10.10, IPv4 de destination 192.168.10.11."}
 
-Dans notre exemple, le cache de A ne contient pas encore B :
+Dans cet exemple, PC1 veut envoyer un paquet à PC2. La figure affiche les adresses MAC source et destination de la couche 2 et l'adressage IPv4 de la couche 3 qui seraient inclus dans le paquet envoyé à partir de PC1.
 
-1. A émet une requête ARP demandant qui possède `192.168.10.20`.
-2. La trame de requête est diffusée à `ff:ff:ff:ff:ff:ff` sur le réseau local.
-3. B reconnaît son adresse IPv4 et répond à la MAC de A.
-4. A mémorise la correspondance de B ; il peut adresser sa trame à B.
+La trame Ethernet de couche 2 contient:
 
-Le commutateur propage la diffusion dans le même VLAN. Le routeur ne relaie pas
-cette diffusion ARP vers les autres réseaux.
+- **Adresse MAC de destination** - Il s'agit de l'adresse MAC simplifiée de PC2, 55-55-55.
+- **Adresse MAC source** - Il s'agit de l'adresse MAC simplifiée de la carte réseau Ethernet de PC1, aa-aa-aa.
 
-::: {.callout-note}
-## À retenir
+Le paquet IP de couche 3 contient:
 
-Pour une résolution ordinaire, la requête ARP est diffusée et la réponse est
-unicast. ARP est transporté directement dans Ethernet : ce n’est pas un message
-TCP ou UDP, et il n’utilise pas de numéro de port.
-:::
+- **L'adresse IPv4 source** - Il s'agit de l'adresse IPv4 de PC1, 192.168.10.10.
+- **Adresse IPv4 de destination** - Il s'agit de l'adresse IPv4 de PC2, 192.168.10.11.
 
-### Si la destination est dans un autre réseau
+## III. Domaines de diffusion
 
-Si A veut joindre `192.168.20.20`, la route utilisée dans cet exemple passe par
-G. A résout la MAC de **G (`192.168.10.1`)**, et non celle de la destination
-distante. Dans la trame envoyée à G, le paquet IPv4 garde `192.168.20.20` comme
-adresse IP de destination. Les adresses MAC concernent la liaison parcourue.
+Lorsqu'un hôte reçoit un message adressé à l'adresse de diffusion, il accepte et traite le message comme s'il lui était directement adressé. Lorsqu'un hôte envoie un message de diffusion, les commutateurs acheminent le message jusqu'à chaque hôte connecté sur le même réseau local. C'est la raison pour laquelle un réseau local qui contient un ou plusieurs commutateurs Ethernet est également appelé domaine de diffusion.
 
-## Observer et appliquer
+Si les hôtes connectés au même domaine de diffusion sont trop nombreux, le trafic de diffusion peut devenir disproportionné. Le nombre d'hôtes et le volume de trafic réseau qui peuvent être pris en charge sur le réseau local sont limités par les capacités des commutateurs utilisés pour les connecter. Au fur et à mesure que le réseau s'étend et que d'autres hôtes sont ajoutés, le trafic du réseau, notamment le trafic de diffusion, augmente. Pour améliorer la performance, il est souvent nécessaire de scinder un réseau local en plusieurs réseaux, ou domaines de diffusion, comme illustré dans la figure. Les routeurs sont utilisés pour diviser le réseau en plusieurs domaines de diffusion.
 
-### Lire le cache sur Debian GNU/Linux
+![Trois domaines de diffusion séparés par un routeur.](img/domaine-diffusion.png){fig-alt="Un routeur central relie trois domaines de diffusion, nommés Production, Sales et Marketing. Chaque domaine contient un ou plusieurs commutateurs et plusieurs ordinateurs."}
 
-Plateforme visée : **Debian GNU/Linux avec iproute2**. La commande suivante
-consulte les voisins IPv4 sans modifier la configuration :
+## III. Communication de la couche d'accès
 
-```bash
-ip -4 neigh show
-```
+Sur un réseau local Ethernet, une carte réseau n'accepte une trame que si l'adresse de destination est l'adresse MAC de diffusion, ou si elle correspond à l'adresse MAC de la carte réseau.
 
-Exemple de résultat fictif (l’interface peut porter un autre nom) :
+La plupart des applications réseau, cependant, se fient à l'adresse IP logique de destination pour identifier l'emplacement des serveurs et des clients. La figure illustre un problème qui survient si un hôte émetteur ne possède que l'adresse IP logique de l'hôte de destination. Comment l'hôte émetteur détermine-t-il l'adresse MAC de destination à utiliser dans la trame?
 
-```text
-192.168.10.20 dev enp1s0 lladdr 02:00:00:00:00:0b REACHABLE
-```
+L'hôte émetteur peut utiliser un protocole IPv4 appelé protocole ARP pour connaître l'adresse MAC d'un hôte sur le même réseau local. Le procotole IPv6 utilise une méthode similaire connue sous le nom de découverte des voisins.
 
-`dev` indique l’interface locale ; `lladdr` indique la MAC associée au voisin.
-`REACHABLE` signifie que le voisin est considéré joignable. Une entrée
-`INCOMPLETE` indique une résolution en cours ; `FAILED` signale son échec.
+![H1 ne connaît que l'adresse IPv4 de H3.](img/besoin-mac.png){fig-alt="Quatre hôtes sont reliés à un commutateur : H1 (192.168.1.5), H2 (192.168.1.6), H3 (192.168.1.7) et H4 (192.168.1.8). Une bulle près de H1 dit : je dois envoyer des informations à l'appareil 192.168.1.7, mais je ne connais que son adresse IPv4."}
 
-La [fiche d’observation téléchargeable](fichiers/observation.txt) permet de
-consigner les adresses et les observations. Les commandes présentées ici sont
-des exemples affichés ; elles ne sont jamais exécutées au rendu du site.
+## IV. ARP
 
-### Vérifier sa compréhension
+Le protocole ARP utilise un processus en trois étapes pour détecter et enregistrer l'adresse MAC d'un hôte sur le réseau local, lorsque seule l'adresse IPv4 de l'hôte est connue.
 
-::: {.content-visible when-format="html"}
-<details>
-<summary>Quelle MAC A doit-il obtenir pour joindre 192.168.20.20 via G ?</summary>
-<p>La MAC de G : 02:00:00:00:00:01. La destination IPv4 du paquet reste 192.168.20.20.</p>
-</details>
-:::
+1. L'hôte émetteur crée et envoie une trame adressée à une adresse MAC de diffusion. La trame contient un message avec l'adresse IPv4 de l'hôte de destination souhaité.
+2. Chaque hôte du réseau reçoit la trame de diffusion et compare l'adresse IPv4 du message à son adresse IPv4 configurée. L'hôte dont l'adresse IPv4 correspond renvoie son adresse MAC à l'hôte émetteur initial.
+3. L'hôte émetteur reçoit le message et enregistre l'adresse MAC et l'adresse IPv4 dans une table appelée table ARP.
 
-::: {.content-visible unless-format="html"}
-**Question.** Quelle MAC A doit-il obtenir pour joindre `192.168.20.20` via G ?
+Une fois que l'hôte émetteur a consigné l'adresse MAC de l'hôte de destination dans **sa table ARP**, il peut envoyer directement des trames à l'adresse de destination, sans effectuer de requête ARP. Comme les messages ARP se basent sur des trames de diffusion pour transmettre les requêtes, tous les hôtes du réseau local IPv4 doivent être dans le même domaine de diffusion.
 
-**Réponse.** La MAC de G : `02:00:00:00:00:01`. La destination IPv4 du paquet
-reste `192.168.20.20`.
-:::
+## IV. 1 La table ARP
 
-## Exercices de vérification
+### Qu'est-ce que la table ARP ?
 
-1. Pour joindre B, quelles sont les adresses Ethernet de destination de la
-   requête ARP, de la réponse de B, puis de la trame contenant le paquet IPv4 ?
-2. Un élève écrit : « ARP demande à tous les routeurs d’Internet la MAC du
-   serveur distant ». Corrigez cette phrase.
-3. La table affiche `192.168.10.20 dev enp1s0 FAILED`. Peut-on en conclure que le
-   câble de B est débranché ? Justifiez.
+La **table ARP** (Address Resolution Protocol table), aussi appelée **cache ARP**, est une table de correspondance stockée dans la mémoire d'un équipement réseau (routeur, switch, ordinateur) qui associe les adresses IP aux adresses MAC sur un réseau local.
 
-### Corrigé
+**Point important** : Au démarrage, cette table est vide. Elle se remplit automatiquement au fur et à mesure que la machine communique sur le réseau.
 
-1. Requête : `ff:ff:ff:ff:ff:ff`. Réponse : MAC de A,
-   `02:00:00:00:00:0a`. Trame IPv4 de A vers B : MAC de B,
-   `02:00:00:00:00:0b`.
-2. ARP résout l’adresse du prochain équipement IPv4 sur une liaison locale.
-   Pour atteindre un autre réseau via G, A recherche la MAC de G.
-3. Non. Cela indique un échec de résolution. Un équipement arrêté, une mauvaise
-   configuration IPv4 ou un VLAN incorrect peuvent aussi l’expliquer.
+---
 
-## Synthèse
+### Comment fonctionne le protocole ARP en lien avec la table ARP?
 
-- Déterminer le prochain saut à partir de la destination IPv4 et du routage.
-- Consulter le cache local ; résoudre la MAC du prochain saut si nécessaire.
-- Distinguer la destination IP du paquet de la destination MAC de la trame.
+#### 1️⃣ Chaque appareil possède sa propre table
 
-ARP n’authentifie pas les associations annoncées : des informations falsifiées
-peuvent perturber les échanges. Les mécanismes de protection seront étudiés en
-cybersécurité. Ce cours traite IPv4 sur Ethernet ; IPv6 utilise la découverte
-de voisins, et non ARP.
+Chaque appareil connecté à un réseau local (PC, routeur, imprimante, etc.) possède sa propre table ARP dans laquelle il enregistre les correspondances entre adresses IP et adresses MAC qu'il découvre.
 
-## Pour aller plus loin
+#### 2️⃣ Besoin de communiquer
 
-- [RFC 826 — spécification d’ARP](https://www.rfc-editor.org/rfc/rfc826.html).
-- [Manuel ip-neighbour — lecture de la table de voisins](https://man7.org/linux/man-pages/man8/ip-neighbour.8.html).
+Lorsqu'un appareil veut envoyer des données à une adresse IP de son réseau local, il a besoin de connaître l'adresse MAC correspondante pour construire la trame Ethernet.
+
+#### 3️⃣ Consultation de la table ARP
+
+L'appareil consulte d'abord sa propre table ARP pour vérifier s'il possède déjà l'adresse MAC correspondant à cette adresse IP.
+
+#### 4️⃣ Si l'entrée existe : communication directe
+
+Si la correspondance est trouvée dans la table, l'appareil utilise directement l'adresse MAC pour encapsuler ses données dans une trame Ethernet et l'envoyer.
+
+#### 5️⃣ Si l'entrée n'existe pas : requête ARP
+
+Si l'adresse MAC n'est pas connue, l'appareil envoie une **requête ARP** (ARP Request) en broadcast sur tout le réseau local. Cette requête contient :
+
+- L'adresse IP recherchée (« Qui possède cette IP ? »)
+- L'adresse MAC de broadcast (`FF:FF:FF:FF:FF:FF`) pour que tous les appareils la reçoivent
+
+#### 6️⃣ Réponse ARP
+
+Seul l'appareil possédant l'adresse IP recherchée répond par une **réponse ARP** (ARP Reply) envoyée en unicast directement au demandeur. Cette réponse contient son adresse MAC.
+
+#### 7️⃣ Mise à jour de la table
+
+Le demandeur enregistre alors cette nouvelle correspondance IP–MAC dans sa table ARP en tant qu'**entrée dynamique**.
+
+#### 8️⃣ Communication et mise en cache
+
+L'appareil peut maintenant communiquer directement avec la destination en utilisant l'adresse MAC stockée, sans avoir à refaire de requête ARP pour les prochains échanges.
+
+#### 9️⃣ Expiration des entrées
+
+Les entrées dynamiques ont une **durée de vie limitée** (généralement 2 à 20 minutes selon les systèmes). Si une entrée n'est pas utilisée pendant ce délai, elle est automatiquement supprimée de la table pour libérer de la mémoire.
+
+---
+
+### Types d'entrées ARP
+
+- **Entrées dynamiques** : créées automatiquement lors des échanges réseau, elles expirent après un certain délai d'inactivité.
+- **Entrées statiques** : configurées manuellement par l'administrateur, elles persistent et ne expirent jamais.
+
+---
+
+### Limitations et cas particuliers
+
+#### Portée limitée au réseau local
+
+ARP fonctionne uniquement sur un **réseau local (couche 2 du modèle OSI)** et ne traverse pas les routeurs. Pour communiquer avec une machine située sur un autre réseau, l'appareil ne cherche pas l'adresse MAC de la destination finale, mais celle de sa **passerelle par défaut** (le routeur), qui se chargera ensuite de relayer les données.
+
+#### Vulnérabilité de sécurité
+
+Le protocole ARP ne possède aucun mécanisme d'authentification, ce qui le rend vulnérable aux attaques de type **ARP spoofing** (ou ARP poisoning). Un attaquant peut envoyer de fausses réponses ARP pour usurper l'identité d'un autre appareil et intercepter ou manipuler le trafic réseau.
+
+---
+
+### Commandes pratiques
+
+Pour consulter ou gérer la table ARP de votre machine :
+
+- **Afficher la table** : `arp -a` (Windows/Linux) ou `arp -n` (Linux)
+- **Vider le cache** : `arp -d *` (Windows) ou `ip -s neigh flush all` (Linux)
+- **Ajouter une entrée statique** : `arp -s <IP> <MAC>`
+
+Ces commandes permettent de visualiser et manipuler les correspondances IP–MAC actuellement en mémoire.
+
+## V. Destination sur un réseau distant
+
+Lorsque l'adresse IP de destination (IPv4 ou IPv6) se trouve sur un réseau distant, l'adresse MAC de destination sera l'adresse de la passerelle par défaut de l'hôte (c'est-à-dire l'interface du routeur).
+
+Prenons l'exemple suivant en utilisant une représentation d'adresse MAC simplifiée.
+
+![Trame émise par PC1 vers PC2 situé sur un réseau distant.](img/reseau-distant-1.png){fig-alt="PC1 (192.168.10.10, MAC aa-aa-aa) est relié par un commutateur à R1 (interface G0/0/0, MAC bb-bb-bb). R1 est relié à R2 par le réseau 209.165.200.224/30, puis R2 à PC2 (10.1.1.10, MAC 55-55-55) par le réseau 10.1.1.0/24. La trame de PC1 contient : MAC de destination bb-bb-bb, MAC source aa-aa-aa, IPv4 source 192.168.10.10, IPv4 de destination 10.1.1.10."}
+
+Dans cet exemple, PC1 veut envoyer un paquet à PC2. PC2 est situé sur un réseau distant. Étant donné que l'adresse IPv4 de destination n'est pas sur le même réseau local que PC1, l'adresse MAC de destination est celle de la passerelle par défaut locale sur le routeur.
+
+Les routeurs examinent l'adresse IPv4 de destination afin de déterminer le meilleur chemin pour acheminer le paquet IPv4. Lorsque le routeur reçoit la trame Ethernet, il décapsule les informations de couche 2. À l'aide de l'adresse IP de destination, il détermine le périphérique du tronçon suivant, puis décapsule le paquet IP dans une nouvelle trame liaison de données pour l'interface de sortie.
+
+Dans notre exemple, R1 encapsulerait maintenant le paquet avec de nouvelles informations d'adresse de couche 2 comme indiqué sur la figure.
+
+![Trame émise par R1 vers R2.](img/reseau-distant-2.png){fig-alt="Même réseau que la figure précédente. La trame sortant de R1 contient : MAC de destination dd-dd-dd (interface G0/0/1 de R2), MAC source cc-cc-cc (interface G0/0/1 de R1), IPv4 source 192.168.10.10, IPv4 de destination 10.1.1.10."}
+
+La nouvelle adresse MAC de destination serait celle de l'interface R2 G0/0/1 et la nouvelle adresse MAC source serait celle de l'interface R1 G0/0/1.
+
+Le long de chaque lien d'un chemin, un paquet IP est encapsulé dans une trame. La trame est spécifique à la technologie de liaison de données associée à cette liaison, telle qu'Ethernet. Si le périphérique du tronçon suivant est la destination finale, l'adresse MAC de destination est celle de la carte réseau Ethernet du périphérique, comme illustré dans la figure.
+
+![Trame émise par R2 vers PC2.](img/reseau-distant-3.png){fig-alt="Même réseau que les figures précédentes. La trame sortant de R2 contient : MAC de destination 55-55-55 (carte réseau de PC2), MAC source ee-ee-ee (interface G0/0/0 de R2), IPv4 source 192.168.10.10, IPv4 de destination 10.1.1.10."}
+
+Comment les adresses IP des paquets IP d'un flux de données sont-elles associées aux adresses MAC de chaque liaison le long du chemin vers la destination? Cette opération est effectuée selon un processus appelé protocole ARP. Pour les paquets IPv6, le processus est ICMPv6 Neighbor Discovery (ND).
