@@ -3,7 +3,7 @@ title: "TP — Voir l'encapsulation avec Packet Tracer"
 description: "Observer en mode Simulation les en-têtes Ethernet, IP et TCP/UDP et le rôle du hub, du switch et du routeur dans le modèle OSI."
 type: tp
 domaine: reseaux
-chapitre: "01 — Introduction aux réseaux"
+chapitre: "03 — OSI et TCP/IP"
 categories: [tp, reseaux]
 mots-cles: [Packet Tracer, mode Simulation, encapsulation, PDU, modèle OSI, ARP, ICMP]
 objectifs:
@@ -13,7 +13,7 @@ objectifs:
 prerequis:
   - "Modèle OSI et TCP/IP"
 duree: "2 h"
-order: 60
+order: 20
 date-modified: 2026-11-01
 draft: false
 lang: fr

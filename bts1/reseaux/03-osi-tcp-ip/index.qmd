@@ -1,0 +1,13 @@
+---
+title: "03 — OSI et TCP/IP"
+description: "Ressources du chapitre : modèles OSI et TCP/IP, encapsulation."
+format:
+  html: default
+listing:
+  # Seules les ressources, pas les index de domaine ni de chapitre.
+  contents: "*/index.qmd"
+  type: grid
+  categories: true
+  sort: "order"
+  fields: [title, description, categories]
+---

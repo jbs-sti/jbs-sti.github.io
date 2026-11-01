@@ -282,6 +282,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+### 2026-11-01 — cours/bts1-reseaux-chapitre-osi
+
+- Nouveau chapitre `bts1/reseaux/03-osi-tcp-ip/` (« 03 — OSI et TCP/IP »), à
+  la demande de l'enseignant ; y sont déplacés `cours-snapchat-salut` et
+  `tp-encapsulation-packet-tracer` (déplacement git, contenu inchangé,
+  `chapitre` et `order` mis à jour). Les anciennes adresses disparaissent.
+- Le cours « Modèle OSI et TCP/IP » (brouillon) reste dans le chapitre 01 :
+  à déplacer aussi si l'enseignant le souhaite.
+- Vérificateur : non lancé (déplacement ; `verifier_sources.py` : 0 erreur)
+
 ### 2026-11-01 — cours/bts1-reseaux-osi-snapchat-publie
 
 - Ressources : `cours-snapchat-salut` et `tp-encapsulation-packet-tracer`
