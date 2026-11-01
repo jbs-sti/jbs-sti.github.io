@@ -3,7 +3,7 @@ title: "Modèle OSI et TCP/IP"
 description: "Protocoles de communication, couches des modèles OSI et TCP/IP, encapsulation d'un message."
 type: cours
 domaine: reseaux
-chapitre: "01 — Introduction aux réseaux"
+chapitre: "03 — OSI et TCP/IP"
 categories: [cours, reseaux]
 mots-cles: [protocole, modèle OSI, modèle TCP/IP, couche, encapsulation]
 objectifs:
@@ -13,7 +13,7 @@ objectifs:
 prerequis:
   - "Introduction aux réseaux"
 duree: "2 h"
-order: 20
+order: 5
 date-modified: 2026-11-01
 draft: true
 lang: fr
