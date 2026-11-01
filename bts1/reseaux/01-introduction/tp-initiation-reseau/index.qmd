@@ -55,7 +55,7 @@ Un réseau informatique permet à plusieurs ordinateurs de communiquer entre eux
 
 ### Étape 1.2 : Première exploration avec ipconfig
 
-```bash
+```text
 ipconfig
 ```
 
@@ -70,7 +70,7 @@ ipconfig
 
 ### Étape 1.3 : Affichage détaillé
 
-```bash
+```text
 ipconfig /all
 ```
 
@@ -144,7 +144,7 @@ La passerelle est l'équipement réseau qui sert de point de sortie de votre ord
 
 Pour effectuer ce test, on utilise la commande **`ping`** :
 
-```bash
+```text
 ping [ADRESSE_DE_VOTRE_PASSERELLE]
 ```
 
@@ -168,7 +168,7 @@ Une fois la connexion locale avec la passerelle vérifiée, il faut maintenant s
 
 Pour cela, on utilise la commande :
 
-```bash
+```text
 ping 8.8.8.8
 ```
 
@@ -198,7 +198,7 @@ Différence entre un `ping` vers une **adresse IP (8.8.8.8)** et un `ping` vers 
 
 ### Étape 3.3 : Test de résolution DNS
 
-```bash
+```text
 ping www.google.com
 ```
 
@@ -214,7 +214,7 @@ ping www.google.com
 
 ### Étape 4.1 : Traçage de route
 
-```bash
+```text
 tracert 8.8.8.8
 ```
 
@@ -231,7 +231,7 @@ Si vous avez accès à un autre ordinateur/smartphone :
 1. Trouvez son adresse IP (sur smartphone : Paramètres → Wi-Fi → Détails) ou l'adresse IP de ton camarade de classe.
 2. Essayez de la pinger depuis votre PC
 
-```bash
+```text
 ping [IP_AUTRE_APPAREIL]
 ```
 

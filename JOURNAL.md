@@ -12,6 +12,9 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - BTS CIEL 1, TP0, TP1 et TP2 repris de Notion (branche
   `cours/bts1-reseaux-tp-0-4`, empilée sur la PR #77). Restent : TP3
   (Wireshark), TP4 (ARP bis) et la page « Adressage logique et physique ».
+  Vérificateur : À REPRENDRE, textes alternatifs corrigés après examen des
+  images ; défauts du texte source (WPA2, numérotation, tutoiement) laissés
+  tels quels, listés dans la PR.
 - BTS CIEL 1, reprise des ressources Notion « Plateforme BTS CIEL 1 » sans
   réécriture (branche `cours/bts1-reseaux-intro-osi`) : cours 1 (introduction)
   et 2 (OSI/TCP-IP) en page + PDF, cours ARP remplacé par la page Notion. À

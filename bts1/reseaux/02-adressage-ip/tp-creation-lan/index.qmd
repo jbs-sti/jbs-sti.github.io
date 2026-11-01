@@ -74,9 +74,9 @@ Vous allez maintenant faire communiquer les deux postes d'un réseau P2P entre e
 
 Cliquez sur l'icône « Add simple PDU » (à droite de l'écran), cliquez ensuite dans l'ordre sur le poste émetteur de l'information (Poste1 par exemple) puis sur le poste destinataire (Poste2 par exemple). Vous obtenez le message suivant en fenêtre :
 
-![Message obtenu lors de l'envoi du PDU.](img/tp2-05.png){fig-alt="Capture d'écran de Packet Tracer : première fenêtre de résultat de l'envoi d'un PDU simple entre les deux postes."}
+![Packet Tracer : icône Add Simple PDU.](img/tp2-05.png){fig-alt="Capture d'écran de Packet Tracer : barre d'outils avec l'icône Add Simple PDU (P) entourée, au-dessus des onglets Logical et Physical."}
 
-![Message obtenu lors de l'envoi du PDU (suite).](img/tp2-06.png){fig-alt="Capture d'écran de Packet Tracer : seconde fenêtre de résultat de l'envoi d'un PDU simple entre les deux postes."}
+![Message d'erreur : PC1 sans port fonctionnel.](img/tp2-06.png){fig-alt="Capture d'écran de Packet Tracer : fenêtre d'avertissement « PC1 has no functional ports » avec un bouton OK."}
 
 ## 3 - ADRESSAGE DES HOTES SUR LE RÉSEAU
 
@@ -88,7 +88,7 @@ Une adresse IP correspond à un et un seul hôte sur un réseau. Elle permet par
 
 Vous allez définir des adresses IP pour chaque poste : cliquez sur l'icône « Select » (en haut à droite) puis cliquez sur l'hôte « PC0 » pour ouvrir sa fenêtre de configuration, choisissez l'onglet « Desktop » puis « IP Configuration », tapez l'adresse : 192.168.0.1, cliquez dans la zone du masque de sous-réseau, celui-ci sera défini automatiquement et par défaut : 255.255.255.0 (Classful).
 
-![Onglet Desktop de PC0.](img/tp2-07.png){fig-alt="Capture d'écran de Packet Tracer : fenêtre de configuration du poste PC0, onglet Desktop."}
+![Barre d'outils de Packet Tracer : outil Select.](img/tp2-07.png){fig-alt="Capture d'écran de Packet Tracer : barre d'outils avec l'infobulle de l'outil Select (Esc)."}
 
 ![Configuration IP de PC0 : adresse 192.168.0.1.](img/tp2-08.png){fig-alt="Capture d'écran de Packet Tracer : fenêtre IP Configuration de PC0 avec l'adresse 192.168.0.1 et le masque 255.255.255.0."}
 
@@ -108,7 +108,7 @@ Ensuite cliquez sur le bouton "avance" plusieurs fois et observez ce qui s'affic
 
 ![Mode simulation : bouton d'avance pas à pas.](img/tp2-11.png){fig-alt="Capture d'écran de Packet Tracer : panneau de simulation avec les boutons de lecture pas à pas."}
 
-![Mode simulation : liste des événements.](img/tp2-12.png){fig-alt="Capture d'écran de Packet Tracer : fenêtre de simulation avec la liste des événements et les enveloppes qui circulent entre les deux postes."}
+![Mode simulation : liste des événements.](img/tp2-12.png){fig-alt="Capture d'écran de Packet Tracer : fenêtre Event List : trois événements, de PC0 vers PC1 puis de PC1 vers PC0, aux temps 0.000, 0.001 et 0.002 s."}
 
 ::: {.callout-note title="Question 1"}
 **Question** 1 : Comment interprèterez-vous ces informations ?
@@ -305,7 +305,7 @@ Cette configuration permettra au routeur de faire le lien entre les deux réseau
 **Question 26** : Créez un nouveau fichier, construisez le réseau conformément au schéma ci-dessous :
 :::
 
-![Schéma du réseau sans fil : point d'accès, serveur et ordinateur portable.](img/tp2-19.png){fig-alt="Schéma d'un réseau sans fil : un point d'accès relié à un serveur et à un ordinateur portable."}
+![Schéma du réseau sans fil : point d'accès, serveur et ordinateur portable (sans liens).](img/tp2-19.png){fig-alt="Capture d'écran de Packet Tracer : trois équipements non reliés : un point d'accès (AccessPoint-PT), un ordinateur portable (Laptop0) et un serveur (Server0)."}
 
 Pour le serveur : Cliquez sur le serveur pour ouvrir sa fenêtre de propriétés, onglet « Physical », sur la face arrière visible, éteignez le serveur et remplacez le connecteur FastEthernet (PT-HOST-MM-1CFE) par un connecteur wireless (PT-HOST-NM-1W). Rallumez le serveur. Pour l'ordinateur portable : Cliquez sur le laptop pour ouvrir sa fenêtre de propriétés, onglet « Physical », éteignez l'ordinateur portable et ajoutez un module Wi-Fi tel que le WPC300N ou PT-LAPTOP-NM-1W dans un slot libre. Rallumez l'ordinateur portable. Note importante : Assurez-vous d'utiliser les modules appropriés selon le type d'appareil :
 
@@ -334,7 +334,7 @@ Paramétrez le réseau Wi-Fi :
 - PSK Pass Phrase : Saisissez une clé de sécurité (mot de passe) si vous utilisez WPA2-PSK.
 - Port Status : Vérifiez que l'interface sans fil est activée (On).
 
-![Configuration Wireless du point d'accès.](img/tp2-20.png){fig-alt="Capture d'écran de Packet Tracer : onglet Config du point d'accès, section Wireless, avec le SSID, le mode d'authentification WPA2-PSK, la phrase de passe et l'état du port."}
+![Les trois équipements avant la configuration sans fil.](img/tp2-20.png){fig-alt="Capture d'écran de Packet Tracer : les mêmes trois équipements que sur la figure précédente : point d'accès, ordinateur portable et serveur, sans liens."}
 
 **🔗 Connexion du Laptop au Wi-Fi (Packet Tracer)**
 
@@ -346,7 +346,7 @@ Paramétrez le réseau Wi-Fi :
 
 Faites la même chose pour connecter le serveur au réseau wifi
 
-![Connexion du laptop au réseau Wi-Fi.](img/tp2-21.png){fig-alt="Capture d'écran de Packet Tracer : application PC Wireless du laptop, avec le réseau sans fil sélectionné."}
+![Liaisons sans fil entre le point d'accès, le portable et le serveur.](img/tp2-21.png){fig-alt="Capture d'écran de Packet Tracer : le point d'accès relié sans fil, par deux liens en pointillés serrés, à l'ordinateur portable et au serveur."}
 
 Vous devez constater à présent que le serveur et l'ordinateur portable sont bien connectés au point d'accès WiFi. Ajoutez deux autres périphériques sans fils : une tablette et un smartphone par exemple.
 

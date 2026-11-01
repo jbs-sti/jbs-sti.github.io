@@ -125,15 +125,15 @@ Dans cette partie, vous allez utiliser le navigateur du **PC de bureau (Office P
 
 3. Les routeurs domestiques nouvellement installés utilisent généralement des **identifiants par défaut**. Saisissez **admin** dans les champs **User Name** (Nom d'utilisateur) et **Password** (Mot de passe). L'**interface graphique** du **routeur sans fil domestique (Home Wireless Router)** devrait alors s'afficher, vous permettant de commencer la configuration du réseau de Natsumi. Si besoin, **ajustez la taille de la fenêtre** pour une meilleure visibilité de l'interface.
 
-![Packet Tracer : configuration IP de l'Office PC en DHCP.](img/tp1-02.png){fig-alt="Capture d'écran de Packet Tracer : fenêtre de configuration IP de l'Office PC, avec le mode DHCP sélectionné."}
+![Packet Tracer : onglet Desktop de l'Office PC, icône IP Configuration.](img/tp1-02.png){fig-alt="Capture d'écran de Packet Tracer : onglet Desktop de l'Office PC, avec l'icône IP Configuration signalée par une flèche."}
 
-![Packet Tracer : valeurs IP obtenues par DHCP.](img/tp1-03.png){fig-alt="Capture d'écran de Packet Tracer : adresse IPv4, masque de sous-réseau et passerelle par défaut obtenus par DHCP."}
+![Packet Tracer : bouton Fast Forward Time.](img/tp1-03.png){fig-alt="Capture d'écran de Packet Tracer : barre inférieure avec l'horloge et le bouton Fast Forward Time (Alt+D)."}
 
-![Packet Tracer : navigateur web de l'Office PC.](img/tp1-04.png){fig-alt="Capture d'écran de Packet Tracer : navigateur web de l'Office PC avec l'adresse IP du routeur saisie dans le champ URL."}
+![Packet Tracer : configuration IP de l'Office PC en DHCP.](img/tp1-04.png){fig-alt="Capture d'écran de Packet Tracer : fenêtre IP Configuration de l'Office PC, mode DHCP sélectionné, requête réussie : adresse 192.168.0.2, masque 255.255.255.0, passerelle par défaut 192.168.0.1 entourée."}
 
-![Packet Tracer : fenêtre d'authentification du routeur.](img/tp1-05.png){fig-alt="Capture d'écran de Packet Tracer : invite de connexion du routeur demandant un nom d'utilisateur et un mot de passe."}
+![Packet Tracer : icône Web Browser de l'Office PC.](img/tp1-05.png){fig-alt="Capture d'écran de Packet Tracer : onglet Desktop de l'Office PC, icône Web Browser entourée."}
 
-![Packet Tracer : interface graphique du routeur sans fil.](img/tp1-06.png){fig-alt="Capture d'écran de Packet Tracer : page de configuration de l'interface graphique du routeur sans fil domestique."}
+![Packet Tracer : fenêtre d'authentification du routeur.](img/tp1-06.png){fig-alt="Capture d'écran de Packet Tracer : navigateur web de l'Office PC à l'adresse http://192.168.0.1, avec une fenêtre Authorization demandant un nom d'utilisateur et un mot de passe."}
 
 ::: {.callout-note title="Questions 5 à 7"}
 **📝 QUESTION 5 :** Qu'est-ce que le DHCP ? Expliquez son rôle avec vos propres mots.
@@ -153,7 +153,7 @@ Natsumi n'a que quelques appareils pour connecter le réseau, et elle n'aura pas
 
 1. Les options de configuration sont actuellement affichées sous l'onglet **Configuration**. Localisez la zone de **Network Setup** (configuration du réseau). C'est ici que vous pouvez configurer les paramètres du serveur DHCP du routeur. Dans le champ **Maximum Number of Users** (Nombre maximum d'utilisateurs), saisissez **10**. Faites défiler la page jusqu'en bas, puis cliquez sur **Save Settings** (Enregistrer les paramètres). Vous devez enregistrer les paramètres sur chaque page de l'interface graphique que vous modifiez.
 
-![Packet Tracer : zone Network Setup du routeur.](img/tp1-07.png){fig-alt="Capture d'écran de Packet Tracer : zone Network Setup de l'interface du routeur, avec le champ Maximum Number of Users."}
+![Packet Tracer : page Setup du routeur sans fil.](img/tp1-07.png){fig-alt="Capture d'écran de Packet Tracer : page Setup du routeur domestique : connexion Internet en DHCP automatique, adresse du routeur 192.168.0.1, masque 255.255.255.0, serveur DHCP activé, 50 utilisateurs maximum."}
 
 **Remarque** : Il est possible que vous perdiez votre connexion au routeur. Cliquez sur **Go** dans le navigateur web pour recharger la page de l'interface utilisateur. Il se peut que vous deviez fermer le **Web Browser** (navigateur Web), cliquer sur **Configuration IP**, et basculer entre **DHCP** et **Static** (Statique) pour rafraîchir l'adressage IP de le **Office PC** (PC de bureau). Vérifiez ensuite que le **Office PC** (PC du bureau) a une configuration d'adresse IP qui commence par 192, ouvrez à nouveau le **Web Browser** (navigateur Web), entrez l'adresse IP du routeur et authentifiez-vous à nouveau avec **admin** comme informations d'identification par défaut.
 
@@ -184,11 +184,11 @@ Vous serez invité à vous connecter à nouveau. Saisissez **admin** comme nom d
 3. D'autres paramètres s'affichent. WPA2 Personal nécessite une phrase secrète qui doit être saisie par toute personne souhaitant se connecter au réseau sans fil. Saisissez **Mypassword** comme **Passphrase** (phrase de passe). Notez que les majuscules sont importantes.
 4. Faites défiler la page jusqu'en bas et cliquez sur **Save Settings** (Enregistrer les paramètres), puis fermez le **Web Browser** (navigateur web) du Office PC (PC du bureau).
 
-![Packet Tracer : onglet Wireless, activation du réseau 2,4 GHz.](img/tp1-10.png){fig-alt="Capture d'écran de Packet Tracer : onglet Wireless du routeur, avec l'activation du réseau 2,4 GHz."}
+![Packet Tracer : onglet Wireless, nom du réseau (SSID) MyHome.](img/tp1-10.png){fig-alt="Capture d'écran de Packet Tracer : onglet Wireless du routeur, réseau 2,4 GHz : Network Name (SSID) MyHome, diffusion du SSID activée, canal 1 - 2.412 GHz."}
 
-![Packet Tracer : nom du réseau (SSID) MyHome.](img/tp1-11.png){fig-alt="Capture d'écran de Packet Tracer : champ Network Name (SSID) du réseau 2,4 GHz."}
+![Packet Tracer : choix du mode de sécurité sans fil.](img/tp1-11.png){fig-alt="Capture d'écran de Packet Tracer : page Wireless Security, liste déroulante du mode de sécurité du réseau 2,4 GHz : Disabled, WEP, WPA Personal, WPA Enterprise, WPA2 Personal, WPA2 Enterprise."}
 
-![Packet Tracer : sécurité sans fil WPA2 Personal.](img/tp1-12.png){fig-alt="Capture d'écran de Packet Tracer : page Wireless Security avec le mode WPA2 Personal et la phrase de passe."}
+![Packet Tracer : sécurité sans fil et phrase de passe.](img/tp1-12.png){fig-alt="Capture d'écran de Packet Tracer : page Wireless Security : mode WPA Personal, chiffrement AES, phrase de passe saisie dans le champ Passphrase."}
 
 ::: {.callout-note title="Questions 10 à 12"}
 **📝 QUESTION 10 :** Qu'est-ce que le SSID ? Pourquoi est-il recommandé de changer le SSID par défaut ?
@@ -213,13 +213,13 @@ Maintenant que le routeur est configuré, dans cette partie, vous allez configur
 7. N'oubliez de configurer l'adresse IP du laptop en allant dans Desktop > Configuration IP
 8. Fermez l'application **PC Wireless** (PC sans fil) et ouvrez le **Web Browser** (navigateur Web). Vérifiez que **Laptop** (l'ordinateur portable) peut maintenant se connecter à **skillsforall.srv**, en cliquant sur **Fast Forward Time** (Temps d'avance rapide) jusqu'à ce que la page se charge. Cela permet de vérifier que **Laptop** (l'ordinateur portable) dispose d'une connectivité Internet.
 
-![Packet Tracer : application PC Wireless du laptop.](img/tp1-13.png){fig-alt="Capture d'écran de Packet Tracer : application PC Wireless du laptop, onglet Connect, avec la liste des réseaux sans fil détectés."}
+![Packet Tracer : application PC Wireless du laptop.](img/tp1-13.png){fig-alt="Capture d'écran de Packet Tracer : onglet Desktop du laptop, icône PC Wireless entourée."}
 
-![Packet Tracer : saisie de la clé pré-partagée.](img/tp1-14.png){fig-alt="Capture d'écran de Packet Tracer : fenêtre de saisie de la clé pré-partagée (Pre-shared Key) du réseau sans fil."}
+![Packet Tracer : onglet Connect de PC Wireless.](img/tp1-14.png){fig-alt="Capture d'écran de Packet Tracer : application PC Wireless, onglet Connect : le réseau MyHome (canal 1, signal 42 %) est listé ; le bouton Connect est signalé."}
 
-![Packet Tracer : onglet Link Information.](img/tp1-15.png){fig-alt="Capture d'écran de Packet Tracer : onglet Link Information indiquant que le laptop est connecté au point d'accès."}
+![Packet Tracer : saisie de la clé pré-partagée.](img/tp1-15.png){fig-alt="Capture d'écran de Packet Tracer : fenêtre « WPA-Personal Needed for Connection » : sécurité WPA-Personal, chiffrement AES, clé pré-partagée saisie, bouton Connect."}
 
-![Packet Tracer : détails de la connexion du laptop.](img/tp1-16.png){fig-alt="Capture d'écran de Packet Tracer : informations détaillées de la connexion sans fil du laptop, dont son adresse IP."}
+![Packet Tracer : onglet Link Information, connexion réussie.](img/tp1-16.png){fig-alt="Capture d'écran de Packet Tracer : onglet Link Information de PC Wireless, avec le message « You have successfully connected to the access point »."}
 
 ![Packet Tracer : configuration IP du laptop.](img/tp1-17.png){fig-alt="Capture d'écran de Packet Tracer : fenêtre de configuration IP du laptop."}
 
