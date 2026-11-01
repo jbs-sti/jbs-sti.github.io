@@ -282,6 +282,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+### 2026-11-01 — cours/bts1-reseaux-osi-deplacement
+
+- Cours « Modèle OSI et TCP/IP » déplacé du chapitre 01 vers
+  `bts1/reseaux/03-osi-tcp-ip/` à la demande de l'enseignant (git mv ;
+  `chapitre` et `order` mis à jour, toujours en brouillon).
+- Vérificateur : non lancé (déplacement ; `verifier_sources.py` : 0 erreur)
+
 ### 2026-11-01 — cours/bts1-reseaux-chapitre-osi
 
 - Nouveau chapitre `bts1/reseaux/03-osi-tcp-ip/` (« 03 — OSI et TCP/IP »), à
