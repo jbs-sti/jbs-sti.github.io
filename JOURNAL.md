@@ -282,6 +282,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+### 2026-11-01 — cours/bts2-reseaux-routage-tp
+
+- Ressource : `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique/`
+  : PDF et `.tex` remplacés par la version collée par l'enseignant (8 pages,
+  compilée en pdfLaTeX, deux passes), à sa demande expresse ; page `index.qmd`
+  inchangée sauf `date-modified`. Texte du TP non relu ni réécrit.
+- Vérificateur : non lancé (remplacement de fichiers fournis)
+
 ### 2026-11-01 — cours/bts1-reseaux-osi-deplacement
 
 - Cours « Modèle OSI et TCP/IP » déplacé du chapitre 01 vers
