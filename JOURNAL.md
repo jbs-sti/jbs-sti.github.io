@@ -282,6 +282,17 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+### 2026-11-02 — cours/bts2-routage-tp-page-complete
+
+- Ressource : `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique/index.qmd`
+  : le sujet complet (TP 1 à 5) est repris du `.tex` de l'enseignant sur la
+  page, sans réécriture, avec trois schémas de topologie exportés en SVG
+  (`img/`, textes alternatifs écrits). Retirés, car absents de la nouvelle
+  version du sujet : le tableau « Vérification et compte rendu », la
+  « Synthèse » finale et « Pour aller plus loin » (renvoi au TP 5 du TP OSPF).
+- Rendu Quarto : non fait en local (quarto absent) ; à confirmer par la CI
+- Vérificateur : non lancé
+
 ### 2026-11-01 — cours/bts2-reseaux-routage-tp
 
 - Ressource : `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique/`
