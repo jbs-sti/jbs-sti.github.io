@@ -1,0 +1,25 @@
+---
+title: "Comprendre le routage dynamique : du routage statique à RIP et OSPF"
+description: "Diaporama : comment un routeur trouve son chemin, du routage statique aux protocoles RIP et OSPF."
+type: cours
+domaine: reseaux
+chapitre: "03 — Routage dynamique"
+categories: [cours, reseaux]
+mots-cles: [routage statique, routage dynamique, RIP, OSPF]
+objectifs:
+  - "Expliquer comment un routeur trouve son chemin."
+  - "Situer RIP et OSPF par rapport au routage statique."
+prerequis:
+  - "Routage statique : table de routage et commande ip route"
+duree: "1 h"
+order: 5
+date-modified: 2026-11-02
+draft: true
+lang: fr
+---
+
+## Document
+
+Le diaporama du cours, tel que l'enseignant l'a écrit, est à télécharger en PDF :
+
+**[Télécharger le diaporama (PDF)](fichiers/routage-dynamique-bts-ciel.pdf)**

@@ -282,6 +282,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+### 2026-11-02 — cours/bts2-routage-diaporama
+
+- Ressource : `bts2/reseaux/03-routage-dynamique/cours-diaporama-routage-dynamique/`
+  : diaporama `routage_dynamique_bts_ciel (1).pdf` de l'enseignant (8 pages,
+  tel quel), en brouillon. Titre, durée (1 h) et `order` 5 choisis par défaut.
+- Vérificateur : non lancé (ajout d'un PDF fourni)
+
 ### 2026-11-02 — cours/bts2-routage-tp-page-complete
 
 - Ressource : `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique/index.qmd`
