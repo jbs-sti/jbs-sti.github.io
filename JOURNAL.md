@@ -282,6 +282,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+### 2026-11-02 — cours/snt-livret2-beamer
+
+- Ressource : `snt/02-web/cours-livret-2-html-css/` : ajout du PDF
+  `livret2_html_css_beamer.pdf` de l'enseignant (84 pages, tel quel) comme
+  second diaporama, à côté du diaporama existant de 32 pages (conservé).
+  À la demande de l'enseignant : « rajouter ».
+- Vérificateur : non lancé (ajout d'un PDF fourni)
+
 ### 2026-11-01 — cours/bts1-reseaux-osi-deplacement
 
 - Cours « Modèle OSI et TCP/IP » déplacé du chapitre 01 vers
