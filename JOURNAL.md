@@ -299,7 +299,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   conséquence (« PC4, » reporté sur la ligne suivante).
 - Vérificateur : non lancé (correction ponctuelle validée par l'enseignant
   dans la conversation, décision du 2026-11-03).
-- Pull request : # (à compléter après ouverture)
+- Pull request : #91
 - Points à relire par l'enseignant : mise en page du PDF reconstitué (déjà
   signalée à vérifier le 2026-11-01) ; confirmer que les libellés Port
   Status / IP Address / Subnet Mask correspondent exactement à l'onglet
