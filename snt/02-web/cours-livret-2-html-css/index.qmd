@@ -18,7 +18,7 @@ prerequis:
   - "Livret 1 de la thématique Le Web."
 duree: "1 h 30"
 order: 27
-date-modified: '2026-10-29'
+date-modified: '2026-11-02'
 draft: false
 lang: fr
 formation: "SNT"
@@ -32,3 +32,5 @@ Le livret élève de la séance, tel que l'enseignant l'a écrit, est à téléc
 **[Télécharger le document (PDF)](fichiers/livret-2-html-css.pdf)**
 
 **[Télécharger le diaporama de la séance (PDF)](fichiers/beamer-seance-2-html-css.pdf)**
+
+**[Télécharger le second diaporama de la séance, 84 diapositives (PDF)](fichiers/beamer-livret-2-html-css-84-diapositives.pdf)**

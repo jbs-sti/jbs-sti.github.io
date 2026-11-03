@@ -282,46 +282,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
-### 2026-11-03 — cours/bts1-reseaux-tp-osi-config-gui
+### 2026-11-02 — cours/snt-livret2-beamer
 
-- Ressource : `bts1/reseaux/03-osi-tcp-ip/tp-encapsulation-packet-tracer/fichiers/tp-voir-l-encapsulation.pdf`
-  (pas de nouvelle rédaction : correction ponctuelle demandée par l'enseignant
-  en conversation).
-- Partie 5 : la configuration de R1 passe de la CLI à l'onglet Config (GUI)
-  de Packet Tracer (Port Status / IP Address / Subnet Mask sur G0/0 et G0/1).
-  Pas de `.tex` source disponible pour ce PDF (cf. entrée du 2026-11-01) :
-  édition directe du PDF (PyMuPDF, texte redact puis recomposé avec des
-  extraits LaTeX Latin Modern recompilés pour coller aux polices et couleurs
-  d'origine), rendu vérifié visuellement page par page.
-- Effet de bord corrigé en page 7 : l'invite CLI citée pour `clear arp-cache`
-  passe de `R1#` à `Router#` (le routeur n'est plus renommé en CLI, sa
-  configuration passant désormais par le GUI) ; la ligne a été reflowée en
-  conséquence (« PC4, » reporté sur la ligne suivante).
-- Vérificateur : non lancé (correction ponctuelle validée par l'enseignant
-  dans la conversation, décision du 2026-11-03).
-- Pull request : #91
-- Points à relire par l'enseignant : mise en page du PDF reconstitué (déjà
-  signalée à vérifier le 2026-11-01) ; confirmer que les libellés Port
-  Status / IP Address / Subnet Mask correspondent exactement à l'onglet
-  Config du routeur 1941 en Packet Tracer 8.2.
-
-### 2026-11-02 — cours/bts2-routage-diaporama
-
-- Ressource : `bts2/reseaux/03-routage-dynamique/cours-diaporama-routage-dynamique/`
-  : diaporama `routage_dynamique_bts_ciel (1).pdf` de l'enseignant (8 pages,
-  tel quel), en brouillon. Titre, durée (1 h) et `order` 5 choisis par défaut.
+- Ressource : `snt/02-web/cours-livret-2-html-css/` : ajout du PDF
+  `livret2_html_css_beamer.pdf` de l'enseignant (84 pages, tel quel) comme
+  second diaporama, à côté du diaporama existant de 32 pages (conservé).
+  À la demande de l'enseignant : « rajouter ».
 - Vérificateur : non lancé (ajout d'un PDF fourni)
-
-### 2026-11-02 — cours/bts2-routage-tp-page-complete
-
-- Ressource : `bts2/reseaux/03-routage-dynamique/tp-routage-statique-dynamique/index.qmd`
-  : le sujet complet (TP 1 à 5) est repris du `.tex` de l'enseignant sur la
-  page, sans réécriture, avec trois schémas de topologie exportés en SVG
-  (`img/`, textes alternatifs écrits). Retirés, car absents de la nouvelle
-  version du sujet : le tableau « Vérification et compte rendu », la
-  « Synthèse » finale et « Pour aller plus loin » (renvoi au TP 5 du TP OSPF).
-- Rendu Quarto : non fait en local (quarto absent) ; à confirmer par la CI
-- Vérificateur : non lancé
 
 ### 2026-11-01 — cours/bts2-reseaux-routage-tp
 
