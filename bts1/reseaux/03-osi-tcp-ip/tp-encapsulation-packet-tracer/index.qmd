@@ -14,7 +14,7 @@ prerequis:
   - "Modèle OSI et TCP/IP"
 duree: "2 h"
 order: 20
-date-modified: 2026-11-01
+date-modified: 2026-11-03
 draft: false
 lang: fr
 ---

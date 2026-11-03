@@ -282,6 +282,29 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+### 2026-11-03 — cours/bts1-reseaux-tp-osi-config-gui
+
+- Ressource : `bts1/reseaux/03-osi-tcp-ip/tp-encapsulation-packet-tracer/fichiers/tp-voir-l-encapsulation.pdf`
+  (pas de nouvelle rédaction : correction ponctuelle demandée par l'enseignant
+  en conversation).
+- Partie 5 : la configuration de R1 passe de la CLI à l'onglet Config (GUI)
+  de Packet Tracer (Port Status / IP Address / Subnet Mask sur G0/0 et G0/1).
+  Pas de `.tex` source disponible pour ce PDF (cf. entrée du 2026-11-01) :
+  édition directe du PDF (PyMuPDF, texte redact puis recomposé avec des
+  extraits LaTeX Latin Modern recompilés pour coller aux polices et couleurs
+  d'origine), rendu vérifié visuellement page par page.
+- Effet de bord corrigé en page 7 : l'invite CLI citée pour `clear arp-cache`
+  passe de `R1#` à `Router#` (le routeur n'est plus renommé en CLI, sa
+  configuration passant désormais par le GUI) ; la ligne a été reflowée en
+  conséquence (« PC4, » reporté sur la ligne suivante).
+- Vérificateur : non lancé (correction ponctuelle validée par l'enseignant
+  dans la conversation, décision du 2026-11-03).
+- Pull request : # (à compléter après ouverture)
+- Points à relire par l'enseignant : mise en page du PDF reconstitué (déjà
+  signalée à vérifier le 2026-11-01) ; confirmer que les libellés Port
+  Status / IP Address / Subnet Mask correspondent exactement à l'onglet
+  Config du routeur 1941 en Packet Tracer 8.2.
+
 ### 2026-11-02 — cours/bts2-routage-diaporama
 
 - Ressource : `bts2/reseaux/03-routage-dynamique/cours-diaporama-routage-dynamique/`
