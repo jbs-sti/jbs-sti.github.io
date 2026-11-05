@@ -298,6 +298,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+### 2026-11-05 — cours/snt-web-livret-3-reponses
+
+- Ressource : snt/02-web/cours-livret-3-client-serveur-http (PDF du livret seulement)
+- Demande de l'enseignant : espaces de réponse plus grands en page 4.
+- Correction : une ligne de réponse en plus aux étapes 2, 3 et 4 de l'activité 3.3 (3, 3 et 4 lignes) ; texte inchangé, toujours 4 pages.
+- Le `.tex` (source) reste dans le dossier de travail, pas sur le dépôt.
+
 ### 2026-11-05 — cours/snt-web-livret-3-mise-en-page
 
 - Ressource : snt/02-web/cours-livret-3-client-serveur-http (PDF du livret seulement)
