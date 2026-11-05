@@ -298,6 +298,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+### 2026-11-05 — cours/snt-web-livret-3-mise-en-page
+
+- Ressource : snt/02-web/cours-livret-3-client-serveur-http (PDF du livret seulement)
+- Demande de l'enseignant : espace vide en bas de la page 1, entre les pages 1 et 2.
+- Cause : le cadre « Document 12 » ne pouvait pas être coupé et sautait en page 2.
+- Correction : cadre autorisé à se couper entre deux pages (`breakable`) ; texte inchangé, 5 pages. Le Document 12 est maintenant coupé entre requête et réponse.
+- Le `.tex` corrigé est dans le dossier de travail, pas sur la branche `cours/snt-web-sources`.
+
+
 ### 2026-11-05 — infra/autorisation-publication
 
 - `AGENTS.md` et `CLAUDE.md` : Claude Code peut passer une ressource en
