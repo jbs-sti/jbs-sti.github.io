@@ -305,6 +305,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Cause : le cadre « Document 12 » ne pouvait pas être coupé et sautait en page 2.
 - Correction (demande de l'enseignant : cadre entier en page 2) : la liste à puces qui explique le Document 12 passe avant le cadre, avec une phrase d'annonce ; le cadre reste entier en haut de la page 2, 5 pages.
 - Le `.tex` corrigé est dans le dossier de travail, pas sur la branche `cours/snt-web-sources`.
+- Demande suivante : marges réduites (18 mm → 12 mm sur les côtés, haut 22 → 18 mm) pour ramener le contenu de la page 5 en page 4, sans réduire les cadres de réponse : le livret passe à 4 pages, texte et espaces de réponse inchangés.
 
 
 ### 2026-11-05 — infra/autorisation-publication
