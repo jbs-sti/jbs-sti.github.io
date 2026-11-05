@@ -99,9 +99,9 @@
   \par\addvspace{6pt}\noindent\colorbox{navy}{\parbox{\dimexpr\linewidth-2\fboxsep}{\color{white}#1}}\par\vspace{4pt}}
 
 % Document (même aspect que les documents TikZ du livret 1 : cadre gris, ombre)
-\newtcolorbox{docbox}[1]{enhanced,colback=white,colframe=grisb,boxrule=0.4pt,sharp corners,
+\newtcolorbox{docbox}[2][]{enhanced,#1,colback=white,colframe=grisb,boxrule=0.4pt,sharp corners,
   drop shadow={opacity=0.35},left=5pt,right=5pt,top=4pt,bottom=4pt,before skip=8pt,after skip=8pt,
-  fontupper=\small,before upper={\textbf{#1}\par\smallskip}}
+  fontupper=\small,before upper={\textbf{#2}\par\smallskip}}
 
 % Note enseignant (version professeur seulement)
 \newcommand{\ensei}[1]{\ifprof\begin{tcolorbox}[enhanced,colback=gris,colframe=corr!60,boxrule=0.5pt,arc=2pt,
@@ -226,6 +226,14 @@ Le client et le serveur doivent parler le même langage, avec une forme exacte p
 
 \motsproposes{GET\enspace\textbullet\enspace POST\enspace\textbullet\enspace en-têtes\enspace\textbullet\enspace code\enspace\textbullet\enspace 404\enspace\textbullet\enspace cookies}
 
+Le Document 12 (page suivante) montre une requête et le début de la réponse.
+
+\begin{itemize}
+\item La première ligne commence par la \textbf{méthode} : \trou[1.5cm]{GET} pour demander une ressource (les paramètres sont dans l'URL, donc visibles) ; \trou[1.5cm]{POST} pour envoyer des données (formulaire, mot de passe) : elles sont alors dans le corps de la requête, pas dans l'URL. Attention : POST ne chiffre rien. Les données n'apparaissent ni dans la barre d'adresse ni dans l'historique, mais seul HTTPS protège leur transmission.
+\item Les lignes suivantes sont les \trou[2.5cm]{en-têtes} : elles renseignent le serveur sur le client (navigateur, langue, \trou[2cm]{cookies} déjà reçus…).
+\item La réponse commence par un \trou[2cm]{code} : \texttt{200} = succès, \texttt{301} = page déplacée, \trou[1.5cm]{404} = page introuvable, \texttt{403} = accès interdit, \texttt{500} = erreur du serveur.
+\end{itemize}
+
 \begin{docbox}{Document 12 — Une requête HTTP et le début de la réponse}
 \textit{Requête envoyée par le navigateur :}
 \begin{Verbatim}[fontsize=\scriptsize,xleftmargin=10pt]
@@ -246,12 +254,6 @@ Set-Cookie: derniere_recherche=snt
 \end{Verbatim}
 {\footnotesize Une \textbf{ligne vide} sépare les en-têtes (lignes 2 à 5 de la requête, 2 et 3 de la réponse) du reste : dans la réponse, ce qui suit la ligne vide est la page elle-même. Exemple simplifié : une vraie requête contient d'autres en-têtes.}
 \end{docbox}
-
-\begin{itemize}
-\item La première ligne commence par la \textbf{méthode} : \trou[1.5cm]{GET} pour demander une ressource (les paramètres sont dans l'URL, donc visibles) ; \trou[1.5cm]{POST} pour envoyer des données (formulaire, mot de passe) : elles sont alors dans le corps de la requête, pas dans l'URL. Attention : POST ne chiffre rien. Les données n'apparaissent ni dans la barre d'adresse ni dans l'historique, mais seul HTTPS protège leur transmission.
-\item Les lignes suivantes sont les \trou[2.5cm]{en-têtes} : elles renseignent le serveur sur le client (navigateur, langue, \trou[2cm]{cookies} déjà reçus…).
-\item La réponse commence par un \trou[2cm]{code} : \texttt{200} = succès, \texttt{301} = page déplacée, \trou[1.5cm]{404} = page introuvable, \texttt{403} = accès interdit, \texttt{500} = erreur du serveur.
-\end{itemize}
 
 \activite{Activité 3.1 — Décomposer une requête HTTP}
 
