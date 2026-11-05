@@ -309,6 +309,7 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Vérificateur : À REPRENDRE (PDF non rendus, cause : environnement), puis
   CONFORME (fond, conformité, HTML rendu avec `-M draft:false`).
 - Relance du relecteur : non.
+- Pull request : #92
 - Rendu PDF : `≥` et `≤` absents de Latin Modern (police réelle du PDF,
   pas Playfair) ; remplacés par `>=` et `<=` dans la partie 2. Les fiches
   de BTS 2 qui emploient ces signes ont sans doute le même défaut : à
