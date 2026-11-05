@@ -1,0 +1,250 @@
+---
+title: "TP Excel — Partie 2 : le relevé de notes"
+description: "Exploiter un relevé de notes dans Excel : moyennes pondérées, mentions et décisions par conditions, mise en forme conditionnelle, statistiques de la classe, filtre automatique et graphique en colonnes."
+type: tp
+domaine: systemes
+chapitre: "01 — Excel"
+categories: [tp, systemes]
+mots-cles: [tableur, Excel, LibreOffice Calc, formule, moyenne pondérée, fonction SI, NB.SI, MOYENNE.SI, référence absolue, mise en forme conditionnelle, filtre automatique, graphique en colonnes]
+objectifs:
+  - "Calculer une moyenne pondérée avec des références absolues."
+  - "Attribuer une mention et une décision à l'aide de conditions imbriquées."
+  - "Appliquer une mise en forme conditionnelle à une colonne de texte."
+  - "Calculer des indicateurs statistiques sur une classe à l'aide de fonctions."
+  - "Filtrer un tableau et construire un graphique en colonnes."
+prerequis:
+  - "TP Excel — Partie 1 : la facture"
+duree: "2 h"
+order: 20
+date-modified: 2026-11-04
+draft: true
+lang: fr
+---
+
+*Plateforme : Microsoft Excel (interface en français) ; LibreOffice Calc convient aussi.*
+
+## Objectifs et prérequis
+
+Dans ce TP, vous exploitez le relevé de notes d'une classe. Vous allez :
+
+- calculer la moyenne pondérée de chaque étudiant ;
+- attribuer une mention et une décision avec des conditions ;
+- colorer automatiquement les décisions ;
+- calculer des statistiques sur toute la classe ;
+- filtrer le tableau et tracer un graphique.
+
+Prérequis : avoir réalisé la partie 1 (formules, fonction `SI`, mise en forme conditionnelle).
+
+## Situation de départ
+
+Un jury doit statuer sur dix étudiants. Chaque étudiant a une note en informatique, en mathématiques et en physique. Son nombre d'absences est aussi relevé.
+
+Votre mission : compléter le relevé de notes. Il doit afficher, pour chaque étudiant, sa moyenne, la décision du jury et sa mention. Il doit aussi présenter des statistiques sur la classe.
+
+## Matériel et environnement
+
+- Un poste avec Microsoft Excel (interface en français) ou LibreOffice Calc.
+- Le fichier de départ, à télécharger : [https://drive.google.com/file/d/15kK97Sb5UeU4v2RWS-YwUQP75oN-6ULy/view](https://drive.google.com/file/d/15kK97Sb5UeU4v2RWS-YwUQP75oN-6ULy/view)
+
+Le fichier contient la feuille décrite ci-dessous. Vérifiez qu'elle correspond avant de commencer.
+
+**Modules et coefficients**
+
+| Ligne | B | D | E | F |
+|---|---|---|---|---|
+| 1 | Module | Informatique | Mathématique | Physique |
+| 2 | Coefficient | 5 | 4 | 3 |
+
+**Tableau des étudiants**
+
+La ligne 3 contient les en-têtes : A « N° Étudiant », B « Nom et Prénom Étudiant », D:F « Note » (cellules fusionnées), G « Nbr Absence », H « Moyenne », I « Décision » et J « Mention ». Les lignes 4 à 13 contiennent les données. Les colonnes H, I et J sont à remplir.
+
+| Ligne | A — N° | B — Nom et prénom | D — Informatique | E — Mathématique | F — Physique | G — Absences |
+|---|---|---|---|---|---|---|
+| 4 | 1 | Martin Lucas | 10 | 8 | 15 | 6 |
+| 5 | 2 | Dupont Clara | 10 | 12 | 16 | 3 |
+| 6 | 3 | Bernard Julien | 9 | 14 | 10 | 8 |
+| 7 | 4 | Lefebvre Emma | 9 | 3 | 9 | 2 |
+| 8 | 5 | Moreau Thomas | 10 | 12 | 13 | 6 |
+| 9 | 6 | Laurent Sophie | 4 | 16 | 10 | 3 |
+| 10 | 7 | Roux Antoine | 10 | 5 | 15 | 4 |
+| 11 | 8 | Petit Camille | 10 | 10 | 10 | 5 |
+| 12 | 9 | Garnier Hugo | 20 | 12 | 14 | 9 |
+| 13 | 10 | Fontaine Alice | 17 | 10 | 12 | 0 |
+
+**Zone de synthèse**
+
+Sous le tableau, une zone accueille les statistiques de la classe. Chaque valeur se place dans la cellule indiquée.
+
+| Libellé | Valeur | Libellé | Valeur |
+|---|---|---|---|
+| A16 — Le nombre d'étudiants | C16 | E16 — Nombre d'étudiants admis | G16 |
+| A18 — La moyenne de la classe | C18 | E18 — Nombre d'étudiants ajournés | G18 |
+| A20 — La meilleure moyenne | C20 | E20 — Moyenne des moyennes >= 10 | G20 |
+| A22 — La mauvaise moyenne | C22 | E22 — Moyenne des moyennes < 10 | G22 |
+| A24 — Écart type des moyennes | C24 | E24 — Variance de la moyenne | G24 |
+
+## Travail à réaliser
+
+::: {.callout-tip title="Aide : fonctions utiles"}
+Noms des fonctions dans Excel en français : `SOMME`, `MOYENNE`, `MAX`, `MIN`, `NB`, `SI`, `NB.SI`, `MOYENNE.SI`, `ECARTYPE.STANDARD` et `VAR.S`.
+
+Les arguments sont séparés par un point-virgule `;`. Quelques syntaxes :
+
+```text
+=SI(test_logique;valeur_si_vrai;valeur_si_faux)
+=NB.SI(plage;critère)
+=MOYENNE.SI(plage;critère)
+```
+
+Le signe `$` rend une référence absolue : `$D$2` désigne toujours la cellule D2, même quand vous recopiez la formule.
+:::
+
+### Étape 1 — Calculer les moyennes
+
+Chaque matière n'a pas le même poids : c'est le rôle du coefficient. La moyenne à calculer est donc une **moyenne pondérée**.
+
+Prenons un exemple. Un étudiant a 12 dans une matière de coefficient 3 et 8 dans une matière de coefficient 1. Sa moyenne pondérée vaut (12 × 3 + 8 × 1) / (3 + 1) = 44 / 4 = 11.
+
+On multiplie chaque note par son coefficient. On additionne ces produits. On divise par la somme des coefficients.
+
+::: {.callout-note title="Question 1"}
+Calculez la moyenne de chaque étudiant dans la colonne H, en utilisant les coefficients de la ligne 2.
+:::
+
+### Étape 2 — Attribuer les mentions
+
+La mention ne dépend que de la moyenne. La décision du jury, elle, vient à l'étape 3 et tient aussi compte des absences. Une moyenne comprise entre 9 inclus et 10 exclu rend l'étudiant **rachetable** : il reçoit « Sans mention ».
+
+::: {.callout-note title="Question 2"}
+Affichez la mention de chaque étudiant dans la colonne J, selon sa moyenne :
+
+| Moyenne | Mention |
+|---|---|
+| moyenne >= 16 | Très bien |
+| 14 <= moyenne < 16 | Bien |
+| 12 <= moyenne < 14 | Assez bien |
+| 11 <= moyenne < 12 | Passable |
+| 10 <= moyenne < 11 | Sans mention |
+| 9 <= moyenne < 10 (étudiant rachetable) | Sans mention |
+| moyenne < 9 | * |
+:::
+
+::: {.callout-important title="Point de validation 1"}
+Appelez le professeur pour faire valider votre travail.
+:::
+
+### Étape 3 — Attribuer les décisions
+
+::: {.callout-note title="Question 3"}
+Affichez la décision du jury pour chaque étudiant dans la colonne I. Testez les conditions dans cet ordre :
+
+1. « Exclu » si le nombre d'absences est supérieur ou égal à 5 ;
+2. sinon, « Admis » si la moyenne est supérieure ou égale à 10 ;
+3. sinon, « Racheté » si la moyenne est supérieure ou égale à 9 ;
+4. sinon, « Ajourné » (moyenne inférieure à 9).
+:::
+
+L'ordre des tests compte. Un étudiant qui a 12 de moyenne et 6 absences est exclu, et non admis : la condition sur les absences passe avant la moyenne.
+
+::: {.callout-important title="Point de validation 2"}
+Appelez le professeur pour faire valider votre travail.
+:::
+
+### Étape 4 — Colorer les décisions
+
+::: {.callout-note title="Question 4"}
+Appliquez une mise en forme conditionnelle à la colonne Décision :
+
+| Décision | Couleur de fond |
+|---|---|
+| Admis | vert |
+| Exclu | rouge |
+| Racheté | orange |
+| Ajourné | jaune |
+:::
+
+::: {.callout-important title="Point de validation 3"}
+Appelez le professeur pour faire valider votre travail.
+:::
+
+### Étape 5 — Calculer les statistiques de la classe
+
+::: {.callout-note title="Question 5"}
+Avec des formules, calculez dans la zone de synthèse :
+
+- le nombre d'étudiants ;
+- la moyenne de la classe ;
+- la meilleure moyenne ;
+- la plus mauvaise moyenne ;
+- le nombre d'étudiants admis ;
+- la moyenne des moyennes supérieures ou égales à 10 ;
+- la moyenne des moyennes inférieures à 10 ;
+- le nombre d'étudiants ajournés ;
+- l'écart type des moyennes ;
+- la variance des moyennes.
+
+L'écart type et la variance sont ceux de l'échantillon : utilisez `ECARTYPE.STANDARD` et `VAR.S`.
+:::
+
+::: {.callout-important title="Point de validation 4"}
+Appelez le professeur pour faire valider votre travail.
+:::
+
+### Étape 6 — Mini-exercice 1 : trier et filtrer
+
+Un filtre automatique ajoute une flèche dans chaque en-tête de colonne. Il permet d'afficher seulement les lignes qui vous intéressent, sans rien supprimer.
+
+- Dans Excel : **Données › Filtrer**.
+- Dans LibreOffice Calc : **Données › AutoFiltre**.
+
+::: {.callout-note title="Question 6"}
+Appliquez un filtre automatique sur toutes les colonnes du tableau. Puis n'affichez que les étudiants « Admis ».
+:::
+
+::: {.callout-important title="Point de validation 5"}
+Appelez le professeur pour faire valider votre travail.
+:::
+
+### Étape 7 — Mini-exercice 2 : tracer un graphique
+
+::: {.callout-note title="Question 7"}
+Construisez un histogramme (graphique en colonnes) des moyennes par étudiant :
+
+1. sélectionnez les noms des étudiants et leurs moyennes ;
+2. insérez un graphique en colonnes ;
+3. donnez-lui le titre « Moyennes des étudiants » ;
+4. donnez à l'axe vertical le titre « Moyenne » ;
+5. placez le graphique sous le tableau.
+:::
+
+::: {.callout-important title="Point de validation 6"}
+Appelez le professeur pour faire valider votre travail.
+:::
+
+## Vérification et compte rendu
+
+Le professeur valide votre travail à chacun des six points de validation. Il vérifie que :
+
+- les moyennes, mentions, décisions et statistiques sont calculées par des formules ;
+- les formules recopiées utilisent correctement les références absolues ;
+- les décisions respectent l'ordre des tests ;
+- chaque décision a la bonne couleur de fond ;
+- le filtre n'affiche que les étudiants admis ;
+- le graphique porte le bon titre et le bon titre d'axe.
+
+Enregistrez votre classeur.
+
+## Synthèse
+
+Expliquez en quelques phrases :
+
+- pourquoi les coefficients doivent être en référence absolue dans la formule de la moyenne ;
+- pourquoi l'ordre des tests change le résultat de la décision ;
+- ce que mesurent l'écart type et la variance des moyennes ;
+- les difficultés que vous avez rencontrées.
+
+## Pour aller plus loin
+
+- Documentation officielle de Microsoft Excel : [https://support.microsoft.com/fr-fr/excel](https://support.microsoft.com/fr-fr/excel)
+- Aide officielle de LibreOffice : [https://help.libreoffice.org/](https://help.libreoffice.org/)
