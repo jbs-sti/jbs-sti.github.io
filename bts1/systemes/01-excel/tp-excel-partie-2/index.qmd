@@ -37,7 +37,7 @@ Prérequis : avoir réalisé la partie 1 (formules, fonction `SI`, mise en forme
 
 ## Situation de départ
 
-Un jury doit statuer sur dix étudiants. Chaque étudiant a une note en informatique, en mathématique et en physique. Son nombre d'absences est aussi relevé.
+Un jury doit statuer sur dix étudiants. Chaque étudiant a une note en informatique, en mathématiques et en physique. Son nombre d'absences est aussi relevé.
 
 Votre mission : compléter le relevé de notes. Il doit afficher, pour chaque étudiant, sa moyenne, la décision du jury et sa mention. Il doit aussi présenter des statistiques sur la classe.
 
@@ -114,7 +114,7 @@ Calculez la moyenne de chaque étudiant dans la colonne H, en utilisant les coef
 
 ### Étape 2 — Attribuer les mentions
 
-Un étudiant dont la moyenne est comprise entre 9 et 10 (9 inclus, 10 exclu) est dit **racheté**.
+La mention ne dépend que de la moyenne. La décision du jury, elle, vient à l'étape 3 et tient aussi compte des absences. Une moyenne comprise entre 9 inclus et 10 exclu rend l'étudiant **rachetable** : il reçoit « Sans mention ».
 
 ::: {.callout-note title="Question 2"}
 Affichez la mention de chaque étudiant dans la colonne J, selon sa moyenne :
@@ -126,7 +126,7 @@ Affichez la mention de chaque étudiant dans la colonne J, selon sa moyenne :
 | 12 ≤ moyenne < 14 | Assez bien |
 | 11 ≤ moyenne < 12 | Passable |
 | 10 ≤ moyenne < 11 | Sans mention |
-| 9 ≤ moyenne < 10 (étudiant racheté) | Sans mention |
+| 9 ≤ moyenne < 10 (étudiant rachetable) | Sans mention |
 | moyenne < 9 | * |
 :::
 

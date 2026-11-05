@@ -57,11 +57,11 @@ Ouvrez un nouveau classeur. Dans une feuille vide, recopiez la facture décrite 
 |---|---|---|
 | A1:C1 | Entreprise Nationale de Systèmes Informatiques 12 rue Keufer 75013 Paris | fusionnées, fond vert clair |
 | F3:F5 | Facture N° 1254 | fusionnées, encadrées |
-| H2:J4 | Mr Jean Dupont 5 rue Bouval 95230 Soisy | fusionnées, encadrées |
+| H2:J4 | M. Jean Dupont 5 rue Bouval 95230 Soisy | fusionnées, encadrées |
 
 **Tableau des produits**
 
-Les en-têtes sont en ligne 7 : en gras, sur fond jaune, avec des bordures. Les colonnes D et E sont masquées. Les colonnes I, J et K restent vides pour l'instant : vous les remplirez par des formules.
+Les en-têtes sont en ligne 7 : en gras, sur fond jaune, avec des bordures. Les colonnes D et E sont masquées. Deux colonnes s'appellent « TVA » : la colonne G contient le taux de TVA du produit, la colonne J recevra le montant de la TVA, calculé à partir de ce taux. Les colonnes I, J et K restent vides pour l'instant : vous les remplirez par des formules.
 
 | Ligne | B — Numéro du Produit | C — Désignation | F — Prix Unitaire | G — TVA | H — Quantité | I — THT | J — TVA | K — TTC |
 |---|---|---|---|---|---|---|---|---|
@@ -86,11 +86,11 @@ Les en-têtes sont en ligne 7 : en gras, sur fond jaune, avec des bordures. Les 
 
 ### Étape 2 — Comprendre HT, TVA et TTC
 
-Prenons un exemple. Un article coûte 100 € hors taxes et la TVA est de 20 %.
+Prenons un exemple. Un article coûte 100 € hors taxes et la TVA (taxe sur la valeur ajoutée) est de 20 %.
 
-- Le prix hors taxes vaut 100 €.
+- Le prix hors taxes (HT) vaut 100 €.
 - La TVA vaut 100 × 20 % = 20 €, car 20 % = 20/100.
-- Le prix toutes taxes comprises vaut 100 + 20 = 120 €.
+- Le prix toutes taxes comprises (TTC) vaut 100 + 20 = 120 €.
 
 Le client paie donc 120 € TTC. Retenez la relation :
 
@@ -119,7 +119,7 @@ Calculez le THT de chaque produit (colonne I).
 :::
 
 ::: {.callout-note title="Question 2"}
-Calculez la TVA de chaque produit (colonne J).
+Calculez le montant de la TVA de chaque produit (colonne J), à partir du taux de la colonne G.
 :::
 
 ::: {.callout-note title="Question 3"}
