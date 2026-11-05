@@ -71,8 +71,11 @@ draft: true
 ---
 ```
 
-Une ressource nouvelle est toujours créée avec `draft: true`. Seul l'enseignant
-la passe à `false` après relecture.
+Une ressource nouvelle est toujours créée avec `draft: true`. Elle passe à
+`false` après relecture par l'enseignant : soit l'enseignant le fait, soit
+Claude Code (chef de projet), que l'enseignant y autorise, aux conditions de
+`CLAUDE.md` (section « Publication d'une ressource »). Les autres agents
+(Codex, sous-agents) ne modifient jamais `draft`.
 
 ## Règles de rédaction
 
