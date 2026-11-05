@@ -16,7 +16,7 @@ prerequis: []
 duree: "2 h"
 order: 10
 date-modified: 2026-11-04
-draft: true
+draft: false
 lang: fr
 ---
 
