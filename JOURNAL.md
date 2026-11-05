@@ -9,6 +9,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
+- BTS CIEL 1, nouveau chapitre « Systèmes › 01 — Excel » (branche
+  `cours/bts1-excel`) : TP Excel partie 1 (facture) et partie 2 (relevé de
+  notes), repris du PDF de l'enseignant (export Notion « Cours 5 »,
+  `tp_Excel.pdf`, non versionné). Brouillons. Domaine `systemes` choisi faute
+  de domaine « bureautique ». PDF non vérifiés en local : `texlive-luatex`
+  (luaotfload) absent de la machine, la CI les construit. Reste : fichier
+  `.xlsx` de la partie 2 (lien Google Drive pour l'instant), figure du
+  commentaire de K18 absente de la source.
 - BTS CIEL 1, chapitre 01 : cours « Un salut sur Snapchat » (PDF de
   l'enseignant tel quel) et TP « Voir l'encapsulation avec Packet Tracer »
   (branches `cours/bts1-reseaux-osi-snapchat` puis `…-publie` : passés en
@@ -281,6 +289,34 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-05 — cours/bts1-excel
+
+- Ressources : `bts1/systemes/01-excel/tp-excel-partie-1/` et
+  `tp-excel-partie-2/` (référence imitée :
+  `bts1/reseaux/01-introduction/tp-wireshark/`), index de section
+  « Systèmes » et « 01 — Excel ». Une ressource par partie, donc un PDF par
+  partie, à la demande de l'enseignant.
+- Rédacteur, relecteur, vérificateur : sous-agents du dépôt joués par un
+  agent généraliste qui lit leur définition (`.claude/agents/` non chargés :
+  la session a démarré sur une branche qui ne les contenait pas).
+- Codex : indisponible (bac à sable bubblewrap impossible dans cet
+  environnement) ; relecture faite par le sous-agent relecteur, comme le
+  prévoit le protocole pour un TP.
+- Relecture : 2 constats A (À CORRIGER, corrigés par le rédacteur),
+  5 réécritures R1 à R5, toutes gardées.
+- Vérificateur : À REPRENDRE (PDF non rendus, cause : environnement), puis
+  CONFORME (fond, conformité, HTML rendu avec `-M draft:false`).
+- Relance du relecteur : non.
+- Constat : un brouillon rendu en HTML donne une page vide (`draft-mode`
+  par défaut) ; le vérificateur doit rendre avec `-M draft:false` pour
+  contrôler le contenu. À documenter dans une branche `infra/`.
+- Points à relire par l'enseignant : domaine `systemes` ; durée « 2 h »
+  par partie ; colonnes D et E masquées (partie 1) ; Q7 commentaire ou
+  note (Excel 365) ; écart type et variance de l'échantillon ou de la
+  population ; « ajournés » = décision Ajourné seule ; K18 toujours vert
+  avec ces données (449 783 TTC) : les cas rouge et jaune ne se testent
+  qu'en changeant une quantité.
 
 ### 2026-11-02 — cours/snt-livret2-beamer
 
