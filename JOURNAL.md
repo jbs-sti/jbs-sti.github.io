@@ -12,7 +12,9 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - BTS CIEL 1, nouveau chapitre « Systèmes › 01 — Excel » (branche
   `cours/bts1-excel`) : TP Excel partie 1 (facture) et partie 2 (relevé de
   notes), repris du PDF de l'enseignant (export Notion « Cours 5 »,
-  `tp_Excel.pdf`, non versionné). Brouillons. Domaine `systemes` choisi faute
+  `tp_Excel.pdf`, non versionné). PR #92 fusionnée ; passés en
+  `draft: false` le 2026-11-05 à la demande expresse de l'enseignant
+  (branche `cours/bts1-excel-publier`). Domaine `systemes` choisi faute
   de domaine « bureautique ». PDF vérifiés en local (4 et 5 pages A4)
   après installation de `texlive-luatex`, `texlive-fonts-extra` et
   `librsvg2-bin` par l'enseignant. Reste : fichier
@@ -290,6 +292,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-05 — cours/bts1-excel-publier
+
+- Ressources : `bts1/systemes/01-excel/tp-excel-partie-1/` et
+  `tp-excel-partie-2/` passées en `draft: false`, à la demande expresse de
+  l'enseignant (« Je t'autorise à mettre draft en false »).
+- Rendu : HTML et PDF des deux TP OK (`verifier_site.py` : 4 et 5 pages).
 
 ### 2026-11-05 — cours/bts1-excel
 
