@@ -13,8 +13,9 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   `cours/bts1-excel`) : TP Excel partie 1 (facture) et partie 2 (relevé de
   notes), repris du PDF de l'enseignant (export Notion « Cours 5 »,
   `tp_Excel.pdf`, non versionné). Brouillons. Domaine `systemes` choisi faute
-  de domaine « bureautique ». PDF non vérifiés en local : `texlive-luatex`
-  (luaotfload) absent de la machine, la CI les construit. Reste : fichier
+  de domaine « bureautique ». PDF vérifiés en local (4 et 5 pages A4)
+  après installation de `texlive-luatex`, `texlive-fonts-extra` et
+  `librsvg2-bin` par l'enseignant. Reste : fichier
   `.xlsx` de la partie 2 (lien Google Drive pour l'instant), figure du
   commentaire de K18 absente de la source.
 - BTS CIEL 1, chapitre 01 : cours « Un salut sur Snapchat » (PDF de
@@ -308,6 +309,10 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Vérificateur : À REPRENDRE (PDF non rendus, cause : environnement), puis
   CONFORME (fond, conformité, HTML rendu avec `-M draft:false`).
 - Relance du relecteur : non.
+- Rendu PDF : `≥` et `≤` absents de Latin Modern (police réelle du PDF,
+  pas Playfair) ; remplacés par `>=` et `<=` dans la partie 2. Les fiches
+  de BTS 2 qui emploient ces signes ont sans doute le même défaut : à
+  traiter dans une branche `infra/`.
 - Constat : un brouillon rendu en HTML donne une page vide (`draft-mode`
   par défaut) ; le vérificateur doit rendre avec `-M draft:false` pour
   contrôler le contenu. À documenter dans une branche `infra/`.

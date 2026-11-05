@@ -80,7 +80,7 @@ Sous le tableau, une zone accueille les statistiques de la classe. Chaque valeur
 |---|---|---|---|
 | A16 — Le nombre d'étudiants | C16 | E16 — Nombre d'étudiants admis | G16 |
 | A18 — La moyenne de la classe | C18 | E18 — Nombre d'étudiants ajournés | G18 |
-| A20 — La meilleure moyenne | C20 | E20 — Moyenne des moyennes ≥ 10 | G20 |
+| A20 — La meilleure moyenne | C20 | E20 — Moyenne des moyennes >= 10 | G20 |
 | A22 — La mauvaise moyenne | C22 | E22 — Moyenne des moyennes < 10 | G22 |
 | A24 — Écart type des moyennes | C24 | E24 — Variance de la moyenne | G24 |
 
@@ -121,12 +121,12 @@ Affichez la mention de chaque étudiant dans la colonne J, selon sa moyenne :
 
 | Moyenne | Mention |
 |---|---|
-| moyenne ≥ 16 | Très bien |
-| 14 ≤ moyenne < 16 | Bien |
-| 12 ≤ moyenne < 14 | Assez bien |
-| 11 ≤ moyenne < 12 | Passable |
-| 10 ≤ moyenne < 11 | Sans mention |
-| 9 ≤ moyenne < 10 (étudiant rachetable) | Sans mention |
+| moyenne >= 16 | Très bien |
+| 14 <= moyenne < 16 | Bien |
+| 12 <= moyenne < 14 | Assez bien |
+| 11 <= moyenne < 12 | Passable |
+| 10 <= moyenne < 11 | Sans mention |
+| 9 <= moyenne < 10 (étudiant rachetable) | Sans mention |
 | moyenne < 9 | * |
 :::
 
