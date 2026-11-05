@@ -97,6 +97,26 @@ décrite dans `docs/redaction-codex.md` : courts, simples, illustrés.
     réécritures.
 11. **Journal** : ajouter une entrée à `JOURNAL.md`, dans le même commit.
 
+### Publication d'une ressource
+
+L'enseignant autorise Claude Code (et lui seul : ni Codex, ni les
+sous-agents) à passer une ressource de `draft: true` à `draft: false`, aux
+conditions suivantes :
+
+1. la PR de la ressource est **fusionnée** dans `main` : l'enseignant l'a
+   relue ;
+2. la publication se fait dans une branche dédiée
+   `cours/<formation>-<sujet>-publier`, créée depuis `origin/main`, qui ne
+   change que la ligne `draft` des ressources concernées et `JOURNAL.md` ;
+3. avant la PR : `quarto render` de chaque ressource sans erreur, et
+   `verifier_site.py` OK pour sa page HTML et son PDF ;
+4. pull request vers `main` : c'est toujours l'enseignant qui fusionne ;
+5. entrée de journal, dans le même commit, qui cite la demande ou
+   l'autorisation de l'enseignant.
+
+Une ressource nouvelle reste toujours créée en `draft: true` : le premier
+jet n'est jamais publié directement.
+
 ### Si Codex est indisponible
 
 Si Codex échoue (limite d'usage, panne), attendre qu'il redevienne
@@ -108,7 +128,8 @@ dans la PR et dans le journal.
 
 - Jamais de commit ni de push sur `main`, jamais de `git push --force`.
 - Jamais de fusion de pull request : l'enseignant fusionne.
-- Jamais de passage de `draft: true` à `false`.
+- Jamais de passage de `draft: true` à `false` hors des conditions de la
+  section « Publication d'une ressource ».
 - Jamais de commande Codex en mode `danger-full-access` ou sans bac à sable.
 - Jamais de modification des ancres : tests (`scripts/tests/`), schéma
   (`_schemas/`), scripts de vérification et workflows CI. Si un contrôle

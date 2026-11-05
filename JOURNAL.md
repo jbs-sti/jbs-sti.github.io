@@ -239,6 +239,11 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **Décisions durables**
 
+- 2026-11-05 : l'enseignant autorise Claude Code (seul) à passer une
+  ressource en `draft: false`, une fois sa PR fusionnée, dans une branche
+  et une PR `…-publier` dédiées (conditions dans `CLAUDE.md`, section
+  « Publication d'une ressource »). Codex et les sous-agents ne touchent
+  jamais `draft`.
 - Le site vouvoie le lecteur.
 - Une ressource n'a pas de bloc `format:` : elle hérite des formats du
   projet (html, vintage-pdf).
@@ -292,6 +297,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-05 — infra/autorisation-publication
+
+- `AGENTS.md` et `CLAUDE.md` : Claude Code peut passer une ressource en
+  `draft: false` aux conditions de la nouvelle section « Publication d'une
+  ressource » de `CLAUDE.md`. Demande de l'enseignant : « Je t'autorise à
+  mettre draft en false. Mets à jour le CLAUDE.md et AGENTS.md pour prendre
+  en compte cette autorisation. »
 
 ### 2026-11-05 — cours/bts1-excel-publier
 
