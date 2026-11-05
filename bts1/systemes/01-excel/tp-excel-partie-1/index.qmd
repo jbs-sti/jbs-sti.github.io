@@ -1,0 +1,188 @@
+---
+title: "TP Excel — Partie 1 : la facture"
+description: "Reproduire et mettre en forme une facture dans Excel, calculer les montants HT, TVA et TTC, le net à payer avec remise, puis appliquer une mise en forme conditionnelle."
+type: tp
+domaine: systemes
+chapitre: "01 — Excel"
+categories: [tp, systemes]
+mots-cles: [tableur, Excel, LibreOffice Calc, formule, facture, TVA, HT, TTC, fonction SI, mise en forme conditionnelle, commentaire]
+objectifs:
+  - "Reproduire un tableau avec ses mises en forme : gras, fusion, centrage, bordures et couleurs."
+  - "Écrire des formules pour calculer les montants HT, TVA et TTC d'une facture."
+  - "Calculer des totaux et un net à payer soumis à une condition."
+  - "Appliquer une mise en forme conditionnelle à une cellule."
+  - "Insérer un commentaire dans une cellule."
+prerequis: []
+duree: "2 h"
+order: 10
+date-modified: 2026-11-04
+draft: true
+lang: fr
+---
+
+*Plateforme : Microsoft Excel (interface en français) ; LibreOffice Calc convient aussi.*
+
+## Objectifs et prérequis
+
+Dans ce TP, vous construisez une facture complète dans un tableur. Vous allez :
+
+- reproduire un tableau avec ses mises en forme ;
+- écrire des formules de calcul simples ;
+- utiliser une condition pour calculer une remise ;
+- colorer automatiquement une cellule selon sa valeur ;
+- ajouter un commentaire à une cellule.
+
+Aucun prérequis n'est nécessaire. Ce TP est la première partie ; la partie 2 réutilise ces savoir-faire.
+
+## Situation de départ
+
+L'Entreprise Nationale de Systèmes Informatiques vend du matériel informatique. Elle doit établir la facture N° 1254 pour un client, M. Jean Dupont.
+
+Votre mission : réaliser cette facture dans un tableur. Les montants doivent être calculés par des formules, et non saisis à la main. Ainsi, si un prix ou une quantité change, la facture se met à jour toute seule.
+
+## Matériel et environnement
+
+- Un poste avec Microsoft Excel (interface en français) ou LibreOffice Calc.
+- Un nouveau classeur vide : aucun fichier n'est fourni.
+
+## Travail à réaliser
+
+### Étape 1 — Reproduire la facture
+
+Ouvrez un nouveau classeur. Dans une feuille vide, recopiez la facture décrite ci-dessous. Respectez les adresses des cellules et les mises en forme : gras, fusion, centrage, bordures et couleurs.
+
+**En-tête de la facture**
+
+| Cellules | Contenu | Mise en forme |
+|---|---|---|
+| A1:C1 | Entreprise Nationale de Systèmes Informatiques 12 rue Keufer 75013 Paris | fusionnées, fond vert clair |
+| F3:F5 | Facture N° 1254 | fusionnées, encadrées |
+| H2:J4 | Mr Jean Dupont 5 rue Bouval 95230 Soisy | fusionnées, encadrées |
+
+**Tableau des produits**
+
+Les en-têtes sont en ligne 7 : en gras, sur fond jaune, avec des bordures. Les colonnes D et E sont masquées. Les colonnes I, J et K restent vides pour l'instant : vous les remplirez par des formules.
+
+| Ligne | B — Numéro du Produit | C — Désignation | F — Prix Unitaire | G — TVA | H — Quantité | I — THT | J — TVA | K — TTC |
+|---|---|---|---|---|---|---|---|---|
+| 8 | 1 | Écran | 5000 | 2 % | 10 | | | |
+| 9 | 2 | Clavier | 500 | 1 % | 12 | | | |
+| 10 | 3 | Souris | 300 | 1 % | 16 | | | |
+| 11 | 4 | Imprimante | 6000 | 3 % | 15 | | | |
+| 12 | 5 | Flash disque | 1000 | 2 % | 14 | | | |
+| 13 | 6 | Scanner | 3500 | 3 % | 10 | | | |
+| 14 | 7 | Modem | 1500 | 3 % | 13 | | | |
+| 15 | 8 | Processeur | 12000 | 4 % | 17 | | | |
+| 16 | 9 | RAM | 1200 | 5 % | 10 | | | |
+
+**Bas de la facture**
+
+| Cellule | Contenu |
+|---|---|
+| H18 | Total |
+| I18, J18, K18 | totaux THT, TVA et TTC (K18 sur fond bleu) |
+| C20 | Net à payer |
+| F20 | montant du net à payer |
+
+### Étape 2 — Comprendre HT, TVA et TTC
+
+Prenons un exemple. Un article coûte 100 € hors taxes et la TVA est de 20 %.
+
+- Le prix hors taxes vaut 100 €.
+- La TVA vaut 100 × 20 % = 20 €, car 20 % = 20/100.
+- Le prix toutes taxes comprises vaut 100 + 20 = 120 €.
+
+Le client paie donc 120 € TTC. Retenez la relation :
+
+**TTC = THT + TVA**
+
+Ici, le THT d'un produit est le prix total hors taxes de la ligne. Il dépend donc de la quantité achetée :
+
+**THT = prix unitaire × quantité**
+
+::: {.callout-tip title="Aide : écrire une formule"}
+Une formule commence toujours par le signe `=`. Elle utilise les adresses des cellules plutôt que les valeurs. Recopiez ensuite la formule vers le bas avec la poignée de recopie.
+
+Fonctions utiles dans Excel : `SOMME` et `SI`. Les arguments sont séparés par un point-virgule `;`. Syntaxe de la fonction `SI` :
+
+```text
+=SI(test_logique;valeur_si_vrai;valeur_si_faux)
+```
+
+Plusieurs fonctions `SI` peuvent être imbriquées : la valeur si faux peut elle-même être un `SI`.
+:::
+
+### Étape 3 — Calculer les montants
+
+::: {.callout-note title="Question 1"}
+Calculez le THT de chaque produit (colonne I).
+:::
+
+::: {.callout-note title="Question 2"}
+Calculez la TVA de chaque produit (colonne J).
+:::
+
+::: {.callout-note title="Question 3"}
+Calculez le TTC de chaque produit (colonne K), sachant que TTC = THT + TVA.
+:::
+
+::: {.callout-note title="Question 4"}
+Calculez les totaux THT, TVA et TTC de la facture (cellules I18, J18 et K18).
+:::
+
+### Étape 4 — Calculer le net à payer
+
+L'entreprise accorde une remise selon le total TTC de la facture :
+
+- une réduction de 10 % si le total TTC dépasse 100 000 ;
+- une réduction de 20 % si le total TTC dépasse 200 000.
+
+« Dépasse » signifie « est strictement supérieur à ».
+
+::: {.callout-note title="Question 5"}
+Calculez le net à payer dans la cellule F20, en tenant compte de la remise.
+:::
+
+### Étape 5 — Mettre en évidence le total TTC
+
+Une mise en forme conditionnelle change l'apparence d'une cellule selon sa valeur. Elle se met à jour automatiquement quand la valeur change.
+
+::: {.callout-note title="Question 6"}
+Appliquez une mise en forme conditionnelle à la cellule K18 :
+
+- si le TTC est inférieur à 100 000 : remplissage rouge clair et texte rouge foncé ;
+- si le TTC est compris entre 100 000 et 200 000 (bornes comprises) : remplissage jaune clair et texte jaune foncé ;
+- si le TTC est supérieur à 200 000 : remplissage vert clair et texte vert foncé.
+:::
+
+::: {.callout-note title="Question 7"}
+Insérez un commentaire dans la cellule K18. Le texte du commentaire est libre : par exemple, une phrase qui explique la couleur de la cellule.
+:::
+
+## Vérification et compte rendu
+
+Faites valider votre facture par le professeur. Il vérifie que :
+
+- la facture reproduit fidèlement le modèle, mises en forme comprises ;
+- les cellules des colonnes I, J et K, les totaux et le net à payer contiennent des formules, et non des valeurs saisies ;
+- le net à payer applique la bonne remise ;
+- la couleur de K18 change quand le total TTC franchit un seuil ;
+- la cellule K18 porte un commentaire.
+
+Pour tester vos formules, modifiez une quantité : tous les montants doivent se mettre à jour. Remettez ensuite la valeur d'origine.
+
+Enregistrez votre classeur.
+
+## Synthèse
+
+Expliquez en quelques phrases :
+
+- pourquoi il vaut mieux écrire une formule que saisir un résultat calculé à la main ;
+- comment vous avez traité les deux seuils de remise dans une même formule ;
+- la différence entre une mise en forme classique et une mise en forme conditionnelle ;
+- les difficultés que vous avez rencontrées.
+
+## Pour aller plus loin
+
+- Documentation officielle de Microsoft Excel : [https://support.microsoft.com/fr-fr/excel](https://support.microsoft.com/fr-fr/excel)
+- Aide officielle de LibreOffice : [https://help.libreoffice.org/](https://help.libreoffice.org/)
