@@ -114,7 +114,7 @@
   \begin{beamercolorbox}[sep=10pt]{block body}
   \centering
   \begin{tabular}{lll}
-    \textbf{Service} & \textbf{Le Protocole (Règles)} & \textbf{Le Serveur (Rôle)}\\\hline
+    \textbf{Service} & \textbf{Protocole (règles)} & \textbf{Serveur (rôle)}\\\hline
     Web & HTTP (GET, POST...) & Serveur HTTP (ex : Apache)\\
     Fichiers & FTP (put, get, rename...) & Serveur FTP (Stockage)\\
     Adressage & DHCP (DORA) & Serveur DHCP (Distributeur d'IP)\\
@@ -275,21 +275,6 @@
   \end{block}
 \end{frame}
 
-\begin{frame}{Recevoir des paramètres ne garantit pas tout}
-  PC0 connaît le DNS \texttt{192.168.1.253}.
-  Mais un serveur DNS arrêté ne répondra pas.
-  \begin{schema}
-    \node[boite] (d) {DHCP\\annonce les paramètres};
-    \node[boite,right=3.5cm of d] (n) {DNS et passerelle\\doivent répondre};
-    \draw[flux,dashed] (d)--node[above]{rôles distincts} (n);
-  \end{schema}
-  \begin{block}{Méthode}
-    1. Vérifiez les paramètres reçus.\\
-    2. Vérifiez ensuite les services et la connectivité nécessaires.\\
-    Une attribution DHCP ne prouve pas un accès Internet.
-  \end{block}
-\end{frame}
-
 \begin{frame}{Lire DORA sans tout confondre}
   Dans notre exemple, le serveur propose \texttt{192.168.1.1} à PC0.
   Une offre seule ne suffit pas pour utiliser cette adresse.
@@ -302,6 +287,21 @@
   \begin{block}{Attention aux destinations}
     Offer et ACK peuvent être diffusés ou envoyés directement au client.\\
     Ne supposez pas que tous les messages sont toujours diffusés.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Recevoir des paramètres ne garantit pas tout}
+  PC0 connaît le DNS \texttt{192.168.1.253}.
+  Mais un serveur DNS arrêté ne répondra pas.
+  \begin{schema}
+    \node[boite] (d) {DHCP\\annonce les paramètres};
+    \node[boite,right=3.5cm of d] (n) {DNS et passerelle\\doivent répondre};
+    \draw[flux,dashed] (d)--node[above]{rôles distincts} (n);
+  \end{schema}
+  \begin{block}{Méthode}
+    1. Vérifiez les paramètres reçus.\\
+    2. Vérifiez ensuite les services et la connectivité nécessaires.\\
+    Une attribution DHCP ne prouve pas un accès Internet.
   \end{block}
 \end{frame}
 
@@ -321,6 +321,7 @@
 \end{frame}
 
 \begin{frame}{Dimensionner le pool : une méthode réutilisable}
+  \textbf{Exemple hors TP : une petite salle de 50 postes.}
   \begin{enumerate}
     \item Déterminez les adresses d'hôtes avec le masque : ici .1 à .254.
     \item Listez les adresses fixes : ici .250 à .254.
@@ -328,7 +329,7 @@
     \item Nombre d'adresses = dernière $-$ première $+ 1$ :\\
       $59 - 10 + 1 = 50$.
   \end{enumerate}
-  \begin{block}{Application dans Server-PT — Services > DHCP}
+  \begin{block}{Dans Packet Tracer (Server-PT) — Services > DHCP}
     \textbf{Start IP Address} : \texttt{192.168.1.10}\\
     \textbf{Subnet Mask} : \texttt{255.255.255.0}\\
     \textbf{Maximum Number of Users} : \texttt{50}
@@ -535,8 +536,8 @@ ip helper-address 192.168.1.250
     \item Vérifiez que le serveur DHCP est accessible et son service actif.
     \item Vérifiez les adresses libres du pool ; puis redemandez un bail.
   \end{enumerate}
-  Avec APIPA, les échanges restent sur le même lien,
-  avec des machines disposant d'une adresse locale compatible.
+  Avec APIPA, le poste ne parle qu'aux machines du même lien
+  qui ont aussi une adresse en 169.254.
 \end{frame}
 
 \begin{frame}{À retenir}

@@ -27,7 +27,7 @@ lang: fr
 
 ## Objectifs et prérequis
 
-Imaginez une salle de 30 postes. Saisir 30 adresses IP à la main prend du temps. Une seule faute de frappe crée un conflit d'adresses. Un serveur DHCP fait ce travail à votre place : chaque poste demande ses paramètres et les reçoit automatiquement.
+Imaginez une salle de 30 postes. Saisir 30 adresses IP à la main prend du temps. Une seule faute de frappe peut créer un conflit d'adresses (deux postes avec la même adresse). Un serveur DHCP fait ce travail à votre place : chaque poste demande ses paramètres et les reçoit automatiquement.
 
 Dans ce TP, vous allez :
 
@@ -157,7 +157,7 @@ En mode temps réel, le poste reçoit son adresse en une fraction de seconde. Le
 4. Avancez pas à pas avec le bouton d'avance du panneau de simulation. Observez les enveloppes qui circulent et la liste des événements (Event List).
 5. Cliquez sur une enveloppe ou sur une ligne de la liste pour ouvrir le détail du message (PDU). Un **PDU** est le message tel qu'il circule, avec les en-têtes ajoutés par chaque couche.
 
-Attention : un même message apparaît sur plusieurs lignes de l'Event List, une par équipement traversé. Le commutateur recopie par exemple une diffusion vers tous les autres postes. Comptez donc les messages différents, pas les lignes.
+Attention : un même message apparaît sur plusieurs lignes de l'Event List, une par équipement traversé. Le commutateur recopie par exemple une diffusion (un message destiné à tous les équipements du réseau local) vers tous les autres postes. Comptez donc les messages différents, pas les lignes.
 
 ::: {.callout-note title="Question 3"}
 1. Combien de messages DHCP différents sont échangés entre PC0 et Server0 ?
@@ -299,7 +299,7 @@ Notez enfin, en deux ou trois lignes, la difficulté principale rencontrée pend
 
 Dans ce TP, le serveur DHCP et les clients sont dans le même réseau. Or le premier message du client est une diffusion, et un routeur ne transmet pas les diffusions. Comment faire si le serveur DHCP se trouve dans un autre réseau ?
 
-La solution est le **relais DHCP**. Le routeur reçoit la diffusion du client sur son interface côté clients. Il la retransmet, en message ordinaire, à l'adresse du serveur DHCP. Il fait de même, en sens inverse, pour les réponses du serveur.
+La solution est le **relais DHCP**. Le routeur reçoit la diffusion du client sur son interface côté clients. Il la retransmet en monodiffusion (unicast), directement à l'adresse du serveur DHCP. Il fait de même, en sens inverse, pour les réponses du serveur.
 
 Sur un routeur Cisco IOS, on configure le relais sur l'interface côté clients, avec la commande `ip helper-address`. Exemple, si le serveur DHCP avait l'adresse 10.0.0.5 dans un autre réseau :
 
@@ -314,4 +314,4 @@ Sources :
 
 - RFC 2131, *Dynamic Host Configuration Protocol*, IETF, 1997 : <https://www.rfc-editor.org/rfc/rfc2131>
 - RFC 3927, *Dynamic Configuration of IPv4 Link-Local Addresses* (plage 169.254.0.0/16), IETF, 2005 : <https://www.rfc-editor.org/rfc/rfc3927>
-- Cisco, documentation Cisco IOS, guide de configuration DHCP (recherche : « Cisco IOS DHCP Relay Agent »)
+- Cisco, *IP Addressing: DHCP Configuration Guide, Cisco IOS XE Release 2*, chapitre « Configuring the Cisco IOS XE DHCP Relay Agent » : <https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_dhcp/configuration/xe-2/dhcp-xe-2-book/dhcp-relay-agent-xe.html>

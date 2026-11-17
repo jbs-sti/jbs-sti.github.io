@@ -9,6 +9,19 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
+- BTS CIEL 1, chapitre « 06 — Services réseau » découpé par protocole
+  (DHCP, HTTP, DNS, FTP), chacun avec un diaporama beamer LaTeX (Codex,
+  préambule de l'enseignant `publication/Beamer_SNT_Web_HTML_CSS.tex`) et un
+  TP Packet Tracer (sous-agent redacteur) tirés des PDF de l'enseignant
+  « Protocoles réseaux » et « TP DHCP, HTTP, DNS, FTP » (déposés, non
+  versionnés, dans le dossier du chapitre). Une branche et une PR par
+  protocole. **DHCP fait** (branche `cours/bts1-services-dhcp`) :
+  `cours-diaporama-dhcp` (order 10), `cours-dhcp` déplacé en order 12,
+  `tp-dhcp` (order 15, 2 h). À faire : HTTP (order 20/25, TP 1 h, partie C du
+  TP source), DNS (30/35, 1 h, partie D), FTP (40/45, 1 h, partie E). Les TP
+  repartent de `tp-services-reseau.pkt` ; plan d'adressage : DHCP .250,
+  HTTP .251, FTP .252, DNS .253, passerelle .254, pool .1 à .249.
+
 - BTS CIEL 1, nouveau chapitre « Systèmes › 01 — Excel » (branche
   `cours/bts1-excel`) : TP Excel partie 1 (facture) et partie 2 (relevé de
   notes), repris du PDF de l'enseignant (export Notion « Cours 5 »,
@@ -297,6 +310,28 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-17 — cours/bts1-services-dhcp
+
+- Ressources : bts1/reseaux/06-services-reseau/cours-diaporama-dhcp (beamer
+  XeLaTeX, 33 diapositives, référence de page :
+  bts2/.../cours-diaporama-routage-dynamique) et tp-dhcp (référence :
+  bts1/reseaux/02-adressage-ip/tp-creation-lan) ; cours-dhcp en order 12 ;
+  description de l'index du chapitre mise à jour.
+- Demande de l'enseignant : un sous-chapitre par protocole, cours en beamer
+  « premier principe », TP enrichis avec ses captures d'origine.
+- Vérificateur : TP CONFORME au 1er passage (4 constats mineurs corrigés) ;
+  beamer À REPRENDRE (2 BLOQUANT : étiquettes qui chevauchent) puis CONFORME
+  au 2e ; CONFORME final après relecture croisée.
+- Relecture : Codex sur le TP (R1 gardée ; A1, A3, A4 corrigés ; A2 refusé :
+  Question 1 de l'enseignant inchangée) ; sous-agent relecteur sur le beamer
+  (limité aux index.qmd, il a proposé R1-R4 sans les appliquer : appliquées
+  par Codex avec le BLOQUANT A1, exemple de pool hors TP).
+- Relance relecteur : non. Quarto absent de l'environnement : rendu laissé
+  à la CI.
+- Points à relire par l'enseignant : diapositive « Le pool » (254 − 5 = 249,
+  annonce la Q8 du TP) ; « FTP (put, get, rename...) » gardé dans son
+  tableau ; incertitudes Packet Tracer du TP (voir PR).
 
 ### 2026-11-05 — cours/snt-web-livret-3-reponses
 
