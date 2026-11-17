@@ -17,8 +17,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   versionnés, dans le dossier du chapitre). Une branche et une PR par
   protocole. **DHCP fait** (branche `cours/bts1-services-dhcp`) :
   `cours-diaporama-dhcp` (order 10), `cours-dhcp` déplacé en order 12,
-  `tp-dhcp` (order 15, 2 h). À faire : HTTP (order 20/25, TP 1 h, partie C du
-  TP source), DNS (30/35, 1 h, partie D), FTP (40/45, 1 h, partie E). Les TP
+  `tp-dhcp` (order 15, 2 h), PR #99 fusionnée. **HTTP fait** (branche
+  `cours/bts1-services-http`) : `cours-diaporama-http` (order 20),
+  `tp-http` (order 25, 1 h). À faire : DNS (30/35, 1 h, partie D du TP
+  source ; la diapositive « Séance suivante » du beamer HTTP annonce DNS),
+  FTP (40/45, 1 h, partie E). Leçons à reporter dans les consignes : URL en
+  `\texttt` (polyglossia ajoute une espace avant « : »), exemples des
+  beamers différents de ceux du TP pour ne pas donner les réponses. Les TP
   repartent de `tp-services-reseau.pkt` ; plan d'adressage : DHCP .250,
   HTTP .251, FTP .252, DNS .253, passerelle .254, pool .1 à .249.
 
@@ -310,6 +315,21 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-17 — cours/bts1-services-http
+
+- Ressources : bts1/reseaux/06-services-reseau/cours-diaporama-http (beamer
+  XeLaTeX, 25 diapositives, préambule du beamer DHCP) et tp-http (référence :
+  tp-dhcp), partie C du TP de l'enseignant, 3 captures d'origine.
+- Vérificateur : TP CONFORME au 1er passage (1 constat corrigé : ligne
+  d'état HTTP) ; beamer À REPRENDRE (BLOQUANT : espace avant « : » dans les
+  URL, polyglossia) puis CONFORME au 2e ; CONFORME final.
+- Relecture : Codex sur le TP (R1 gardée, A1 et A2 corrigés) ; sous-agent
+  relecteur sur le beamer (R1 appliquée sur index.qmd, R2-R5 proposées et
+  appliquées par Codex ; A1-A5 retenus : exemple 10.0.0.20/tarifs.html
+  distinct du TP, www.example.com).
+- Relance relecteur : non. Quarto absent : rendu laissé à la CI.
+- Travail mené pendant la nuit, après validation de la PR #99 ; PR à relire.
 
 ### 2026-11-17 — cours/bts1-services-dhcp
 

@@ -167,7 +167,7 @@ En mode temps réel, la page s'affiche en une fraction de seconde. Le mode Simul
 
 Deux protocoles travaillent ensemble ici :
 
-- **TCP** ouvre d'abord une connexion entre le poste et le serveur, comme on décroche avant de parler au téléphone. Il garantit ensuite que les données arrivent complètes et dans l'ordre.
+- **TCP** ouvre d'abord une connexion entre le poste et le serveur, comme on décroche avant de parler au téléphone. Il veille ensuite à ce que les données arrivent complètes et dans l'ordre : il renvoie ce qui s'est perdu.
 - **HTTP** transporte la demande du navigateur, appelée **requête**, puis la page renvoyée par le serveur, appelée **réponse**.
 
 1. Passez Packet Tracer en mode Simulation (icône en bas à droite de l'écran).
@@ -211,12 +211,12 @@ Que se passe-t-il si vous demandez un fichier que le serveur ne possède pas ? L
 ::: {.callout-note title="Question 7"}
 1. Relevez exactement ce qu'affiche le navigateur.
 2. Quel code d'état HTTP signale qu'une ressource est introuvable sur le serveur ? Retrouvez-vous ce code, ou un message équivalent, dans l'affichage ?
-3. Le problème vient-il du réseau, du serveur ou de la requête ? Justifiez à l'aide de votre test de la partie B.
+3. Le réseau fonctionne-t-il ? Le serveur HTTP fonctionne-t-il ? Justifiez chaque réponse à l'aide de votre test de la partie B et de l'affichage obtenu. Que manque-t-il alors ?
 :::
 
 ### Sauvegarde
 
-Enregistrez la maquette avec le menu « File » > « Save », sous le nom `tp-services-reseau.pkt`. Gardez une copie dans votre dossier personnel : le TP DNS repart de ce fichier, et Server1 doit garder l'adresse 192.168.1.251.
+Enregistrez la maquette avec le menu « File » > « Save », sous le nom `tp-services-reseau.pkt`. Gardez une copie dans votre dossier personnel : le TP DNS repart de ce fichier. Server1 doit garder l'adresse 192.168.1.251.
 
 ## Vérification et compte rendu
 

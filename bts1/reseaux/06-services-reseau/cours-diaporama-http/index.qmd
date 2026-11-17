@@ -25,7 +25,7 @@ lang: fr
 
 Ce diaporama explique comment un navigateur demande une page à un serveur HTTP :
 URL, connexion TCP, requête, réponse et codes d’état.
-Il présente HTTPS et comprend des schémas et trois questions avec leur corrigé.
+Il présente ensuite HTTPS. Trois questions corrigées terminent la séance.
 
 - **[Télécharger le diaporama (PDF)](fichiers/diaporama-http.pdf)**
 - [Source LaTeX du diaporama](fichiers/diaporama-http.tex)

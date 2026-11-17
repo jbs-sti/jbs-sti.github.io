@@ -70,7 +70,7 @@
     \textbf{Client} & Le navigateur demande une ressource.\\
     \textbf{Serveur} & Le logiciel HTTP répond à la demande.\\
     \textbf{Protocole} & HTTP définit les règles des messages.\\
-    \textbf{Port} & Le numéro aide à retrouver l'application.\\
+    \textbf{Port} & Le numéro désigne le service visé sur la machine.\\
   \end{tabular}
   \end{beamercolorbox}
   \begin{block}{Méthode}
@@ -113,19 +113,20 @@
 \end{frame}
 
 \begin{frame}{Lire une URL : où et quoi demander ?}
+  Prenons maintenant un autre site, pour détailler chaque étape.\par
   Une URL est l'adresse d'une ressource Web.
   \begin{schema}
     \node[boite,text width=2cm] at (0,0)
       {\texttt{http://}\\protocole};
     \node[boite,text width=4cm] at (3.8,0)
-      {\texttt{192.168.1.251}\\hôte : serveur visé};
+      {\texttt{10.0.0.20}\\hôte : serveur visé};
     \node[boite,text width=3cm] at (8.5,0)
-      {\texttt{/index.html}\\chemin : ressource};
+      {\texttt{/tarifs.html}\\chemin : ressource};
   \end{schema}
   \begin{block}{Méthode}
     1. Avant \texttt{://}, lisez le protocole : \texttt{http}.\\
     2. Jusqu'au prochain \texttt{/}, repérez l'hôte.\\
-    3. Lisez le chemin : ici \texttt{/index.html}.
+    3. Lisez le chemin : ici \texttt{/tarifs.html}.
   \end{block}
   Avec \texttt{http}, sans port écrit, le port serveur est \textbf{80}.
 \end{frame}
@@ -145,21 +146,22 @@
     \draw[flux] (0,.3)--node[below]{3. ACK : confirmation du client} (8,.3);
   \end{schema}
   \small Lisez de haut en bas, puis suivez les flèches.
-  50532 est un exemple ; le port client peut changer.
+  Port éphémère : numéro choisi par le poste client pour une connexion ;
+  50532 n'est qu'un exemple.
 \end{frame}
 
 \begin{frame}[fragile]{La requête : demander une ressource}
   Une connexion existe. Le navigateur précise maintenant ce qu'il demande.
   \begin{lstlisting}[style=webcode,language={},showlines=true]
-GET /index.html HTTP/1.1
-Host: 192.168.1.251
+GET /tarifs.html HTTP/1.1
+Host: 10.0.0.20
 
 \end{lstlisting}
   Un en-tête est une information qui accompagne le message.\par
   \begin{block}{Méthode : lire le texte HTTP/1.1}
-    1. \texttt{GET} : demander ; \texttt{/index.html} : chemin demandé.\\
+    1. \texttt{GET} : demander ; \texttt{/tarifs.html} : chemin demandé.\\
     2. \texttt{HTTP/1.1} : version utilisée pour cet échange.\\
-    3. \texttt{Host} : hôte visé, ici \texttt{192.168.1.251}.\\
+    3. \texttt{Host} : hôte visé, ici \texttt{10.0.0.20}.\\
     4. La ligne vide termine les en-têtes.
   \end{block}
 \end{frame}
@@ -189,7 +191,7 @@ Host: 192.168.1.251
 HTTP/1.1 200 OK
 Content-Type: text/html
 
-<html><body><h1>Bienvenue</h1></body></html>
+<html><body><h1>Tarifs</h1></body></html>
 \end{lstlisting}
   \begin{block}{Méthode}
     1. Lisez la ligne d'état : \texttt{200 OK}, la demande a réussi.\\
@@ -200,12 +202,12 @@ Content-Type: text/html
 \end{frame}
 
 \begin{frame}{Relier la requête et la réponse}
-  Le navigateur demande \texttt{/index.html}. Le serveur répond \texttt{200 OK}.
+  Le navigateur demande \texttt{/tarifs.html}. Le serveur répond \texttt{200 OK}.
   \begin{schema}
     \node[boite] (c) {Client\\navigateur};
     \node[boite,right=5.4cm of c] (s) {Serveur HTTP\\fournit la ressource};
     \draw[flux] ([yshift=3mm]c.east)--
-      node[above]{GET \texttt{/index.html}} ([yshift=3mm]s.west);
+      node[above]{GET \texttt{/tarifs.html}} ([yshift=3mm]s.west);
     \draw[flux,dashed] ([yshift=-3mm]s.west)--
       node[below]{200 OK + contenu HTML} ([yshift=-3mm]c.east);
   \end{schema}
@@ -278,7 +280,7 @@ Content-Type: text/html
 \end{frame}
 
 \begin{frame}{HTTPS : protéger l'échange HTTP}
-  \textbf{TLS} protège HTTP (\texttt{https://}) : il chiffre les données.\par
+  \textbf{TLS} est un protocole de sécurité placé sous HTTP (\texttt{https://}) : il chiffre les données.\par
   Il vérifie qu'on parle au vrai serveur : c'est l'authentification du serveur.
   \begin{schema}
     \node[boite] (c) {Navigateur};
@@ -295,7 +297,7 @@ Content-Type: text/html
 
 \begin{frame}{Côté serveur : fournir les fichiers Web}
   Un logiciel comme \textbf{Apache} ou \textbf{Nginx} peut servir les fichiers d'un dossier.
-  Par exemple, \texttt{/index.html} correspond à une page de ce site.\par
+  Par exemple, le chemin \texttt{/index.html} désigne le fichier \texttt{index.html} de ce dossier.\par
   \etiquette{Plateforme : Cisco Packet Tracer, Server-PT}\par
   \begin{block}{Méthode dans le simulateur}
     1. Ouvrez le serveur, puis \textbf{Services > HTTP}.\\
@@ -308,18 +310,17 @@ Content-Type: text/html
 \end{frame}
 
 \begin{frame}{Séance suivante : retenir un nom plutôt qu'une IP}
-  Vous devez mémoriser \texttt{192.168.1.251} pour retrouver le site.
+  Vous devez mémoriser \texttt{10.0.0.20} pour retrouver le site.
   Avec plusieurs sites, ces nombres deviennent difficiles à retenir.
   \begin{schema}
-    \node[boite,text width=4cm] (n) {Nom facile à retenir\\par exemple \texttt{www.site.com}};
+    \node[boite,text width=4cm] (n) {Nom facile à retenir\\par exemple \texttt{www.example.com}};
     \node[boite,text width=4cm,right=3cm of n] (i)
-      {Adresse du serveur\\192.168.1.251};
-    \draw[flux,dashed] (n)--node[below=3mm]{quelle association ?} (i);
+      {Adresse du serveur\\10.0.0.20};
+    \draw[flux,dashed] (n)--node[above=2mm]{quelle association ?} (i);
   \end{schema}
   \begin{block}{Question pour la prochaine séance}
     Comment associer un nom à une adresse IPv4 ? Nous étudierons \textbf{DNS}.
   \end{block}
-  \small Nom utilisé comme illustration ; aucune configuration DNS n'est supposée ici.
 \end{frame}
 
 \begin{frame}{À vous : décomposer une URL}
