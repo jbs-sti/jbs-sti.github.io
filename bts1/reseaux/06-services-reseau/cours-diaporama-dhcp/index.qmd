@@ -1,0 +1,31 @@
+---
+title: "Le protocole DHCP : diaporama"
+description: "Diaporama pour distinguer services, protocoles et ports, puis comprendre la configuration IPv4 automatique par DHCP."
+type: cours
+domaine: reseaux
+chapitre: "06 — Services réseau"
+categories: [cours, reseaux]
+mots-cles: [DHCP, DORA, bail, pool, ports, UDP, relais DHCP]
+objectifs:
+  - "Distinguer serveur matériel, serveur logiciel et protocole."
+  - "Associer les services du chapitre à leurs ports et transports."
+  - "Expliquer les quatre messages DORA et les paramètres reçus."
+  - "Dimensionner un pool sans utiliser les adresses fixes."
+prerequis:
+  - "Adressage IPv4 et masque de sous-réseau"
+  - "Modèle OSI et TCP/IP"
+duree: "1 h"
+order: 10
+date-modified: 2026-11-17
+draft: true
+lang: fr
+---
+
+## Document
+
+Ce diaporama présente les services réseau, les protocoles et les ports,
+puis explique DHCP : DORA, pool d’adresses, bail et relais.
+Il comprend des schémas et trois questions avec leur corrigé.
+
+- **[Télécharger le diaporama (PDF)](fichiers/diaporama-dhcp.pdf)**
+- [Source LaTeX du diaporama](fichiers/diaporama-dhcp.tex)
