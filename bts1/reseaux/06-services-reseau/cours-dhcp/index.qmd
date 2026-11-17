@@ -17,7 +17,7 @@ prerequis:
   - "Rôle d’une passerelle et d’un serveur DNS"
   - "Diffusion Ethernet et notions de routage"
 duree: "2 h"
-order: 10
+order: 12
 date-modified: 2026-10-14
 draft: true
 lang: fr

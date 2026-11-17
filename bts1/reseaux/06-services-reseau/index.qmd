@@ -1,6 +1,6 @@
 ---
 title: "06 — Services réseau"
-description: "Ressources du chapitre : services d'infrastructure du réseau local, dont DHCP."
+description: "Ressources du chapitre : les services DHCP, HTTP, DNS et FTP, chacun avec un cours en diaporama et un TP sur Packet Tracer."
 format:
   html: default
 listing:
