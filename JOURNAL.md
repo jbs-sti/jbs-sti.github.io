@@ -9,23 +9,26 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
-- BTS CIEL 1, chapitre « 06 — Services réseau » découpé par protocole
-  (DHCP, HTTP, DNS, FTP), chacun avec un diaporama beamer LaTeX (Codex,
-  préambule de l'enseignant `publication/Beamer_SNT_Web_HTML_CSS.tex`) et un
-  TP Packet Tracer (sous-agent redacteur) tirés des PDF de l'enseignant
-  « Protocoles réseaux » et « TP DHCP, HTTP, DNS, FTP » (déposés, non
-  versionnés, dans le dossier du chapitre). Une branche et une PR par
-  protocole. **DHCP fait** (branche `cours/bts1-services-dhcp`) :
-  `cours-diaporama-dhcp` (order 10), `cours-dhcp` déplacé en order 12,
-  `tp-dhcp` (order 15, 2 h), PR #99 fusionnée. **HTTP fait** (branche
-  `cours/bts1-services-http`) : `cours-diaporama-http` (order 20),
-  `tp-http` (order 25, 1 h). À faire : DNS (30/35, 1 h, partie D du TP
-  source ; la diapositive « Séance suivante » du beamer HTTP annonce DNS),
-  FTP (40/45, 1 h, partie E). Leçons à reporter dans les consignes : URL en
-  `\texttt` (polyglossia ajoute une espace avant « : »), exemples des
-  beamers différents de ceux du TP pour ne pas donner les réponses. Les TP
+- BTS CIEL 1, services réseau : **un protocole = un chapitre** depuis la
+  réorganisation du 2026-11-18 (`06-dhcp`, `07-http`, puis `08-dns` et
+  `09-ftp`), chacun avec un diaporama beamer LaTeX (Codex, préambule de
+  l'enseignant `publication/Beamer_SNT_Web_HTML_CSS.tex`) et un TP Packet
+  Tracer (sous-agent redacteur) tirés des PDF de l'enseignant « Protocoles
+  réseaux » et « TP DHCP, HTTP, DNS, FTP » (**à redéposer** : introuvables
+  le 2026-11-18). Une branche et une PR par protocole. **DHCP fait** (PR
+  #99) et **HTTP fait** (PR #100), publiés (PR #101). À faire : DNS
+  (`08-dns`, chapitre « 08 — DNS », diaporama order 10, TP order 20, 1 h,
+  partie D du TP source ; la diapositive « Séance suivante » du beamer HTTP
+  annonce DNS), FTP (`09-ftp`, partie E). Pour chaque nouveau chapitre,
+  l'index créé par `scripts/nouveau.py` n'a qu'une liste : le refaire sur le
+  modèle de `06-dhcp/index.qmd` (listes « Cours » et « Travaux
+  pratiques »). Leçons à reporter dans les consignes : URL en `\texttt`
+  (polyglossia ajoute une espace avant « : »), exemples des beamers
+  différents de ceux du TP pour ne pas donner les réponses. Les TP
   repartent de `tp-services-reseau.pkt` ; plan d'adressage : DHCP .250,
-  HTTP .251, FTP .252, DNS .253, passerelle .254, pool .1 à .249.
+  HTTP .251, FTP .252, DNS .253, passerelle .254, pool .1 à .249. Les
+  beamers DHCP et HTTP portent encore le sous-titre « Services réseau ·
+  1/4 » et « 2/4 » (PDF non recompilés).
 
 - BTS CIEL 1, nouveau chapitre « Systèmes › 01 — Excel » (branche
   `cours/bts1-excel`) : TP Excel partie 1 (facture) et partie 2 (relevé de
@@ -257,6 +260,17 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **Décisions durables**
 
+- 2026-11-18 : BTS CIEL 1, organisation des chapitres (demande de
+  l'enseignant : les élèves distinguaient mal cours et TP). Un protocole =
+  un chapitre (`04-arp`, `05-tcp-udp`, `06-dhcp`, `07-http`…). Titre des
+  ressources préfixé par leur type : « Cours — … », « TP — … » ou
+  « TPn — … » (numéros de TP de l'enseignant conservés). `order` : cours
+  de 10 à 19, TP de 20 à 29, pour que les cours passent avant les TP dans
+  la barre latérale. Page de chapitre en deux listes filtrées par `type`
+  (« Cours », « Travaux pratiques »). Ressource ou chapitre déplacé :
+  `aliases` vers l'ancienne adresse. De vrais sous-dossiers Cours/TP
+  demanderaient de changer le schéma et `verifier_sources.py` (enseignant,
+  branche `infra/`).
 - 2026-11-05 : l'enseignant autorise Claude Code (seul) à passer une
   ressource en `draft: false`, une fois sa PR fusionnée, dans une branche
   et une PR `…-publier` dédiées (conditions dans `CLAUDE.md`, section
@@ -315,6 +329,29 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-18 — cours/bts1-reorganisation
+
+- Demande de l'enseignant : « 04-ARP 05-TCP-UDP 06-DHCP 07-HTTP … et dans
+  chaque chapitre tu mettras TP et cours », organisation plus intuitive ;
+  plan validé (« oui, vas-y, garde les numéros des TP »).
+- Dossiers : `04-couche-liaison` → `04-arp`, `05-couche-transport` →
+  `05-tcp-udp`, `06-services-reseau` découpé en `06-dhcp` et `07-http`.
+  Champ `chapitre` mis à jour ; `aliases` vers les anciennes adresses
+  (ressources et pages de chapitre).
+- Titres préfixés « Cours — » (cours) ; TP numérotés inchangés ; `tp-dhcp`
+  et `tp-http` renommés « TP — … » ; `order` renuméroté (cours 10-19, TP
+  20-29) dans les chapitres 01 à 07.
+- Pages de chapitre BTS1 (réseaux et Excel) : deux listes « Cours » et
+  « Travaux pratiques », filtrées par `type`.
+- Contrôles : `verifier_sources.py` 0 erreur, tests unitaires OK, `quarto
+  render` complet sans erreur, `verifier_site.py` 0 erreur ; barre latérale
+  et redirections contrôlées dans `_site/`.
+- Vérificateur, Codex : sans objet (réorganisation, pas de contenu
+  rédigé).
+- Points à relire par l'enseignant : les nouveaux titres, l'aspect des
+  pages de chapitre, le sous-titre « Services réseau · n/4 » resté dans
+  les PDF des beamers DHCP et HTTP.
 
 ### 2026-11-18 — cours/bts1-services-reseau-publier
 

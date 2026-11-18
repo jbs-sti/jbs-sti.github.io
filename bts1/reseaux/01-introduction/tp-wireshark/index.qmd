@@ -16,7 +16,7 @@ prerequis:
   - "Modèle OSI et TCP/IP"
   - "TP0 — Initiation au réseau"
 duree: "2 h"
-order: 50
+order: 22
 date-modified: 2026-11-01
 draft: false
 lang: fr

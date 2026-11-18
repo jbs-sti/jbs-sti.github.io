@@ -1,13 +1,20 @@
 ---
 title: "01 — Excel"
-description: "Ressources du chapitre « 01 — Excel »."
+description: "Le tableur Excel : formules, mise en forme, relevé de notes."
 format:
   html: default
+# Une liste par type de ressource : les cours d'abord, puis les TP.
 listing:
-  # Seules les ressources, pas les index de domaine ni de chapitre.
-  contents: "*/index.qmd"
-  type: grid
-  categories: true
-  sort: "order"
-  fields: [title, description, categories]
+  - id: tp
+    contents: "*/index.qmd"
+    include:
+      type: tp
+    type: grid
+    sort: "order"
+    fields: [title, description]
 ---
+
+## Travaux pratiques
+
+::: {#tp}
+:::

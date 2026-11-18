@@ -1,9 +1,9 @@
 ---
-title: "Les protocoles TCP et UDP"
+title: "Cours — Les protocoles TCP et UDP"
 description: "Comprendre le rôle de la couche transport, les ports, UDP sans connexion et TCP fiable, puis les observer sous Debian et dans Wireshark."
 type: cours
 domaine: reseaux
-chapitre: "05 — Couche transport"
+chapitre: "05 — TCP et UDP"
 categories: [cours, reseaux]
 mots-cles: [couche transport, TCP, UDP, port, socket, poignée de main, numéro de séquence, acquittement, fenêtre]
 objectifs:
@@ -21,6 +21,9 @@ order: 10
 date-modified: '2026-10-23'
 draft: false
 lang: fr
+# Ancienne adresse, avant la réorganisation des chapitres (2026-11-18).
+aliases:
+  - /bts1/reseaux/05-couche-transport/cours-tcp-udp/index.html
 ---
 
 ## Objectifs et prérequis

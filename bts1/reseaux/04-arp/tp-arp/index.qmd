@@ -3,7 +3,7 @@ title: "TP4 — ARP, hub, switch et routeur dans Packet Tracer"
 description: "Observer le ping, la résolution ARP, l'apprentissage de la table MAC d'un switch et la communication entre deux réseaux à travers un routeur, en mode simulation."
 type: tp
 domaine: reseaux
-chapitre: "04 — Couche liaison"
+chapitre: "04 — ARP"
 categories: [tp, reseaux]
 mots-cles: [ARP, table ARP, table MAC, hub, switch, ICMP, ping, routeur, passerelle, Packet Tracer]
 objectifs:
@@ -19,6 +19,9 @@ order: 20
 date-modified: 2026-11-01
 draft: false
 lang: fr
+# Ancienne adresse, avant la réorganisation des chapitres (2026-11-18).
+aliases:
+  - /bts1/reseaux/04-couche-liaison/tp-arp/index.html
 ---
 
 *Plateforme : Cisco Packet Tracer (modes Realtime et Simulation).*

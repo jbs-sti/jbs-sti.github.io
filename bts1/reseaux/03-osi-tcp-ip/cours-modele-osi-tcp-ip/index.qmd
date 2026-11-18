@@ -1,5 +1,5 @@
 ---
-title: "Modèle OSI et TCP/IP"
+title: "Cours — Modèle OSI et TCP/IP"
 description: "Protocoles de communication, couches des modèles OSI et TCP/IP, encapsulation d'un message."
 type: cours
 domaine: reseaux
@@ -13,7 +13,7 @@ objectifs:
 prerequis:
   - "Introduction aux réseaux"
 duree: "2 h"
-order: 5
+order: 10
 date-modified: 2026-11-01
 draft: true
 lang: fr

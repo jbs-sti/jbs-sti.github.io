@@ -1,5 +1,5 @@
 ---
-title: "Adresse IPv4 et masque de sous-réseau"
+title: "Cours — Adresse IPv4 et masque de sous-réseau"
 description: "Diaporama du cours : conversion binaire en décimal, adresse IPv4 et masque de sous-réseau, avec des activités."
 type: cours
 domaine: reseaux

@@ -1,9 +1,9 @@
 ---
-title: "TP DHCP : distribuer automatiquement les adresses IP"
+title: "TP — Distribuer automatiquement les adresses IP"
 description: "Configurer un serveur DHCP dans Packet Tracer, observer l'échange entre client et serveur, dimensionner le pool et diagnostiquer une panne."
 type: tp
 domaine: reseaux
-chapitre: "06 — Services réseau"
+chapitre: "06 — DHCP"
 categories: [tp, reseaux]
 mots-cles: [DHCP, Packet Tracer, pool DHCP, DORA, bail, APIPA, ipconfig, adresse IP statique]
 objectifs:
@@ -17,10 +17,13 @@ prerequis:
   - "Prise en main de Packet Tracer"
   - "Diaporama : le protocole DHCP"
 duree: "2 h"
-order: 15
+order: 20
 date-modified: 2026-11-17
 draft: false
 lang: fr
+# Ancienne adresse, avant la réorganisation des chapitres (2026-11-18).
+aliases:
+  - /bts1/reseaux/06-services-reseau/tp-dhcp/index.html
 ---
 
 *Plateforme : Cisco Packet Tracer (postes PC-PT, serveur Server-PT, commutateur Switch-PT).*
