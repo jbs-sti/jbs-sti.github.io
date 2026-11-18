@@ -316,6 +316,19 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 -->
 
+### 2026-11-18 — cours/bts1-services-reseau-publier
+
+- Publication à la demande expresse de l'enseignant (« publie les cinq
+  ressources du chapitre 06 », puis « publie tout ») : `cours-dhcp`,
+  `cours-diaporama-dhcp`, `cours-diaporama-http`, `tp-dhcp`, `tp-http` passés
+  en `draft: false`. PR des ressources fusionnées au préalable (#99, #100).
+- Écart à la règle « seule la ligne `draft` change » : `cours-dhcp` n'avait que
+  le format `vintage-typst` (pas de page HTML, `verifier_site.py` en erreur) ;
+  ajout de `html: default` sous `format:`, à la demande de publier les cinq.
+- Contrôles : `quarto render` sans erreur ; `verifier_site.py` OK pour les
+  5 pages HTML et les 5 PDF. Le cours DHCP reste à relire en HTML (rendu non
+  relu visuellement).
+
 ### 2026-11-17 — cours/bts1-services-http
 
 - Ressources : bts1/reseaux/06-services-reseau/cours-diaporama-http (beamer

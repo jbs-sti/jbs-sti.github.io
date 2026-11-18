@@ -19,9 +19,10 @@ prerequis:
 duree: "2 h"
 order: 12
 date-modified: 2026-10-14
-draft: true
+draft: false
 lang: fr
 format:
+  html: default
   vintage-typst:
     include-in-header:
       text: |
