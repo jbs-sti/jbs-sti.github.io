@@ -1,0 +1,193 @@
+% BTS CIEL 1 — Réseaux — 09 — FTP
+% Compiler deux fois avec XeLaTeX depuis fichiers/.
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Sans}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+\usepackage{polyglossia}
+\setmainlanguage{french}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{foret}{HTML}{1C322D}
+\definecolor{creme}{HTML}{F8F3EE}
+\definecolor{or}{HTML}{EBB552}
+\definecolor{rose}{HTML}{F1CDBE}
+\definecolor{vertclair}{HTML}{DDE9DF}
+\definecolor{encre}{HTML}{24372E}
+\setbeamercolor{normal text}{fg=creme,bg=foret}
+\setbeamercolor{frametitle}{fg=or,bg=foret}
+\setbeamercolor{title}{fg=creme}
+\setbeamercolor{block title}{fg=foret,bg=or}
+\setbeamercolor{block body}{fg=encre,bg=creme}
+\setbeamercolor{alerted text}{fg=or}
+\setbeamercolor{structure}{fg=or}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\hfill\color{or}\insertframenumber\hspace{0.5cm}\vspace{0.25cm}}
+\setbeamertemplate{frametitle}{\vspace{0.35cm}\insertframetitle\par\vspace{0.15cm}\color{or}\rule{\linewidth}{0.6pt}}
+\setlength{\parskip}{5pt}
+\lstdefinestyle{webcode}{basicstyle=\ttfamily\small\color{encre},keywordstyle=\color{foret},stringstyle=\color{foret},
+  backgroundcolor=\color{creme},frame=single,rulecolor=\color{or},framerule=1pt,
+  xleftmargin=5pt,xrightmargin=5pt,columns=fullflexible,keepspaces=true,showstringspaces=false}
+\newcommand{\question}[1]{\begin{beamercolorbox}[rounded=true,sep=12pt]{block body}\Large\textbf{#1}\end{beamercolorbox}}
+\newcommand{\etiquette}[1]{{\color{or}\small\MakeUppercase{#1}}}
+% Les schémas ont une surface claire, également lisible en noir et blanc.
+\tikzset{
+  boite/.style={draw=encre,fill=creme,text=encre,rounded corners,
+    align=center,text width=2.8cm,minimum height=1cm},
+  flux/.style={-{Stealth},thick,draw=encre},
+  every node/.style={text=encre,font=\small}}
+\newenvironment{schema}{%
+  \begin{beamercolorbox}[sep=8pt,rounded=true]{block body}
+  \centering\begin{tikzpicture}[>=Stealth]
+}{\end{tikzpicture}\end{beamercolorbox}}
+\title{Le protocole FTP}
+\subtitle{BTS CIEL 1 · Réseaux · 09 — FTP}
+\author{} \date{}
+\begin{document}
+\begin{frame}[plain]
+\vfill\etiquette{Échanger des fichiers à distance}\par\bigskip
+{\Huge\bfseries Le protocole FTP}\par\bigskip
+{\Large BTS CIEL 1 · Réseaux · 09 — FTP}\par\bigskip
+\begin{schema}
+\node[boite,font=\normalsize] (c) {Client FTP};
+\node[boite,font=\normalsize,right=4cm of c] (s) {Serveur FTP};
+\draw[flux] (c)--node[above]{fichier} (s);
+\end{schema}\vfill
+\end{frame}
+\begin{frame}{Un fichier à distance}
+\question{Comment récupérer un rapport sur une autre machine ?}
+\begin{schema}\begin{scope}[scale=1.25,transform shape]
+\node[boite,font=\normalsize] (c) {Votre ordinateur};
+\node[boite,font=\normalsize,right=3cm of c] (s) {Machine distante\\rapport};
+\draw[flux] (s)--node[above]{réseau} (c);
+\node[below=8mm of c,align=center] {Une clé USB\\ne traverse pas le réseau.};
+\end{scope}\end{schema}
+\end{frame}
+\begin{frame}{Un casier à code}
+\question{Comment accéder au bon fichier ?}
+\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\node[boite,font=\normalsize] (a) at (0,0) {Vous};
+\node[boite,font=\normalsize] (b) at (9,0) {Casier\\avec le rapport};
+\draw[flux] ([yshift=3mm]a.east)--node[above=2mm]{présenter le code} ([yshift=3mm]b.west);
+\draw[flux] ([yshift=-3mm]b.west)--node[below=2mm]{prendre le rapport} ([yshift=-3mm]a.east);
+\node[align=center,font=\normalsize] at (4.5,-1.8) {Code : identifiant et mot de passe\\Casier : serveur FTP};
+\end{scope}\end{schema}
+FTP organise l'accès et le transfert par le réseau.
+\end{frame}
+\begin{frame}{Exemple : récupérer un rapport}
+\etiquette{Exemple fictif}\par
+\begin{schema}\begin{scope}[scale=1.15,transform shape]
+\node[boite,font=\normalsize,text width=3cm] at (0,0) {Client FTP\\192.168.10.20};
+\node[boite,font=\normalsize,text width=3cm] at (7,0) {Serveur FTP\\192.168.10.30};
+\draw[thick] (0,-0.6)--(0,-4.1); \draw[thick] (7,-0.6)--(7,-4.1);
+\draw[flux] (0,-1.1)--node[above,fill=creme]{1. connexion TCP, port 21} (7,-1.1);
+\draw[flux] (0,-1.8)--node[above,fill=creme]{2. utilisateur et mot de passe} (7,-1.8);
+\draw[flux,dashed] (7,-2.5)--node[above,fill=creme]{accès accepté} (0,-2.5);
+\draw[flux] (0,-3.2)--node[above,fill=creme]{3. demander rapport.txt} (7,-3.2);
+\draw[flux] (7,-3.9)--node[above,fill=creme]{4. fichier rapport.txt} (0,-3.9);
+\end{scope}\end{schema}\end{frame}
+\begin{frame}{Deux connexions TCP}
+\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\node[boite,font=\normalsize] (c) at (0,0) {Client FTP};
+\node[boite,font=\normalsize] (s) at (9,0) {Serveur FTP};
+\draw[flux] ([yshift=3mm]c.east)--node[above=2mm]{commandes : port serveur 21} ([yshift=3mm]s.west);
+\draw[flux] ([yshift=-3mm]s.west)--node[below=2mm]{données : port serveur 20} ([yshift=-3mm]c.east);
+\node[align=center,font=\normalsize] at (4.5,-1.7) {Mode actif : le serveur ouvre\\la connexion de données.};
+\end{scope}\end{schema}
+La connexion de commandes reste ouverte. Une liste ou un transfert ouvre une connexion de données.\\
+Mode passif : le client ouvre la connexion de données vers un port indiqué par le serveur. Beaucoup de clients l'utilisent.
+\end{frame}
+\begin{frame}{Quel sens pour le fichier ?}
+\begin{schema}\begin{scope}[scale=1.2,transform shape]
+\node[boite,font=\normalsize] (c) at (0,0) {Client FTP};
+\node[boite,font=\normalsize] (s) at (7,0) {Serveur FTP};
+\draw[flux] ([yshift=4mm]s.west)--node[above]{télécharger} ([yshift=4mm]c.east);
+\draw[flux] ([yshift=-4mm]c.east)--node[below]{téléverser} ([yshift=-4mm]s.west);
+\node[font=\normalsize] at (3.5,-1.8) {Le sens se lit depuis le client.};
+\end{scope}\end{schema}\end{frame}
+\begin{frame}{Attention au mot de passe}
+\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\node[boite,font=\normalsize] (c) at (0,0) {Client FTP};
+\node[boite,font=\normalsize] (s) at (9,0) {Serveur FTP};
+\draw[flux] (c)--node[above=2mm]{identifiant et mot de passe} (s);
+\node[boite,font=\normalsize,text width=4cm] at (4.5,-1.8) {Capture : mot de passe\\soleil42 (lisible)};
+\end{scope}\end{schema}
+FTP transmet les identifiants en clair. Préférez SFTP (SSH : protocole d’accès à distance chiffré, port 22) ou FTPS (TLS).
+\end{frame}
+\begin{frame}{Méthode : réussir un transfert}
+\etiquette{Invite de commandes d'un PC Packet Tracer ou de Windows}
+\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\node[boite,text width=2.2cm] (a) at (0,0) {1. Réseau};
+\node[boite,text width=2.2cm] (b) at (3,0) {2. Connexion};
+\node[boite,text width=2.2cm] (c) at (6,0) {3. Liste};
+\node[boite,text width=2.2cm] (d) at (9,0) {4. Transfert};
+\draw[flux] (a)--(b); \draw[flux] (b)--(c); \draw[flux] (c)--(d);
+\node[align=center] at (4.5,-1.1) {Vérifier \quad $\rightarrow$ \quad s'identifier \quad $\rightarrow$ \quad choisir le fichier \quad $\rightarrow$ \quad transférer};
+\end{scope}\end{schema}
+\begin{block}{Méthode}
+\begin{enumerate}\setlength\itemsep{0pt}
+\item \texttt{ping <adresse du serveur>}.
+\item \texttt{ftp <adresse du serveur>}, puis identifiant et mot de passe.
+\item \texttt{dir} pour lister les fichiers.
+\item \texttt{get} pour télécharger, \texttt{put} pour téléverser.
+\end{enumerate}
+\end{block}\end{frame}
+\begin{frame}{À vous : choisir le sens}
+\question{Pour chaque fichier : quel sens, quel mot et quelle commande ?}
+\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\node[boite,font=\normalsize] (c) at (0,0) {Votre PC};
+\node[boite,font=\normalsize] (s) at (9,0) {Serveur\\de l'entreprise};
+\draw[thick,dashed] (c)--(s);
+\node[align=center,font=\normalsize] at (4.5,-1.5) {A. Mettre en ligne \texttt{accueil.html} du PC vers le serveur Web.\\[3mm] B. Récupérer sur le PC \texttt{bilan.pdf} déposé sur le serveur.};
+\end{scope}\end{schema}\end{frame}
+\begin{frame}{Correction : choisir le sens}
+\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\node[boite,font=\normalsize] (c) at (0,0) {Votre PC};
+\node[boite,font=\normalsize] (s) at (9,0) {Serveur\\de l'entreprise};
+\draw[flux] ([yshift=3mm]c.east)--node[above=2mm]{\texttt{accueil.html} : téléverser, \texttt{put}} ([yshift=3mm]s.west);
+\draw[flux] ([yshift=-3mm]s.west)--node[below=2mm]{\texttt{bilan.pdf} : télécharger, \texttt{get}} ([yshift=-3mm]c.east);
+\node[align=center,font=\normalsize] at (4.5,-1.8) {A. PC vers serveur Web.\\[3mm] B. Serveur vers PC.};
+\end{scope}\end{schema}\end{frame}
+\begin{frame}{À vous : diagnostiquer}
+\question{Le port 21 fonctionne, mais la liste échoue. Pourquoi ?}
+\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\node[boite,font=\normalsize] (c) at (0,0) {Client FTP};
+\node[boite,font=\normalsize,] (s) at (9,0) {Serveur FTP};
+\draw[flux] ([yshift=3mm]c.east)--node[above=2mm]{1. commandes : OK} ([yshift=3mm]s.west);
+\draw[flux,dashed] ([yshift=-4mm]s.west)--node[below=2mm]{2. liste : échec} ([yshift=-4mm]c.east);
+\node[font=\normalsize] at (4.5,-1.5) {Deux connexions distinctes};
+\end{scope}\end{schema}\end{frame}
+\begin{frame}{Correction : diagnostiquer}
+\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\node[boite,font=\normalsize] (c) at (0,0) {Client FTP};
+\node[boite,font=\normalsize,] (s) at (9,0) {Serveur FTP};
+\draw[flux] ([yshift=3mm]c.east)--node[above=2mm]{1. commandes : OK} ([yshift=3mm]s.west);
+\draw[flux,dashed] ([yshift=-4mm]s.west)--node[below=2mm]{2. données : échec} ([yshift=-4mm]c.east);
+\node[font=\normalsize] at (4.5,-1.5) {Deux connexions distinctes};
+\end{scope}\end{schema}
+La liste utilise une deuxième connexion : la connexion de données, distincte de celle du port 21. Elle échoue ici. Un pare-feu peut laisser passer le port 21 et bloquer cette connexion. Un pare-feu est un équipement ou logiciel qui autorise ou bloque des connexions selon des règles.
+\end{frame}
+\begin{frame}{À retenir}
+\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\node[boite,font=\normalsize] (c) at (0,0) {Client FTP};
+\node[boite,font=\normalsize,] (s) at (9,0) {Serveur FTP};
+\draw[flux] ([yshift=3mm]c.east)--node[above=2mm]{commandes : TCP 21} ([yshift=3mm]s.west);
+\draw[flux] ([yshift=-4mm]s.west)--node[below=2mm]{données : port 20 en mode actif} ([yshift=-4mm]c.east);
+\node[font=\normalsize] at (4.5,-1.5) {Deux connexions distinctes};
+\end{scope}\end{schema}
+Télécharger : serveur vers client ; téléverser : client vers serveur.\\
+FTP est en clair : utilisez SFTP ou FTPS.
+\end{frame}
+\begin{frame}{Sources et pour aller plus loin}
+\begin{beamercolorbox}[sep=12pt,rounded=true]{block body}
+\begin{itemize}
+\item Support de l’enseignant : « TP DHCP, HTTP, DNS, FTP », p. 1--3 et 11--17.
+\item RFC 959 : FTP et mode passif\\\texttt{https://www.rfc-editor.org/rfc/rfc959}
+\item RFC 4217 : FTP avec TLS\\\texttt{https://www.rfc-editor.org/rfc/rfc4217}
+\item RFC 4253 : SSH\\\texttt{https://www.rfc-editor.org/rfc/rfc4253}
+\end{itemize}\end{beamercolorbox}
+\end{frame}
+\end{document}
