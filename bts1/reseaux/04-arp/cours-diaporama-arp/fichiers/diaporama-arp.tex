@@ -1,0 +1,210 @@
+% BTS CIEL 1 — Réseaux — 04 — ARP
+% Compiler deux fois avec XeLaTeX depuis fichiers/.
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Sans}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+\usepackage{polyglossia}
+\setmainlanguage{french}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{foret}{HTML}{1C322D}
+\definecolor{creme}{HTML}{F8F3EE}
+\definecolor{or}{HTML}{EBB552}
+\definecolor{rose}{HTML}{F1CDBE}
+\definecolor{vertclair}{HTML}{DDE9DF}
+\definecolor{encre}{HTML}{24372E}
+\setbeamercolor{normal text}{fg=creme,bg=foret}
+\setbeamercolor{frametitle}{fg=or,bg=foret}
+\setbeamercolor{title}{fg=creme}
+\setbeamercolor{block title}{fg=foret,bg=or}
+\setbeamercolor{block body}{fg=encre,bg=creme}
+\setbeamercolor{alerted text}{fg=or}
+\setbeamercolor{structure}{fg=or}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\hfill\color{or}\insertframenumber\hspace{0.5cm}\vspace{0.25cm}}
+\setbeamertemplate{frametitle}{\vspace{0.35cm}\insertframetitle\par\vspace{0.15cm}\color{or}\rule{\linewidth}{0.6pt}}
+\setlength{\parskip}{5pt}
+\lstdefinestyle{webcode}{basicstyle=\ttfamily\small\color{encre},keywordstyle=\color{foret},stringstyle=\color{foret},
+  backgroundcolor=\color{creme},frame=single,rulecolor=\color{or},framerule=1pt,
+  xleftmargin=5pt,xrightmargin=5pt,columns=fullflexible,keepspaces=true,showstringspaces=false}
+\newcommand{\question}[1]{\begin{beamercolorbox}[rounded=true,sep=12pt]{block body}\Large\textbf{#1}\end{beamercolorbox}}
+\newcommand{\etiquette}[1]{{\color{or}\small\MakeUppercase{#1}}}
+% Les schémas ont une surface claire, également lisible en noir et blanc.
+\tikzset{
+  boite/.style={draw=encre,fill=creme,text=encre,rounded corners,
+    align=center,text width=2.8cm,minimum height=1cm},
+  flux/.style={-{Stealth},thick,draw=encre},
+  every node/.style={text=encre,font=\small}}
+\newenvironment{schema}{%
+  \begin{beamercolorbox}[sep=8pt,rounded=true]{block body}
+  \centering\begin{tikzpicture}[>=Stealth]
+}{\end{tikzpicture}\end{beamercolorbox}}
+\title{Le protocole ARP}
+\subtitle{BTS CIEL 1 · Réseaux · 04 — ARP}
+\author{}
+\date{}
+\begin{document}
+\begin{frame}[plain]
+\vfill\etiquette{Trouver une adresse sur le réseau local}\par\bigskip
+{\Huge\bfseries Le protocole ARP}\par\bigskip
+{\Large BTS CIEL 1 · Réseaux · 04 — ARP}\par\bigskip
+\begin{schema}
+\node[boite,text width=4cm,minimum height=2cm,font=\large] (a) {Adresse IPv4};
+\node[boite,text width=4cm,minimum height=2cm,font=\large,right=2cm of a] (b) {Adresse MAC};
+\draw[flux] (a)--node[above,font=\normalsize]{ARP} (b);
+\end{schema}\vfill
+\end{frame}
+\begin{frame}{Trouver le bon bureau}
+\question{Comment trouver une collègue dans un open space ?}
+\begin{schema}
+\begin{scope}[scale=0.8,transform shape]
+\node[boite,text width=2cm,minimum height=1.2cm] (a) at (0,0) {Vous};
+\node[boite,text width=2.5cm] (b) at (8,1.7) {Collègue 1};
+\node[boite,text width=2.5cm] (c) at (8,0) {Collègue recherchée};
+\node[boite,text width=2.5cm] (d) at (8,-1.7) {Collègue 3};
+\draw[flux,densely dotted] (a.north east)--(b.west);
+\draw[flux,densely dotted] ([yshift=3mm]a.east)--([yshift=3mm]c.west);
+\draw[flux,densely dotted] (a.south east)--(d.west);
+\draw[flux,dashed] ([yshift=-3mm]c.west)--([yshift=-3mm]a.east);
+\node[font=\small,fill=creme] at (4,1.8) {1. Question à voix haute};
+\node[font=\small,fill=creme] at (4,-0.65) {2. Réponse};
+\end{scope}
+\end{schema}
+Sans réponse, vous ne savez pas où la trouver.
+\end{frame}
+\begin{frame}{Une adresse manque}
+\question{Comment envoyer une trame à PC B ?}
+\begin{schema}
+\node[boite,text width=3.7cm,minimum height=2.7cm,font=\normalsize] (a) at (0,0) {PC A\\\texttt{192.168.10.11/24}};
+\node[boite,text width=3.7cm,minimum height=2.7cm,font=\normalsize] (b) at (9,0) {PC B\\\texttt{192.168.10.12/24}};
+\draw[flux] (a)--node[above,align=center]{IPv4 connue\\MAC inconnue} (b);
+\end{schema}
+La trame Ethernet a besoin d'une adresse MAC de destination.
+\end{frame}
+\begin{frame}{Une recherche sur le réseau local}
+\begin{schema}
+\node[boite,text width=2cm] (a) at (0,0) {PC A};
+\node[boite,text width=2.2cm] (s) at (4,0) {Commutateur};
+\node[boite,text width=2.8cm] (b) at (9,1.2) {PC B\\\texttt{192.168.10.12}};
+\node[boite,text width=2cm] (c) at (9,-1.2) {PC C\\ignore la requête};
+\draw[flux,densely dotted] ([yshift=3mm]a.east)--([yshift=3mm]s.west);
+\draw[flux,densely dotted] (s.east)--(b.west);
+\draw[flux,densely dotted] (s.east)--(c.west);
+\draw[flux,dashed] ([yshift=-3mm]b.west)--([yshift=-3mm]s.east);
+\draw[flux,dashed] ([yshift=-3mm]s.west)--([yshift=-3mm]a.east);
+\node[align=center,font=\small] at (4,2.2) {1. Requête ARP (diffusion) :\\qui a \texttt{192.168.10.12} ?};
+\node[align=center,font=\small] at (4,-1.9) {2. Réponse ARP (unicast) :\\\texttt{192.168.10.12} est à \texttt{02:00:00:00:00:3C}};
+\end{schema}
+\texttt{FF:FF:FF:FF:FF:FF} : adresse de diffusion. Unicast : envoyé à un seul destinataire.
+\end{frame}
+\begin{frame}{Utiliser ARP}
+\begin{schema}
+\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (a) at (0,0) {IPv4 locale\\connue};
+\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (b) at (5,0) {Requête puis réponse};
+\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (c) at (10,0) {MAC locale\\connue};
+\draw[flux] (a)--(b); \draw[flux] (b)--(c);
+\end{schema}
+\begin{block}{Méthode}
+Le cache ARP conserve les correspondances IPv4–MAC.\\
+1. Cherchez l'IPv4 dans le cache. 2. Si elle manque, émettez une requête.\\
+3. Lisez la MAC et enregistrez la correspondance dans le cache.\\
+4. Utilisez cette MAC pour la trame.
+\end{block}
+\end{frame}
+\begin{frame}{Le cache évite de redemander}
+\begin{schema}
+\node[boite,text width=4.5cm,minimum height=2.8cm,font=\normalsize] (a) at (0,0) {Cache de PC A\\\texttt{192.168.10.12}\\\texttt{02:00:00:00:00:3C}};
+\node[boite,text width=4.5cm,minimum height=2.8cm,font=\normalsize] (b) at (8,0) {Trame suivante\\MAC de destination :\\\texttt{02:00:00:00:00:3C}};
+\draw[flux] (a)--node[above]{1. réutiliser} (b);
+\end{schema}
+Les entrées dynamiques sont apprises automatiquement et s'effacent après un délai. Sous Windows, consultez-les avec \texttt{arp -a}.
+\end{frame}
+\begin{frame}{Une destination ailleurs}
+\question{Quelle MAC utiliser pour un autre réseau ?}
+\begin{schema}
+\node[boite,text width=3.6cm,minimum height=2.3cm,font=\normalsize] (a) at (0,0) {PC A\\\texttt{192.168.10.11/24}};
+\node[boite,text width=3.1cm,minimum height=2.3cm,font=\normalsize] (g) at (5,0) {Passerelle\\\texttt{192.168.10.1}};
+\node[boite,text width=3.1cm,minimum height=2.3cm,font=\normalsize] (d) at (10,0) {Serveur distant\\\texttt{198.51.100.20}};
+\draw[flux] (a)--(g); \draw[flux] (g)--(d);
+\node[font=\small,align=center] at (2.5,-1.9) {MAC dest. : passerelle\\IPv4 dest. : \texttt{198.51.100.20}};
+\end{schema}
+PC A cherche la MAC de sa passerelle, pas celle du serveur.
+\end{frame}
+\begin{frame}{Choisir l'adresse à résoudre}
+\begin{schema}
+\node[boite,text width=4cm,minimum height=2cm,font=\normalsize] (a) at (0,0) {Même réseau ?\\MAC du destinataire};
+\node[boite,text width=4cm,minimum height=2cm,font=\normalsize] (b) at (8,0) {Autre réseau ?\\MAC de la passerelle};
+\end{schema}
+\begin{block}{Méthode}
+1. Comparez les réseaux avec le masque.\\
+2. Choisissez la destination locale ou la passerelle.\\
+3. Consultez le cache ; au besoin, résolvez cette IPv4 avec ARP.
+\end{block}
+\end{frame}
+\begin{frame}{À vous : choisir une adresse}
+\question{Quelle IPv4 PC C doit-il résoudre ? Justifiez.}
+\begin{schema}
+\node[boite,text width=4cm,minimum height=2.6cm,font=\normalsize] (a) at (0,0) {PC C\\\texttt{192.168.20.4/24}\\passerelle : \texttt{192.168.20.1}};
+\node[boite,text width=4cm,minimum height=2.6cm,font=\normalsize] (b) at (9,0) {Imprimante\\\texttt{192.168.20.30/24}};
+\draw[flux] (a)--node[above]{Document à envoyer} (b);
+\end{schema}
+\end{frame}
+\begin{frame}{Correction : destination locale}
+\begin{schema}
+\begin{scope}[scale=1.1,transform shape]
+\node[boite,text width=4.8cm,minimum height=2.5cm] (a) at (0,0) {Masque : \texttt{255.255.255.0}\\4 ET 0 = 0\\30 ET 0 = 0};
+\node[boite,text width=4.2cm,minimum height=2.5cm] (b) at (7,0) {Même réseau :\\\texttt{192.168.20.0/24}\\Résoudre \texttt{192.168.20.30}};
+\draw[flux] (a)--(b);
+\end{scope}
+\end{schema}
+La passerelle ne sert pas pour cette destination locale.
+\end{frame}
+\begin{frame}{À vous : une destination à atteindre}
+\question{Quelle IPv4 PC C résout-il avec ARP ? Justifiez.}
+\begin{schema}
+\begin{scope}[scale=1.1,transform shape]
+\node[boite,text width=4.3cm,minimum height=2.5cm] (a) at (0,0) {PC C\\\texttt{192.168.20.4/25}\\Passerelle : \texttt{192.168.20.1}};
+\node[boite,text width=4cm,minimum height=2.5cm] (b) at (7,0) {Destination\\\texttt{192.168.20.130}};
+\draw[flux] (a)--(b);
+\end{scope}
+\end{schema}
+\end{frame}
+\begin{frame}{Correction : choisir la passerelle}
+\begin{schema}
+\begin{scope}[scale=1.1,transform shape]
+\node[boite,text width=5cm,minimum height=2.7cm] (a) at (0,0) {Masque : \texttt{255.255.255.128}\\4 ET 128 = 0\\130 ET 128 = 128};
+\node[boite,text width=4.5cm,minimum height=2.7cm] (b) at (7.4,0) {Réseaux différents\\\texttt{192.168.20.0}\\\texttt{192.168.20.128}};
+\draw[flux] (a)--(b);
+\end{scope}
+\end{schema}
+PC C résout \texttt{192.168.20.1}, l'adresse de sa passerelle.
+\end{frame}
+\begin{frame}{À retenir}
+\begin{schema}
+\node[boite,text width=3cm,minimum height=1.8cm,font=\normalsize] (a) {IPv4 locale};
+\node[boite,text width=3cm,minimum height=1.8cm,font=\normalsize,right=1cm of a] (b) {ARP ou cache};
+\node[boite,text width=3cm,minimum height=1.8cm,font=\normalsize,right=1cm of b] (c) {MAC locale};
+\draw[flux] (a)--(b); \draw[flux] (b)--(c);
+\end{schema}
+\begin{block}{Quatre repères}
+ARP relie une IPv4 locale à une MAC.\\
+La requête est diffusée ; la réponse est envoyée au demandeur.\\
+Pour un réseau distant, utilisez la MAC de la passerelle.\\
+ARP n'authentifie pas les réponses : une réponse peut être falsifiée.
+\end{block}
+\end{frame}
+\begin{frame}{Sources}
+\begin{beamercolorbox}[sep=14pt,rounded=true]{block body}
+\textbf{RFC 826} — résolution d'adresses Ethernet\\
+\texttt{https://www.rfc-editor.org/rfc/rfc826}\\[8pt]
+\textbf{RFC 1122, § 2.3.2.1} — expiration des entrées ARP\\
+\texttt{https://www.rfc-editor.org/rfc/rfc1122\#section-2.3.2.1}\\[8pt]
+\textbf{Microsoft Learn} — commande Windows \texttt{arp}\\
+\scriptsize\texttt{https://learn.microsoft.com/windows-server/administration/windows-commands/arp}
+\end{beamercolorbox}
+\end{frame}
+\end{document}
