@@ -1,0 +1,419 @@
+% BTS CIEL 1 — Services réseau — 2/4 : HTTP
+% Compiler deux fois avec XeLaTeX depuis fichiers/.
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Sans}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+\usepackage{polyglossia}
+\setmainlanguage{french}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{foret}{HTML}{1C322D}
+\definecolor{creme}{HTML}{F8F3EE}
+\definecolor{or}{HTML}{EBB552}
+\definecolor{rose}{HTML}{F1CDBE}
+\definecolor{vertclair}{HTML}{DDE9DF}
+\definecolor{encre}{HTML}{24372E}
+\setbeamercolor{normal text}{fg=creme,bg=foret}
+\setbeamercolor{frametitle}{fg=or,bg=foret}
+\setbeamercolor{title}{fg=creme}
+\setbeamercolor{block title}{fg=foret,bg=or}
+\setbeamercolor{block body}{fg=encre,bg=creme}
+\setbeamercolor{alerted text}{fg=or}
+\setbeamercolor{structure}{fg=or}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\hfill\color{or}\insertframenumber\hspace{0.5cm}\vspace{0.25cm}}
+\setbeamertemplate{frametitle}{\vspace{0.35cm}\insertframetitle\par\vspace{0.15cm}\color{or}\rule{\linewidth}{0.6pt}}
+\setlength{\parskip}{5pt}
+\lstdefinestyle{webcode}{basicstyle=\ttfamily\small\color{encre},keywordstyle=\color{foret},stringstyle=\color{foret},
+  backgroundcolor=\color{creme},frame=single,rulecolor=\color{or},framerule=1pt,
+  xleftmargin=5pt,xrightmargin=5pt,columns=fullflexible,keepspaces=true,showstringspaces=false}
+\newcommand{\question}[1]{\begin{beamercolorbox}[rounded=true,sep=12pt]{block body}\Large\textbf{#1}\end{beamercolorbox}}
+\newcommand{\etiquette}[1]{{\color{or}\small\MakeUppercase{#1}}}
+% Les schémas ont une surface claire, également lisible en noir et blanc.
+\tikzset{
+  boite/.style={draw=encre,fill=creme,text=encre,rounded corners,
+    align=center,text width=2.8cm,minimum height=1cm},
+  flux/.style={-{Stealth},thick,draw=encre},
+  every node/.style={text=encre,font=\small}}
+\newenvironment{schema}{%
+  \begin{beamercolorbox}[sep=8pt,rounded=true]{block body}
+  \centering\begin{tikzpicture}[>=Stealth]
+}{\end{tikzpicture}\end{beamercolorbox}}
+\title{Le protocole HTTP}
+\subtitle{BTS CIEL 1 · Services réseau · 2/4}
+\author{}
+\date{}
+\begin{document}
+
+\begin{frame}[plain]
+  \vfill
+  \etiquette{Demander et recevoir une page Web}\par\bigskip
+  {\Huge\bfseries Le protocole HTTP}\par\bigskip
+  {\Large BTS CIEL 1 · Services réseau · 2/4}\par\bigskip
+  \begin{schema}
+    \node[boite] (c) {Navigateur\\demande une page};
+    \node[boite,right=4cm of c] (s) {Serveur HTTP\\renvoie un contenu};
+    \draw[flux] (c)--node[below=3mm]{HTTP} (s);
+  \end{schema}
+  \vfill
+\end{frame}
+
+\begin{frame}{Rappel : qui parle, avec quelles règles ?}
+  Pour ouvrir une page, le navigateur contacte un logiciel serveur.
+  \begin{beamercolorbox}[sep=10pt]{block body}
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabular}{ll}
+    \textbf{Client} & Le navigateur demande une ressource.\\
+    \textbf{Serveur} & Le logiciel HTTP répond à la demande.\\
+    \textbf{Protocole} & HTTP définit les règles des messages.\\
+    \textbf{Port} & Le numéro désigne le service visé sur la machine.\\
+  \end{tabular}
+  \end{beamercolorbox}
+  \begin{block}{Méthode}
+    1. Repérez qui demande.\quad 2. Repérez qui répond.\\
+    3. Nommez le protocole, puis le port du service.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Une adresse saisie, une page affichée}
+  Vous tapez une adresse dans le navigateur. Une page s'affiche.
+  Comment le serveur sait-il quelle page vous voulez ?
+  \begin{schema}
+    \node[boite] (c) {Navigateur\\« Je veux l'accueil. »};
+    \node[boite,right=4cm of c] (s) {Serveur Web\\« Voici la page. »};
+    \draw[flux] (c)--node[below=3mm]{langage commun} (s);
+  \end{schema}
+  \begin{block}{Premier principe}
+    Sans règles communes, la demande serait incompréhensible.\\
+    \textbf{HTTP} organise les demandes et les réponses du Web.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Exemple : PC0 ouvre la page d'accueil}
+  \etiquette{Plateforme : Cisco Packet Tracer}\par
+  Dans cet exemple, PC0 ouvre \texttt{http://192.168.1.251}.
+  \begin{schema}
+    \node[boite,text width=2.5cm] (c) at (0,0)
+      {PC0\\navigateur};
+    \node[boite,text width=2cm] (sw) at (4.2,0) {Switch};
+    \node[boite,text width=3cm] (s) at (8.7,0)
+      {Server1\\HTTP\\192.168.1.251};
+    \draw[thick] (c)--(sw);
+    \draw[thick] (sw)--(s);
+  \end{schema}
+  \begin{block}{Méthode de lecture}
+    1. PC0 demande la page d'accueil.\\
+    2. Server1 renvoie le contenu de cette page.\\
+    3. Le navigateur interprète le HTML et affiche la page.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Lire une URL : où et quoi demander ?}
+  Prenons maintenant un autre site, pour détailler chaque étape.\par
+  Une URL est l'adresse d'une ressource Web.
+  \begin{schema}
+    \node[boite,text width=2cm] at (0,0)
+      {\texttt{http://}\\protocole};
+    \node[boite,text width=4cm] at (3.8,0)
+      {\texttt{10.0.0.20}\\hôte : serveur visé};
+    \node[boite,text width=3cm] at (8.5,0)
+      {\texttt{/tarifs.html}\\chemin : ressource};
+  \end{schema}
+  \begin{block}{Méthode}
+    1. Avant \texttt{://}, lisez le protocole : \texttt{http}.\\
+    2. Jusqu'au prochain \texttt{/}, repérez l'hôte.\\
+    3. Lisez le chemin : ici \texttt{/tarifs.html}.
+  \end{block}
+  Avec \texttt{http}, sans port écrit, le port serveur est \textbf{80}.
+\end{frame}
+
+\begin{frame}{Avant HTTP : établir une connexion TCP}
+  Comme au téléphone, on établit le contact avant de parler.
+  Ici, nous étudions \textbf{HTTP/1.1 sur TCP}.
+  \begin{schema}
+    \node[align=center] at (0,3.2)
+      {\textbf{Client}\\port éphémère 50532};
+    \node[align=center] at (8,3.2)
+      {\textbf{Serveur HTTP}\\port 80};
+    \draw[dashed] (0,2.7)--(0,-.1);
+    \draw[dashed] (8,2.7)--(8,-.1);
+    \draw[flux] (0,2.3)--node[below]{1. SYN : demande de connexion} (8,2.3);
+    \draw[flux] (8,1.3)--node[below]{2. SYN-ACK : accord du serveur} (0,1.3);
+    \draw[flux] (0,.3)--node[below]{3. ACK : confirmation du client} (8,.3);
+  \end{schema}
+  \small Lisez de haut en bas, puis suivez les flèches.
+  Port éphémère : numéro choisi par le poste client pour une connexion ;
+  50532 n'est qu'un exemple.
+\end{frame}
+
+\begin{frame}[fragile]{La requête : demander une ressource}
+  Une connexion existe. Le navigateur précise maintenant ce qu'il demande.
+  \begin{lstlisting}[style=webcode,language={},showlines=true]
+GET /tarifs.html HTTP/1.1
+Host: 10.0.0.20
+
+\end{lstlisting}
+  Un en-tête est une information qui accompagne le message.\par
+  \begin{block}{Méthode : lire le texte HTTP/1.1}
+    1. \texttt{GET} : demander ; \texttt{/tarifs.html} : chemin demandé.\\
+    2. \texttt{HTTP/1.1} : version utilisée pour cet échange.\\
+    3. \texttt{Host} : hôte visé, ici \texttt{10.0.0.20}.\\
+    4. La ligne vide termine les en-têtes.
+  \end{block}
+\end{frame}
+
+\begin{frame}{GET ou POST : quelle demande ?}
+  Vous consultez une page, puis vous envoyez un formulaire.
+  Ce sont deux actions différentes.
+  \begin{beamercolorbox}[sep=10pt]{block body}
+  \renewcommand{\arraystretch}{1.7}
+  \begin{tabular}{ll}
+    \textbf{GET} & Demander une ressource, par exemple une page.\\
+    \textbf{POST} & Envoyer des données, par exemple un formulaire.\\
+  \end{tabular}
+  \end{beamercolorbox}
+  \begin{block}{Méthode}
+    1. Identifiez l'action : consulter ou envoyer des données.\\
+    2. Associez-la à la méthode : ici GET ou POST.
+  \end{block}
+  \small Chiffrer, c'est rendre les données illisibles pour qui n'a pas la clé.\par
+  POST seul ne chiffre pas les données.
+\end{frame}
+
+\begin{frame}[fragile]{La réponse : résultat, puis contenu}
+  Le navigateur doit connaître le résultat et la nature du contenu reçu.\par
+  \textbf{Extrait pédagogique d'une réponse HTTP/1.1 :}
+  \begin{lstlisting}[style=webcode,language={}]
+HTTP/1.1 200 OK
+Content-Type: text/html
+
+<html><body><h1>Tarifs</h1></body></html>
+\end{lstlisting}
+  \begin{block}{Méthode}
+    1. Lisez la ligne d'état : \texttt{200 OK}, la demande a réussi.\\
+    2. Lisez \texttt{Content-Type} : le contenu est du HTML.\\
+    3. Après la ligne vide commence le corps : ici le code HTML.
+  \end{block}
+  \small Les autres en-têtes sont omis dans cet extrait.
+\end{frame}
+
+\begin{frame}{Relier la requête et la réponse}
+  Le navigateur demande \texttt{/tarifs.html}. Le serveur répond \texttt{200 OK}.
+  \begin{schema}
+    \node[boite] (c) {Client\\navigateur};
+    \node[boite,right=5.4cm of c] (s) {Serveur HTTP\\fournit la ressource};
+    \draw[flux] ([yshift=3mm]c.east)--
+      node[above]{GET \texttt{/tarifs.html}} ([yshift=3mm]s.west);
+    \draw[flux,dashed] ([yshift=-3mm]s.west)--
+      node[below]{200 OK + contenu HTML} ([yshift=-3mm]c.east);
+  \end{schema}
+  \begin{block}{Méthode}
+    1. Repérez la ressource dans la requête.\\
+    2. Repérez le résultat dans la réponse.\\
+    3. Distinguez le message HTTP du contenu qu'il transporte.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Les codes d'état : quel résultat ?}
+  Une page absente ne peut pas être renvoyée comme une page trouvée.
+  Le code d'état indique le résultat de la demande.
+  \begin{beamercolorbox}[sep=9pt]{block body}
+  \renewcommand{\arraystretch}{1.5}
+  \small
+  \begin{tabular}{lll}
+    \textbf{Famille} & \textbf{Sens} & \textbf{Exemple}\\\hline
+    2xx & Succès & \texttt{200 OK}\\
+    3xx & Redirection & \texttt{301 Moved Permanently}\\
+    4xx & Erreur côté demande & \texttt{404 Not Found}\\
+    5xx & Erreur côté serveur & \texttt{500 Internal Server Error}\\
+  \end{tabular}
+  \end{beamercolorbox}
+  \small 301 : ressource déplacée définitivement.
+  404 : ressource non trouvée. 500 : erreur interne du serveur.
+\end{frame}
+
+\begin{frame}{Lire un code sans tout mémoriser}
+  Vous demandez \texttt{/photo.png}. Le serveur répond \texttt{404 Not Found}.
+  \begin{block}{Méthode}
+    1. Lisez le premier chiffre : \textbf{4}, famille des erreurs côté demande.\\
+    2. Lisez le code complet : \textbf{404}, ressource non trouvée.\\
+    3. Vérifiez le chemin demandé et l'existence de la ressource.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Une page peut nécessiter plusieurs requêtes}
+  Le HTML référence ici un fichier CSS et une image à récupérer.
+  \begin{schema}
+    \node[boite,text width=3.4cm] at (0,1.3)
+      {1. GET \texttt{/index.html}\\reçoit le HTML};
+    \node[boite,text width=3.4cm] at (6.5,2.0)
+      {2. GET \texttt{/style.css}\\reçoit la mise en forme};
+    \node[boite,text width=3.4cm] at (6.5,.6)
+      {3. GET \texttt{/logo.png}\\reçoit l'image};
+    \draw[flux] (1.9,1.3)--(4.6,2.0);
+    \draw[flux] (1.9,1.3)--(4.6,.6);
+  \end{schema}
+  \begin{block}{Méthode sur cet exemple}
+    1. Comptez le document HTML : une requête.\\
+    2. Ajoutez les deux fichiers référencés : \textbf{trois requêtes au total}.
+  \end{block}
+  \small CSS et image peuvent être demandés en parallèle.
+\end{frame}
+
+\begin{frame}{HTTP en clair : un formulaire peut être lu}
+  Vous envoyez un mot de passe avec un formulaire en HTTP.
+  Une personne capable d'intercepter le trafic peut lire les données.
+  \begin{schema}
+    \node[boite] (c) {Navigateur\\formulaire envoyé};
+    \node[boite,right=4.8cm of c] (s) {Serveur HTTP\\formulaire reçu};
+    \draw[flux] (c)--node[below=3mm]{mot de passe lisible} (s);
+  \end{schema}
+  \begin{block}{Méthode}
+    1. Repérez \texttt{http://} dans l'adresse.\\
+    2. Considérez les données HTTP comme non chiffrées.\\
+    3. Pour envoyer des données sensibles, utilisez HTTPS.
+  \end{block}
+\end{frame}
+
+\begin{frame}{HTTPS : protéger l'échange HTTP}
+  \textbf{TLS} est un protocole de sécurité placé sous HTTP (\texttt{https://}) : il chiffre les données.\par
+  Il vérifie qu'on parle au vrai serveur : c'est l'authentification du serveur.
+  \begin{schema}
+    \node[boite] (c) {Navigateur};
+    \node[boite,right=4.8cm of c] (s) {Serveur HTTPS\\port usuel 443};
+    \draw[flux] (c)--node[below=3mm]{échange HTTP chiffré} (s);
+  \end{schema}
+  \begin{block}{Méthode dans le navigateur}
+    1. Vérifiez \texttt{https://} et les informations de sécurité.\\
+    2. Le cadenas, selon le navigateur, indique une connexion protégée.\\
+    3. Il ne garantit pas l'honnêteté du site ; vérifiez aussi son adresse.
+  \end{block}
+  \small Sans port écrit : HTTPS utilise \textbf{443}, HTTP utilise \textbf{80}.
+\end{frame}
+
+\begin{frame}{Côté serveur : fournir les fichiers Web}
+  Un logiciel comme \textbf{Apache} ou \textbf{Nginx} peut servir les fichiers d'un dossier.
+  Par exemple, le chemin \texttt{/index.html} désigne le fichier \texttt{index.html} de ce dossier.\par
+  \etiquette{Plateforme : Cisco Packet Tracer, Server-PT}\par
+  \begin{block}{Méthode dans le simulateur}
+    1. Ouvrez le serveur, puis \textbf{Services > HTTP}.\\
+    2. Repérez le service HTTP et son état \textbf{On / Off}.\\
+    3. Utilisez le gestionnaire de fichiers (\textbf{File Manager})
+    pour éditer une page, puis enregistrez-la.
+  \end{block}
+  \small Le simulateur propose son propre service HTTP.
+
+\end{frame}
+
+\begin{frame}{Séance suivante : retenir un nom plutôt qu'une IP}
+  Vous devez mémoriser \texttt{10.0.0.20} pour retrouver le site.
+  Avec plusieurs sites, ces nombres deviennent difficiles à retenir.
+  \begin{schema}
+    \node[boite,text width=4cm] (n) {Nom facile à retenir\\par exemple \texttt{www.example.com}};
+    \node[boite,text width=4cm,right=3cm of n] (i)
+      {Adresse du serveur\\10.0.0.20};
+    \draw[flux,dashed] (n)--node[above=2mm]{quelle association ?} (i);
+  \end{schema}
+  \begin{block}{Question pour la prochaine séance}
+    Comment associer un nom à une adresse IPv4 ? Nous étudierons \textbf{DNS}.
+  \end{block}
+\end{frame}
+
+\begin{frame}{À vous : décomposer une URL}
+  \question{Dans \texttt{http://192.168.2.10/notice.html}, repérez le protocole,
+    l'hôte et le chemin. Quel est le port serveur implicite ?}
+  \bigskip
+  \etiquette{Exemple d'entraînement hors TP}\par
+  \small On suppose ici un service Web sur cette machine.
+\end{frame}
+
+\begin{frame}{Correction : lire les trois parties}
+  \begin{block}{Décomposition}
+    Protocole : \texttt{http}.\\
+    Hôte : \texttt{192.168.2.10}.\\
+    Chemin : \texttt{/notice.html}.\\
+    Port serveur implicite : \textbf{80}.
+  \end{block}
+  \begin{enumerate}
+    \item Coupez à \texttt{://} pour lire le protocole.
+    \item Repérez l'hôte avant le prochain \texttt{/}.
+    \item Gardez le \texttt{/} au début du chemin.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{À vous : interpréter une réponse}
+  \question{Vous demandez \texttt{/cours.html} et recevez \texttt{500 Internal Server Error}.
+    Que signifie ce code ? Le serveur HTTP a-t-il répondu ?}
+  \bigskip
+  \etiquette{Appuyez-vous sur la famille, puis sur le code complet}
+\end{frame}
+
+\begin{frame}{Correction : une erreur interne du serveur}
+  \begin{block}{Interprétation}
+    \textbf{500} signifie qu'une erreur interne du serveur empêche de traiter la demande.\\
+    \textbf{Oui}, le serveur HTTP a répondu : il a envoyé ce code.
+  \end{block}
+  \begin{enumerate}
+    \item Repérez la famille \textbf{5xx} : erreur côté serveur.
+    \item Précisez le résultat : erreur interne lors du traitement de la demande.
+    \item Faites vérifier le fonctionnement du logiciel serveur.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{À vous : reconnaître une connexion protégée}
+  \question{Une URL commence par \texttt{https://}, sans numéro de port.
+    Quel port serveur est utilisé par défaut ? Que protège HTTPS ?}
+  \bigskip
+  \etiquette{Distinguez le port du service et la protection de l'échange}
+\end{frame}
+
+\begin{frame}{Correction : HTTPS et le port 443}
+  \begin{block}{Réponse}
+    Port serveur par défaut : \textbf{443}.\\
+    HTTPS protège les échanges HTTP grâce à \textbf{TLS} :\\
+    chiffrement des données et authentification du serveur.
+  \end{block}
+  \begin{enumerate}
+    \item Lisez le protocole au début de l'URL : \texttt{https}.
+    \item Sans port indiqué, retenez \textbf{443}.
+    \item Vérifiez l'adresse du site et les informations de sécurité.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{À retenir}
+  \begin{enumerate}
+    \item HTTP organise les requêtes du client et les réponses du serveur.
+    \item Une URL indique le protocole, l'hôte et le chemin demandé.
+    \item HTTP/1.1 utilise TCP ; le port HTTP usuel est \textbf{80}.
+    \item Une réponse indique un code d'état et peut contenir une ressource.
+    \item HTTPS protège HTTP avec TLS ; son port usuel est \textbf{443}.
+  \end{enumerate}
+  \bigskip
+  \etiquette{Séance suivante : DNS — associer un nom à une adresse}
+\end{frame}
+
+\begin{frame}{Sources : HTTP et Web}
+  \small
+  \setlength{\parskip}{2pt}
+  \begin{itemize}
+    \item \textbf{RFC 9110 — Sémantique HTTP}\\
+      \texttt{https://www.rfc-editor.org/rfc/rfc9110.html}\\
+      URL (§4), méthodes (§9), codes d'état (§15).
+    \item \textbf{RFC 9112 — HTTP/1.1}\\
+      \texttt{https://www.rfc-editor.org/rfc/rfc9112.html}
+    \item \textbf{MDN — HTTP}\\
+      \texttt{https://developer.mozilla.org/fr/docs/Web/HTTP}
+    \item \textbf{RFC 9293 — TCP}, connexion (§3.5)\\
+      \texttt{https://www.rfc-editor.org/rfc/rfc9293.html}
+  \end{itemize}
+  \begin{block}{Supports de l'enseignant}
+    « Protocoles réseaux », partie HTTP ;\\
+    « TP DHCP, HTTP, DNS, FTP », pages 2--3.
+  \end{block}
+\end{frame}
+
+\end{document}
