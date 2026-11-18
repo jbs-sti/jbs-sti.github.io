@@ -1,9 +1,9 @@
 ---
-title: "Le protocole DHCP : diaporama"
+title: "Cours — Le protocole DHCP (diaporama)"
 description: "Diaporama pour distinguer services, protocoles et ports, puis comprendre la configuration IPv4 automatique par DHCP."
 type: cours
 domaine: reseaux
-chapitre: "06 — Services réseau"
+chapitre: "06 — DHCP"
 categories: [cours, reseaux]
 mots-cles: [DHCP, DORA, bail, pool, ports, UDP, relais DHCP]
 objectifs:
@@ -19,6 +19,9 @@ order: 10
 date-modified: 2026-11-17
 draft: false
 lang: fr
+# Ancienne adresse, avant la réorganisation des chapitres (2026-11-18).
+aliases:
+  - /bts1/reseaux/06-services-reseau/cours-diaporama-dhcp/index.html
 ---
 
 ## Document

@@ -1,9 +1,9 @@
 ---
-title: "TP HTTP : héberger et consulter une page Web"
+title: "TP — Héberger et consulter une page Web"
 description: "Ajouter un serveur Web à la maquette Packet Tracer, consulter et modifier sa page d'accueil, puis observer en mode Simulation la connexion TCP, la requête et la réponse HTTP."
 type: tp
 domaine: reseaux
-chapitre: "06 — Services réseau"
+chapitre: "07 — HTTP"
 categories: [tp, reseaux]
 mots-cles: [HTTP, serveur Web, Packet Tracer, URL, navigateur, requête GET, port 80, TCP, code d'état, adresse IP statique]
 objectifs:
@@ -16,10 +16,13 @@ prerequis:
   - "TP DHCP : distribuer automatiquement les adresses IP"
   - "Diaporama : le protocole HTTP"
 duree: "1 h"
-order: 25
+order: 20
 date-modified: 2026-11-17
 draft: false
 lang: fr
+# Ancienne adresse, avant la réorganisation des chapitres (2026-11-18).
+aliases:
+  - /bts1/reseaux/06-services-reseau/tp-http/index.html
 ---
 
 *Plateforme : Cisco Packet Tracer (postes PC-PT, serveurs Server-PT, commutateur Switch-PT).*

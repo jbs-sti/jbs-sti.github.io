@@ -1,9 +1,9 @@
 ---
-title: "Le protocole ARP"
+title: "Cours — Le protocole ARP"
 description: "Relier une adresse IPv4 à une adresse MAC pour communiquer sur un réseau local Ethernet."
 type: cours
 domaine: reseaux
-chapitre: "04 — Couche liaison"
+chapitre: "04 — ARP"
 categories: [cours, reseaux]
 mots-cles: [ARP, IPv4, adresse MAC, cache ARP, table ARP, domaine de diffusion, passerelle par défaut]
 objectifs:
@@ -24,6 +24,9 @@ format:
       text: |
         // Contournement local : appliquer le contraste aux cellules d’en-tête.
         #show table.cell.where(y: 0): set text(fill: rgb("#F8F3EE"), weight: "bold")
+# Ancienne adresse, avant la réorganisation des chapitres (2026-11-18).
+aliases:
+  - /bts1/reseaux/04-couche-liaison/cours-arp/index.html
 ---
 
 ## I. Introduction - Pourquoi ARP ?

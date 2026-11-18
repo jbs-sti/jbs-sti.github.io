@@ -1,5 +1,5 @@
 ---
-title: "Introduction aux réseaux"
+title: "Cours — Introduction aux réseaux"
 description: "Types de réseaux, composants d'un réseau informatique, adresses MAC et adresses IPv4."
 type: cours
 domaine: reseaux

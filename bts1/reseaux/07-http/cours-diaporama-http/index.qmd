@@ -1,9 +1,9 @@
 ---
-title: "Le protocole HTTP : diaporama"
+title: "Cours — Le protocole HTTP (diaporama)"
 description: "Diaporama pour lire une URL, comprendre les requêtes et réponses HTTP, puis distinguer HTTP et HTTPS."
 type: cours
 domaine: reseaux
-chapitre: "06 — Services réseau"
+chapitre: "07 — HTTP"
 categories: [cours, reseaux]
 mots-cles: [HTTP, HTTPS, URL, TCP, GET, POST, codes d’état, TLS]
 objectifs:
@@ -15,10 +15,13 @@ prerequis:
   - "Adressage IPv4 et masque de sous-réseau"
   - "Diaporama : le protocole DHCP"
 duree: "1 h"
-order: 20
+order: 10
 date-modified: 2026-11-17
 draft: false
 lang: fr
+# Ancienne adresse, avant la réorganisation des chapitres (2026-11-18).
+aliases:
+  - /bts1/reseaux/06-services-reseau/cours-diaporama-http/index.html
 ---
 
 ## Document

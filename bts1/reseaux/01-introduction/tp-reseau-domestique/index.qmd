@@ -14,7 +14,7 @@ prerequis:
   - "Introduction aux réseaux"
   - "TP0 — Initiation au réseau"
 duree: "2 h"
-order: 40
+order: 21
 date-modified: 2026-11-01
 draft: false
 lang: fr

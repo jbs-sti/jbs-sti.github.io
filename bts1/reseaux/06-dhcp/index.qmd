@@ -1,0 +1,35 @@
+---
+title: "06 — DHCP"
+description: "Le protocole DHCP : distribuer automatiquement les adresses IP."
+format:
+  html: default
+# Ancienne adresse, avant la réorganisation des chapitres (2026-11-18).
+aliases:
+  - /bts1/reseaux/06-services-reseau/index.html
+# Une liste par type de ressource : les cours d'abord, puis les TP.
+listing:
+  - id: cours
+    contents: "*/index.qmd"
+    include:
+      type: cours
+    type: grid
+    sort: "order"
+    fields: [title, description]
+  - id: tp
+    contents: "*/index.qmd"
+    include:
+      type: tp
+    type: grid
+    sort: "order"
+    fields: [title, description]
+---
+
+## Cours
+
+::: {#cours}
+:::
+
+## Travaux pratiques
+
+::: {#tp}
+:::

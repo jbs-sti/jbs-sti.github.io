@@ -1,0 +1,23 @@
+---
+title: "05 — TCP et UDP"
+description: "La couche transport : ports, UDP et TCP."
+format:
+  html: default
+# Ancienne adresse, avant la réorganisation des chapitres (2026-11-18).
+aliases:
+  - /bts1/reseaux/05-couche-transport/index.html
+# Une liste par type de ressource : les cours d'abord, puis les TP.
+listing:
+  - id: cours
+    contents: "*/index.qmd"
+    include:
+      type: cours
+    type: grid
+    sort: "order"
+    fields: [title, description]
+---
+
+## Cours
+
+::: {#cours}
+:::
