@@ -1,0 +1,249 @@
+% BTS CIEL 1 — Réseaux — 08 — DNS
+% Compiler deux fois avec XeLaTeX depuis fichiers/.
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Sans}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+\usepackage{polyglossia}
+\setmainlanguage{french}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{foret}{HTML}{1C322D}
+\definecolor{creme}{HTML}{F8F3EE}
+\definecolor{or}{HTML}{EBB552}
+\definecolor{rose}{HTML}{F1CDBE}
+\definecolor{vertclair}{HTML}{DDE9DF}
+\definecolor{encre}{HTML}{24372E}
+\setbeamercolor{normal text}{fg=creme,bg=foret}
+\setbeamercolor{frametitle}{fg=or,bg=foret}
+\setbeamercolor{title}{fg=creme}
+\setbeamercolor{block title}{fg=foret,bg=or}
+\setbeamercolor{block body}{fg=encre,bg=creme}
+\setbeamercolor{alerted text}{fg=or}
+\setbeamercolor{structure}{fg=or}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\hfill\color{or}\insertframenumber\hspace{0.5cm}\vspace{0.25cm}}
+\setbeamertemplate{frametitle}{\vspace{0.35cm}\insertframetitle\par\vspace{0.15cm}\color{or}\rule{\linewidth}{0.6pt}}
+\setlength{\parskip}{5pt}
+\lstdefinestyle{webcode}{basicstyle=\ttfamily\small\color{encre},keywordstyle=\color{foret},stringstyle=\color{foret},
+  backgroundcolor=\color{creme},frame=single,rulecolor=\color{or},framerule=1pt,
+  xleftmargin=5pt,xrightmargin=5pt,columns=fullflexible,keepspaces=true,showstringspaces=false}
+\newcommand{\question}[1]{\begin{beamercolorbox}[rounded=true,sep=12pt]{block body}\Large\textbf{#1}\end{beamercolorbox}}
+\newcommand{\etiquette}[1]{{\color{or}\small\MakeUppercase{#1}}}
+% Les schémas ont une surface claire, également lisible en noir et blanc.
+\tikzset{
+  boite/.style={draw=encre,fill=creme,text=encre,rounded corners,
+    align=center,text width=2.8cm,minimum height=1cm},
+  flux/.style={-{Stealth},thick,draw=encre},
+  every node/.style={text=encre,font=\small}}
+\newenvironment{schema}{%
+  \begin{beamercolorbox}[sep=8pt,rounded=true]{block body}
+  \centering\begin{tikzpicture}[>=Stealth]
+}{\end{tikzpicture}\end{beamercolorbox}}
+\title{Le protocole DNS}
+\subtitle{BTS CIEL 1 · Réseaux · 08 — DNS}
+\author{}
+\date{}
+\begin{document}
+
+\begin{frame}[plain]
+  \vfill
+  \etiquette{Retrouver une adresse à partir d'un nom}\par\bigskip
+  {\Huge\bfseries Le protocole DNS}\par\bigskip
+  {\Large BTS CIEL 1 · Réseaux · 08 — DNS}\par\bigskip
+  \begin{schema}
+    \node[boite,text width=4.5cm,minimum height=1.5cm,font=\large] (n) {\texttt{www.example.com}};
+    \node[boite,text width=4cm,minimum height=1.5cm,font=\large,right=3cm of n] (i) {\texttt{203.0.113.80}};
+    \draw[flux] (n)--node[above]{DNS} (i);
+  \end{schema}
+  \vfill
+\end{frame}
+
+\begin{frame}{Un nom facile à retenir}
+  \question{Comment appeler sans retenir un numéro ?}
+  \begin{schema}
+    \node[boite,text width=3cm,minimum height=1.5cm,font=\normalsize] (a) at (0,2) {Répertoire\\« Maman »};
+    \node[boite,text width=3cm,minimum height=1.5cm,font=\normalsize] (b) at (7,2) {Téléphone\\compose le numéro};
+    \draw[flux] (a)--node[above,font=\small]{1. chercher} (b);
+    \node[boite,text width=3.2cm,minimum height=1.5cm,font=\normalsize] (c) at (0,-.4) {Nom de domaine\\\texttt{www.example.com}};
+    \node[boite,text width=3cm,minimum height=1.5cm,font=\normalsize] (d) at (6.9,-.4) {Adresse IP\\\texttt{203.0.113.80}};
+    \draw[flux] (c)--node[above,font=\small]{2. rechercher} (d);
+  \end{schema}
+\end{frame}
+
+\begin{frame}{Le navigateur demande d'abord l'adresse}
+  Exemple fictif : \texttt{http://www.example.com}.
+  \begin{schema}
+    \node[font=\normalsize] at (0,3.5) {Navigateur};
+    \node[font=\normalsize] at (5,3.5) {Serveur DNS};
+    \node[font=\normalsize,align=center] at (10,3.5) {Serveur HTTP\\\texttt{203.0.113.80}};
+    \draw[dashed] (0,3)--(0,.3); \draw[dashed] (5,3)--(5,1.3); \draw[dashed] (10,3)--(10,.3);
+    \draw[flux] (0,2.7)--node[above,fill=creme,inner sep=2pt,font=\small]{1. IPv4 de www.example.com ?} (5,2.7);
+    \draw[flux,dashed] (5,1.8)--node[above,fill=creme,inner sep=2pt,font=\small]{2. 203.0.113.80} (0,1.8);
+    \draw[flux] (0,.6)--node[above,fill=creme,inner sep=2pt,font=\small]{3. Requête HTTP vers 203.0.113.80} (10,.6);
+  \end{schema}
+  La résolution de nom précède ici la demande HTTP.
+\end{frame}
+
+\begin{frame}{L'enregistrement A : une ligne de l'annuaire}
+  Le serveur DNS associe un nom à une adresse IPv4.
+  \begin{beamercolorbox}[sep=12pt,rounded=true]{block body}
+    \centering\renewcommand{\arraystretch}{1.6}
+    \begin{tabular}{lll}
+      \textbf{Nom} & \textbf{Type} & \textbf{Valeur}\\\hline
+      \texttt{www.example.com} & A & \texttt{203.0.113.80}\\
+    \end{tabular}
+  \end{beamercolorbox}
+  \begin{block}{Méthode}
+    1. Repérez le nom demandé.\quad 2. Cherchez son type A.\\
+    3. Lisez l'adresse IPv4 associée.
+  \end{block}
+  Le type AAAA associe un nom à une adresse IPv6.
+\end{frame}
+
+\begin{frame}{Comment joindre le serveur DNS ?}
+  Le poste doit connaître l'adresse du serveur DNS.
+  \begin{schema}
+    \node[boite,text width=3.2cm,minimum height=2.5cm,font=\large] (d) at (0,0) {DHCP ou\\saisie manuelle};
+    \node[boite,text width=2.7cm,minimum height=2.5cm,font=\large] (p) at (5,0) {Poste client};
+    \node[boite,text width=3.2cm,minimum height=2.5cm,font=\large] (s) at (10,0) {Serveur DNS\\\texttt{192.168.10.53}};
+    \draw[flux] (d)--node[above=4mm,font=\small,fill=creme,inner sep=2pt]{1. adresse} (p);
+    \draw[flux] (p)--node[above=4mm,font=\small,fill=creme,inner sep=2pt]{2. question} (s);
+  \end{schema}
+  Les requêtes DNS utilisent généralement UDP, port serveur \textbf{53}. DNS utilise aussi TCP.
+\end{frame}
+
+\begin{frame}{Les noms forment un arbre}
+  Lisez le nom de droite à gauche pour parcourir la hiérarchie.
+  \begin{schema}
+    \node[boite,text width=2cm,font=\normalsize] (r) at (5,4) {Racine : \texttt{.}};
+    \node[boite,text width=1.5cm,font=\normalsize] (com) at (2,2.8) {\texttt{com}};
+    \node[boite,text width=1.5cm,font=\normalsize] (org) at (5,2.8) {\texttt{org}};
+    \node[boite,text width=1.5cm,font=\normalsize] (fr) at (8,2.8) {\texttt{fr}};
+    \node[boite,text width=3cm,font=\normalsize] (ex) at (2,1.5) {\texttt{example.com}};
+    \node[boite,text width=3.6cm,font=\normalsize] (www) at (0,0) {\texttt{www.example.com}};
+    \node[boite,text width=3.6cm,font=\normalsize] (mail) at (4.3,0) {\texttt{mail.example.com}};
+    \draw (r)--(com); \draw (r)--(org); \draw (r)--(fr); \draw (com)--(ex); \draw (ex)--(www); \draw (ex)--(mail);
+  \end{schema}
+\end{frame}
+
+\begin{frame}{Trouver une réponse absente du cache}
+  Le cache conserve temporairement les réponses. Ici, la réponse est absente.
+  \begin{schema}
+    \node[font=\normalsize] at (0,4) {Poste};
+    \node[font=\normalsize] at (4,4) {Serveur DNS local};
+    \node[font=\normalsize] at (9,4) {Serveur racine};
+    \foreach \x in {0,4,9} \draw[dashed] (\x,3.5)--(\x,.5);
+    \draw[flux] (0,3)--node[above,fill=creme,inner sep=2pt,font=\small]{1. nom ?} (4,3);
+    \draw[flux] (4,2)--node[above,fill=creme,inner sep=2pt,font=\small]{2. question} (9,2);
+    \draw[flux,dashed] (9,.8)--node[above,fill=creme,inner sep=2pt,font=\small]{3. vers un serveur .com} (4,.8);
+  \end{schema}
+\end{frame}
+\begin{frame}{Poursuivre la recherche}
+  \begin{schema}
+    \node[font=\normalsize,align=center] at (0,4.5) {Serveur DNS\\local};
+    \node[font=\normalsize,align=center] at (5,4.5) {Serveur\\\texttt{.com}};
+    \node[font=\normalsize,align=center] at (10,4.5) {Serveur\\\texttt{example.com}};
+    \foreach \x in {0,5,10} \draw[dashed] (\x,3.9)--(\x,.8);
+    \draw[flux] (0,3.5)--node[above,fill=creme,inner sep=2pt,font=\small]{4. question} (5,3.5);
+    \draw[flux,dashed] (5,2.7)--node[above,fill=creme,inner sep=2pt,font=\small]{5. vers example.com} (0,2.7);
+    \draw[flux] (0,1.9)--node[above,fill=creme,inner sep=2pt,font=\small]{6. question} (10,1.9);
+    \draw[flux,dashed] (10,1.1)--node[above,fill=creme,inner sep=2pt,font=\small]{7. réponse A} (0,1.1);
+  \end{schema}
+  8. Le serveur DNS local transmet la réponse au poste.
+\end{frame}
+
+\begin{frame}{Diagnostiquer un nom qui ne s'ouvre pas}
+  \begin{block}{Méthode}
+    Packet Tracer ou Windows : \texttt{ping 203.0.113.80}.\\
+    Packet Tracer, serveur : Services > DNS.
+  \end{block}
+  \begin{schema}
+    \node[boite,text width=3.5cm,minimum height=2.5cm,font=\large] (a) at (0,0) {1. Test IP :\\échec $\rightarrow$ vérifiez le réseau};
+    \node[boite,text width=3.5cm,minimum height=2.5cm,font=\large] (b) at (4.7,0) {2. DNS du poste :\\adresse incorrecte $\rightarrow$ corrigez-la};
+    \node[boite,text width=3.5cm,minimum height=2.5cm,font=\large] (c) at (9.4,0) {3. Enregistrement A :\\incorrect $\rightarrow$ corrigez-le};
+    \draw[flux] (a)--(b); \draw[flux] (b)--(c);
+  \end{schema}
+\end{frame}
+
+\begin{frame}{À vous : lire l'annuaire}
+  \question{Quelle IPv4 pour \texttt{http://atelier.example.org} ? Justifiez.}
+  \begin{beamercolorbox}[sep=12pt,rounded=true]{block body}
+    \centering\renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{lll}
+      \textbf{Nom} & \textbf{Type} & \textbf{Valeur}\\\hline
+      \texttt{atelier.example.org} & AAAA & \texttt{2001:db8::20}\\
+      \texttt{atelier.example.com} & A & \texttt{198.51.100.30}\\
+      \texttt{atelier.example.org} & A & \texttt{198.51.100.20}\\
+    \end{tabular}
+  \end{beamercolorbox}
+\end{frame}
+
+\begin{frame}{Correction : lire la valeur A}
+  \begin{beamercolorbox}[sep=12pt,rounded=true]{block body}
+    \centering\renewcommand{\arraystretch}{1.8}
+    \begin{tabular}{ll}
+      \textbf{Critère} & \textbf{Choix}\\\hline
+      Nom demandé & \texttt{atelier.example.org}\\
+      IPv4 & type A, pas AAAA\\
+      Adresse retenue & \texttt{198.51.100.20}\\
+    \end{tabular}
+  \end{beamercolorbox}
+  Le nom en \texttt{.com} est différent. AAAA désigne une IPv6.
+\end{frame}
+
+\begin{frame}{À vous : trouver le serveur DNS}
+  \question{Quelle étape de diagnostic trouve la panne ? Pourquoi ?}
+  \begin{schema}
+    \node[boite,text width=4cm,minimum height=2.3cm,font=\large] (p) at (0,1) {Poste\\DNS configuré :\\\texttt{192.168.10.54}};
+    \node[boite,text width=4cm,minimum height=2.3cm,font=\large] (d) at (8,1) {Serveur DNS\\\texttt{192.168.10.53}};
+    \draw[flux] (p)--node[above,font=\small]{Nom inaccessible} (d);
+    \node[font=\normalsize] at (4,-1) {\texttt{ping 203.0.113.80} répond.};
+  \end{schema}
+\end{frame}
+
+\begin{frame}{Correction : utiliser l'adresse reçue}
+  \begin{schema}
+    \node[boite,text width=4cm,minimum height=2.3cm,font=\large] (p) at (0,0) {Poste\\DNS : \texttt{192.168.10.54}};
+    \node[boite,text width=4cm,minimum height=2.3cm,font=\large] (d) at (8,0) {Serveur DNS\\\texttt{192.168.10.53}};
+    \draw[flux] (p)--node[above,font=\small]{adresses différentes} (d);
+  \end{schema}
+  \begin{block}{Étape 2 : vérifier le DNS du poste}
+    Le test IP répond. L'adresse DNS configurée ne correspond pas au serveur.\\
+    Corrigez l'adresse DNS du poste en \texttt{192.168.10.53}.
+  \end{block}
+\end{frame}
+
+\begin{frame}{À retenir}
+  \begin{schema}
+    \node[boite,text width=3.8cm,minimum height=1.8cm,font=\large] (n) {Nom de domaine};
+    \node[boite,text width=2.8cm,minimum height=1.8cm,font=\large,right=1cm of n] (d) {DNS : A};
+    \node[boite,text width=3cm,minimum height=1.8cm,font=\large,right=1cm of d] (i) {Adresse IPv4};
+    \draw[flux] (n)--(d); \draw[flux] (d)--(i);
+  \end{schema}
+  \begin{block}{Quatre repères}
+    DNS réalise la résolution de nom.\\
+    Un enregistrement A associe un nom à une IPv4.\\
+    L'adresse DNS du poste est saisie ou reçue par DHCP.\\
+    Les requêtes utilisent généralement UDP, port serveur 53.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Sources}
+  \begin{beamercolorbox}[sep=12pt,rounded=true]{block body}
+    \small
+    \textbf{RFC 1034} — concepts et hiérarchie DNS\\
+    \texttt{https://www.rfc-editor.org/rfc/rfc1034}\\[4pt]
+    \textbf{RFC 1035} — messages, enregistrements et transport\\
+    \texttt{https://www.rfc-editor.org/rfc/rfc1035}\\[4pt]
+    \textbf{RFC 3596} — enregistrements AAAA pour IPv6\\
+    \texttt{https://www.rfc-editor.org/rfc/rfc3596}\\[4pt]
+    \textbf{RFC 2132} — adresse DNS fournie par DHCP, section 3.8\\
+    \texttt{https://www.rfc-editor.org/rfc/rfc2132}\\[4pt]
+    Support enseignant : « TP DHCP, HTTP, DNS, FTP », p. 1--3 et 9--11.
+  \end{beamercolorbox}
+\end{frame}
+\end{document}

@@ -1,0 +1,30 @@
+---
+title: "Cours — Le protocole DNS (diaporama)"
+description: "Diaporama pour comprendre la résolution de nom DNS et diagnostiquer un nom qui ne s’ouvre pas."
+type: cours
+domaine: reseaux
+chapitre: "08 — DNS"
+categories: [cours, reseaux]
+mots-cles: [DNS, nom de domaine, résolution de nom, enregistrement A, UDP]
+objectifs:
+  - "Expliquer la résolution d'un nom de domaine en adresse IPv4."
+  - "Lire un enregistrement A et situer le serveur DNS."
+  - "Diagnostiquer une résolution de nom dans une maquette réseau."
+prerequis:
+  - "Adressage IPv4 et masque de sous-réseau"
+  - "Diaporama : le protocole DHCP"
+  - "Diaporama : le protocole HTTP"
+duree: "1 h"
+order: 10
+date-modified: 2026-11-18
+draft: true
+lang: fr
+---
+
+## Document
+
+Ce diaporama explique comment DNS associe un nom de domaine à une adresse IPv4 avant l'accès au site.
+Il présente la hiérarchie des noms et une méthode de diagnostic. Deux questions corrigées terminent la séance.
+
+- **[Télécharger le diaporama (PDF)](fichiers/diaporama-dns.pdf)**
+- [Source LaTeX du diaporama](fichiers/diaporama-dns.tex)
