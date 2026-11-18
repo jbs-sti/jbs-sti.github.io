@@ -199,7 +199,7 @@ ping www.site.com
 ```
 
 4. Avancez pas à pas avec le bouton d'avance du panneau de simulation. Observez les enveloppes qui circulent et la liste des événements (Event List).
-5. Cliquez sur une enveloppe ou sur une ligne de la liste pour ouvrir le détail du message (PDU).
+5. Cliquez sur une enveloppe ou sur une ligne de la liste pour ouvrir le détail du message, appelé unité de données de protocole (PDU).
 
 Attention : un même message apparaît sur plusieurs lignes de l'Event List, une par équipement traversé. Comptez donc les messages différents, pas les lignes.
 
@@ -255,7 +255,7 @@ Recopiez et complétez ces phrases dans votre compte rendu.
 2. Trouver l'adresse IP qui correspond à un nom s'appelle la ………… .
 3. Sur le serveur DNS, un enregistrement de type ………… associe un nom de domaine à une adresse IPv4.
 4. Le poste connaît l'adresse du serveur DNS grâce au serveur ………… , qui la lui a distribuée.
-5. Lors d'un `ping www.site.com`, avant le premier message ICMP, le poste envoie une question au serveur ………… .
+5. Lors d'un premier `ping www.site.com`, si le poste ne connaît pas encore l'adresse, il envoie d'abord une question au serveur ………… avant le premier message ICMP.
 6. Le premier message DNS utilise le protocole de transport ………… et le port destination ………… .
 7. Le serveur DNS reçoit une adresse IP ………… , car les postes doivent le trouver toujours à la même adresse.
 :::
