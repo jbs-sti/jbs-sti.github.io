@@ -1,0 +1,32 @@
+---
+title: "08 — DNS"
+description: "Le protocole DNS : retrouver l'adresse IP qui correspond à un nom."
+format:
+  html: default
+# Une liste par type de ressource : les cours d'abord, puis les TP.
+listing:
+  - id: cours
+    contents: "*/index.qmd"
+    include:
+      type: cours
+    type: grid
+    sort: "order"
+    fields: [title, description]
+  - id: tp
+    contents: "*/index.qmd"
+    include:
+      type: tp
+    type: grid
+    sort: "order"
+    fields: [title, description]
+---
+
+## Cours
+
+::: {#cours}
+:::
+
+## Travaux pratiques
+
+::: {#tp}
+:::
