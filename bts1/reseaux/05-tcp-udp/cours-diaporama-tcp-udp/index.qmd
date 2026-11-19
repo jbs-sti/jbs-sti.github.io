@@ -27,8 +27,9 @@ aliases:
 
 ## Document
 
-Ce diaporama présente les ports et les rôles de TCP et UDP.
-Il explique l'ouverture d'une connexion TCP et propose deux questions corrigées.
+Ce diaporama montre à quoi sert un port : désigner le programme qui reçoit les données.
+Il compare ensuite TCP et UDP, présente l'ouverture d'une connexion TCP et aide à choisir entre les deux.
+Deux questions corrigées terminent la séance.
 
 - **[Télécharger le diaporama (PDF)](fichiers/diaporama-tcp-udp.pdf)**
 - [Source LaTeX du diaporama](fichiers/diaporama-tcp-udp.tex)
