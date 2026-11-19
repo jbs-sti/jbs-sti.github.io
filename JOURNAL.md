@@ -31,8 +31,10 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   `infra/charte-encre-papier` : HTML migré (tokens dans `_brand.yml` et
   `:root` de `theme.scss`, Nunito variable locale, composants `.carte`,
   `.tag`, `.bouton`, `.bandeau`, `.section-finale`, thème sombre supprimé).
-  **PDF non migré** : `vintage.tex` garde la palette vert/crème et les
-  polices Latin Modern, à traiter dans une seconde PR `infra/`.
+  **PDF** : migré dans la branche `infra/charte-pdf` (encre sur papier,
+  Nunito variable via fontspec, repli si le fichier manque) ; **non
+  compilé en local** (TeX Live sans `luaotfload`, pas de `sudo`) : la CI de
+  la PR fait foi.
 
 - BTS CIEL 1, nouveau chapitre « Systèmes › 01 — Excel » (branche
   `cours/bts1-excel`) : TP Excel partie 1 (facture) et partie 2 (relevé de
@@ -344,6 +346,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Vérification : `quarto render` de cours-arp et cours-dhcp en Typst (DONE), HTML sans erreur
 - Vérificateur, Codex : sans objet (infrastructure)
 - Points à relire par l'enseignant : à fusionner avant les autres PR ; le site n'est plus publié tant que ce correctif n'est pas dans `main`
+
+### 2026-11-19 — infra/charte-pdf
+
+- Ressource : aucune (infrastructure : `_extensions/vintage/` — `vintage.tex`, `tikz-vintage.tex`, `before-body.tex`, `_extension.yml`)
+- Demande : seconde PR de la charte « encre sur papier » (DESIGN.md), PDF aligné sur le HTML
+- Fait : palette de la charte (encre, papier, contour…) à la place du vert profond ; Nunito variable chargée par fontspec depuis `_extensions/vintage/fonts/` (dossier lu dans `QUARTO_PROJECT_DIR`, repli sur la police par défaut avec avertissement si le fichier est introuvable) ; titres en Nunito 1000, texte courant 400, gras 800, italique simulé (`FakeSlant`) ; couleurs TikZ redéclarées dans `tikz-vintage.tex` car `tikz.lua` le charge seul
+- Vérification : rendu HTML sans erreur ; **PDF non compilés en local** (TeX Live sans `luaotfload`, pas de `sudo`) : la CI de la PR (`verifier.yml`) est le premier test réel
+- Vérificateur, Codex : sans objet (infrastructure)
+- Points à relire par l'enseignant : rendu réel des PDF (graisses de la police variable, `QUARTO_PROJECT_DIR` lu par LuaTeX), taille de la page de titre, italique simulé
 
 ### AAAA-MM-JJ — <branche>
 

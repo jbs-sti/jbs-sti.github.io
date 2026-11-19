@@ -1,15 +1,37 @@
-% Mise en page des PDF : LaTeX classique (Latin Modern), A4, compacte,
-% entièrement lisible en noir et blanc. Chargé après le préambule de Quarto.
+% Mise en page des PDF : charte « encre sur papier » (DESIGN.md), A4,
+% compacte, entièrement lisible en noir et blanc. Chargé après le
+% préambule de Quarto. Les couleurs sont celles de `_brand.yml`.
 \usepackage{xcolor}
-\definecolor{vertprofond}{HTML}{1C322D}
-\definecolor{grisfilet}{HTML}{A1A1AA}
+\definecolor{papier}{HTML}{F4F2EC}
+\definecolor{papierdeux}{HTML}{ECE9E0}
+\definecolor{encre}{HTML}{16150F}
+\definecolor{encredeux}{HTML}{4A4840}
+\definecolor{encretrois}{HTML}{6E6B62}
+\definecolor{contour}{HTML}{8C8980}
+\definecolor{jaune}{HTML}{F6D77A}
+
+% Police : Nunito, fichier variable du dépôt (axe de graisse). Le dossier
+% du projet vient de l'environnement de Quarto ; à défaut, le dossier
+% courant. Pas d'italique propre au fichier : inclinaison simulée.
+\usepackage{fontspec}
+\newcommand{\nunitodossier}{\directlua{tex.sprint(os.getenv("QUARTO_PROJECT_DIR") or ".")}/_extensions/vintage/fonts/}
+\IfFileExists{\nunitodossier Nunito-VF.ttf}{%
+\setmainfont{Nunito-VF}[Path=\nunitodossier, Extension=.ttf,
+  UprightFeatures={RawFeature={axis={wght=400}}},
+  BoldFont=*, BoldFeatures={RawFeature={axis={wght=800}}},
+  ItalicFont=*, ItalicFeatures={RawFeature={axis={wght=400}}, FakeSlant=0.2},
+  BoldItalicFont=*, BoldItalicFeatures={RawFeature={axis={wght=800}}, FakeSlant=0.2}]
+\newfontfamily\nunitonoir{Nunito-VF}[Path=\nunitodossier, Extension=.ttf,
+  RawFeature={axis={wght=1000}}]
+}{\newcommand{\nunitonoir}{\bfseries}%
+  \PackageWarning{vintage}{Nunito-VF.ttf introuvable : police par défaut}}
 
 % Paragraphes sans alinéa, séparés par un petit espace.
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.5ex plus 0.2ex minus 0.1ex}
 
-% Titres resserrés, en vert profond (assez sombre pour l'impression N&B).
-\setkomafont{disposition}{\normalfont\bfseries\color{vertprofond}}
+% Titres resserrés, en encre (Nunito 1000, lisible en noir et blanc).
+\setkomafont{disposition}{\nunitonoir\color{encre}}
 \setkomafont{section}{\large}
 \setkomafont{subsection}{\normalsize}
 \setkomafont{subsubsection}{\normalsize\itshape}
@@ -41,7 +63,7 @@
 \usepackage{lastpage}
 \usepackage[headsepline=0.4pt, footsepline=0.4pt]{scrlayer-scrpage}
 \clearpairofpagestyles
-\setkomafont{pageheadfoot}{\footnotesize\color{vertprofond}}
+\setkomafont{pageheadfoot}{\footnotesize\color{encre}}
 \setkomafont{pagenumber}{}
 \ihead{\vintageformation}
 \ohead{\vintagechapitre}
