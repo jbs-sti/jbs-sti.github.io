@@ -19,33 +19,30 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   2026-11-19). Tant que la publication n'est pas fusionnée, le TP2 n'est
   plus en ligne.
 
+- BTS CIEL 1, réseaux, chapitres 04 à 09 (demande du 2026-11-18 : « pour
+  les cours fait juste un beamer first principle pour chaque protocole »,
+  « tout au même format », anciens cours supprimés) : un diaporama beamer
+  « premier principe » par protocole, écrit par Codex (préambule commun de
+  `diaporama-http.tex`, règles dans `.review/beamer-commun.md`, non
+  versionné), plus les TP DNS et FTP (sous-agent redacteur, d'après
+  `TP_DHCP_HTTP_DNS_FTP.pdf`, parties D et E). Une branche et une PR par
+  protocole, **empilées** : réorganisation (#102) ← DNS ← puis ARP, FTP,
+  DHCP, TCP/UDP, HTTP. **DNS** (`cours/bts1-dns`) : PR ouverte. **En
+  cours** (worktrees `/home/admin/jbs-<protocole>`) : ARP (cours-arp
+  supprimé), FTP (diaporama + TP), DHCP (réécrit en place, cours-dhcp
+  supprimé, aliases), TCP/UDP (cours-tcp-udp publié à supprimer, aliases
+  à ajouter), HTTP (réécrit en place). Exemples des diaporamas :
+  192.168.10.0/24, example.com, 203.0.113.0/24, 198.51.100.0/24, jamais
+  ceux du TP (192.168.1.0/24, DHCP .250, HTTP .251, FTP .252, DNS .253,
+  passerelle .254). Lancer Codex en tâche de fond avec `< /dev/null` : sans
+  cela, il peut attendre sur stdin indéfiniment.
+
 - Charte graphique « encre sur papier » (`DESIGN.md`), branche
   `infra/charte-encre-papier` : HTML migré (tokens dans `_brand.yml` et
   `:root` de `theme.scss`, Nunito variable locale, composants `.carte`,
   `.tag`, `.bouton`, `.bandeau`, `.section-finale`, thème sombre supprimé).
   **PDF non migré** : `vintage.tex` garde la palette vert/crème et les
   polices Latin Modern, à traiter dans une seconde PR `infra/`.
-
-- BTS CIEL 1, services réseau : **un protocole = un chapitre** depuis la
-  réorganisation du 2026-11-18 (`06-dhcp`, `07-http`, puis `08-dns` et
-  `09-ftp`), chacun avec un diaporama beamer LaTeX (Codex, préambule de
-  l'enseignant `publication/Beamer_SNT_Web_HTML_CSS.tex`) et un TP Packet
-  Tracer (sous-agent redacteur) tirés des PDF de l'enseignant « Protocoles
-  réseaux » et « TP DHCP, HTTP, DNS, FTP » (**à redéposer** : introuvables
-  le 2026-11-18). Une branche et une PR par protocole. **DHCP fait** (PR
-  #99) et **HTTP fait** (PR #100), publiés (PR #101). À faire : DNS
-  (`08-dns`, chapitre « 08 — DNS », diaporama order 10, TP order 20, 1 h,
-  partie D du TP source ; la diapositive « Séance suivante » du beamer HTTP
-  annonce DNS), FTP (`09-ftp`, partie E). Pour chaque nouveau chapitre,
-  l'index créé par `scripts/nouveau.py` n'a qu'une liste : le refaire sur le
-  modèle de `06-dhcp/index.qmd` (listes « Cours » et « Travaux
-  pratiques »). Leçons à reporter dans les consignes : URL en `\texttt`
-  (polyglossia ajoute une espace avant « : »), exemples des beamers
-  différents de ceux du TP pour ne pas donner les réponses. Les TP
-  repartent de `tp-services-reseau.pkt` ; plan d'adressage : DHCP .250,
-  HTTP .251, FTP .252, DNS .253, passerelle .254, pool .1 à .249. Les
-  beamers DHCP et HTTP portent encore le sous-titre « Services réseau ·
-  1/4 » et « 2/4 » (PDF non recompilés).
 
 - BTS CIEL 1, nouveau chapitre « Systèmes › 01 — Excel » (branche
   `cours/bts1-excel`) : TP Excel partie 1 (facture) et partie 2 (relevé de
@@ -277,6 +274,11 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **Décisions durables**
 
+- 2026-11-18 : BTS CIEL 1, réseaux : le cours d'un chapitre de protocole
+  est un seul diaporama beamer « premier principe » (problème, exemple,
+  méthode ; une illustration par diapositive ; « À vous » corrigés), en
+  page + PDF dans `fichiers/`. Les anciens cours au format page sont
+  supprimés, avec `aliases` vers le diaporama quand ils étaient publiés.
 - 2026-11-18 : BTS CIEL 1, organisation des chapitres (demande de
   l'enseignant : les élèves distinguaient mal cours et TP). Un protocole =
   un chapitre (`04-arp`, `05-tcp-udp`, `06-dhcp`, `07-http`…). Titre des
@@ -344,6 +346,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Vérificateur, Codex : sans objet (infrastructure)
 - Points à relire par l'enseignant : feuille alternative « dark » encore produite par Quarto (inactive, sans bouton) ; rendu mobile non contrôlé ; suppression du thème sombre ; classes de composants pas encore utilisées dans les `.qmd`
 
+### 2026-11-19 — infra/charte-correctif-typst
+
+- Ressource : aucune (infrastructure : `_brand.yml`, `_extensions/vintage/theme.scss`)
+- Cause : la couleur de palette `or` (PR #111) devient l'identifiant Typst `or`, mot réservé : les cours rendus en Typst (`cours-arp`, `cours-dhcp`) ne compilaient plus ; `Publier le site` a échoué sur `main` après la fusion de #111 et la CI de #111 était en échec
+- Correctif : couleur renommée `dore` dans `_brand.yml` (variable CSS `--or` conservée) ; consigne ajoutée en commentaire (jamais de mot réservé comme nom de couleur)
+- Vérification : `quarto render` de cours-arp et cours-dhcp en Typst (DONE), HTML sans erreur
+- Vérificateur, Codex : sans objet (infrastructure)
+- Points à relire par l'enseignant : à fusionner avant les autres PR ; le site n'est plus publié tant que ce correctif n'est pas dans `main`
+
 ### AAAA-MM-JJ — <branche>
 
 - Ressource : <chemin>/index.qmd (référence imitée : <chemin>)
@@ -355,6 +366,28 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-18 — cours/bts1-dns
+
+- Demande de l'enseignant : TP de `TP_DHCP_HTTP_DNS_FTP.pdf` (partie D) et
+  un beamer « premier principe » par protocole, avec illustrations et
+  exemples.
+- Ressources : `bts1/reseaux/08-dns/index.qmd` (page de chapitre en deux
+  listes, modèle `06-dhcp`), `cours-diaporama-dns/` (Codex, 15
+  diapositives, référence : `07-http/cours-diaporama-http`), `tp-dns/`
+  (redacteur, 2 captures Packet Tracer ; référence : `07-http/tp-http`).
+- Vérificateur : diaporama CONFORME après 3 passages (plus une finition de
+  la diapositive 14) ; TP CONFORME après 2 passages.
+- Relecture croisée : diaporama par le relecteur (R1 gardée, aucun
+  BLOQUANT) ; TP par Codex (R1 gardée ; A1 BLOQUANT corrigé par le
+  redacteur ; A2 refusé, PC1 n'a jamais pu résoudre le nom ; A3, rôle du
+  bouton « Save », à confirmer en salle).
+- Incident : un Codex en tâche de fond a attendu sur stdin plus de 10 min
+  sans rien écrire ; relancé avec `< /dev/null`.
+- Points à relire par l'enseignant : questions 1 à 3 du TP ajoutées par le
+  redacteur ; coquille `http:/www.site.com` de la source corrigée ; cache
+  DNS des PC Packet Tracer (le premier `ping` envoie d'abord une requête
+  DNS).
 
 ### 2026-11-18 — cours/bts1-reorganisation
 
