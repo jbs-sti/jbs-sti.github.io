@@ -20,7 +20,9 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   DNS, a été fusionnée dans la branche de la réorganisation après celle-ci ;
   report vers `main` par #104). **DNS** : #103 puis #104. **FTP**
   (`cours/bts1-ftp`) : #105, partie de la branche de #104. **ARP**
-  (`cours/bts1-arp-diaporama`) : PR ouverte, partie de la branche de #105.
+  (`cours/bts1-arp-diaporama`) : #106, partie de la branche de #105.
+  **HTTP** (`cours/bts1-http-diaporama`) : PR ouverte, partie de la branche
+  de #106.
   **En cours** (worktrees `/home/admin/jbs-<protocole>`) : DHCP (réécrit en place, cours-dhcp supprimé, aliases),
   TCP/UDP (cours-tcp-udp publié supprimé, aliases vers le diaporama, qui
   reste brouillon : l'ancienne adresse ne redirige qu'après sa
@@ -334,6 +336,23 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-19 — cours/bts1-http-diaporama
+
+- Demande de l'enseignant : un beamer « premier principe » par protocole
+  (« j'aime pas les cours déjà présents », « tout au même format »).
+- Ressource : `bts1/reseaux/07-http/cours-diaporama-http/` réécrit en place
+  (Codex, 15 diapositives) ; déjà publié, `draft: false` et `aliases`
+  conservés.
+- Vérificateur : CONFORME au 3e passage (2 corrections), puis vérification
+  finale CONFORME après relecture.
+- Relecture croisée par le relecteur : R1 gardée ; A1-A5 corrigés par Codex
+  (en-tête de réponse `Content-Type`, requête interrompue pour « aucune
+  réponse », question http/https qui fait raisonner, schémas agrandis,
+  phrases courtes).
+- Points à relire par l'enseignant : la ressource est publiée, la nouvelle
+  version remplace l'ancienne dès la fusion ; diapositives 10 à 13
+  (exercices).
 
 ### 2026-11-19 — cours/bts1-arp-diaporama
 
