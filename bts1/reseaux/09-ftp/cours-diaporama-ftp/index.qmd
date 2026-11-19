@@ -1,0 +1,28 @@
+---
+title: "Cours — Le protocole FTP (diaporama)"
+description: "Diaporama pour comprendre les transferts FTP, leurs connexions et leurs limites de sécurité."
+type: cours
+domaine: reseaux
+chapitre: "09 — FTP"
+categories: [cours, reseaux]
+mots-cles: [FTP, TCP, transfert, téléchargement, téléversement, FTPS, SFTP]
+objectifs:
+  - "Distinguer les connexions de commandes et de données FTP."
+  - "Identifier le sens d'un transfert et les limites de sécurité de FTP."
+prerequis:
+  - "Adressage IPv4 et masque de sous-réseau"
+  - "Diaporama : le protocole HTTP"
+duree: "1 h"
+order: 10
+date-modified: 2026-11-18
+draft: true
+lang: fr
+---
+
+## Document
+
+Ce diaporama présente le transfert de fichiers entre un client et un serveur FTP.
+Il distingue la connexion de commandes et la connexion de données. Il montre ensuite les limites de sécurité de FTP. Deux questions corrigées terminent la séance.
+
+- **[Télécharger le diaporama (PDF)](fichiers/diaporama-ftp.pdf)**
+- [Source LaTeX du diaporama](fichiers/diaporama-ftp.tex)
