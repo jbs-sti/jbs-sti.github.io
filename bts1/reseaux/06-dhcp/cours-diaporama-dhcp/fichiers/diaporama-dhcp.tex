@@ -78,20 +78,36 @@
 DHCP prête une adresse pour une durée : le bail.
 \end{frame}
 \begin{frame}{DORA : un poste obtient son adresse}
-Réseau \texttt{192.168.10.0/24} ; serveur \texttt{192.168.10.2}.
 \begin{schema}
-\node[font=\normalsize] at (0,3.3) {Poste sans adresse};
+\node[font=\normalsize] at (0,3.3) {Poste};
 \node[font=\normalsize] at (9,3.3) {Serveur DHCP};
-\draw[dashed] (0,3.0)--(0,.1); \draw[dashed] (9,3.0)--(9,.1);
-\draw[flux,dashed] (0,2.7)--node[above,fill=creme,inner sep=2pt]{1. Discover : recherche diffusée} (9,2.7);
-\draw[flux] (9,1.9)--node[above,fill=creme,inner sep=2pt]{2. Offer : propose 192.168.10.100} (0,1.9);
-\draw[flux,dashed] (0,1.1)--node[above,fill=creme,inner sep=2pt]{3. Request : choix diffusé} (9,1.1);
-\draw[flux] (9,.3)--node[above,fill=creme,inner sep=2pt]{4. Ack : confirme le bail} (0,.3);
+\draw[thin,gray] (0,3.0)--(0,.1); \draw[thin,gray] (9,3.0)--(9,.1);
+\draw[flux,dashed] (0,2.7)--node[above,fill=creme,inner sep=2pt]{1. Discover : recherche} (9,2.7);
+\draw[flux] (9,1.9)--node[above,fill=creme,inner sep=2pt]{2. Offer : .100 proposé} (0,1.9);
+\draw[flux,dashed] (0,1.1)--node[above,fill=creme,inner sep=2pt]{3. Request : choix} (9,1.1);
+\draw[flux] (9,.3)--node[above,fill=creme,inner sep=2pt]{4. Ack (Acknowledge : accusé de réception)} (0,.3);
 \end{schema}
-{\small Pointillés : diffusion, à tous les postes du réseau local ;\\
-trait plein : envoi au seul poste.\\
-Offer et Ack : diffusés ou envoyés au seul poste, selon le client.\\
-DHCP utilise UDP : client port 68, serveur port 67.}
+{\small Réseau : \texttt{192.168.10.0/24}.\\
+Pointillés : diffusion. Trait plein : envoi au poste.\\
+Offer et Ack peuvent aussi être diffusés.\\
+DHCP utilise UDP : client 68, serveur 67.}
+\end{frame}
+\begin{frame}{Lire un échange DORA}
+\begin{schema}
+\node at (0,3) {Poste};
+\node at (7,3) {Serveur};
+\draw[flux,dashed] (0,2.4)--node[above]{1. diffusion} (7,2.4);
+\draw[flux] (7,1.6)--node[above]{2. offre} (0,1.6);
+\draw[flux,dashed] (0,.8)--node[above]{3. choix} (7,.8);
+\draw[flux] (7,0)--node[above]{4. confirmation} (0,0);
+\end{schema}
+\begin{block}{Méthode}
+\small
+1. Repérez qui diffuse.\\
+2. Repérez l'offre.\\
+3. Repérez le choix du client.\\
+4. Attendez l'Ack avant d'utiliser l'adresse.
+\end{block}
 \end{frame}
 \begin{frame}{Quatre paramètres pour communiquer}
 \begin{beamercolorbox}[sep=12pt,rounded=true]{block body}
@@ -108,7 +124,10 @@ DHCP fournit l'adresse du serveur DNS ; DNS répond aux demandes de noms.
 \end{frame}
 \begin{frame}{Réserver les adresses fixes}
 \begin{schema}
+\path (0,-1.5) rectangle (11,2.3);
 \draw[thick] (0,0)--(11,0);
+\node[font=\normalsize,fill=creme] at (3,0) {$\approx$};
+\node[font=\normalsize,fill=creme] at (9.5,0) {$\approx$};
 \foreach \x/\label in {0/.1,1/.2,5/.100,8/.119,11/.254}
   \draw (\x,-.12)--(\x,.12) node[below=4pt] {\label};
 \draw[line width=3pt] (0,.35)--(1,.35);
@@ -136,10 +155,12 @@ Exemple : $119-100+1=20$.
 \end{frame}
 \begin{frame}{Le bail se renouvelle}
 \begin{schema}
-\node[boite,text width=2.5cm,minimum height=2.5cm,font=\small] (a) at (0,0) {Adresse attribuée\\pour 8 heures};
-\node[boite,text width=2.5cm,minimum height=2.5cm,font=\small] (b) at (5,0) {Le poste demande\\à renouveler};
-\node[boite,text width=2.5cm,minimum height=2.5cm,font=\small] (c) at (10,0) {Le serveur confirme\\un nouveau bail};
-\draw[flux] (a)--node[above,align=center,font=\scriptsize]{1. à mi-bail\\(4 h)} (b); \draw[flux] (b)--node[above,align=center,font=\scriptsize]{2. accord :\\8 h de plus} (c);
+\path (0,-1.9) rectangle (10,1.9);
+\node[boite,text width=2.5cm,minimum height=2.5cm,font=\normalsize] (a) at (0,0) {Adresse attribuée\\pour 8 heures};
+\node[boite,text width=2.5cm,minimum height=2.5cm,font=\normalsize] (b) at (5,0) {Le poste demande\\à renouveler};
+\node[boite,text width=2.5cm,minimum height=2.5cm,font=\normalsize] (c) at (10,0) {Le serveur\\confirme\\le nouveau bail};
+\draw[flux] (a)--node[above,align=center,font=\small]{1. à mi-bail\\(4 h)} (b); \draw[flux] (b)--(c);
+\node[font=\small,align=center] at (7.5,1.65) {2. nouveau bail : 8 h à partir de maintenant};
 \end{schema}
 Sans renouvellement avant expiration, le poste cesse d'utiliser l'adresse.
 \end{frame}
@@ -151,20 +172,21 @@ Sans renouvellement avant expiration, le poste cesse d'utiliser l'adresse.
 \end{schema}
 Dans l'invite de commandes Windows, ces commandes agissent sur les cartes réseau configurées par DHCP.
 \end{frame}
-\begin{frame}{Pas de réponse : vérifier la configuration}
+\begin{frame}[t]{Pas de réponse : vérifier la configuration}
+\setlength{\parskip}{0pt}
+\vspace{4pt}
 \begin{schema}
-\node[boite,text width=3cm] (a) at (0,0) {Poste\\169.254.12.7};
-\node[boite,text width=3cm] (b) at (8,0) {Serveur DHCP\\service arrêté};
-\draw[flux,dashed] (a)--node[above]{Discover sans réponse} (b);
+\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (a) at (0,0) {Poste\\169.254.12.7};
+\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (b) at (8,0) {Serveur DHCP\\service arrêté};
+\draw[flux,dashed] (a)--node[above,font=\small]{Discover sans réponse} (b);
 \end{schema}
-{\small Une adresse APIPA est une adresse que Windows se donne seul, faute de réponse DHCP. Le poste ne joint que ses voisins en 169.254 ; sans passerelle, il ne sort pas du réseau local.}
-\begin{block}{Méthode}
-1. Repérez une adresse en \texttt{169.254}.\\
-2. Vérifiez le câble et les voyants.\\
-3. Vérifiez que le service DHCP du serveur est actif.\\
-\quad Packet Tracer : serveur > Services > DHCP > On.\\
-4. Relancez \texttt{ipconfig /renew} dans Windows.
-\end{block}
+{\small Sans réponse DHCP, Windows peut choisir une adresse APIPA.\\
+Le poste ne joint que ses voisins en 169.254. Sans passerelle, il ne sort pas du réseau local.}
+\vspace{4pt}
+{\small\textbf{Diagnostic :}\\
+1. Vérifiez le câble et les voyants.\\
+2. Packet Tracer : activez le service (Services > DHCP > On).\\
+3. Windows : lancez \texttt{ipconfig /renew}.}
 \end{frame}
 \begin{frame}{À vous : interpréter un échange}
 \question{Le poste peut-il utiliser l'adresse proposée ? Pourquoi ?}
@@ -182,7 +204,7 @@ Dans l'invite de commandes Windows, ces commandes agissent sur les cartes résea
 \node[boite,text width=3cm,minimum height=2.5cm,font=\normalsize] (c) at (10,0) {Ack\\confirmation};
 \draw[flux] (a)--(b); \draw[flux] (b)--(c);
 \end{schema}
-Plusieurs serveurs peuvent faire une offre. Le Request annonce le choix du poste ; l’Ack confirme le bail.
+Non : l’offre ne suffit pas. Le Request annonce le choix du poste ; l’Ack confirme le bail.
 \end{frame}
 \begin{frame}{À vous : dimensionner une plage}
 \question{Combien d'adresses cette plage contient-elle ?}
@@ -207,25 +229,11 @@ Les adresses de début et de fin sont toutes deux comptées.
 \node[boite,text width=4cm,minimum height=1.8cm,font=\normalsize] (b) at (9,0) {Serveur DHCP\\pool et baux};
 \draw[flux,<->] (a)--node[above,font=\small]{DORA : attribution initiale} (b);
 \end{schema}
-\begin{block}{Cinq repères}
+\begin{block}{Quatre repères}
 DHCP fournit les paramètres IPv4.\\
-DORA : Discover, Offer, Request, Ack.\\
-DHCP utilise UDP : client port 68, serveur port 67.\\
+DORA : Discover, Offer, Request, Ack ; UDP client 68, serveur 67.\\
 Le pool exclut les adresses fixes ; le bail a une durée.\\
 Une adresse APIPA peut signaler l'absence de réponse DHCP.
 \end{block}
-\end{frame}
-\begin{frame}{Sources}
-\begin{beamercolorbox}[sep=12pt,rounded=true]{block body}
-\textbf{RFC 2131} — attribution et bail DHCP\\
-\texttt{https://www.rfc-editor.org/rfc/rfc2131}\\[6pt]
-\textbf{RFC 2132} — options de configuration\\
-\texttt{https://www.rfc-editor.org/rfc/rfc2132}\\[6pt]
-\textbf{RFC 3927} — adresses locales IPv4\\
-\texttt{https://www.rfc-editor.org/rfc/rfc3927}\\[6pt]
-\textbf{Microsoft Learn} — commande ipconfig\\
-{\scriptsize\texttt{https://learn.microsoft.com/windows-server/administration/windows-commands/ipconfig}}\\[6pt]
-Support enseignant : « TP DHCP, HTTP, DNS, FTP », p. 1--6.
-\end{beamercolorbox}
 \end{frame}
 \end{document}

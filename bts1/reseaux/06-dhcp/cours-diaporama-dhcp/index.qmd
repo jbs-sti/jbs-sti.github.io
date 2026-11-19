@@ -16,7 +16,7 @@ prerequis:
   - "Modèle OSI et TCP/IP"
 duree: "1 h"
 order: 10
-date-modified: 2026-11-18
+date-modified: 2026-11-19
 draft: false
 lang: fr
 # Ancienne adresse, avant la réorganisation des chapitres (2026-11-18).
@@ -31,8 +31,16 @@ aliases:
 ## Document
 
 Ce diaporama explique comment DHCP attribue une configuration IPv4 :
-messages DORA, paramètres, pool et bail.
+les quatre messages DORA, les paramètres reçus, le pool et le bail.
+Il présente aussi l’adresse APIPA, le diagnostic et les commandes Windows
+`ipconfig /release` et `ipconfig /renew`.
 Deux questions corrigées permettent de vérifier les acquis.
 
 - **[Télécharger le diaporama (PDF)](fichiers/diaporama-dhcp.pdf)**
 - [Source LaTeX du diaporama](fichiers/diaporama-dhcp.tex)
+
+Sources : [RFC 2131](https://www.rfc-editor.org/rfc/rfc2131),
+[RFC 2132](https://www.rfc-editor.org/rfc/rfc2132),
+[RFC 3927](https://www.rfc-editor.org/rfc/rfc3927) et
+[Microsoft Learn : ipconfig](https://learn.microsoft.com/windows-server/administration/windows-commands/ipconfig).
+Support enseignant : « TP DHCP, HTTP, DNS, FTP », p. 1–6.
