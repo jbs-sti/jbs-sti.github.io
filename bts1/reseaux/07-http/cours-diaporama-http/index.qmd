@@ -16,7 +16,7 @@ prerequis:
   - "Diaporama : le protocole DHCP"
 duree: "1 h"
 order: 10
-date-modified: 2026-11-18
+date-modified: 2026-11-19
 draft: false
 lang: fr
 # Ancienne adresse, avant la réorganisation des chapitres (2026-11-18).
@@ -28,7 +28,7 @@ aliases:
 
 Ce diaporama illustre la demande d’une page et la réponse du serveur.
 Il présente les codes d’état et la protection des échanges par HTTPS.
-Deux questions corrigées permettent de vérifier les acquis.
+Deux questions corrigées terminent la séance : un diagnostic de panne, puis un formulaire en HTTPS.
 
 - **[Télécharger le diaporama (PDF)](fichiers/diaporama-http.pdf)**
 - [Source LaTeX du diaporama](fichiers/diaporama-http.tex)

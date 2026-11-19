@@ -75,9 +75,10 @@
 
 \end{frame}
 
-\begin{frame}[shrink=20]{Lire une adresse Web}
+\begin{frame}{Lire une adresse Web}
 \vspace{3mm}
 \begin{schema}
+\begin{scope}[scale=1.03,transform shape,every node/.style={text=encre,font=\normalsize}]
 \node[font=\normalsize] at (5,3.0) {Adresse Web = URL};
 \node[font=\large,inner sep=0pt,anchor=base east] (proto) at (2.8,2.3) {\texttt{http}};
 \node[font=\large,inner sep=0pt,anchor=base west] (sep) at (2.8,2.3) {\texttt{://}};
@@ -89,6 +90,7 @@
 \draw (proto.south) -- (p.north);
 \draw (host.south) -- (h.north);
 \draw (path.south) -- (c.north);
+\end{scope}
 \end{schema}
 \begin{block}{Méthode}
 1. Lisez le protocole avant \texttt{://}.\quad 2. Repérez le serveur.\\
@@ -134,9 +136,10 @@ Le navigateur affiche le contenu reçu. Exemple en HTTP/1.1.
 
 \begin{frame}{La réponse indique le résultat}
 \begin{schema}
-\node[boite,text width=3.1cm,minimum height=2cm,font=\normalsize] at (0,2) {\texttt{HTTP/1.1}\\version};
-\node[boite,text width=3.1cm,minimum height=2cm,font=\normalsize] at (4.5,2) {\texttt{200 OK}\\état : succès};
-\node[boite,text width=3.1cm,minimum height=2cm,font=\normalsize] at (9,2) {Contenu\\page HTML};
+\node[boite,text width=2.1cm,minimum height=2cm,font=\normalsize] at (0,2) {\texttt{HTTP/1.1}\\version};
+\node[boite,text width=2.1cm,minimum height=2cm,font=\normalsize] at (3,2) {\texttt{200 OK}\\état : succès};
+\node[boite,text width=3.3cm,minimum height=2cm,font=\normalsize] at (6.6,2) {\texttt{Content-Type:\\text/html}\\en-tête : type du contenu};
+\node[boite,text width=2.1cm,minimum height=2cm,font=\normalsize] at (10.2,2) {Contenu\\page HTML};
 \end{schema}
 \begin{block}{Méthode}
 1. Repérez la version.\quad 2. Lisez le code d'état.\\
@@ -167,84 +170,105 @@ Chiffrer : rendre le message illisible pour qui n'a pas la clé.
 \node[boite,text width=2cm,minimum height=1cm] (a) at (0,3) {Navigateur};
 \node[boite,text width=2cm,minimum height=1cm] (b) at (10,3) {Serveur};
 \draw[flux] (a.east)--node[above=1mm]{HTTP, port 80} (b.west);
-\draw (1.9,2.28) circle (0.1) (1.9,2.18) -- (1.9,1.92) (1.72,2.08) -- (2.08,2.08) (1.9,1.92) -- (1.75,1.78) (1.9,1.92) -- (2.05,1.78);
-\draw[dotted,thick] (1.9,2.38)--(1.9,3);
-\node[align=center] at (5.3,2.15) {Personne à l'écoute : \texttt{nom=Alice} lisible};
+\draw (1.9,2.4) circle (0.2) (1.9,2.2)--(1.9,1.6) (1.5,2.0)--(2.3,2.0) (1.9,1.6)--(1.6,1.3) (1.9,1.6)--(2.2,1.3);
+\draw[dotted,thick] (1.9,2.6)--(1.9,3);
+\node[anchor=west] at (2.6,2.0) {Personne à l'écoute : \texttt{nom=Alice} lisible};
 \node[boite,text width=2cm,minimum height=1cm] (c) at (0,0.8) {Navigateur};
 \node[boite,text width=2cm,minimum height=1cm] (d) at (10,0.8) {Serveur};
 \draw[flux] (c.east)--node[above=1mm]{HTTPS, port 443} (d.west);
-\draw (1.9,0.08) circle (0.1) (1.9,-0.02) -- (1.9,-0.28) (1.72,-0.12) -- (2.08,-0.12) (1.9,-0.28) -- (1.75,-0.42) (1.9,-0.28) -- (2.05,-0.42);
-\draw[dotted,thick] (1.9,0.18)--(1.9,0.8);
-\node[align=center] at (5.3,-0.05) {Personne à l'écoute : \texttt{k8\#Qz\ldots}};
+\draw (1.9,-0.05) circle (0.2) (1.9,-0.25)--(1.9,-0.85) (1.5,-0.45)--(2.3,-0.45) (1.9,-0.85)--(1.6,-1.15) (1.9,-0.85)--(2.2,-1.15);
+\draw[dotted,thick] (1.9,0.15)--(1.9,0.8);
+\node[anchor=west] at (2.6,-0.45) {Personne à l'écoute : \texttt{k8\#Qz\ldots}};
 \end{schema}
 TLS est le protocole qui protège les échanges HTTPS.
 \end{frame}
 
-\begin{frame}[shrink=20]{À vous : où chercher la panne ?}
-\question{Pour chaque situation, où chercher la panne ?}
+\begin{frame}{À vous : où chercher la panne ?}
+\begin{beamercolorbox}[rounded=true,sep=6pt]{block body}\large\textbf{Pour chaque situation, où chercher la panne ?}\end{beamercolorbox}
+\vspace{-2mm}
 \begin{block}{Trois situations}
 a. Le serveur répond \texttt{500}.\\
 b. Le serveur répond \texttt{301} avec une nouvelle adresse.\\
 c. Le serveur ne répond pas.
 \end{block}
+\vspace{-2mm}
 \begin{schema}
+\begin{scope}[scale=0.8,transform shape,every node/.style={text=encre,font=\normalsize}]
 \foreach \y/\lab in {2.4/a,1.2/b,0/c} {
   \node[boite,text width=2.3cm,minimum height=0.7cm] (n\lab) at (0,\y) {Navigateur};
   \node[boite,text width=2.3cm,minimum height=0.7cm] (s\lab) at (10,\y) {Serveur};
+}
+\foreach \lab in {a,b} {
   \draw[flux] ([yshift=2mm]n\lab.east)--([yshift=2mm]s\lab.west);
 }
+\draw[flux,dashed] ([yshift=2mm]nc.east)--node[below,near end] {?} (7,0.2);
 \draw[flux,dashed] ([yshift=-2mm]sa.west)--node[below]{a. \texttt{500}} ([yshift=-2mm]na.east);
 \draw[flux,dashed] ([yshift=-2mm]sb.west)--node[below]{b. \texttt{301} + nouvelle adresse} ([yshift=-2mm]nb.east);
-\node at (5,-0.25) {c. ?};
+
+\end{scope}
 \end{schema}
 \end{frame}
 
-\begin{frame}[shrink=20]{Correction : interpréter les situations}
+\begin{frame}{Correction : interpréter les situations}
 \vspace{3mm}
 \begin{block}{Réponses}
 a. \texttt{500} : cherchez le problème sur le serveur.\\
 b. \texttt{301} : ce n'est pas une panne ; la page a déménagé.\\
-c. Sans réponse, vérifiez le réseau (\texttt{ping}), puis que le serveur et son service HTTP sont lancés.
+c. Sans réponse : testez le réseau avec \texttt{ping}.\\
+Vérifiez ensuite le serveur et son service HTTP.
 \end{block}
 \begin{schema}
+\begin{scope}[scale=0.9,transform shape,every node/.style={text=encre,font=\normalsize}]
 \foreach \y/\lab in {2.4/a,1.2/b,0/c} {
   \node[boite,text width=2.3cm,minimum height=0.7cm] (n\lab) at (0,\y) {Navigateur};
   \node[boite,text width=2.3cm,minimum height=0.7cm] (s\lab) at (10,\y) {Serveur};
+}
+\foreach \lab in {a,b} {
   \draw[flux] ([yshift=2mm]n\lab.east)--([yshift=2mm]s\lab.west);
 }
+\draw[flux,dashed] ([yshift=2mm]nc.east)--(7,0.2)
+  node[right] {?};
 \draw[flux,dashed] ([yshift=-2mm]sa.west)--node[below]{a. \texttt{500} : serveur} ([yshift=-2mm]na.east);
 \draw[flux,dashed] ([yshift=-2mm]sb.west)--node[below]{b. \texttt{301} : page déplacée} ([yshift=-2mm]nb.east);
 \node at (5,-0.25) {c. réseau, serveur ou service arrêté};
+\end{scope}
 \end{schema}
 \end{frame}
 
-\begin{frame}[shrink=20]{À vous : protéger un formulaire}
-\question{Sur \texttt{https://www.example.org/compte}, quel port et quelle protection sont utilisés par défaut ?}
-\begin{block}{À analyser}
-Une personne à l'écoute du réseau peut-elle lire les données d'un formulaire transmis sur cette page ?
+\begin{frame}{À vous : protéger un formulaire}
+\begin{block}{Deux adresses}
+\texttt{http://www.example.org/compte}\\
+\texttt{https://www.example.org/compte}
 \end{block}
+\begin{beamercolorbox}[rounded=true,sep=6pt]{block body}\large\textbf{Sur laquelle une personne à l'écoute peut-elle lire \texttt{nom=Alice} ? Pourquoi ?}\end{beamercolorbox}
 \begin{schema}
-\node[boite,text width=2.4cm,minimum height=1.1cm] (n) at (0,2) {Navigateur};
-\node[boite,text width=2.4cm,minimum height=1.1cm] (s) at (10,2) {Serveur};
-\draw[flux] (n.east)--node[above]{\texttt{https://www.example.org/compte}} (s.west);
+\begin{scope}[scale=0.9,transform shape]
+\node[boite,text width=2.4cm,minimum height=1.1cm,font=\normalsize] (n) at (0,2) {Navigateur};
+\node[boite,text width=2.4cm,minimum height=1.1cm,font=\normalsize] (s) at (10,2) {Serveur};
+\draw[flux] (n.east)--node[above]{Formulaire : \texttt{nom=Alice}} (s.west);
 \draw[dotted,thick] (5,2)--(5,1.3);
 \draw (5,1.1) circle (0.2) (5,0.9)--(5,0.3) (4.6,0.7)--(5.4,0.7) (5,0.3)--(4.7,0) (5,0.3)--(5.3,0);
 \node[anchor=west] at (5.7,0.7) {Personne à l'écoute : ?};
+\end{scope}
 \end{schema}
 \end{frame}
 
-\begin{frame}{Correction : une page HTTPS}
+\begin{frame}{Correction : protéger un formulaire}
 \begin{block}{Réponses}
-Le port par défaut est \texttt{443}. HTTPS utilise TLS.\\
-Les données transmises sont chiffrées : une personne à l'écoute ne peut pas les lire sans la clé.
+En HTTP, port 80 par défaut, les données circulent en clair.\\
+Une personne à l'écoute peut donc lire \texttt{nom=Alice}.\\
+En HTTPS, port 443 par défaut, TLS chiffre les données.\\
+Une personne à l'écoute ne peut pas les lire sans la clé.
 \end{block}
 \begin{schema}
-\node[boite,text width=2.4cm,minimum height=1.1cm] (n) at (0,2) {Navigateur};
-\node[boite,text width=2.4cm,minimum height=1.1cm] (s) at (10,2) {Serveur};
+\begin{scope}[scale=1.05,transform shape]
+\node[boite,text width=2.4cm,minimum height=1.1cm,font=\normalsize] (n) at (0,2) {Navigateur};
+\node[boite,text width=2.4cm,minimum height=1.1cm,font=\normalsize] (s) at (10,2) {Serveur};
 \draw[flux] (n.east)--node[above]{HTTPS, port 443, TLS} (s.west);
 \draw[dotted,thick] (5,2)--(5,1.3);
 \draw (5,1.1) circle (0.2) (5,0.9)--(5,0.3) (4.6,0.7)--(5.4,0.7) (5,0.3)--(4.7,0) (5,0.3)--(5.3,0);
 \node[anchor=west] at (5.7,0.7) {Personne à l'écoute : \texttt{k8\#Qz\ldots}};
+\end{scope}
 \end{schema}
 \end{frame}
 
