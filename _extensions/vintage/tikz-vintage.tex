@@ -1,26 +1,28 @@
 % Styles TikZ communs aux schémas du site (PDF et HTML).
 % Lisibles en noir et blanc : le contraste vient des niveaux de gris,
 % des traits (plein, tirets, pointillés) et des étiquettes, jamais de la
-% seule couleur. Le vert profond de la charte sert de couleur d'encre.
+% seule couleur. L'encre de la charte sert de couleur de trait. Ce fichier est aussi
+% chargé seul par tikz.lua (document standalone) : les trois couleurs
+% utilisées ici y sont donc redéclarées, avec les valeurs de `_brand.yml`.
 \usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds,
   shapes.geometric, shapes.symbols, patterns, decorations.pathreplacing}
-\definecolor{vertprofond}{HTML}{1C322D}
-\definecolor{grisclair}{HTML}{E4E4E7}
-\definecolor{grismoyen}{HTML}{A1A1AA}
+\definecolor{encre}{HTML}{16150F}
+\definecolor{papierdeux}{HTML}{ECE9E0}
+\definecolor{contour}{HTML}{8C8980}
 \tikzset{
   >={Stealth[length=2.2mm]},
-  every picture/.style={color=vertprofond, line width=0.6pt},
+  every picture/.style={color=encre, line width=0.6pt},
   every node/.style={font=\small},
   % Équipements
   poste/.style={draw, rounded corners=1.5pt, fill=white,
     minimum width=1.4cm, minimum height=0.8cm, align=center},
-  serveur/.style={poste, fill=grisclair, minimum height=1cm},
-  routeur/.style={draw, circle, fill=grisclair, minimum size=1cm,
+  serveur/.style={poste, fill=papierdeux, minimum height=1cm},
+  routeur/.style={draw, circle, fill=papierdeux, minimum size=1cm,
     align=center, font=\small\bfseries},
-  commutateur/.style={draw, fill=grismoyen!40, minimum width=2.4cm,
+  commutateur/.style={draw, fill=contour!40, minimum width=2.4cm,
     minimum height=0.6cm, align=center, font=\small\bfseries},
   parefeu/.style={draw, fill=white,
-    postaction={pattern=bricks, pattern color=grismoyen},
+    postaction={pattern=bricks, pattern color=contour},
     minimum width=1.2cm, minimum height=0.9cm, font=\small\bfseries},
   nuage/.style={draw, cloud, cloud puffs=10, aspect=2, fill=white,
     align=center},
@@ -29,7 +31,7 @@
   trunk/.style={line width=2pt},
   sans fil/.style={dashed},
   % Échanges de messages (diagrammes de séquence)
-  ligne de vie/.style={dashed, grismoyen},
+  ligne de vie/.style={dashed, contour},
   message/.style={->},
   diffusion/.style={->, dashed},
   reponse/.style={->, densely dotted},
