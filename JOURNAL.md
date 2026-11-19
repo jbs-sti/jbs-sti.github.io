@@ -21,8 +21,9 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   report vers `main` par #104). **DNS** : #103 puis #104. **FTP**
   (`cours/bts1-ftp`) : #105, partie de la branche de #104. **ARP**
   (`cours/bts1-arp-diaporama`) : #106, partie de la branche de #105.
-  **HTTP** (`cours/bts1-http-diaporama`) : PR ouverte, partie de la branche
-  de #106.
+  **HTTP** (`cours/bts1-http-diaporama`) : #107, partie de la branche de
+  #106. **DHCP** (`cours/bts1-dhcp-diaporama`) : PR ouverte, partie de la
+  branche de #107.
   **En cours** (worktrees `/home/admin/jbs-<protocole>`) : DHCP (réécrit en place, cours-dhcp supprimé, aliases),
   TCP/UDP (cours-tcp-udp publié supprimé, aliases vers le diaporama, qui
   reste brouillon : l'ancienne adresse ne redirige qu'après sa
@@ -336,6 +337,25 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-19 — cours/bts1-dhcp-diaporama
+
+- Demande de l'enseignant : un beamer « premier principe » par protocole,
+  anciens cours supprimés (« oui supprime »).
+- Ressources : `bts1/reseaux/06-dhcp/cours-diaporama-dhcp/` réécrit en
+  place (Codex, 16 diapositives ; publié, `draft: false` conservé) ;
+  `cours-dhcp` (brouillon) supprimé, son adresse renvoie au diaporama
+  (`aliases`).
+- Vérificateur : CONFORME au 3e passage (2 corrections), puis vérification
+  finale CONFORME après relecture (cinq finitions contrôlées à l'image).
+- Relecture croisée par le relecteur : R1 gardée ; A1-A8 corrigés par Codex
+  (À retenir en 4 lignes, phrases courtes, axe d'adresses avec coupures,
+  diapositive « Lire un échange DORA », « Non : » en correction, Ack
+  développé, sources dans la page).
+- Points à relire par l'enseignant : la ressource est publiée ; le cadre
+  « Sources » du PDF est remplacé par des liens dans la page (les URL ne
+  s'impriment plus dans le PDF de la page) ; étiquette « 2. nouveau bail »
+  un peu haute (diapositive 9).
 
 ### 2026-11-19 — cours/bts1-http-diaporama
 
