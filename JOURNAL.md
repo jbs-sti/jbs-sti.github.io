@@ -19,6 +19,13 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   2026-11-19). Tant que la publication n'est pas fusionnée, le TP2 n'est
   plus en ligne.
 
+- Charte graphique « encre sur papier » (`DESIGN.md`), branche
+  `infra/charte-encre-papier` : HTML migré (tokens dans `_brand.yml` et
+  `:root` de `theme.scss`, Nunito variable locale, composants `.carte`,
+  `.tag`, `.bouton`, `.bandeau`, `.section-finale`, thème sombre supprimé).
+  **PDF non migré** : `vintage.tex` garde la palette vert/crème et les
+  polices Latin Modern, à traiter dans une seconde PR `infra/`.
+
 - BTS CIEL 1, services réseau : **un protocole = un chapitre** depuis la
   réorganisation du 2026-11-18 (`06-dhcp`, `07-http`, puis `08-dns` et
   `09-ftp`), chacun avec un diaporama beamer LaTeX (Codex, préambule de
@@ -327,6 +334,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 ## Historique
 
 <!-- Modèle d'entrée :
+
+### 2026-11-19 — infra/charte-encre-papier
+
+- Ressource : aucune (infrastructure : `_brand.yml`, `_quarto.yml`, `_extensions/vintage/`)
+- Demande : application de `DESIGN.md` à toute l'interface, plan validé par l'enseignant (thème sombre supprimé, PDF reporté)
+- Fait : tokens uniques dans `_brand.yml` relus en variables CSS ; Nunito variable (`Nunito-VF.ttf`, 277 Ko, licence OFL, ajout à justifier dans la PR) ; composants SCSS ; `theme-clair.scss` et `theme-sombre.scss` supprimés
+- Vérification : `quarto render --to html` sans erreur (81 pages), captures contrôlées ; PDF non rendus ici (Latin Modern absent de ce TeX Live)
+- Vérificateur, Codex : sans objet (infrastructure)
+- Points à relire par l'enseignant : feuille alternative « dark » encore produite par Quarto (inactive, sans bouton) ; rendu mobile non contrôlé ; suppression du thème sombre ; classes de composants pas encore utilisées dans les `.qmd`
 
 ### AAAA-MM-JJ — <branche>
 
