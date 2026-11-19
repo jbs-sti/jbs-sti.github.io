@@ -19,9 +19,9 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   protocole, **toutes vers `main`** (l'empilement a échoué : #103,
   DNS, a été fusionnée dans la branche de la réorganisation après celle-ci ;
   report vers `main` par #104). **DNS** : #103 puis #104. **FTP**
-  (`cours/bts1-ftp`) : PR ouverte, partie de la branche de #104. **En
-  cours** (worktrees `/home/admin/jbs-<protocole>`) : ARP (cours-arp
-  supprimé), DHCP (réécrit en place, cours-dhcp supprimé, aliases),
+  (`cours/bts1-ftp`) : #105, partie de la branche de #104. **ARP**
+  (`cours/bts1-arp-diaporama`) : PR ouverte, partie de la branche de #105.
+  **En cours** (worktrees `/home/admin/jbs-<protocole>`) : DHCP (réécrit en place, cours-dhcp supprimé, aliases),
   TCP/UDP (cours-tcp-udp publié supprimé, aliases vers le diaporama, qui
   reste brouillon : l'ancienne adresse ne redirige qu'après sa
   publication), HTTP (réécrit en place). Exemples des diaporamas :
@@ -334,6 +334,23 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-19 — cours/bts1-arp-diaporama
+
+- Demande de l'enseignant : un beamer « premier principe » par protocole,
+  anciens cours supprimés (« oui supprime »).
+- Ressource : `bts1/reseaux/04-arp/cours-diaporama-arp/` (Codex, 14
+  diapositives, référence : `07-http/cours-diaporama-http`) ; l'ancien
+  `cours-arp` (brouillon, jamais publié) est supprimé, sans alias.
+- Vérificateur : CONFORME au 2e passage, puis vérification finale
+  CONFORME après relecture (quatre finitions contrôlées à l'image).
+- Relecture croisée par le relecteur : R1 gardée ; A1-A9 (MAC de
+  diffusion dans l'étiquette, MAC de l'émetteur dans la requête, trois
+  écritures de FF:FF:FF:FF:FF:FF, cache avant la méthode, « table ARP »)
+  corrigés par Codex.
+- Points à relire par l'enseignant : la diapositive 4 donne la réponse à
+  la question 4 du TP4 (MAC de destination de la requête ARP), demandée
+  par la consigne ; ancre `#section-2.3.2.1` de la RFC 1122 non vérifiée.
 
 ### 2026-11-19 — cours/bts1-ftp
 
