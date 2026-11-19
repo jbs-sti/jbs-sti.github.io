@@ -1,4 +1,4 @@
-% BTS CIEL 1 — Services réseau — 1/4 : DHCPv4
+% BTS CIEL 1 — Réseaux — 06 — DHCP
 % Compiler deux fois avec XeLaTeX depuis fichiers/.
 \documentclass[aspectratio=169,11pt]{beamer}
 \usepackage{fontspec}
@@ -44,535 +44,196 @@
   \centering\begin{tikzpicture}[>=Stealth]
 }{\end{tikzpicture}\end{beamercolorbox}}
 \title{Le protocole DHCP}
-\subtitle{BTS CIEL 1 · Services réseau · 1/4}
-\author{}
-\date{}
+\subtitle{BTS CIEL 1 · Réseaux · 06 — DHCP}
+\author{} \date{}
 \begin{document}
-
-% 1 — Introduction commune aux quatre séances.
 \begin{frame}[plain]
-  \vfill
-  \etiquette{Configuration IPv4 automatique}\par\bigskip
-  {\Huge\bfseries Le protocole DHCP}\par\bigskip
-  {\Large BTS CIEL 1 · Services réseau · 1/4}\par\bigskip
-  \begin{schema}
-    \node[boite] (pc) {PC branché\\configuration ?};
-    \node[boite,right=3cm of pc] (s) {Serveur DHCP\\configuration proposée};
-    \draw[flux] (pc)--node[above]{demande} (s);
-  \end{schema}
-  \vfill
+\etiquette{Configurer automatiquement les postes}\par\bigskip
+{\Huge\bfseries Le protocole DHCP}\par\bigskip
+{\Large BTS CIEL 1 · Réseaux · 06 — DHCP}\par\bigskip
+\begin{schema}
+\node[boite,text width=4cm,minimum height=2cm,font=\large] (a) {Poste};
+\node[boite,text width=4cm,minimum height=2cm,font=\large,right=4cm of a] (b) {Serveur DHCP};
+\draw[flux] ([yshift=5mm]a.east)--node[above]{demande} ([yshift=5mm]b.west);
+\draw[flux] ([yshift=-5mm]b.west)--node[below]{configuration} ([yshift=-5mm]a.east);
+\end{schema}
 \end{frame}
-
-\begin{frame}{Un réseau sert à rendre des services}
-  Vous branchez votre PC au lycée : vous voulez consulter un cours.
-  Quel programme vous fournit ce service ?
-  \begin{schema}
-    \node[boite] (c) {Client\\navigateur du PC};
-    \node[boite,right=4cm of c] (s) {Serveur Web\\fournit la page};
-    \draw[flux] ([yshift=2mm]c.east)--node[above]{demande de page}
-      ([yshift=2mm]s.west);
-    \draw[flux,dashed] ([yshift=-2mm]s.west)--node[below]{page reçue}
-      ([yshift=-2mm]c.east);
-  \end{schema}
-  \begin{block}{Pour reconnaître les rôles}
-    1. Repérez qui demande : le client.\quad
-    2. Repérez qui répond : le serveur.
-  \end{block}
+\begin{frame}{Trente postes à configurer}
+\question{Comment éviter les erreurs de saisie et les adresses en double ?}
+\begin{schema}
+\node[boite,text width=3cm,minimum height=2.5cm,font=\normalsize] (a) at (0,0) {30 postes\\4 paramètres chacun};
+\node[boite,text width=3cm,minimum height=2.5cm,font=\normalsize] (b) at (5,0) {Saisie manuelle\\répétée};
+\node[boite,text width=3cm,minimum height=2.5cm,font=\normalsize] (c) at (10,0) {Erreurs ou\\conflits d'adresses};
+\draw[flux] (a)--(b); \draw[flux] (b)--(c);
+\end{schema}
 \end{frame}
-
-\begin{frame}{Un serveur : une machine ou un logiciel ?}
-  Un seul ordinateur peut rendre plusieurs services.
-  Il héberge alors plusieurs logiciels serveurs.
-  \begin{schema}
-    \draw[thick,rounded corners] (-6,-1.1) rectangle (6,1.8);
-    \node at (0,1.35) {Serveur matériel : ordinateur et système d'exploitation};
-    \node[boite] at (-4,0) {Logiciel DHCP\\configure les clients};
-    \node[boite] at (0,0) {Logiciel HTTP\\fournit des pages};
-    \node[boite] at (4,0) {Logiciel DNS\\résout des noms};
-  \end{schema}
-  \begin{block}{Méthode}
-    Distinguez la machine qui héberge du programme qui rend le service.
-  \end{block}
+\begin{frame}{Une adresse prêtée comme une chambre}
+\question{Comment attribuer une chambre disponible pour un séjour ?}
+\begin{schema}
+\node[boite,text width=4cm,minimum height=2.5cm,font=\normalsize] (a) at (0,0) {Client de l'hôtel\\demande une chambre};
+\node[boite,text width=4cm,minimum height=2.5cm,font=\normalsize] (b) at (8,0) {Accueil\\prête une clé\\pour une durée};
+\draw[flux] ([yshift=5mm]a.east)--node[above]{1. demande} ([yshift=5mm]b.west);
+\draw[flux,dashed] ([yshift=-5mm]b.west)--node[below]{2. attribution} ([yshift=-5mm]a.east);
+\end{schema}
+DHCP prête une adresse pour une durée : le bail.
 \end{frame}
-
-\begin{frame}{Protocole : comment ? Serveur : qui ?}
-  Pour acheter du pain, vous utilisez une langue comprise du boulanger.
-  La langue ne fabrique pas le pain : le boulanger rend le service.
-  \begin{schema}
-    \node[boite] (c) {Vous\\« Une baguette, s'il vous plaît. »};
-    \node[boite,right=4cm of c] (s) {Boulanger\\vous sert le pain};
-    \draw[flux] (c)--node[above,align=center]{français et règles\\de politesse} (s);
-  \end{schema}
-  \begin{block}{Transposez au réseau}
-    1. Identifiez les règles d'échange : le \textbf{protocole}.\\
-    2. Identifiez le logiciel qui les applique : le \textbf{serveur}.
-  \end{block}
+\begin{frame}{DORA : un poste obtient son adresse}
+\begin{schema}
+\node[font=\normalsize] at (0,3.3) {Poste};
+\node[font=\normalsize] at (9,3.3) {Serveur DHCP};
+\draw[thin,gray] (0,3.0)--(0,.1); \draw[thin,gray] (9,3.0)--(9,.1);
+\draw[flux,dashed] (0,2.7)--node[above,fill=creme,inner sep=2pt]{1. Discover : recherche} (9,2.7);
+\draw[flux] (9,1.9)--node[above,fill=creme,inner sep=2pt]{2. Offer : .100 proposé} (0,1.9);
+\draw[flux,dashed] (0,1.1)--node[above,fill=creme,inner sep=2pt]{3. Request : choix} (9,1.1);
+\draw[flux] (9,.3)--node[above,fill=creme,inner sep=2pt]{4. Ack (Acknowledge : accusé de réception)} (0,.3);
+\end{schema}
+{\small Réseau : \texttt{192.168.10.0/24}.\\
+Pointillés : diffusion. Trait plein : envoi au poste.\\
+Offer et Ack peuvent aussi être diffusés.\\
+DHCP utilise UDP : client 68, serveur 67.}
 \end{frame}
-
-\begin{frame}{Quatre services, quatre protocoles}
-  \renewcommand{\arraystretch}{1.6}
-  \begin{beamercolorbox}[sep=10pt]{block body}
-  \centering
-  \begin{tabular}{lll}
-    \textbf{Service} & \textbf{Protocole (règles)} & \textbf{Serveur (rôle)}\\\hline
-    Web & HTTP (GET, POST...) & Serveur HTTP (ex : Apache)\\
-    Fichiers & FTP (put, get, rename...) & Serveur FTP (Stockage)\\
-    Adressage & DHCP (DORA) & Serveur DHCP (Distributeur d'IP)\\
-    Noms & DNS (nom $\rightarrow$ adresse IP) & Serveur DNS (Annuaire)\\
-  \end{tabular}
-  \end{beamercolorbox}
-  \bigskip
-  Pour une page Web, vous utilisez HTTP ; Apache peut appliquer ces règles.
+\begin{frame}{Lire un échange DORA}
+\begin{schema}
+\node at (0,3) {Poste};
+\node at (7,3) {Serveur};
+\draw[flux,dashed] (0,2.4)--node[above]{1. diffusion} (7,2.4);
+\draw[flux] (7,1.6)--node[above]{2. offre} (0,1.6);
+\draw[flux,dashed] (0,.8)--node[above]{3. choix} (7,.8);
+\draw[flux] (7,0)--node[above]{4. confirmation} (0,0);
+\end{schema}
+\begin{block}{Méthode}
+\small
+1. Repérez qui diffuse.\\
+2. Repérez l'offre.\\
+3. Repérez le choix du client.\\
+4. Attendez l'Ack avant d'utiliser l'adresse.
+\end{block}
 \end{frame}
-
-\begin{frame}{Les quatre couches TCP/IP}
-  Pour envoyer une demande, les applications s'appuient sur les couches inférieures.
-  \begin{schema}
-    \node[boite,text width=10.8cm] (a) at (0,3.3)
-      {\textbf{Application} : DHCP, DNS, HTTP, FTP};
-    \node[boite,text width=10.8cm] (t) at (0,2.2)
-      {\textbf{Transport} : UDP (DHCP, DNS) ; TCP (HTTP, FTP)};
-    \node[boite,text width=10.8cm] (i) at (0,1.1)
-      {\textbf{Internet} : IP — adressage et routage};
-    \node[boite,text width=10.8cm] (r) at (0,0)
-      {\textbf{Accès réseau} : Ethernet, Wi-Fi — transmission sur le lien};
-    \draw[flux] (5.9,3.7)--node[right]{envoi} (5.9,-.3);
-  \end{schema}
-  \small Pour lire la pile : partez du service, puis descendez jusqu'au lien.
+\begin{frame}{Quatre paramètres pour communiquer}
+\begin{beamercolorbox}[sep=12pt,rounded=true]{block body}
+\centering\renewcommand{\arraystretch}{1.7}
+\begin{tabular}{lll}
+\textbf{Paramètre} & \textbf{Exemple} & \textbf{Rôle}\\\hline
+Adresse IPv4 & \texttt{192.168.10.100} & Identifier le poste\\
+Masque & \texttt{255.255.255.0} & Repérer le réseau local\\
+Passerelle & \texttt{192.168.10.1} & Joindre d'autres réseaux\\
+Serveur DNS & \texttt{192.168.10.2} & Résoudre les noms\\
+\end{tabular}
+\end{beamercolorbox}
+DHCP fournit l'adresse du serveur DNS ; DNS répond aux demandes de noms.
 \end{frame}
-
-\begin{frame}{Un port : retrouver le bon programme}
-  Une machine héberge plusieurs services. L'adresse IP désigne la machine ;
-  le port aide à identifier l'application.
-  \begin{schema}
-    \node[boite,text width=3.3cm] (c) {Client Web\\port temporaire 50532};
-    \node[boite,right=4cm of c] (s) {Serveur HTTP\\port 80};
-    \draw[flux] ([yshift=2mm]c.east)--node[above]{requête TCP}
-      ([yshift=2mm]s.west);
-    \draw[flux,dashed] ([yshift=-2mm]s.west)--node[below]{réponse vers 50532}
-      ([yshift=-2mm]c.east);
-  \end{schema}
-  \begin{block}{Lire un échange}
-    1. Repérez le transport.\quad 2. Lisez le port source.\\
-    3. Lisez le port destination : ici TCP, 50532 vers 80.
-  \end{block}
-  \small Ports bien connus : 0 à 1023.
-  Ports éphémères du client : au-dessus de 1023.
+\begin{frame}{Réserver les adresses fixes}
+\begin{schema}
+\path (0,-1.5) rectangle (11,2.3);
+\draw[thick] (0,0)--(11,0);
+\node[font=\normalsize,fill=creme] at (3,0) {$\approx$};
+\node[font=\normalsize,fill=creme] at (9.5,0) {$\approx$};
+\foreach \x/\label in {0/.1,1/.2,5/.100,8/.119,11/.254}
+  \draw (\x,-.12)--(\x,.12) node[below=4pt] {\label};
+\draw[line width=3pt] (0,.35)--(1,.35);
+\node[above,align=center] at (.5,.45) {adresses fixes\\(.1, .2)};
+\draw[line width=3pt] (5,.35)--(8,.35);
+\node[above] at (6.5,.45) {pool .100 à .119};
+\end{schema}
+La passerelle utilise \texttt{192.168.10.1}.\\
+Le serveur DHCP et DNS utilise \texttt{192.168.10.2} : il assure les deux rôles.\\
+Le pool est la plage à prêter. Les adresses fixes restent hors du pool.
 \end{frame}
-
-\begin{frame}{Les ports à reconnaître dans ce chapitre}
-  \renewcommand{\arraystretch}{1.35}
-  \begin{beamercolorbox}[sep=9pt]{block body}
-  \centering
-  \begin{tabular}{lll}
-    \textbf{Protocole} & \textbf{Ports usuels} & \textbf{Transport étudié}\\\hline
-    DHCPv4 & 67 serveur / 68 client & UDP\\
-    DNS & 53 serveur & UDP\\
-    HTTP / HTTPS & 80 / 443 serveur & TCP\\
-    FTP & 21 commandes / 20 données & TCP\\
-  \end{tabular}
-  \end{beamercolorbox}
-  \begin{block}{À distinguer}
-    Le client HTTP choisit un port éphémère.
-    Le client DHCP utilise le port prévu : \textbf{68}.
-  \end{block}
+\begin{frame}{Compter les adresses du pool}
+\begin{schema}
+\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (a) at (0,0) {Début : .100};
+\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (b) at (5,0) {Fin : .119};
+\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (c) at (10,0) {20 adresses};
+\draw[flux] (a)--(b); \draw[flux] (b)--(c);
+\end{schema}
+\begin{block}{Méthode : plage dans un même /24}
+1. Relevez le dernier nombre de chaque adresse.\\
+2. Calculez fin $-$ début.\\
+3. Ajoutez 1 pour compter les deux extrémités.\\
+Exemple : $119-100+1=20$.
+\end{block}
 \end{frame}
-
-\begin{frame}{Notre parcours : quatre séances}
-  \begin{schema}
-    \node[boite,text width=10cm] at (0,3.6)
-      {\textbf{1. DHCP} — obtenir sa configuration IPv4};
-    \node[boite,text width=10cm] at (0,2.4)
-      {\textbf{2. HTTP} — demander une page Web};
-    \node[boite,text width=10cm] at (0,1.2)
-      {\textbf{3. DNS} — trouver une adresse à partir d'un nom};
-    \node[boite,text width=10cm] at (0,0)
-      {\textbf{4. FTP} — envoyer et récupérer des fichiers};
-  \end{schema}
+\begin{frame}{Le bail se renouvelle}
+\begin{schema}
+\path (0,-1.9) rectangle (10,1.9);
+\node[boite,text width=2.5cm,minimum height=2.5cm,font=\normalsize] (a) at (0,0) {Adresse attribuée\\pour 8 heures};
+\node[boite,text width=2.5cm,minimum height=2.5cm,font=\normalsize] (b) at (5,0) {Le poste demande\\à renouveler};
+\node[boite,text width=2.5cm,minimum height=2.5cm,font=\normalsize] (c) at (10,0) {Le serveur\\confirme\\le nouveau bail};
+\draw[flux] (a)--node[above,align=center,font=\small]{1. à mi-bail\\(4 h)} (b); \draw[flux] (b)--(c);
+\node[font=\small,align=center] at (7.5,1.65) {2. nouveau bail : 8 h à partir de maintenant};
+\end{schema}
+Sans renouvellement avant expiration, le poste cesse d'utiliser l'adresse.
 \end{frame}
-
-% 2 — DHCPv4 : problème, exemple, puis méthode.
-\begin{frame}{Trente postes à configurer à la main ?}
-  Un PC neuf est branché, sans configuration IPv4 utilisable.
-  Il ne peut pas encore échanger normalement avec les autres postes.
-  \begin{schema}
-    \node[boite] (p) {PC0\\IP ? Masque ?\\Passerelle ? DNS ?};
-    \node[boite,right=3cm of p] (a) {Saisie manuelle\\sur 30 postes};
-    \draw[flux] (p)--(a);
-  \end{schema}
-  \begin{block}{Le problème}
-    Une faute de saisie bloque un poste. Un doublon d'adresse crée un conflit.\\
-    \textbf{DHCP automatise la distribution d'une configuration cohérente.}
-  \end{block}
+\begin{frame}{Renouveler sous Windows}
+\begin{schema}
+\node[boite,text width=4cm,minimum height=2.5cm,font=\normalsize] (a) at (0,0) {1. Libérer le bail\\\texttt{ipconfig /release}};
+\node[boite,text width=4cm,minimum height=2.5cm,font=\normalsize] (b) at (8,0) {2. Demander à nouveau\\\texttt{ipconfig /renew}};
+\draw[flux] (a)--(b);
+\end{schema}
+Dans l'invite de commandes Windows, ces commandes agissent sur les cartes réseau configurées par DHCP.
 \end{frame}
-
-\begin{frame}{Exemple : le réseau du TP Packet Tracer}
-  \begin{schema}
-    \node[boite,text width=3.4cm] (sw) at (0,1.4) {Switch\\réseau 192.168.1.0/24};
-    \node[boite,text width=3.2cm] (s) at (4.7,1.4)
-      {Serveur DHCP\\192.168.1.250/24};
-    \draw[thick] (sw)--(s);
-    \foreach \x/\n in {-4.8/0,-1.6/1,1.6/2,4.8/3}{
-      \node[boite,text width=1.9cm] (pc\n) at (\x,-.3) {PC\n};
-      \draw (sw.south)--(pc\n.north);
-    }
-  \end{schema}
-  \begin{block}{PC0 reçoit dans cet exemple}
-    IP : \texttt{192.168.1.1} ; masque : \texttt{255.255.255.0}\\
-    Passerelle : \texttt{192.168.1.254} ; DNS : \texttt{192.168.1.253}
-  \end{block}
-  \small Les équipements passerelle et DNS ne sont pas dessinés.
-  L'adresse reçue dépend des adresses disponibles.
+\begin{frame}[t]{Pas de réponse : vérifier la configuration}
+\setlength{\parskip}{0pt}
+\vspace{4pt}
+\begin{schema}
+\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (a) at (0,0) {Poste\\169.254.12.7};
+\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (b) at (8,0) {Serveur DHCP\\service arrêté};
+\draw[flux,dashed] (a)--node[above,font=\small]{Discover sans réponse} (b);
+\end{schema}
+{\small Sans réponse DHCP, Windows peut choisir une adresse APIPA.\\
+Le poste ne joint que ses voisins en 169.254. Sans passerelle, il ne sort pas du réseau local.}
+\vspace{4pt}
+{\small\textbf{Diagnostic :}\\
+1. Vérifiez le câble et les voyants.\\
+2. Packet Tracer : activez le service (Services > DHCP > On).\\
+3. Windows : lancez \texttt{ipconfig /renew}.}
 \end{frame}
-
-\begin{frame}{Quatre paramètres, quatre rôles}
-  PC0 reçoit une configuration ; chaque valeur répond à une question.
-  \renewcommand{\arraystretch}{1.5}
-  \begin{beamercolorbox}[sep=9pt]{block body}
-  \centering\small
-  \begin{tabular}{lll}
-    \textbf{Paramètre} & \textbf{Valeur pour PC0} & \textbf{À quoi sert-il ?}\\\hline
-    Adresse IPv4 & \texttt{192.168.1.1} & Identifier l'interface du PC\\
-    Masque & \texttt{255.255.255.0} & Délimiter le réseau local\\
-    Passerelle & \texttt{192.168.1.254} & Joindre les autres réseaux\\
-    Serveur DNS & \texttt{192.168.1.253} & Résoudre les noms en adresses\\
-  \end{tabular}
-  \end{beamercolorbox}
-  \begin{block}{Méthode de lecture}
-    Lisez IP et masque, puis passerelle et DNS.
-    Ici, le réseau de PC0 est \texttt{192.168.1.0/24}.
-  \end{block}
+\begin{frame}{À vous : interpréter un échange}
+\question{Le poste peut-il utiliser l'adresse proposée ? Pourquoi ?}
+\begin{schema}
+\node[boite,text width=3cm,minimum height=2.5cm,font=\normalsize] (a) at (0,0) {Poste\\Discover envoyé};
+\node[boite,text width=4cm,minimum height=2.5cm,font=\normalsize] (b) at (8,0) {Serveur\\Offer : \texttt{192.168.10.105}};
+\draw[flux,dashed] ([yshift=5mm]a.east)--node[above]{1. Discover} ([yshift=5mm]b.west);
+\draw[flux] ([yshift=-5mm]b.west)--node[below]{2. Offer} ([yshift=-5mm]a.east);
+\end{schema}
 \end{frame}
-
-
-
-\begin{frame}{DORA : quatre messages pour commencer}
-  \begin{schema}
-    \node at (0,4.4) {\textbf{Client PC0}};
-    \node at (9,4.4) {\textbf{Serveur DHCP}};
-    \draw[dashed] (0,4)--(0,-.15);
-    \draw[dashed] (9,4)--(9,-.15);
-    \draw[flux] (0,3.7)--node[above]{1. Discover : « Qui peut me configurer ? »} (9,3.7);
-    \draw[flux] (9,2.6)--node[above]{2. Offer : « Je propose 192.168.1.1. »} (0,2.6);
-    \draw[flux] (0,1.5)--node[above]{3. Request : « Je demande cette offre. »} (9,1.5);
-    \draw[flux] (9,.4)--node[above]{4. Acknowledge (ACK) : « Attribution confirmée. »} (0,.4);
-  \end{schema}
-  \small DORA décrit une attribution initiale réussie. Offer propose ; ACK confirme.
+\begin{frame}{Correction : attendre la confirmation}
+\begin{schema}
+\node[boite,text width=3cm,minimum height=2.5cm,font=\normalsize] (a) at (0,0) {Offer\\proposition};
+\node[boite,text width=3cm,minimum height=2.5cm,font=\normalsize] (b) at (5,0) {Request\\choix du client};
+\node[boite,text width=3cm,minimum height=2.5cm,font=\normalsize] (c) at (10,0) {Ack\\confirmation};
+\draw[flux] (a)--(b); \draw[flux] (b)--(c);
+\end{schema}
+Non : l’offre ne suffit pas. Le Request annonce le choix du poste ; l’Ack confirme le bail.
 \end{frame}
-
-\begin{frame}{Discover : demander sans adresse IPv4}
-  PC0 ne connaît aucun serveur. Il diffuse sa recherche sur le réseau local.
-  \begin{schema}
-    \node[boite,text width=3.6cm] (c) {Client sans adresse\\\texttt{0.0.0.0}\\UDP source \textbf{68}};
-    \node[boite,text width=4cm,right=3cm of c] (b)
-      {Diffusion locale\\\texttt{255.255.255.255}\\UDP destination \textbf{67}};
-    \draw[flux] (c)--node[above]{Discover} (b);
-  \end{schema}
-  \begin{block}{Méthode pour expliquer la diffusion}
-    1. Le client n'a pas encore de configuration utilisable.\\
-    2. Il ne connaît pas l'adresse du serveur.\\
-    3. Il envoie donc à tous sur le lien pour trouver un serveur.
-  \end{block}
+\begin{frame}{À vous : dimensionner une plage}
+\question{Combien d'adresses cette plage contient-elle ?}
+\begin{schema}
+\node[boite,text width=4cm,minimum height=2.5cm,font=\normalsize] (a) at (0,0) {Première adresse\\\texttt{192.168.20.40}};
+\node[boite,text width=4cm,minimum height=2.5cm,font=\normalsize] (b) at (8,0) {Dernière adresse\\\texttt{192.168.20.69}};
+\draw[flux] (a)--node[above]{plage inclusive} (b);
+\end{schema}
 \end{frame}
-
-\begin{frame}{Lire DORA sans tout confondre}
-  Dans notre exemple, le serveur propose \texttt{192.168.1.1} à PC0.
-  Une offre seule ne suffit pas pour utiliser cette adresse.
-  \begin{enumerate}
-    \item Repérez Discover : le client cherche des serveurs.
-    \item Repérez Offer : un serveur propose une configuration.
-    \item Repérez Request : le client diffuse son choix initial.
-    \item Repérez ACK : le serveur confirme l'attribution.
-  \end{enumerate}
-  \begin{block}{Attention aux destinations}
-    Offer et ACK peuvent être diffusés ou envoyés directement au client.\\
-    Ne supposez pas que tous les messages sont toujours diffusés.
-  \end{block}
+\begin{frame}{Correction : compter les deux extrémités}
+\begin{schema}
+\node[boite,text width=3cm,minimum height=2.5cm,font=\normalsize] (a) at (0,0) {Fin : 69\\Début : 40};
+\node[boite,text width=3cm,minimum height=2.5cm,font=\normalsize] (b) at (5,0) {$69-40=29$\\écarts};
+\node[boite,text width=3cm,minimum height=2.5cm,font=\normalsize] (c) at (10,0) {$29+1=30$\\adresses};
+\draw[flux] (a)--(b); \draw[flux] (b)--(c);
+\end{schema}
+Les adresses de début et de fin sont toutes deux comptées.
 \end{frame}
-
-\begin{frame}{Recevoir des paramètres ne garantit pas tout}
-  PC0 connaît le DNS \texttt{192.168.1.253}.
-  Mais un serveur DNS arrêté ne répondra pas.
-  \begin{schema}
-    \node[boite] (d) {DHCP\\annonce les paramètres};
-    \node[boite,right=3.5cm of d] (n) {DNS et passerelle\\doivent répondre};
-    \draw[flux,dashed] (d)--node[above]{rôles distincts} (n);
-  \end{schema}
-  \begin{block}{Méthode}
-    1. Vérifiez les paramètres reçus.\\
-    2. Vérifiez ensuite les services et la connectivité nécessaires.\\
-    Une attribution DHCP ne prouve pas un accès Internet.
-  \end{block}
-\end{frame}
-
-\begin{frame}{Le pool : quelles adresses peut-on prêter ?}
-  Sur \texttt{192.168.1.0/24}, les hôtes vont de \texttt{.1} à \texttt{.254}.
-  Il faut protéger les adresses déjà utilisées par les équipements fixes.
-  \begin{schema}
-    \node[boite,text width=5.3cm] (p) at (-2.9,1.2)
-      {\textbf{Pool : .1 à .249}\\249 adresses distribuables};
-    \node[boite,text width=4cm,dashed] at (3.4,1.2)
-      {\textbf{Fixes : .250 à .254}\\5 adresses hors du pool};
-    \node at (0,-.1) {.0 : adresse réseau \qquad .255 : diffusion du sous-réseau};
-  \end{schema}
-  \begin{block}{Calcul sur cet exemple}
-    254 adresses d'hôtes $-$ 5 adresses fixes $=$ \textbf{249 adresses}.
-  \end{block}
-\end{frame}
-
-\begin{frame}{Dimensionner le pool : une méthode réutilisable}
-  \textbf{Exemple hors TP : une petite salle de 50 postes.}
-  \begin{enumerate}
-    \item Déterminez les adresses d'hôtes avec le masque : ici .1 à .254.
-    \item Listez les adresses fixes : ici .250 à .254.
-    \item Choisissez une plage sans ces adresses : ici .10 à .59.
-    \item Nombre d'adresses = dernière $-$ première $+ 1$ :\\
-      $59 - 10 + 1 = 50$.
-  \end{enumerate}
-  \begin{block}{Dans Packet Tracer (Server-PT) — Services > DHCP}
-    \textbf{Start IP Address} : \texttt{192.168.1.10}\\
-    \textbf{Subnet Mask} : \texttt{255.255.255.0}\\
-    \textbf{Maximum Number of Users} : \texttt{50}
-  \end{block}
-  \small Renseignez aussi passerelle \texttt{192.168.1.254}
-  et DNS \texttt{192.168.1.253}. La plage doit suffire aux clients simultanés.
-\end{frame}
-
-\begin{frame}{Pourquoi les serveurs gardent-ils une adresse fixe ?}
-  PC0 doit retrouver le DNS à l'adresse annoncée par DHCP.
-  Si cette adresse change sans mise à jour, ses demandes échouent.
-  \renewcommand{\arraystretch}{1.25}
-  \begin{beamercolorbox}[sep=8pt]{block body}
-  \centering
-  \begin{tabular}{ll}
-    \textbf{Équipement du chapitre} & \textbf{Adresse fixe}\\\hline
-    Serveur DHCP & \texttt{192.168.1.250}\\
-    Serveur HTTP & \texttt{192.168.1.251}\\
-    Serveur FTP & \texttt{192.168.1.252}\\
-    Serveur DNS & \texttt{192.168.1.253}\\
-    Passerelle & \texttt{192.168.1.254}\\
-  \end{tabular}
-  \end{beamercolorbox}
-  \small Ici : configurez ces adresses statiquement, puis gardez-les hors du pool.
-  Le client trouve initialement DHCP par diffusion.
-\end{frame}
-
-\begin{frame}{Le bail : une adresse prêtée, pas donnée}
-  Un élève rejoint le Wi-Fi, puis repart. Son adresse ne doit pas rester occupée indéfiniment.
-  \begin{schema}
-    \draw[flux] (0,0)--(11,0);
-    \foreach \x/\t in {0/Attribution,5/Renouvellement,10/Fin prévue}{
-      \draw (\x,-.15)--(\x,.15);
-      \node[anchor=base,align=center] at (\x,.25) {\t};
-    }
-    \node[below,align=center] at (5,-.3)
-      {Le client demande une prolongation avant la fin.\\
-       Un ACK renouvelle le bail.};
-  \end{schema}
-  \begin{block}{Exemple : bail initial de 8 heures}
-    1. À 8 h, PC0 reçoit l'adresse : fin prévue à 16 h.\\
-    2. Avant 16 h, il tente de renouveler.\\
-    3. Sans renouvellement réussi, il cesse de l'utiliser à 16 h.
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]{Vérifier et renouveler côté Windows}
-  \etiquette{Plateforme : Windows, invite de commandes}
-  \begin{lstlisting}[style=webcode,language={}]
-ipconfig /all
-ipconfig /release
-ipconfig /renew
-\end{lstlisting}
-  \begin{enumerate}
-    \item \texttt{/all} : relevez IPv4, masque, passerelle et DNS.
-    \item \texttt{/release} : libérez la configuration obtenue par DHCP.
-    \item \texttt{/renew} : demandez une configuration par DHCP.
-    \item Relancez \texttt{/all} pour contrôler le résultat.
-  \end{enumerate}
-  \small Sur un poste configuré par DHCP, la libération interrompt sa connectivité IPv4.
-  Un renouvellement peut conserver la même adresse.
-\end{frame}
-
-\begin{frame}[fragile]{Observer sur un PC de Packet Tracer}
-  \etiquette{Plateforme : Cisco Packet Tracer, PC-PT}\par
-  Ouvrez \textbf{Desktop > Command Prompt} sur un PC configuré en DHCP.
-  \begin{lstlisting}[style=webcode,language={}]
-ipconfig /all
-ipconfig /release
-ipconfig /renew
-\end{lstlisting}
-  \begin{block}{Méthode d'observation}
-    1. Relevez les quatre paramètres.\\
-    2. Libérez, puis redemandez la configuration.\\
-    3. Comparez : les paramètres doivent correspondre au pool du TP.
-  \end{block}
-  \small Packet Tracer simule ces commandes ; ses détails peuvent différer de Windows.
-\end{frame}
-
-\begin{frame}{Aucune réponse : une adresse APIPA sous Windows}
-  Si aucun serveur DHCP ne répond au démarrage, Windows peut s'attribuer
-  une adresse \textbf{169.254.x.x} : APIPA (Automatic Private IP Addressing).
-  \begin{schema}
-    \node[boite] (a) {PC A\\169.254.12.7};
-    \node[boite,right=4.5cm of a] (b) {PC B, même lien\\169.254.25.8};
-    \draw[flux,<->] (a)--node[above]{communication locale} (b);
-    \node at ($(a.south)!.5!(b.south)+(0,-.5)$)
-      {Pas d'accès aux autres réseaux avec cette adresse.};
-  \end{schema}
-  \begin{block}{Méthode de diagnostic}
-    1. Repérez \texttt{169.254} au début de l'adresse.\\
-    2. Vérifiez le câble et le commutateur, puis la disponibilité de DHCP.\\
-    3. Après correction, redemandez une configuration.
-  \end{block}
-\end{frame}
-
-\begin{frame}{Pour aller plus loin : un serveur dans un autre réseau}
-  Un routeur ne transmet pas spontanément la diffusion du client (\texttt{255.255.255.255}).
-  Un \textbf{relais DHCP} transmet les demandes au serveur distant, puis remet les réponses.
-  \begin{schema}
-    \node[boite,text width=2.4cm] (c) at (0,0)
-      {Client\\192.168.2.0/24};
-    \node[boite,text width=3.6cm] (r) at (4.6,0)
-      {Routeur / relais\\côté clients : 192.168.2.254};
-    \node[boite,text width=2.9cm] (s) at (9.5,0)
-      {Serveur DHCP\\192.168.1.250};
-    \draw[flux] (c)--node[below=6mm]{diffusion} (r);
-    \draw[flux] (r)--node[below=6mm]{transmission} (s);
-  \end{schema}
-  \par\medskip
-  \small Exemple : clients dans \texttt{192.168.2.0/24}.
-  Le serveur doit disposer d'un pool adapté à ce réseau.
-\end{frame}
-
-\begin{frame}[fragile]{Pour aller plus loin : indiquer le serveur au relais}
-  \etiquette{Plateforme : routeur Cisco IOS}\par
-  Sur l'interface reliée aux clients, en mode configuration d'interface :
-  \begin{lstlisting}[style=webcode,language={}]
-ip helper-address 192.168.1.250
-\end{lstlisting}
-  \begin{enumerate}
-    \item Choisissez l'interface du réseau client.
-    \item Indiquez l'adresse du serveur DHCP distant.
-    \item Prévoyez le pool client et les routes pour les demandes et les réponses.
-  \end{enumerate}
-  \begin{block}{Dans cet exemple}
-    Interface côté clients : \texttt{192.168.2.254/24}.\\
-    Le relais transmet ; le serveur choisit une adresse du pool client.
-  \end{block}
-\end{frame}
-
-
-
-\begin{frame}{À vous : combien d'adresses ?}
-  \question{Un pool va de 192.168.1.40 à 192.168.1.69 incluses.
-    Combien de clients peut-il servir simultanément ?}
-  \bigskip
-  \begin{schema}
-    \node[boite] (a) {Première adresse\\.40};
-    \node[boite,right=4cm of a] (b) {Dernière adresse\\.69};
-    \draw[thick] (a)--node[above]{bornes incluses} (b);
-  \end{schema}
-  \small Supposez toutes ces adresses disponibles, sans exclusion ni conflit.
-\end{frame}
-
-\begin{frame}{Correction : 30 adresses disponibles}
-  \begin{block}{Comptez les deux bornes}
-    Dernière valeur $-$ première valeur $+ 1$\\[2mm]
-    $69 - 40 + 1 = \mathbf{30}$
-  \end{block}
-  \begin{enumerate}
-    \item Repérez la première valeur : 40.
-    \item Repérez la dernière : 69.
-    \item Ajoutez 1 pour inclure les deux extrémités.
-  \end{enumerate}
-  Vous pouvez servir \textbf{30 clients simultanés} avec ce pool.
-\end{frame}
-
-\begin{frame}{À vous : pourquoi diffuser Discover ?}
-  \question{PC0 n'a pas encore d'adresse IPv4 utilisable.
-    Pourquoi ne contacte-t-il pas directement le serveur DHCP ?}
-  \bigskip
-  \begin{schema}
-    \node[boite] (c) {PC0\\IP source ? Port source ?};
-    \node[boite,text width=3.3cm,right=4cm of c] (s) {Recherche DHCP\\IP destination ? Port ?};
-    \draw[flux] (c)--node[above]{Discover} (s);
-  \end{schema}
-\end{frame}
-
-\begin{frame}{Correction : chercher un serveur inconnu}
-  PC0 ne connaît pas encore l'adresse du serveur.
-  Il diffuse pour atteindre les serveurs présents sur son lien.
-  \begin{schema}
-    \node[boite,text width=3.9cm] (c)
-      {\textbf{Source}\\\texttt{0.0.0.0}\\UDP \textbf{68}};
-    \node[boite,text width=3.9cm,right=3cm of c] (s)
-      {\textbf{Destination}\\\texttt{255.255.255.255}\\UDP \textbf{67}};
-    \draw[flux] (c)--node[above]{Discover} (s);
-  \end{schema}
-  \begin{block}{À retenir}
-    Chercher une configuration est possible avant de posséder une adresse utilisable.
-  \end{block}
-\end{frame}
-
-\begin{frame}{À vous : que signifie 169.254.12.7 ?}
-  \question{Un PC Windows affiche 169.254.12.7.
-    Est-ce une adresse du pool du TP ? Que vérifiez-vous ?}
-  \bigskip
-  \begin{schema}
-    \node[boite,text width=4cm] (p) {Adresse observée\\169.254.12.7};
-    \node[boite,text width=4cm,right=2.5cm of p] (d)
-      {Pool prévu\\192.168.1.1 à .249};
-    \draw[dashed,thick] (p)--node[above]{comparez} (d);
-  \end{schema}
-\end{frame}
-
-\begin{frame}{Correction : une adresse locale de secours}
-  \begin{block}{Interprétation dans notre scénario}
-    \texttt{169.254.12.7} est une adresse APIPA, hors du pool du TP.\\
-    Elle suggère l'absence de configuration obtenue par DHCP.
-  \end{block}
-  \begin{enumerate}
-    \item Vérifiez le câble et le commutateur.
-    \item Vérifiez que le serveur DHCP est accessible et son service actif.
-    \item Vérifiez les adresses libres du pool ; puis redemandez un bail.
-  \end{enumerate}
-  Avec APIPA, le poste ne parle qu'aux machines du même lien
-  qui ont aussi une adresse en 169.254.
-\end{frame}
-
 \begin{frame}{À retenir}
-  \begin{enumerate}
-    \item Un protocole définit les règles ; un logiciel serveur rend le service.
-    \item DHCPv4 fournit IP, masque, passerelle et DNS ; il utilise UDP 67/68.
-    \item DORA : Discover, Offer, Request, Acknowledge.
-    \item Le pool exclut les adresses fixes ; le bail limite la durée d'utilisation.
-    \item Sans réponse, Windows peut utiliser APIPA ; entre réseaux, prévoyez un relais.
-  \end{enumerate}
-  \bigskip
-  \etiquette{Séance suivante : HTTP — demander une page Web}
+\begin{schema}
+\node[boite,text width=3cm,minimum height=1.8cm,font=\normalsize] (a) at (0,0) {Poste};
+\node[boite,text width=4cm,minimum height=1.8cm,font=\normalsize] (b) at (9,0) {Serveur DHCP\\pool et baux};
+\draw[flux,<->] (a)--node[above,font=\small]{DORA : attribution initiale} (b);
+\end{schema}
+\begin{block}{Quatre repères}
+DHCP fournit les paramètres IPv4.\\
+DORA : Discover, Offer, Request, Ack ; UDP client 68, serveur 67.\\
+Le pool exclut les adresses fixes ; le bail a une durée.\\
+Une adresse APIPA peut signaler l'absence de réponse DHCP.
+\end{block}
 \end{frame}
-
-\begin{frame}{Sources : DHCP et adressage}
-  \small
-  \begin{itemize}
-    \item \href{https://www.rfc-editor.org/rfc/rfc2131.html}
-      {RFC 2131 — DHCP : \texttt{rfc-editor.org/rfc/rfc2131}}\\
-      Attribution initiale (§3.1), transport et diffusion (§4.1), bail (§4.4.5).
-    \item \href{https://www.rfc-editor.org/rfc/rfc3927.html}
-      {RFC 3927 — IPv4 local : \texttt{rfc-editor.org/rfc/rfc3927}}\\
-      Adresses locales au lien en 169.254/16.
-    \item \href{https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig}
-      {Microsoft Learn — ipconfig}\\
-      \texttt{learn.microsoft.com/en-us/windows-server/}\\
-      \texttt{administration/windows-commands/ipconfig}\\
-      Paramètres /all, /release et /renew sous Windows.
-  \end{itemize}
-  \begin{block}{Supports de l'enseignant}
-    « Protocoles réseaux », préambule et DHCP ;\\
-    « TP DHCP, HTTP, DNS, FTP », introduction et réseau du TP.
-  \end{block}
-\end{frame}
-
-
-
 \end{document}
