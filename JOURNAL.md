@@ -9,15 +9,10 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
-- BTS CIEL 1, chapitre 01 : le TP2 « Création de LAN » est découpé en
-  trois parties (`tp-creation-lan-1`, `-2`, `-3`, order 23 à 25, `draft:
-  true`), d'après le PDF de l'enseignant ; l'ancien TP2 unique du chapitre
-  02 est supprimé (alias dans la partie 1) ; Wireshark passe en order 26.
-  Branche `cours/bts1-reseaux-tp-creation-lan`, PR ouverte. **À faire** :
-  après fusion, branche `cours/bts1-reseaux-tp-creation-lan-publier` pour
-  passer les trois parties en `draft: false` (demande de l'enseignant du
-  2026-11-19). Tant que la publication n'est pas fusionnée, le TP2 n'est
-  plus en ligne.
+- BTS CIEL 1, chapitre 01 : TP2 « Création de LAN » en trois parties
+  (`tp-creation-lan-1`, `-2`, `-3`), PR #110 fusionnée ; publication en
+  cours (branche `cours/bts1-reseaux-tp-creation-lan-publier`, PR ouverte).
+  Le TP2 revient en ligne à la fusion de cette PR.
 
 - BTS CIEL 1, réseaux, chapitres 04 à 09 (demande du 2026-11-18 : « pour
   les cours fait juste un beamer first principle pour chaque protocole »,
@@ -366,6 +361,18 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-19 — cours/bts1-reseaux-tp-creation-lan-publier
+
+- Publication à la demande de l'enseignant (« j'ai fusionné #110, publie
+  les trois parties ») : `tp-creation-lan-1`, `-2`, `-3` passés en
+  `draft: false`. PR des ressources fusionnée au préalable (#110).
+- Seules les trois lignes `draft` et ce journal changent.
+- Contrôles : `quarto render` local en échec à la compilation PDF pour une
+  cause d'environnement (TeX Live local : police `lmroman10-regular`
+  introuvable, sans `sudo`), pas de la ressource ; la CI de la PR
+  (`quarto render` complet puis `verifier_site.py`) fait foi.
+- Points à relire par l'enseignant : résultat de la CI de la PR.
 
 ### 2026-11-18 — cours/bts1-dns
 
