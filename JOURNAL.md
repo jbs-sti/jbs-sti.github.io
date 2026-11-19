@@ -24,10 +24,10 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   **HTTP** (`cours/bts1-http-diaporama`) : #107, partie de la branche de
   #106. **DHCP** (`cours/bts1-dhcp-diaporama`) : PR ouverte, partie de la
   branche de #107.
-  **En cours** (worktrees `/home/admin/jbs-<protocole>`) : DHCP (réécrit en place, cours-dhcp supprimé, aliases),
-  TCP/UDP (cours-tcp-udp publié supprimé, aliases vers le diaporama, qui
-  reste brouillon : l'ancienne adresse ne redirige qu'après sa
-  publication), HTTP (réécrit en place). Exemples des diaporamas :
+  **En cours** (worktree `/home/admin/jbs-tcp-udp`) : TCP/UDP
+  (cours-tcp-udp publié supprimé, aliases vers le diaporama, qui reste
+  brouillon : l'ancienne adresse ne redirige qu'après sa publication).
+  Exemples des diaporamas :
   192.168.10.0/24, example.com, 203.0.113.0/24, 198.51.100.0/24, jamais
   ceux du TP (192.168.1.0/24, DHCP .250, HTTP .251, FTP .252, DNS .253,
   passerelle .254). Lancer Codex en tâche de fond avec `< /dev/null` : sans
