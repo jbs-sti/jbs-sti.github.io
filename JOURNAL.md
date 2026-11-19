@@ -22,11 +22,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   (`cours/bts1-ftp`) : #105, partie de la branche de #104. **ARP**
   (`cours/bts1-arp-diaporama`) : #106, partie de la branche de #105.
   **HTTP** (`cours/bts1-http-diaporama`) : #107, partie de la branche de
-  #106. **DHCP** (`cours/bts1-dhcp-diaporama`) : PR ouverte, partie de la
-  branche de #107.
-  **En cours** (worktree `/home/admin/jbs-tcp-udp`) : TCP/UDP
-  (cours-tcp-udp publié supprimé, aliases vers le diaporama, qui reste
-  brouillon : l'ancienne adresse ne redirige qu'après sa publication).
+  #106. **DHCP** (`cours/bts1-dhcp-diaporama`) : #108, partie de la
+  branche de #107. **TCP/UDP** (`cours/bts1-tcp-udp-diaporama`) : PR
+  ouverte, partie de la branche de #108 ; `cours-tcp-udp` publié supprimé,
+  aliases vers le diaporama, qui reste brouillon : l'ancienne adresse ne
+  redirige qu'après sa publication. **À faire** : fusion des PR #104 à
+  #109 dans l'ordre, puis publication des brouillons (DNS, FTP, ARP,
+  TCP/UDP) à la demande de l'enseignant ; supprimer les worktrees
+  `/home/admin/jbs-*`.
   Exemples des diaporamas :
   192.168.10.0/24, example.com, 203.0.113.0/24, 198.51.100.0/24, jamais
   ceux du TP (192.168.1.0/24, DHCP .250, HTTP .251, FTP .252, DNS .253,
@@ -337,6 +340,22 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-19 — cours/bts1-tcp-udp-diaporama
+
+- Demande de l'enseignant : un beamer « premier principe » par protocole,
+  anciens cours supprimés (« oui supprime »).
+- Ressources : `bts1/reseaux/05-tcp-udp/cours-diaporama-tcp-udp/` (Codex,
+  16 diapositives, brouillon) ; `cours-tcp-udp` (publié) supprimé, ses
+  deux adresses renvoient au diaporama (`aliases`).
+- Vérificateur : 3 passages avant relecture (le 3e a trouvé un PDF non
+  recompilé : recompilé par le chef de projet, pages contrôlées), puis
+  vérification finale À REPRENDRE (la question de la diapositive 11 donnait
+  la réponse), CONFORME au passage suivant ; finitions contrôlées à l'image.
+- Relecture croisée par le relecteur : P1 gardée ; A1 BLOQUANT (DNS classé
+  TCP par l'organigramme) et A2-A10 corrigés par Codex.
+- Points à relire par l'enseignant : tant que le diaporama est en
+  brouillon, l'ancienne adresse du cours TCP/UDP mène à une page vide.
 
 ### 2026-11-19 — cours/bts1-dhcp-diaporama
 
