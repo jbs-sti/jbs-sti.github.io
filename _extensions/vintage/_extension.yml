@@ -7,13 +7,7 @@ quarto-required: ">=1.7.0"
 contributes:
   formats:
     html:
-      theme:
-        light:
-          - theme.scss
-          - theme-clair.scss
-        dark:
-          - theme.scss
-          - theme-sombre.scss
+      theme: theme.scss
     # PDF en LaTeX classique (Latin Modern), compact et lisible en noir et
     # blanc. Les schémas TikZ sont traités par le filtre tikz.lua, déclaré
     # dans _quarto.yml pour servir aussi au HTML.
