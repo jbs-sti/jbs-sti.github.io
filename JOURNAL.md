@@ -335,6 +335,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Vérificateur, Codex : sans objet (infrastructure)
 - Points à relire par l'enseignant : feuille alternative « dark » encore produite par Quarto (inactive, sans bouton) ; rendu mobile non contrôlé ; suppression du thème sombre ; classes de composants pas encore utilisées dans les `.qmd`
 
+### 2026-11-19 — infra/charte-correctif-typst
+
+- Ressource : aucune (infrastructure : `_brand.yml`, `_extensions/vintage/theme.scss`)
+- Cause : la couleur de palette `or` (PR #111) devient l'identifiant Typst `or`, mot réservé : les cours rendus en Typst (`cours-arp`, `cours-dhcp`) ne compilaient plus ; `Publier le site` a échoué sur `main` après la fusion de #111 et la CI de #111 était en échec
+- Correctif : couleur renommée `dore` dans `_brand.yml` (variable CSS `--or` conservée) ; consigne ajoutée en commentaire (jamais de mot réservé comme nom de couleur)
+- Vérification : `quarto render` de cours-arp et cours-dhcp en Typst (DONE), HTML sans erreur
+- Vérificateur, Codex : sans objet (infrastructure)
+- Points à relire par l'enseignant : à fusionner avant les autres PR ; le site n'est plus publié tant que ce correctif n'est pas dans `main`
+
 ### AAAA-MM-JJ — <branche>
 
 - Ressource : <chemin>/index.qmd (référence imitée : <chemin>)
