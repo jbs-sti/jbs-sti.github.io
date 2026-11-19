@@ -85,23 +85,24 @@ FTP organise l'accès et le transfert par le réseau.
 \draw[thick] (0,-0.6)--(0,-4.1); \draw[thick] (7,-0.6)--(7,-4.1);
 \draw[flux] (0,-1.1)--node[above,fill=creme]{1. connexion TCP, port 21} (7,-1.1);
 \draw[flux] (0,-1.8)--node[above,fill=creme]{2. utilisateur et mot de passe} (7,-1.8);
-\draw[flux,dashed] (7,-2.5)--node[above,fill=creme]{accès accepté} (0,-2.5);
-\draw[flux] (0,-3.2)--node[above,fill=creme]{3. demander rapport.txt} (7,-3.2);
-\draw[flux] (7,-3.9)--node[above,fill=creme]{4. fichier rapport.txt} (0,-3.9);
+\draw[flux,dashed] (7,-2.5)--node[above,fill=creme]{3. accès accepté} (0,-2.5);
+\draw[flux] (0,-3.2)--node[above,fill=creme]{4. demander rapport.txt} (7,-3.2);
+\draw[flux] (7,-3.9)--node[above,fill=creme]{5. fichier rapport.txt (connexion de données)} (0,-3.9);
 \end{scope}\end{schema}\end{frame}
 \begin{frame}{Deux connexions TCP}
 \begin{schema}\begin{scope}[scale=1.05,transform shape]
 \node[boite,font=\normalsize] (c) at (0,0) {Client FTP};
 \node[boite,font=\normalsize] (s) at (9,0) {Serveur FTP};
 \draw[flux] ([yshift=3mm]c.east)--node[above=2mm]{commandes : port serveur 21} ([yshift=3mm]s.west);
-\draw[flux] ([yshift=-3mm]s.west)--node[below=2mm]{données : port serveur 20} ([yshift=-3mm]c.east);
-\node[align=center,font=\normalsize] at (4.5,-1.7) {Mode actif : le serveur ouvre\\la connexion de données.};
+\draw[flux] ([yshift=-3mm]s.west)--node[below=2mm]{le serveur ouvre la connexion de données (port 20)} ([yshift=-3mm]c.east);
+\node[align=center,font=\normalsize] at (4.5,-1.7) {Mode actif};
 \end{scope}\end{schema}
 La connexion de commandes reste ouverte. Une liste ou un transfert ouvre une connexion de données.\\
-Mode passif : le client ouvre la connexion de données vers un port indiqué par le serveur. Beaucoup de clients l'utilisent.
+\etiquette{Pour aller plus loin}\par
+En mode passif, le client ouvre la connexion de données vers le serveur.
 \end{frame}
-\begin{frame}{Quel sens pour le fichier ?}
-\begin{schema}\begin{scope}[scale=1.2,transform shape]
+\begin{frame}[t]{Quel sens pour le fichier ?}
+\begin{schema}\begin{scope}[scale=1.3,transform shape]
 \node[boite,font=\normalsize] (c) at (0,0) {Client FTP};
 \node[boite,font=\normalsize] (s) at (7,0) {Serveur FTP};
 \draw[flux] ([yshift=4mm]s.west)--node[above]{télécharger} ([yshift=4mm]c.east);
@@ -109,7 +110,7 @@ Mode passif : le client ouvre la connexion de données vers un port indiqué par
 \node[font=\normalsize] at (3.5,-1.8) {Le sens se lit depuis le client.};
 \end{scope}\end{schema}\end{frame}
 \begin{frame}{Attention au mot de passe}
-\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\begin{schema}\begin{scope}[scale=1.1,transform shape]
 \node[boite,font=\normalsize] (c) at (0,0) {Client FTP};
 \node[boite,font=\normalsize] (s) at (9,0) {Serveur FTP};
 \draw[flux] (c)--node[above=2mm]{identifiant et mot de passe} (s);
@@ -139,39 +140,38 @@ FTP transmet les identifiants en clair. Préférez SFTP (SSH : protocole d’acc
 \question{Pour chaque fichier : quel sens, quel mot et quelle commande ?}
 \begin{schema}\begin{scope}[scale=1.05,transform shape]
 \node[boite,font=\normalsize] (c) at (0,0) {Votre PC};
-\node[boite,font=\normalsize] (s) at (9,0) {Serveur\\de l'entreprise};
+\node[boite,font=\normalsize] (s) at (9,0) {Serveur FTP\\de l'entreprise};
 \draw[thick,dashed] (c)--(s);
-\node[align=center,font=\normalsize] at (4.5,-1.5) {A. Mettre en ligne \texttt{accueil.html} du PC vers le serveur Web.\\[3mm] B. Récupérer sur le PC \texttt{bilan.pdf} déposé sur le serveur.};
+\node[align=center,font=\normalsize] at (4.5,-1.5) {A. Mettre en ligne \texttt{accueil.html} sur le site Web de l'entreprise.\\[3mm] B. Récupérer \texttt{bilan.pdf} qu'un collègue a déposé sur le serveur.};
 \end{scope}\end{schema}\end{frame}
 \begin{frame}{Correction : choisir le sens}
 \begin{schema}\begin{scope}[scale=1.05,transform shape]
 \node[boite,font=\normalsize] (c) at (0,0) {Votre PC};
-\node[boite,font=\normalsize] (s) at (9,0) {Serveur\\de l'entreprise};
+\node[boite,font=\normalsize] (s) at (9,0) {Serveur FTP\\de l'entreprise};
 \draw[flux] ([yshift=3mm]c.east)--node[above=2mm]{\texttt{accueil.html} : téléverser, \texttt{put}} ([yshift=3mm]s.west);
 \draw[flux] ([yshift=-3mm]s.west)--node[below=2mm]{\texttt{bilan.pdf} : télécharger, \texttt{get}} ([yshift=-3mm]c.east);
-\node[align=center,font=\normalsize] at (4.5,-1.8) {A. PC vers serveur Web.\\[3mm] B. Serveur vers PC.};
+\node[align=center,font=\normalsize] at (4.5,-1.8) {A. PC vers serveur FTP.\\[3mm] B. Serveur vers PC.};
 \end{scope}\end{schema}\end{frame}
 \begin{frame}{À vous : diagnostiquer}
 \question{Le port 21 fonctionne, mais la liste échoue. Pourquoi ?}
-\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\begin{schema}\begin{scope}[scale=1.1,transform shape]
 \node[boite,font=\normalsize] (c) at (0,0) {Client FTP};
 \node[boite,font=\normalsize,] (s) at (9,0) {Serveur FTP};
 \draw[flux] ([yshift=3mm]c.east)--node[above=2mm]{1. commandes : OK} ([yshift=3mm]s.west);
 \draw[flux,dashed] ([yshift=-4mm]s.west)--node[below=2mm]{2. liste : échec} ([yshift=-4mm]c.east);
-\node[font=\normalsize] at (4.5,-1.5) {Deux connexions distinctes};
 \end{scope}\end{schema}\end{frame}
 \begin{frame}{Correction : diagnostiquer}
-\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\begin{schema}\begin{scope}[scale=1.1,transform shape]
 \node[boite,font=\normalsize] (c) at (0,0) {Client FTP};
 \node[boite,font=\normalsize,] (s) at (9,0) {Serveur FTP};
 \draw[flux] ([yshift=3mm]c.east)--node[above=2mm]{1. commandes : OK} ([yshift=3mm]s.west);
 \draw[flux,dashed] ([yshift=-4mm]s.west)--node[below=2mm]{2. données : échec} ([yshift=-4mm]c.east);
 \node[font=\normalsize] at (4.5,-1.5) {Deux connexions distinctes};
 \end{scope}\end{schema}
-La liste utilise une deuxième connexion : la connexion de données, distincte de celle du port 21. Elle échoue ici. Un pare-feu peut laisser passer le port 21 et bloquer cette connexion. Un pare-feu est un équipement ou logiciel qui autorise ou bloque des connexions selon des règles.
+La liste passe par une deuxième connexion : la connexion de données. Elle échoue. Un pare-feu laisse passer ou bloque des connexions selon des règles. Il peut autoriser le port 21 et bloquer celle-ci.
 \end{frame}
 \begin{frame}{À retenir}
-\begin{schema}\begin{scope}[scale=1.05,transform shape]
+\begin{schema}\begin{scope}[scale=1.1,transform shape]
 \node[boite,font=\normalsize] (c) at (0,0) {Client FTP};
 \node[boite,font=\normalsize,] (s) at (9,0) {Serveur FTP};
 \draw[flux] ([yshift=3mm]c.east)--node[above=2mm]{commandes : TCP 21} ([yshift=3mm]s.west);

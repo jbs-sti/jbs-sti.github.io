@@ -22,7 +22,7 @@ lang: fr
 ## Document
 
 Ce diaporama présente le transfert de fichiers entre un client et un serveur FTP.
-Il explique les connexions utilisées et les limites de sécurité. Deux questions corrigées terminent la séance.
+Il distingue la connexion de commandes et la connexion de données. Il montre ensuite les limites de sécurité de FTP. Deux questions corrigées terminent la séance.
 
 - **[Télécharger le diaporama (PDF)](fichiers/diaporama-ftp.pdf)**
 - [Source LaTeX du diaporama](fichiers/diaporama-ftp.tex)

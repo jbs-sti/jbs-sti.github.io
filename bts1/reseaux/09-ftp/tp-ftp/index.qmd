@@ -110,7 +110,7 @@ Comme les serveurs HTTP et DNS, le serveur FTP garde une adresse fixe. Les poste
 
 ### Partie B — Activer le service FTP et créer un compte (15 min)
 
-Un serveur FTP ne s'ouvre pas à n'importe qui. Pour s'y connecter, il faut un **compte utilisateur** : un nom et un mot de passe. Chaque compte reçoit aussi des **permissions** : la liste des actions qu'il a le droit de faire sur les fichiers du serveur.
+Votre serveur FTP ne doit pas s'ouvrir à n'importe qui. Pour s'y connecter, il faut un **compte utilisateur** : un nom et un mot de passe. Chaque compte reçoit aussi des **permissions** : la liste des actions qu'il a le droit de faire sur les fichiers du serveur. Attention : en FTP, l'identifiant et le mot de passe circulent en clair sur le réseau (voir le diaporama « Le protocole FTP »). Sur un réseau réel, on préfère SFTP ou FTPS.
 
 1. Sur Server3, ouvrez l'onglet « Services ».
 2. Sélectionnez « FTP » dans la liste des services disponibles.
@@ -142,7 +142,7 @@ Avant de vous connecter, vérifiez que le poste joint bien le serveur.
 ping 192.168.1.252
 ```
 
-Si la première réponse échoue, relancez la commande : le poste doit parfois d'abord découvrir l'adresse MAC du serveur.
+La première réponse peut échouer : le poste découvre d'abord l'adresse MAC du serveur. Si toutes échouent, vérifiez le câblage et l'adressage.
 
 3. Si le ping réussit, ouvrez une session FTP vers le serveur :
 
