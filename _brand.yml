@@ -4,6 +4,8 @@ meta:
 # Charte « encre sur papier » (voir DESIGN.md). Les valeurs hexadécimales
 # ne s'écrivent qu'ici : le SCSS les relit par leur nom, et les pages par
 # les variables CSS --papier, --encre, etc. définies dans theme.scss.
+# Attention : un nom de couleur devient un identifiant Typst (cours rendus
+# en Typst) ; jamais de mot réservé (`or`, `and`, `not`, `in`, `if`…).
 color:
   palette:
     papier: "#F4F2EC"
@@ -13,7 +15,7 @@ color:
     encre-3: "#6E6B62"
     contour: "#8C8980"
     jaune: "#F6D77A"
-    or: "#D9A21B"
+    dore: "#D9A21B"
     bleu: "#9CC3E6"
     rouge: "#C8372D"
     vert: "#2F6B4F"
@@ -25,7 +27,7 @@ color:
   tertiary: encre-3
   success: vert
   info: bleu
-  warning: or
+  warning: dore
   danger: rouge
   light: papier-2
   dark: encre
