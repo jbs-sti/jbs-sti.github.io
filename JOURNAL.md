@@ -16,12 +16,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
   `diaporama-http.tex`, règles dans `.review/beamer-commun.md`, non
   versionné), plus les TP DNS et FTP (sous-agent redacteur, d'après
   `TP_DHCP_HTTP_DNS_FTP.pdf`, parties D et E). Une branche et une PR par
-  protocole, **empilées** : réorganisation (#102) ← DNS ← puis ARP, FTP,
-  DHCP, TCP/UDP, HTTP. **DNS** (`cours/bts1-dns`) : PR ouverte. **En
+  protocole, **toutes vers `main`** (l'empilement a échoué : #103,
+  DNS, a été fusionnée dans la branche de la réorganisation après celle-ci ;
+  report vers `main` par #104). **DNS** : #103 puis #104. **FTP**
+  (`cours/bts1-ftp`) : PR ouverte, partie de la branche de #104. **En
   cours** (worktrees `/home/admin/jbs-<protocole>`) : ARP (cours-arp
-  supprimé), FTP (diaporama + TP), DHCP (réécrit en place, cours-dhcp
-  supprimé, aliases), TCP/UDP (cours-tcp-udp publié à supprimer, aliases
-  à ajouter), HTTP (réécrit en place). Exemples des diaporamas :
+  supprimé), DHCP (réécrit en place, cours-dhcp supprimé, aliases),
+  TCP/UDP (cours-tcp-udp publié supprimé, aliases vers le diaporama, qui
+  reste brouillon : l'ancienne adresse ne redirige qu'après sa
+  publication), HTTP (réécrit en place). Exemples des diaporamas :
   192.168.10.0/24, example.com, 203.0.113.0/24, 198.51.100.0/24, jamais
   ceux du TP (192.168.1.0/24, DHCP .250, HTTP .251, FTP .252, DNS .253,
   passerelle .254). Lancer Codex en tâche de fond avec `< /dev/null` : sans
@@ -331,6 +334,24 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-19 — cours/bts1-ftp
+
+- Demande de l'enseignant : TP de `TP_DHCP_HTTP_DNS_FTP.pdf` (partie E,
+  questions 5 à 7) et un beamer « premier principe » par protocole.
+- Ressources : `bts1/reseaux/09-ftp/index.qmd` (deux listes),
+  `cours-diaporama-ftp/` (Codex, 14 diapositives), `tp-ftp/` (redacteur,
+  6 captures, Server3 en .252, PC2 client, 1 h 30).
+- Vérificateur : diaporama CONFORME après 2 passages, puis vérification
+  finale CONFORME après relecture (deux finitions contrôlées à l'image) ;
+  TP CONFORME.
+- Relecture croisée : diaporama par le relecteur (R1 gardée, A1-A6 corrigés
+  par Codex) ; TP par Codex (aucune réécriture ; A1 BLOQUANT et A2
+  corrigés par le redacteur).
+- Points à relire par l'enseignant : mode actif ou passif de Packet
+  Tracer non vérifié ; compte « btsciel » sur une capture au lieu de
+  `btciel` ; bouton « OK » et non « Save » ; la source donne la réponse à
+  la question 7 (`delete` supprime un fichier du serveur).
 
 ### 2026-11-18 — cours/bts1-dns
 
