@@ -1,60 +1,197 @@
 /*-- scss:defaults --*/
 
-// Règles communes aux deux thèmes (clair et sombre). Les valeurs propres
-// à chaque thème sont dans theme-clair.scss et theme-sombre.scss, qui
-// sont assemblés avec ce fichier par `theme` dans `_quarto.yml`.
+// Charte « encre sur papier » (DESIGN.md). Les valeurs hexadécimales
+// sont dans `_brand.yml`, seule source. Quarto n'en fait des variables
+// Sass ($brand-encre…) qu'après cette couche : on les relit donc dans les
+// règles ci-dessous (bloc `:root`), pas ici. Les rôles (primary, info,
+// success, danger…) viennent directement de `_brand.yml`.
 
-// Palette de référence, identique dans les deux thèmes.
-$vert-profond: #1C322D;
-$creme: #F8F3EE;
-$or: #EBB552;
-$rose-poudre: #F1CDBE;
-$gris: #A1A1AA;
-
-// Barre de navigation : toujours vert profond, texte crème, dans les
-// deux thèmes. C'est le seul aplat de couleur de la page ; il tient lieu
-// de bandeau d'en-tête et donne au site son identité.
-$navbar-bg: $vert-profond;
-$navbar-fg: $creme;
-$navbar-hl: $or;   // survol et lien actif, ≈ 7,3:1 sur le vert profond
-
-// Barre latérale : pas d'aplat, un simple filet de séparation. Par défaut
-// Quarto lui donne le fond `$light` (ici le crème), ce qui dessinait une
-// large bande claire sur toute la hauteur de la page.
+// Barre latérale : pas d'aplat, un simple filet.
 $sidebar-bg: transparent;
 $sidebar-border: true;
 
-// Variables d'ambiance. Les deux fichiers de thème les redéfinissent par
-// une affectation simple, qui l'emporte sur ces valeurs de repli quel que
-// soit l'ordre d'assemblage des couches Sass. Ces replis servent au
-// format `vintage-html` utilisé seul, hors du site.
-$surface: #FFFDFB !default;              // encadrés, tableaux, cartes
-$surface-texte: $vert-profond !default;
-$surface-bordure: rgba(28, 50, 45, 0.15) !default;
-$accent: $vert-profond !default;         // titres, liens, item actif
+$border-radius: 16px;
 
 /*-- scss:rules --*/
 
-// Titres : Playfair Display gras dans la couleur d'accent, filet or
-// sous les H2. L'or n'est ici que décoratif : l'information est portée
-// par la taille et la graisse, jamais par la seule couleur.
-h1, h2, h3, h4, h5, h6 {
-  color: $accent;
+// Tokens de la charte, exposés en variables CSS pour toutes les pages.
+// C'est le seul endroit où elles sont définies.
+:root {
+  --papier: #{$brand-papier};
+  --papier-2: #{$brand-papier-2};
+  --encre: #{$brand-encre};
+  --encre-2: #{$brand-encre-2};
+  --encre-3: #{$brand-encre-3};
+  --contour: #{$brand-contour};
+  --jaune: #{$brand-jaune};
+  --or: #{$brand-or};
+  --bleu: #{$brand-bleu};
+  --rouge: #{$brand-rouge};
+  --vert: #{$brand-vert};
+  --blanc: #{$brand-blanc};
+  --police: "Nunito", sans-serif;
+  --ombre-carte: 0 4px 14px #{rgba($brand-encre, 0.08)};
+  --rayon: 16px;
+}
+
+body {
+  background-color: var(--papier);
+  color: var(--encre);
+  font-family: var(--police);
+}
+
+// Titres : Nunito 1000 (900 à défaut), majuscules pour h1 et h2 ; le texte courant
+// garde sa casse. L'information tient à la taille et à la graisse.
+h1, h2, h3, h4, h5, h6, .title {
+  font-family: var(--police);
+  color: var(--encre);
+}
+
+h1, .title {
+  font-weight: 900;
+  font-variation-settings: "wght" 1000;
+  text-transform: uppercase;
 }
 
 h2 {
-  border-bottom: 1px solid rgba($or, 0.55);
+  font-weight: 900;
+  font-variation-settings: "wght" 1000;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--encre);
   padding-bottom: 0.3em;
 }
 
-// Barre de navigation : lien actif souligné d'un filet or.
-.navbar .nav-link.active {
-  color: $creme;
-  border-bottom: 2px solid $or;
+h3, h4 {
+  font-weight: 900;
 }
 
-// Barre latérale : texte dans la couleur du corps de page, item actif
-// marqué par la graisse et un filet vertical dans la couleur d'accent.
+// Étiquettes : Nunito 700, majuscules, espacées, grises (≈ 5:1 sur papier).
+.etiquette,
+.quarto-title-meta-heading,
+.quarto-title .quarto-categories,
+#toc-title,
+.sidebar-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--encre-3);
+}
+
+// --- Composants -------------------------------------------------------
+
+// Carte : fond blanc, filet contour, ombre douce.
+.carte,
+.quarto-grid-item.card {
+  background-color: var(--blanc);
+  color: var(--encre);
+  border: 1px solid var(--contour);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-carte);
+
+  a,
+  .card-title.listing-title {
+    color: var(--encre);
+  }
+
+  .card-title.listing-title {
+    font-weight: 900;
+  }
+
+  // Pas de vignette par défaut : un bandeau vide alourdirait les cartes.
+  .listing-item-img-placeholder {
+    display: none;
+  }
+}
+
+// Tag : arrondi, filet encre, fond transparent ou jaune (.tag-jaune).
+.tag,
+.quarto-grid-item.card .listing-categories .listing-category,
+.quarto-title .quarto-categories .quarto-category {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background-color: transparent;
+  color: var(--encre);
+  border: 1.5px solid var(--encre);
+  border-radius: 999px;
+  padding: 0.15em 0.7em;
+}
+
+.tag-jaune {
+  background-color: var(--jaune);
+}
+
+// Bouton pilule : ombre décalée, qui se réduit au survol.
+.bouton,
+.btn,
+.quarto-title-meta a.btn,
+.quarto-alternate-formats a {
+  display: inline-block;
+  font-family: var(--police);
+  font-weight: 900;
+  color: var(--encre);
+  background-color: var(--jaune);
+  border: 2px solid var(--encre);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--encre);
+  padding: 0.35em 1.1em;
+  text-decoration: none;
+  transition: transform 0.1s, box-shadow 0.1s;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--encre);
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--encre);
+  }
+}
+
+// Bandeau : fond encre, texte clair, mots-clés en jaune.
+.bandeau {
+  background-color: var(--encre);
+  color: var(--papier);
+  border-radius: var(--rayon);
+  padding: 1em 1.5em;
+
+  strong,
+  .mot-cle {
+    color: var(--jaune);
+  }
+}
+
+// Section finale : pleine largeur, fond jaune.
+.section-finale {
+  background-color: var(--jaune);
+  color: var(--encre);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+
+// --- Éléments de page -------------------------------------------------
+
+.navbar {
+  background-color: var(--encre);
+
+  .navbar-brand,
+  .nav-link,
+  .navbar-title {
+    color: var(--papier);
+  }
+
+  .nav-link:hover {
+    color: var(--jaune);
+  }
+}
+
+.navbar .nav-link.active {
+  color: var(--jaune);
+  border-bottom: 2px solid var(--jaune);
+}
+
 #quarto-sidebar.sidebar-navigation {
   .sidebar-link {
     color: inherit;
@@ -66,22 +203,23 @@ h2 {
 
   .sidebar-item-text.sidebar-link.active,
   .sidebar-item-text.sidebar-link.active:hover {
-    color: $accent;
-    font-weight: 700;
-    border-left: 2px solid $accent;
-    padding-left: calc(0.5em - 2px);
+    color: var(--encre);
+    font-weight: 900;
+    border-left: 3px solid var(--encre);
+    padding-left: calc(0.5em - 3px);
   }
 }
 
-// Encadrés : surface légèrement détachée du fond, distingués par leur
-// icône et leur libellé autant que par leur couleur.
+// Encadrés : surface blanche, filet contour ; la couleur de la bordure
+// gauche et l'icône portent le sens (info, attention, succès).
 .callout {
-  background-color: $surface;
-  color: $surface-texte;
-  border: 1px solid $surface-bordure;
+  background-color: var(--blanc);
+  color: var(--encre);
+  border: 1px solid var(--contour);
+  border-radius: var(--rayon);
 
   a {
-    color: $surface-texte;
+    color: var(--encre);
     text-decoration: underline;
   }
 }
@@ -90,84 +228,63 @@ div.callout-important {
   border-left-width: 6px;
 
   .callout-title-container {
-    font-weight: 700;
+    font-weight: 900;
   }
 }
 
-// Blocs de code : même surface que les encadrés, bordure fine. La
-// coloration syntaxique suit le thème : Quarto fournit une variante
-// claire et une variante sombre.
 div.sourceCode {
-  border: 1px solid $surface-bordure;
-  border-radius: 4px;
+  border: 1px solid var(--contour);
+  border-radius: 8px;
   padding: 0.75em;
 }
 
-// Tableaux : en-tête contrasté, zébrage très léger.
 .table {
   color: inherit;
 
   thead th {
-    background-color: $vert-profond;
-    color: $creme;
-    border-color: $vert-profond;
+    background-color: var(--encre);
+    color: var(--papier);
+    border-color: var(--encre);
   }
 
-  tr.even,
   tbody tr:nth-child(even) {
-    background-color: rgba($gris, 0.12);
+    background-color: var(--papier-2);
   }
 }
 
-// Cartes des pages de listing.
-.quarto-grid-item.card {
-  background-color: $surface;
-  border: 1px solid $surface-bordure;
-
-  a,
-  .card-title.listing-title {
-    color: $surface-texte;
-  }
-
-  .card-title.listing-title {
-    font-family: "Playfair Display", serif;
-    font-weight: 700;
-  }
-
-  // Pas de vignette par défaut : les ressources n'ont pas d'image de
-  // couverture, un bandeau vide alourdirait les cartes sans rien dire.
-  .listing-item-img-placeholder {
-    display: none;
-  }
-
-  .listing-categories .listing-category {
-    font-family: "Inter", sans-serif;
-    font-weight: 600;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    background-color: $vert-profond;
-    color: $creme;
-    border: 1px solid $or;
-    border-radius: 3px;
-    padding: 0.15em 0.5em;
-  }
-}
-
-// Filtre par catégorie des pages de listing (même traitement que les
-// badges de catégorie, pour une interface cohérente).
-.quarto-listing-category-title {
-  font-family: "Playfair Display", serif;
-  font-weight: 700;
-  color: $accent;
+// Schémas : dessinés pour fond clair ; le papier suffit, pas de surface.
+.quarto-listing-category-title,
+.quarto-listing-category.category-selected {
+  font-weight: 900;
+  color: var(--encre);
 }
 
 .quarto-listing-category {
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.quarto-listing-category.category-selected {
-  color: $accent;
-  font-weight: 700;
+// Liens : encre soulignée (le bleu est réservé à l'information). Les
+// boutons, la barre de navigation et les cartes gardent leur style propre.
+main a:not(.btn):not(.nav-link):not(.bouton),
+#TOC a,
+.breadcrumb a,
+a.sidebar-link {
+  color: var(--encre);
+}
+
+main a:not(.btn):not(.nav-link):not(.bouton):hover {
+  color: var(--encre-2);
+}
+
+#TOC .nav-link.active,
+#TOC a.active {
+  color: var(--encre);
+  font-weight: 900;
+  border-left-color: var(--encre);
+}
+
+// Accessibilité : focus clairement visible.
+:focus-visible {
+  outline: 3px solid var(--encre);
+  outline-offset: 2px;
 }

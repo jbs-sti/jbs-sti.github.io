@@ -45,25 +45,14 @@ website:
 
 format:
   html:
-    # Deux thèmes, un bouton de bascule dans la barre de navigation. Les
-    # couleurs de chaque thème viennent de `_brand.yml` (valeurs `light`
-    # et `dark` de chaque rôle), les surfaces et les filets des deux
-    # fichiers theme-clair.scss / theme-sombre.scss.
+    # Un seul thème, « encre sur papier » (DESIGN.md). Les couleurs et la
+    # police viennent de `_brand.yml`, les composants de theme.scss.
     theme:
-      light:
-        - cosmo
-        - brand
-        - _extensions/vintage/theme.scss
-        - _extensions/vintage/theme-clair.scss
-      dark:
-        - cosmo
-        - brand
-        - _extensions/vintage/theme.scss
-        - _extensions/vintage/theme-sombre.scss
-    # À la première visite, le site suit le réglage clair/sombre du
-    # système ; le bouton de la barre de navigation permet de choisir
-    # l'autre thème, et ce choix est mémorisé par le navigateur.
-    respect-user-color-scheme: true
+      - cosmo
+      - brand
+      - _extensions/vintage/theme.scss
+    # Une seule coloration syntaxique, claire : pas de thème sombre.
+    highlight-style: github
     toc: true
   vintage-pdf: default
 
