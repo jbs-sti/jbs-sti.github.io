@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="quarto-1.10.19" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+<meta name="description" content="Construire un réseau Wi-Fi sécurisé dans Packet Tracer, observer l’adressage dynamique, puis concevoir trois réseaux qui répondent à un cahier des charges et les interconnecter." />
+
+<title>TP2 (partie 3) — Réseau sans fil et cahier des charges – Informatique</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+<!-- htmldependencies:E3FAD763 -->
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+
+
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="/index.html">
+    <span class="navbar-title">Informatique</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Recherche"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+  aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Basculer la navigation"
+  onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="/index.html"> 
+<span class="menu-text">Accueil</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="/snt/index.html"> 
+<span class="menu-text">SNT</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="/bts1/index.html"> 
+<span class="menu-text">BTS CIEL 1</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="/bts2/index.html"> 
+<span class="menu-text">BTS CIEL 2</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn"
+      data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" 
+      aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale"
+      onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <h1 class="quarto-secondary-nav-title no-breadcrumbs"></h1>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" role="link"
+        aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale"
+        onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/bts1/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BTS CIEL 1</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/bts1/reseaux/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Réseaux</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/bts1/reseaux/01-introduction/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 — Introduction aux réseaux</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth3 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/01-introduction/tp-initiation-reseau/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TP0 — Initiation au réseau : identifier sa configuration réseau</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/01-introduction/tp-reseau-domestique/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TP1 — Réseau domestique : configurer un routeur et un client sans fil</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/01-introduction/tp-creation-lan-1/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TP2 (partie 1) — Premiers postes : poste à poste, adresses IP et concentrateur</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/01-introduction/tp-creation-lan-2/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TP2 (partie 2) — Commutateur et routeur : relier des réseaux</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/01-introduction/tp-creation-lan-3/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">TP2 (partie 3) — Réseau sans fil et cahier des charges</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/01-introduction/tp-wireshark/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TP3 — Découvrir Wireshark : capturer et filtrer des trames</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/bts1/reseaux/02-adressage-ip/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 — Adressage IP</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/02-adressage-ip/cours-adresse-ipv4-masque/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cours — Adresse IPv4 et masque de sous-réseau</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/bts1/reseaux/03-osi-tcp-ip/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 — OSI et TCP/IP</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/03-osi-tcp-ip/cours-snapchat-salut/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cours — Un « salut » sur Snapchat : ports, IP et MAC</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/03-osi-tcp-ip/tp-encapsulation-packet-tracer/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TP — Voir l'encapsulation avec Packet Tracer</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/bts1/reseaux/04-arp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 — ARP</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/04-arp/tp-arp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TP4 — ARP, hub, switch et routeur dans Packet Tracer</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/bts1/reseaux/05-tcp-udp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 — TCP et UDP</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/05-tcp-udp/cours-tcp-udp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cours — Les protocoles TCP et UDP</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/bts1/reseaux/06-dhcp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">06 — DHCP</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/06-dhcp/cours-diaporama-dhcp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cours — Le protocole DHCP (diaporama)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/06-dhcp/cours-dhcp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cours — Le protocole DHCP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/06-dhcp/tp-dhcp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TP — Distribuer automatiquement les adresses IP</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/bts1/reseaux/07-http/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">07 — HTTP</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/07-http/cours-diaporama-http/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cours — Le protocole HTTP (diaporama)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/reseaux/07-http/tp-http/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TP — Héberger et consulter une page Web</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/bts1/reseaux/08-dns/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">08 — DNS</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth3 ">  
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/bts1/systemes/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Systèmes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/bts1/systemes/01-excel/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 — Excel</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/systemes/01-excel/tp-excel-partie-1/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TP Excel — Partie 1 : la facture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/bts1/systemes/01-excel/tp-excel-partie-2/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TP Excel — Partie 2 : le relevé de notes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" ></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <div id="quarto-toc-target"></div>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">TP2 (partie 3) — Réseau sans fil et cahier des charges</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">tp</div>
+    <div class="quarto-category">reseaux</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Construire un réseau Wi-Fi sécurisé dans Packet Tracer, observer l’adressage dynamique, puis concevoir trois réseaux qui répondent à un cahier des charges et les interconnecter.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modifié</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">19 novembre 2026</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Sur cette page</h2>
+   
+  <ul>
+  <li><a href="#objectifs-et-prérequis" id="toc-objectifs-et-prérequis">Objectifs et prérequis</a></li>
+  <li><a href="#situation-de-départ" id="toc-situation-de-départ">Situation de départ</a></li>
+  <li><a href="#matériel-et-environnement" id="toc-matériel-et-environnement">Matériel et environnement</a></li>
+  <li><a href="#travail-à-réaliser" id="toc-travail-à-réaliser">Travail à réaliser</a>
+  <ul>
+  <li><a href="#partie-a-création-dun-réseau-sans-fil-wi-fi-1-h" id="toc-partie-a-création-dun-réseau-sans-fil-wi-fi-1-h">Partie A — Création d’un réseau sans fil (Wi-Fi) (1 h)</a></li>
+  <li><a href="#partie-b-projet-trois-réseaux-et-leurs-cahiers-des-charges-1-h" id="toc-partie-b-projet-trois-réseaux-et-leurs-cahiers-des-charges-1-h">Partie B — Projet : trois réseaux et leurs cahiers des charges (1 h)</a></li>
+  </ul></li>
+  <li><a href="#vérification-et-compte-rendu" id="toc-vérification-et-compte-rendu">Vérification et compte rendu</a></li>
+  <li><a href="#synthèse" id="toc-synthèse">Synthèse</a></li>
+  <li><a href="#pour-aller-plus-loin" id="toc-pour-aller-plus-loin">Pour aller plus loin</a></li>
+  </ul>
+</nav>
+<p><em>Plateforme : Cisco Packet Tracer.</em></p>
+<section id="objectifs-et-prérequis" class="level2">
+<h2>Objectifs et prérequis</h2>
+<p>Votre téléphone se connecte à la box sans aucun câble. Dans ce TP, vous reproduisez cette situation dans Packet Tracer. Vous terminez ensuite le TP2 par un projet : trois réseaux à construire et à relier.</p>
+<p>Dans cette dernière partie du TP2, vous allez :</p>
+<ul>
+<li>simuler un réseau sans fil (Wi-Fi) ;</li>
+<li>comprendre pourquoi un appareil reçoit parfois une adresse inattendue ;</li>
+<li>créer des réseaux qui répondent à un cahier des charges ;</li>
+<li>configurer des réseaux différents pour qu’ils communiquent entre eux ;</li>
+<li>calculer l’adresse réseau et l’adresse de diffusion d’un réseau.</li>
+</ul>
+<p>Vous avez réalisé les parties 1 et 2 du TP2 : vous savez créer un réseau, adresser des postes, utiliser un commutateur et un routeur. Reprenez au besoin la <a href="../tp-creation-lan-2/index.qmd">partie 2</a> et le <a href="../tp-reseau-domestique/index.qmd">TP1 — Réseau domestique</a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Support d&#39;activité">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Support d’activité
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Cisco Packet Tracer, suite bureautique</li>
+<li>Internet</li>
+</ul>
+</div>
+</div>
+<p>Vous rédigerez un compte rendu numérique. Pensez aux captures d’écran pour illustrer votre compte rendu. Sauvegardez votre travail régulièrement ! Des différences peuvent exister selon la version du logiciel utilisée.</p>
+</section>
+<section id="situation-de-départ" class="level2">
+<h2>Situation de départ</h2>
+<p>Vous avez relié des postes avec des câbles, des concentrateurs, un commutateur et un routeur. Il reste deux défis. Le premier est de se passer de câbles : c’est le rôle du point d’accès Wi-Fi. Le second est de concevoir vous-même des réseaux à partir d’un cahier des charges, sans schéma de câblage fourni.</p>
+<p>Résultat attendu en fin de séance :</p>
+<ul>
+<li>un réseau Wi-Fi sécurisé où un serveur, un ordinateur portable, une tablette et un smartphone communiquent ;</li>
+<li>trois réseaux construits selon leur cahier des charges, puis reliés par un seul routeur ;</li>
+<li>les adresses réseau et de diffusion du réseau 1, calculées.</li>
+</ul>
+</section>
+<section id="matériel-et-environnement" class="level2">
+<h2>Matériel et environnement</h2>
+<ul>
+<li>Cisco Packet Tracer, sur votre poste.</li>
+<li>Un nouveau fichier pour la partie A, puis un autre pour la partie B. Enregistrez-les sous des noms distincts.</li>
+</ul>
+<div id="tbl-deroulement" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-deroulement-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table 1: Déroulement de la séance
+</figcaption>
+<div aria-describedby="tbl-deroulement-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Partie</th>
+<th>Contenu</th>
+<th>Durée indicative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>Créer un réseau sans fil (Wi-Fi)</td>
+<td>1 h</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>Créer trois réseaux et les relier</td>
+<td>1 h</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="travail-à-réaliser" class="level2">
+<h2>Travail à réaliser</h2>
+<section id="partie-a-création-dun-réseau-sans-fil-wi-fi-1-h" class="level3">
+<h3>Partie A — Création d’un réseau sans fil (Wi-Fi) (1 h)</h3>
+<div class="callout callout-style-default callout-note callout-titled" title="Question 1">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Question 1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Créez un nouveau fichier, construisez le réseau conformément au schéma ci-dessous.</p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="img/schema-wifi-depart.png" class="img-fluid" alt="Capture d&#39;écran de Packet Tracer : un point d&#39;accès nommé Access Point1, de modèle AccessPoint-PT, est placé en haut. En bas, un ordinateur portable Laptop0 est à gauche et un serveur Server0 est à droite. Aucun lien ne relie encore les trois appareils." /></p>
+<figcaption>Point d’accès, ordinateur portable et serveur : le réseau de départ.</figcaption>
+</figure>
+</div>
+<section id="installer-les-modules-wi-fi" class="level4">
+<h4>Installer les modules Wi-Fi</h4>
+<p>Un ordinateur ou un serveur de Packet Tracer est livré avec une carte réseau filaire. Pour qu’il se connecte au point d’accès, il faut la remplacer par un module sans fil.</p>
+<p><strong>Pour le serveur</strong> : cliquez sur le serveur pour ouvrir sa fenêtre de propriétés, onglet « Physical ». Sur la face arrière visible, éteignez le serveur. Remplacez le connecteur FastEthernet (PT-HOST-MM-1CFE) par un connecteur wireless (PT-HOST-NM-1W). Rallumez le serveur.</p>
+<p><strong>Pour l’ordinateur portable</strong> : cliquez sur le laptop pour ouvrir sa fenêtre de propriétés, onglet « Physical ». Éteignez l’ordinateur portable et ajoutez un module Wi-Fi tel que le WPC300N ou PT-LAPTOP-NM-1W dans un slot libre. Rallumez l’ordinateur portable.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Choisir le bon module">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Choisir le bon module
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Assurez-vous d’utiliser les modules appropriés selon le type d’appareil :</p>
+<ul>
+<li>WPC300N ou PT-LAPTOP-NM-1W pour les ordinateurs portables ;</li>
+<li>PT-HOST-NM-1W pour les serveurs et les PC de bureau.</li>
+</ul>
+</div>
+</div>
+<p>Une fois les modules Wi-Fi installés sur tous les appareils, ils pourront détecter et se connecter au réseau sans fil du point d’accès.</p>
+</section>
+<section id="adresser-les-appareils" class="level4">
+<h4>Adresser les appareils</h4>
+<p>Vous allez maintenant donner au serveur une adresse IP statique et un masque de sous-réseau :</p>
+<ul>
+<li>adresse IP du serveur : 192.168.0.1 ;</li>
+<li>masque : 255.255.255.0.</li>
+</ul>
+<p>Configurez de la même façon l’ordinateur portable, en remplaçant son connecteur. Laissez son adresse IP en dynamique (DHCP).</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Question 2">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Question 2
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Avez-vous remarqué un message lors de la configuration DHCP de l’ordinateur portable ? Comment l’interprétez-vous ?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Explication du message « DHCP failed. APIPA is being used » (à lire après avoir répondu)">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Explication du message « DHCP failed. APIPA is being used » (à lire après avoir répondu)
+</div>
+<div class='callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end'><i class='callout-toggle'></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Ce message indique que le laptop a tenté d’obtenir une adresse IP automatiquement auprès d’un serveur DHCP, sans succès. Le système a alors basculé sur l’<strong>APIPA</strong> (<em>Automatic Private IP Addressing</em>). Ce mécanisme attribue une adresse temporaire dans la plage 169.254.0.0/16, avec le masque 255.255.0.0, quand aucun serveur DHCP n’est joignable.</p>
+<p>Cela se produit souvent dans les cas suivants :</p>
+<ul>
+<li>le point d’accès (AccessPoint-PT) ne joue pas le rôle de serveur DHCP ;</li>
+<li>il n’y a pas de serveur DHCP dans le réseau ;</li>
+<li>la connexion entre le laptop et le point d’accès est mal configurée.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="configurer-le-point-daccès" class="level4">
+<h4>Configurer le point d’accès</h4>
+<p>Le point d’accès est l’élément qui diffuse le réseau Wi-Fi. Vous lui donnez un nom et un mot de passe.</p>
+<ol type="1">
+<li>Cliquez sur le point d’accès (Access Point1), puis ouvrez l’onglet « Config », section « Wireless ».</li>
+<li>Paramétrez le réseau Wi-Fi :
+<ul>
+<li>SSID : donnez un nom à votre réseau sans fil (par exemple : MonRéseau) ;</li>
+<li>Authentication : sélectionnez WPA2-PSK ;</li>
+<li>PSK Pass Phrase : saisissez une clé de sécurité (mot de passe) si vous utilisez WPA2-PSK ;</li>
+<li>Port Status : vérifiez que l’interface sans fil est activée (On).</li>
+</ul></li>
+</ol>
+</section>
+<section id="connecter-le-laptop-au-wi-fi" class="level4">
+<h4>Connecter le laptop au Wi-Fi</h4>
+<ol type="1">
+<li>Cliquez sur le laptop, onglet « Desktop », puis « PC Wireless » et « Connect ».</li>
+<li>Sélectionnez votre réseau (par exemple : MonRéseau) dès qu’il apparaît.</li>
+<li>Cliquez sur « Connect ».</li>
+<li>Si le mot de passe est demandé, saisissez-le (WPA2-PSK).</li>
+<li>Vérifiez que le statut passe à « Connected » et qu’une adresse IP est attribuée.</li>
+</ol>
+<p>Faites la même chose pour connecter le serveur au réseau Wi-Fi.</p>
+<p>Vous devez constater à présent que le serveur et l’ordinateur portable sont bien connectés au point d’accès Wi-Fi.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="img/wifi-connecte.png" class="img-fluid" alt="Capture d&#39;écran de Packet Tracer : Access Point1 est en haut, Laptop0 en bas à gauche et Server0 en bas à droite. Une ligne en pointillé épais, qui représente une liaison sans fil, relie chacun des deux appareils au point d&#39;accès." /></p>
+<figcaption>Le serveur et l’ordinateur portable sont connectés au point d’accès.</figcaption>
+</figure>
+</div>
+<p>Ajoutez deux autres périphériques sans fil : une tablette et un smartphone, par exemple.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Question 3">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Question 3
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Quelles remarques pouvez-vous faire au sujet de l’adresse IP des terminaux ajoutés et de celle de l’ordinateur portable ? À quoi cela est-il dû ?</p>
+</div>
+</div>
+<p>Passez en mode Simulation et simulez l’envoi de PDU entre ces différents périphériques.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Question 4">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Question 4
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tous ces appareils communiquent-ils entre eux ?</p>
+</div>
+</div>
+</section>
+<section id="consulter-la-page-web-du-serveur" class="level4">
+<h4>Consulter la page web du serveur</h4>
+<ol type="1">
+<li>Cliquez sur la tablette, puis ouvrez l’onglet « Desktop ».</li>
+<li>Ouvrez le navigateur (« Web Browser »).</li>
+<li>Dans la zone URL, saisissez l’adresse IP du serveur : <code>http://192.168.0.1</code>, puis cliquez sur « Go ».</li>
+</ol>
+<p>La page web du serveur s’ouvre.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="img/tablette-page-web.png" class="img-fluid" alt="Capture d&#39;écran de la fenêtre Tablet PC0 de Packet Tracer, onglet Desktop, navigateur Web Browser. Le champ URL contient http://192.168.0.1. La page affiche le titre Cisco Packet Tracer, la phrase Welcome to Cisco Packet Tracer. Opening doors to new opportunities. Mind Wide Open., puis quatre liens : A small page, Copyrights, Image page et Image." /></p>
+<figcaption>La tablette affiche la page d’accueil du serveur.</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="partie-b-projet-trois-réseaux-et-leurs-cahiers-des-charges-1-h" class="level3">
+<h3>Partie B — Projet : trois réseaux et leurs cahiers des charges (1 h)</h3>
+<p>Vous n’avez plus de schéma de câblage à suivre. Pour chaque réseau, un cahier des charges fixe les contraintes, et vous choisissez le matériel et la configuration. La figure <a href="#fig-trois-reseaux" class="quarto-xref">Figure 1</a> montre les appareils de chaque réseau.</p>
+<div id="fig-trois-reseaux" class="quarto-float quarto-figure quarto-figure-center" alt="Capture d&#39;écran de Packet Tracer, trois zones séparées par des traits verticaux rouges en pointillé. Réseau 1 : les postes PC0 et PC1, le serveur Server0, l&#39;ordinateur portable Laptop0 et l&#39;imprimante Printer0. Réseau 2 : le serveur Server1, l&#39;ordinateur portable Laptop1, l&#39;imprimante Printer1 et le poste PC2. Réseau 3 : le serveur Server2, les ordinateurs portables Laptop2 et Laptop3, un point d&#39;accès Access Point0 et la tablette Tablet PC0, déjà reliée au point d&#39;accès par une liaison sans fil.">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-trois-reseaux-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/trois-reseaux.png" class="img-fluid" alt="Capture d&#39;écran de Packet Tracer, trois zones séparées par des traits verticaux rouges en pointillé. Réseau 1 : les postes PC0 et PC1, le serveur Server0, l&#39;ordinateur portable Laptop0 et l&#39;imprimante Printer0. Réseau 2 : le serveur Server1, l&#39;ordinateur portable Laptop1, l&#39;imprimante Printer1 et le poste PC2. Réseau 3 : le serveur Server2, les ordinateurs portables Laptop2 et Laptop3, un point d&#39;accès Access Point0 et la tablette Tablet PC0, déjà reliée au point d&#39;accès par une liaison sans fil." />
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-trois-reseaux-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure 1: Les appareils des trois réseaux à construire.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Question 5">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Question 5
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Construisez puis configurez les hôtes du réseau 1 de manière à ce que la communication soit rendue possible entre les hôtes, tout en respectant le cahier des charges ci-dessous.</p>
+<p><strong>Cahier des charges 1</strong> : le réseau 1 est un réseau filaire avec un adressage statique, avec le masque par défaut de la classe C (255.255.255.0). L’ajout de concentrateur(s), de commutateur(s), de routeur(s) et de ports est possible.</p>
+<p>Pour les questions 9 et 10, adoptez ce plan d’adressage : le réseau 1 est 192.168.1.0/24, le poste PC0 a l’adresse 192.168.1.10 et sa passerelle par défaut est 192.168.1.254.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Question 6">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Question 6
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Construisez puis configurez les hôtes du réseau 2 de manière à ce que la communication soit rendue possible entre les hôtes, tout en respectant le cahier des charges ci-dessous.</p>
+<p><strong>Cahier des charges 2</strong> : le réseau 2 est un réseau filaire avec un adressage statique, avec le masque par défaut de la classe B (255.255.0.0). L’ajout de concentrateur(s), de commutateur(s), de routeur(s) et de ports est possible.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Question 7">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Question 7
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Construisez et configurez les hôtes du réseau 3 de manière à ce que la communication soit rendue possible entre les hôtes, tout en respectant le cahier des charges ci-dessous.</p>
+<p><strong>Cahier des charges 3</strong> : le réseau 3 est un réseau « wireless » avec un adressage dynamique, avec le masque par défaut de la classe C (255.255.255.0). L’ajout de concentrateur(s), de commutateur(s), de routeur(s) et de ports est possible.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Attention">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Attention
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour créer un réseau efficace et qui fonctionne bien, il est recommandé de supprimer le point d’accès de base (AccessPoint-PT) et de le remplacer par le point d’accès WRT300N.</p>
+<p>Vous devez, pour la création du réseau global, utiliser un seul routeur.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Question 8">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Question 8
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Il vous faut maintenant rendre la communication possible entre les 3 réseaux, tout en respectant le cahier des charges ci-après.</p>
+<p><strong>Cahier des charges final</strong> : les réseaux 1, 2 et 3 doivent pouvoir communiquer ensemble. Toutes les solutions matérielles et logicielles sont possibles.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Question 9">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Question 9
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Calculez l’adresse réseau et l’adresse de diffusion (« broadcast ») du réseau 1, avec le plan d’adressage imposé à la question 5.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Question 10">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Question 10
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La passerelle par défaut du poste PC0 (192.168.1.254) fait-elle partie du réseau 1 ? Justifiez votre réponse.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="vérification-et-compte-rendu" class="level2">
+<h2>Vérification et compte rendu</h2>
+<p>Votre travail est réussi si vous pouvez constater les points suivants :</p>
+<ul>
+<li>le serveur, l’ordinateur portable, la tablette et le smartphone sont connectés au point d’accès, et la page <code>http://192.168.0.1</code> s’affiche sur la tablette ;</li>
+<li>chacun des trois réseaux respecte son cahier des charges (type de liaison, adressage statique ou dynamique, masque de la classe demandée) ;</li>
+<li>les hôtes de chaque réseau communiquent entre eux ;</li>
+<li>les hôtes des trois réseaux communiquent entre eux, avec un seul routeur ;</li>
+<li>les fichiers des parties A et B sont enregistrés.</li>
+</ul>
+<p>Votre compte rendu contient :</p>
+<ul>
+<li>les réponses aux Questions 1 à 10 ;</li>
+<li>une capture du réseau Wi-Fi de la partie A, avec les quatre appareils connectés ;</li>
+<li>une capture de la configuration du point d’accès (SSID et WPA2-PSK) ;</li>
+<li>une capture de la page web affichée sur la tablette ;</li>
+<li>une capture du réseau global de la partie B, avec les adresses IP configurées ;</li>
+<li>une capture d’un test de communication entre deux hôtes de réseaux différents.</li>
+</ul>
+</section>
+<section id="synthèse" class="level2">
+<h2>Synthèse</h2>
+<div class="callout callout-style-default callout-important callout-titled" title="Synthèse à compléter">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Synthèse à compléter
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Recopiez et complétez ces phrases dans votre compte rendu.</p>
+<ol type="1">
+<li>Un appareil sans fil doit être équipé d’un module ………… pour se connecter à un point d’accès.</li>
+<li>Pour se connecter au réseau Wi-Fi, un appareil doit connaître le ………… du réseau et, avec WPA2-PSK, la ………… .</li>
+<li>Quand un appareil en DHCP ne trouve aucun serveur DHCP, il utilise une adresse de la plage ………… (mécanisme appelé ………… ).</li>
+<li>Dans un réseau d’adresse 192.168.1.0/24, l’adresse réseau est ………… et l’adresse de diffusion est ………… .</li>
+<li>Pour que des réseaux différents communiquent, il faut les relier avec un ………… ; chaque hôte désigne alors son ………… comme passerelle par défaut.</li>
+</ol>
+</div>
+</div>
+<p>Notez enfin, en deux ou trois lignes, la difficulté principale rencontrée pendant ce TP et la manière dont vous l’avez résolue.</p>
+</section>
+<section id="pour-aller-plus-loin" class="level2">
+<h2>Pour aller plus loin</h2>
+<p>Votre réseau 3 est à adressage dynamique : une machine doit donc distribuer les adresses. Dans la maquette du TP DHCP du chapitre 06, un serveur DHCP joue ce rôle. Cherchez comment obtenir le même résultat dans votre réseau 3, puis comparez vos solutions avec celles de vos camarades.</p>
+<p>Sources :</p>
+<ul>
+<li>RFC 3927, <em>Dynamic Configuration of IPv4 Link-Local Addresses</em>, IETF, 2005 (plage 169.254.0.0/16, adressage automatique sans serveur) : <a href="https://www.rfc-editor.org/rfc/rfc3927" class="uri">https://www.rfc-editor.org/rfc/rfc3927</a></li>
+<li>RFC 2131, <em>Dynamic Host Configuration Protocol</em>, IETF, 1997 : <a href="https://www.rfc-editor.org/rfc/rfc2131" class="uri">https://www.rfc-editor.org/rfc/rfc2131</a></li>
+<li>Cisco, <em>Packet Tracer</em>, documentation et ressources : <a href="https://www.netacad.com/cisco-packet-tracer" class="uri">https://www.netacad.com/cisco-packet-tracer</a></li>
+</ul>
+<div id="quarto-navigation-envelope" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyLXRpdGxl">BTS CIEL 1</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXItdGl0bGU=">Informatique</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uZXh0">TP3 — Découvrir Wireshark : capturer et filtrer des trames</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1wcmV2">TP2 (partie 2) — Commutateur et routeur : relier des réseaux</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMQ==">BTS CIEL 1</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMg==">Réseaux</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMw==">01 — Introduction aux réseaux</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDEtaW50cm9kdWN0aW9uL2NvdXJzLWludHJvZHVjdGlvbi1yZXNlYXV4L2luZGV4Lmh0bWxDb3Vycy3igJQtSW50cm9kdWN0aW9uLWF1eC1yw6lzZWF1eA==">Cours — Introduction aux réseaux</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDEtaW50cm9kdWN0aW9uL3RwLWluaXRpYXRpb24tcmVzZWF1L2luZGV4Lmh0bWxUUDAt4oCULUluaXRpYXRpb24tYXUtcsOpc2VhdS06LWlkZW50aWZpZXItc2EtY29uZmlndXJhdGlvbi1yw6lzZWF1">TP0 — Initiation au réseau : identifier sa configuration réseau</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDEtaW50cm9kdWN0aW9uL3RwLXJlc2VhdS1kb21lc3RpcXVlL2luZGV4Lmh0bWxUUDEt4oCULVLDqXNlYXUtZG9tZXN0aXF1ZS06LWNvbmZpZ3VyZXItdW4tcm91dGV1ci1ldC11bi1jbGllbnQtc2Fucy1maWw=">TP1 — Réseau domestique : configurer un routeur et un client sans fil</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDEtaW50cm9kdWN0aW9uL3RwLWNyZWF0aW9uLWxhbi0xL2luZGV4Lmh0bWxUUDItKHBhcnRpZS0xKS3igJQtUHJlbWllcnMtcG9zdGVzLTotcG9zdGUtw6AtcG9zdGUsLWFkcmVzc2VzLUlQLWV0LWNvbmNlbnRyYXRldXI=">TP2 (partie 1) — Premiers postes : poste à poste, adresses IP et concentrateur</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDEtaW50cm9kdWN0aW9uL3RwLWNyZWF0aW9uLWxhbi0yL2luZGV4Lmh0bWxUUDItKHBhcnRpZS0yKS3igJQtQ29tbXV0YXRldXItZXQtcm91dGV1ci06LXJlbGllci1kZXMtcsOpc2VhdXg=">TP2 (partie 2) — Commutateur et routeur : relier des réseaux</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDEtaW50cm9kdWN0aW9uL3RwLWNyZWF0aW9uLWxhbi0zL2luZGV4Lmh0bWxUUDItKHBhcnRpZS0zKS3igJQtUsOpc2VhdS1zYW5zLWZpbC1ldC1jYWhpZXItZGVzLWNoYXJnZXM=">TP2 (partie 3) — Réseau sans fil et cahier des charges</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDEtaW50cm9kdWN0aW9uL3RwLXdpcmVzaGFyay9pbmRleC5odG1sVFAzLeKAlC1Ew6ljb3V2cmlyLVdpcmVzaGFyay06LWNhcHR1cmVyLWV0LWZpbHRyZXItZGVzLXRyYW1lcw==">TP3 — Découvrir Wireshark : capturer et filtrer des trames</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tNA==">02 — Adressage IP</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDItYWRyZXNzYWdlLWlwL2NvdXJzLWFkcmVzc2UtaXB2NC1tYXNxdWUvaW5kZXguaHRtbENvdXJzLeKAlC1BZHJlc3NlLUlQdjQtZXQtbWFzcXVlLWRlLXNvdXMtcsOpc2VhdQ==">Cours — Adresse IPv4 et masque de sous-réseau</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tNQ==">03 — OSI et TCP/IP</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDMtb3NpLXRjcC1pcC9jb3Vycy1tb2RlbGUtb3NpLXRjcC1pcC9pbmRleC5odG1sQ291cnMt4oCULU1vZMOobGUtT1NJLWV0LVRDUC9JUA==">Cours — Modèle OSI et TCP/IP</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDMtb3NpLXRjcC1pcC9jb3Vycy1zbmFwY2hhdC1zYWx1dC9pbmRleC5odG1sQ291cnMt4oCULVVuLcKrLXNhbHV0LcK7LXN1ci1TbmFwY2hhdC06LXBvcnRzLC1JUC1ldC1NQUM=">Cours — Un « salut » sur Snapchat : ports, IP et MAC</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDMtb3NpLXRjcC1pcC90cC1lbmNhcHN1bGF0aW9uLXBhY2tldC10cmFjZXIvaW5kZXguaHRtbFRQLeKAlC1Wb2lyLWwnZW5jYXBzdWxhdGlvbi1hdmVjLVBhY2tldC1UcmFjZXI=">TP — Voir l’encapsulation avec Packet Tracer</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tNg==">04 — ARP</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDQtYXJwL2NvdXJzLWFycC9pbmRleC5wZGZDb3Vycy3igJQtTGUtcHJvdG9jb2xlLUFSUA==">Cours — Le protocole ARP</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDQtYXJwL3RwLWFycC9pbmRleC5odG1sVFA0LeKAlC1BUlAsLWh1Yiwtc3dpdGNoLWV0LXJvdXRldXItZGFucy1QYWNrZXQtVHJhY2Vy">TP4 — ARP, hub, switch et routeur dans Packet Tracer</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tNw==">05 — TCP et UDP</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDUtdGNwLXVkcC9jb3Vycy10Y3AtdWRwL2luZGV4Lmh0bWxDb3Vycy3igJQtTGVzLXByb3RvY29sZXMtVENQLWV0LVVEUA==">Cours — Les protocoles TCP et UDP</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tOA==">06 — DHCP</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDYtZGhjcC9jb3Vycy1kaWFwb3JhbWEtZGhjcC9pbmRleC5odG1sQ291cnMt4oCULUxlLXByb3RvY29sZS1ESENQLShkaWFwb3JhbWEp">Cours — Le protocole DHCP (diaporama)</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDYtZGhjcC9jb3Vycy1kaGNwL2luZGV4Lmh0bWxDb3Vycy3igJQtTGUtcHJvdG9jb2xlLURIQ1A=">Cours — Le protocole DHCP</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDYtZGhjcC90cC1kaGNwL2luZGV4Lmh0bWxUUC3igJQtRGlzdHJpYnVlci1hdXRvbWF0aXF1ZW1lbnQtbGVzLWFkcmVzc2VzLUlQ">TP — Distribuer automatiquement les adresses IP</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tOQ==">07 — HTTP</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDctaHR0cC9jb3Vycy1kaWFwb3JhbWEtaHR0cC9pbmRleC5odG1sQ291cnMt4oCULUxlLXByb3RvY29sZS1IVFRQLShkaWFwb3JhbWEp">Cours — Le protocole HTTP (diaporama)</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDctaHR0cC90cC1odHRwL2luZGV4Lmh0bWxUUC3igJQtSMOpYmVyZ2VyLWV0LWNvbnN1bHRlci11bmUtcGFnZS1XZWI=">TP — Héberger et consulter une page Web</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMTA=">08 — DNS</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDgtZG5zL2NvdXJzLWRpYXBvcmFtYS1kbnMvaW5kZXguaHRtbENvdXJzLeKAlC1MZS1wcm90b2NvbGUtRE5TLShkaWFwb3JhbWEp">Cours — Le protocole DNS (diaporama)</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3Jlc2VhdXgvMDgtZG5zL3RwLWRucy9pbmRleC5odG1sVFAt4oCULVLDqXNvdWRyZS11bi1ub20tYXZlYy11bi1zZXJ2ZXVyLUROUw==">TP — Résoudre un nom avec un serveur DNS</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMTE=">Systèmes</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMTI=">01 — Excel</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3N5c3RlbWVzLzAxLWV4Y2VsL3RwLWV4Y2VsLXBhcnRpZS0xL2luZGV4Lmh0bWxUUC1FeGNlbC3igJQtUGFydGllLTEtOi1sYS1mYWN0dXJl">TP Excel — Partie 1 : la facture</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9idHMxL3N5c3RlbWVzLzAxLWV4Y2VsL3RwLWV4Y2VsLXBhcnRpZS0yL2luZGV4Lmh0bWxUUC1FeGNlbC3igJQtUGFydGllLTItOi1sZS1yZWxldsOpLWRlLW5vdGVz">TP Excel — Partie 2 : le relevé de notes</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6QWNjdWVpbA==">Accueil</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6L2luZGV4Lmh0bWw=">/index.html</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6U05U">SNT</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6L3NudC9pbmRleC5odG1s">/snt/index.html</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6QlRTIENJRUwgMQ==">BTS CIEL 1</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6L2J0czEvaW5kZXguaHRtbA==">/bts1/index.html</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6QlRTIENJRUwgMg==">BTS CIEL 2</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6L2J0czIvaW5kZXguaHRtbA==">/bts2/index.html</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWJyZWFkY3J1bWJzLUJUUy1DSUVMLTE=">BTS CIEL 1</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWJyZWFkY3J1bWJzLVLDqXNlYXV4">Réseaux</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWJyZWFkY3J1bWJzLTAxLeKAlC1JbnRyb2R1Y3Rpb24tYXV4LXLDqXNlYXV4">01 — Introduction aux réseaux</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWJyZWFkY3J1bWJzLVRQMi0ocGFydGllLTMpLeKAlC1Sw6lzZWF1LXNhbnMtZmlsLWV0LWNhaGllci1kZXMtY2hhcmdlcw==">TP2 (partie 3) — Réseau sans fil et cahier des charges</span></p>
+</div>
+<div id="quarto-meta-markdown" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW1ldGF0aXRsZQ==">TP2 (partie 3) — Réseau sans fil et cahier des charges – Informatique</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLXR3aXR0ZXJjYXJkdGl0bGU=">TP2 (partie 3) — Réseau sans fil et cahier des charges – Informatique</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW9nY2FyZHRpdGxl">TP2 (partie 3) — Réseau sans fil et cahier des charges – Informatique</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW1ldGFzaXRlbmFtZQ==">Informatique</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLXR3aXR0ZXJjYXJkZGVzYw==">Construire un réseau Wi-Fi sécurisé dans Packet Tracer, observer l’adressage dynamique, puis concevoir trois réseaux qui répondent à un cahier des charges et les interconnecter.</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW9nY2FyZGRkZXNj">Construire un réseau Wi-Fi sécurisé dans Packet Tracer, observer l’adressage dynamique, puis concevoir trois réseaux qui répondent à un cahier des charges et les interconnecter.</span></p>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id = "quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copié");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copié");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+</body>
+
+</html>
