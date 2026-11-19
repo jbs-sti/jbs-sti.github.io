@@ -1,80 +1,58 @@
 meta:
   name: "JBS STI"
 
+# Charte « encre sur papier » (voir DESIGN.md). Les valeurs hexadécimales
+# ne s'écrivent qu'ici : le SCSS les relit par leur nom, et les pages par
+# les variables CSS --papier, --encre, etc. définies dans theme.scss.
 color:
   palette:
-    vert-profond: "#1C322D"
-    creme: "#F8F3EE"
-    dore: "#EBB552"
-    rose-poudre: "#F1CDBE"
-    gris: "#A1A1AA"
-  # Deux thèmes, une seule palette : chaque rôle de couleur donne sa valeur
-  # claire et sa valeur sombre. Quarto en déduit automatiquement les deux
-  # feuilles de style et le bouton de bascule dans la barre de navigation
-  # (voir `theme` dans `_quarto.yml`).
-  #
-  #   clair  : fond crème, texte vert-profond — contraste ≈ 12,3:1
-  #   sombre : fond vert-profond, texte crème — contraste ≈ 12,3:1
-  #
-  # L'or ne sert de couleur de texte que sur fond sombre (≈ 7,3:1) ; sur
-  # crème il reste décoratif (filets, bordures), jamais du texte courant.
-  foreground:
-    light: vert-profond
-    dark: creme
-  background:
-    light: creme
-    dark: vert-profond
-  primary:
-    light: vert-profond
-    dark: dore
-  secondary:
-    light: gris
-    dark: rose-poudre
-  tertiary: gris
-  success:
-    light: vert-profond
-    dark: dore
-  info:
-    light: vert-profond
-    dark: rose-poudre
-  warning:
-    light: vert-profond
-    dark: dore
-  danger:
-    light: vert-profond
-    dark: rose-poudre
-  light: creme
-  dark: vert-profond
+    papier: "#F4F2EC"
+    papier-2: "#ECE9E0"
+    encre: "#16150F"
+    encre-2: "#4A4840"
+    encre-3: "#6E6B62"
+    contour: "#8C8980"
+    jaune: "#F6D77A"
+    or: "#D9A21B"
+    bleu: "#9CC3E6"
+    rouge: "#C8372D"
+    vert: "#2F6B4F"
+    blanc: "#FFFFFF"
+  foreground: encre
+  background: papier
+  primary: encre
+  secondary: encre-2
+  tertiary: encre-3
+  success: vert
+  info: bleu
+  warning: or
+  danger: rouge
+  light: papier-2
+  dark: encre
 
+# Nunito, police variable (axe de graisse 200 à 1000 ; le 1000 est demandé en SCSS par
+# font-variation-settings, la brand n'acceptant que 100 à 900), fichier local : aucun
+# appel à un service tiers. Un même fichier sert chaque graisse déclarée.
 typography:
   fonts:
-    - family: "Playfair Display"
+    - family: "Nunito"
       source: file
       files:
-        - path: _extensions/vintage/fonts/PlayfairDisplay-Regular.ttf
+        - path: _extensions/vintage/fonts/Nunito-VF.ttf
           weight: 400
           style: normal
-        - path: _extensions/vintage/fonts/PlayfairDisplay-Bold.ttf
+        - path: _extensions/vintage/fonts/Nunito-VF.ttf
           weight: 700
           style: normal
-        - path: _extensions/vintage/fonts/PlayfairDisplay-Italic.ttf
-          weight: 400
-          style: italic
-        - path: _extensions/vintage/fonts/PlayfairDisplay-BoldItalic.ttf
-          weight: 700
-          style: italic
-    - family: "Inter"
-      source: file
-      files:
-        - path: _extensions/vintage/fonts/Inter-SemiBold.ttf
-          weight: 600
+        - path: _extensions/vintage/fonts/Nunito-VF.ttf
+          weight: 900
           style: normal
   base:
-    family: "Playfair Display"
+    family: "Nunito"
     size: "1.05em"
     line-height: 1.65
   headings:
-    family: "Playfair Display"
-    weight: 700
+    family: "Nunito"
+    weight: 900
   monospace:
     size: "0.9em"
