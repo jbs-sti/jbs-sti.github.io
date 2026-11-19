@@ -9,34 +9,33 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
+- BTS CIEL 1, réseaux, chapitres 04 à 09 (demande du 2026-11-18 : « pour
+  les cours fait juste un beamer first principle pour chaque protocole »,
+  « tout au même format », anciens cours supprimés) : un diaporama beamer
+  « premier principe » par protocole, écrit par Codex (préambule commun de
+  `diaporama-http.tex`, règles dans `.review/beamer-commun.md`, non
+  versionné), plus les TP DNS et FTP (sous-agent redacteur, d'après
+  `TP_DHCP_HTTP_DNS_FTP.pdf`, parties D et E). Une branche et une PR par
+  protocole, **toutes vers `main`** (l'empilement a échoué : #103,
+  DNS, a été fusionnée dans la branche de la réorganisation après celle-ci ;
+  report vers `main` par #104). **DNS** : #103 puis #104. **FTP**
+  (`cours/bts1-ftp`) : PR ouverte, partie de la branche de #104. **En
+  cours** (worktrees `/home/admin/jbs-<protocole>`) : ARP (cours-arp
+  supprimé), DHCP (réécrit en place, cours-dhcp supprimé, aliases),
+  TCP/UDP (cours-tcp-udp publié supprimé, aliases vers le diaporama, qui
+  reste brouillon : l'ancienne adresse ne redirige qu'après sa
+  publication), HTTP (réécrit en place). Exemples des diaporamas :
+  192.168.10.0/24, example.com, 203.0.113.0/24, 198.51.100.0/24, jamais
+  ceux du TP (192.168.1.0/24, DHCP .250, HTTP .251, FTP .252, DNS .253,
+  passerelle .254). Lancer Codex en tâche de fond avec `< /dev/null` : sans
+  cela, il peut attendre sur stdin indéfiniment.
+
 - Charte graphique « encre sur papier » (`DESIGN.md`), branche
   `infra/charte-encre-papier` : HTML migré (tokens dans `_brand.yml` et
   `:root` de `theme.scss`, Nunito variable locale, composants `.carte`,
   `.tag`, `.bouton`, `.bandeau`, `.section-finale`, thème sombre supprimé).
   **PDF non migré** : `vintage.tex` garde la palette vert/crème et les
   polices Latin Modern, à traiter dans une seconde PR `infra/`.
-
-
-- BTS CIEL 1, services réseau : **un protocole = un chapitre** depuis la
-  réorganisation du 2026-11-18 (`06-dhcp`, `07-http`, puis `08-dns` et
-  `09-ftp`), chacun avec un diaporama beamer LaTeX (Codex, préambule de
-  l'enseignant `publication/Beamer_SNT_Web_HTML_CSS.tex`) et un TP Packet
-  Tracer (sous-agent redacteur) tirés des PDF de l'enseignant « Protocoles
-  réseaux » et « TP DHCP, HTTP, DNS, FTP » (**à redéposer** : introuvables
-  le 2026-11-18). Une branche et une PR par protocole. **DHCP fait** (PR
-  #99) et **HTTP fait** (PR #100), publiés (PR #101). À faire : DNS
-  (`08-dns`, chapitre « 08 — DNS », diaporama order 10, TP order 20, 1 h,
-  partie D du TP source ; la diapositive « Séance suivante » du beamer HTTP
-  annonce DNS), FTP (`09-ftp`, partie E). Pour chaque nouveau chapitre,
-  l'index créé par `scripts/nouveau.py` n'a qu'une liste : le refaire sur le
-  modèle de `06-dhcp/index.qmd` (listes « Cours » et « Travaux
-  pratiques »). Leçons à reporter dans les consignes : URL en `\texttt`
-  (polyglossia ajoute une espace avant « : »), exemples des beamers
-  différents de ceux du TP pour ne pas donner les réponses. Les TP
-  repartent de `tp-services-reseau.pkt` ; plan d'adressage : DHCP .250,
-  HTTP .251, FTP .252, DNS .253, passerelle .254, pool .1 à .249. Les
-  beamers DHCP et HTTP portent encore le sous-titre « Services réseau ·
-  1/4 » et « 2/4 » (PDF non recompilés).
 
 - BTS CIEL 1, nouveau chapitre « Systèmes › 01 — Excel » (branche
   `cours/bts1-excel`) : TP Excel partie 1 (facture) et partie 2 (relevé de
@@ -268,6 +267,11 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **Décisions durables**
 
+- 2026-11-18 : BTS CIEL 1, réseaux : le cours d'un chapitre de protocole
+  est un seul diaporama beamer « premier principe » (problème, exemple,
+  méthode ; une illustration par diapositive ; « À vous » corrigés), en
+  page + PDF dans `fichiers/`. Les anciens cours au format page sont
+  supprimés, avec `aliases` vers le diaporama quand ils étaient publiés.
 - 2026-11-18 : BTS CIEL 1, organisation des chapitres (demande de
   l'enseignant : les élèves distinguaient mal cours et TP). Un protocole =
   un chapitre (`04-arp`, `05-tcp-udp`, `06-dhcp`, `07-http`…). Titre des
@@ -346,6 +350,46 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-19 — cours/bts1-ftp
+
+- Demande de l'enseignant : TP de `TP_DHCP_HTTP_DNS_FTP.pdf` (partie E,
+  questions 5 à 7) et un beamer « premier principe » par protocole.
+- Ressources : `bts1/reseaux/09-ftp/index.qmd` (deux listes),
+  `cours-diaporama-ftp/` (Codex, 14 diapositives), `tp-ftp/` (redacteur,
+  6 captures, Server3 en .252, PC2 client, 1 h 30).
+- Vérificateur : diaporama CONFORME après 2 passages, puis vérification
+  finale CONFORME après relecture (deux finitions contrôlées à l'image) ;
+  TP CONFORME.
+- Relecture croisée : diaporama par le relecteur (R1 gardée, A1-A6 corrigés
+  par Codex) ; TP par Codex (aucune réécriture ; A1 BLOQUANT et A2
+  corrigés par le redacteur).
+- Points à relire par l'enseignant : mode actif ou passif de Packet
+  Tracer non vérifié ; compte « btsciel » sur une capture au lieu de
+  `btciel` ; bouton « OK » et non « Save » ; la source donne la réponse à
+  la question 7 (`delete` supprime un fichier du serveur).
+
+### 2026-11-18 — cours/bts1-dns
+
+- Demande de l'enseignant : TP de `TP_DHCP_HTTP_DNS_FTP.pdf` (partie D) et
+  un beamer « premier principe » par protocole, avec illustrations et
+  exemples.
+- Ressources : `bts1/reseaux/08-dns/index.qmd` (page de chapitre en deux
+  listes, modèle `06-dhcp`), `cours-diaporama-dns/` (Codex, 15
+  diapositives, référence : `07-http/cours-diaporama-http`), `tp-dns/`
+  (redacteur, 2 captures Packet Tracer ; référence : `07-http/tp-http`).
+- Vérificateur : diaporama CONFORME après 3 passages (plus une finition de
+  la diapositive 14) ; TP CONFORME après 2 passages.
+- Relecture croisée : diaporama par le relecteur (R1 gardée, aucun
+  BLOQUANT) ; TP par Codex (R1 gardée ; A1 BLOQUANT corrigé par le
+  redacteur ; A2 refusé, PC1 n'a jamais pu résoudre le nom ; A3, rôle du
+  bouton « Save », à confirmer en salle).
+- Incident : un Codex en tâche de fond a attendu sur stdin plus de 10 min
+  sans rien écrire ; relancé avec `< /dev/null`.
+- Points à relire par l'enseignant : questions 1 à 3 du TP ajoutées par le
+  redacteur ; coquille `http:/www.site.com` de la source corrigée ; cache
+  DNS des PC Packet Tracer (le premier `ping` envoie d'abord une requête
+  DNS).
 
 ### 2026-11-18 — cours/bts1-reorganisation
 
