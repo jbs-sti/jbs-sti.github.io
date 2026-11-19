@@ -110,7 +110,9 @@ Modifiez les adresses IP du ou des postes du réseau précédent de façon à av
 
 ![Réseau 1 (commutateur et quatre postes) et réseau 2 (concentrateur et deux postes), séparés par un trait pointillé.](img/deux-reseaux-routeur.png){fig-alt="Schéma de Packet Tracer : à gauche, quatre PC-PT reliés au Switch0, avec l'étiquette « adresse réseau 1 : 192.168.0.0/24 ». À droite, séparés par un trait pointillé vertical, deux PC-PT reliés au Hub0, avec l'étiquette « adresse réseau 2 : 172.16.0.0/16 »."}
 
-Ajoutez un routeur entre les deux réseaux (choisissez le routeur « 1941 » ou « 2941 »). Connectez le routeur aux deux réseaux différents, via le hub et via le switch.
+Supprimez d'abord le câble qui relie le commutateur au concentrateur : les deux réseaux ne doivent plus avoir aucun lien physique entre eux.
+
+Ajoutez ensuite un routeur entre les deux réseaux (choisissez le routeur « 1941 » ou « 2941 »). Connectez le routeur aux deux réseaux différents, via le hub et via le switch.
 
 ::: {.callout-note title="Question 8"}
 Quel type de câble est utilisé pour relier un hub ou un switch à un routeur ?
@@ -135,7 +137,7 @@ Simulez l'envoi d'un PDU entre PC0 et PC4. L'essai est-il concluant ?
 
 Cela ne fonctionne toujours pas. PC4 n'est pas joignable, car PC0 n'appartient pas au même réseau. Il faut indiquer à PC0 qu'il peut le joindre en passant par le routeur.
 
-Lorsqu'un poste envoie des données à un hôte qui n'est pas sur son réseau, il doit les envoyer à un routeur. C'est seulement ensuite que le routeur se charge d'acheminer (router) les données sur l'autre réseau. Cliquez sur PC0, onglet « Desktop », puis entrez l'adresse IP du routeur dans « Default Gateway » (ou « Passerelle »).
+Lorsqu'un poste envoie des données à un hôte qui n'est pas sur son réseau, il doit les envoyer à un routeur. C'est seulement ensuite que le routeur se charge d'acheminer (router) les données sur l'autre réseau. Cliquez sur PC0, onglet « Desktop », puis « IP Configuration ». Entrez dans « Default Gateway » (ou « Passerelle ») l'adresse IP de l'interface du routeur située sur le réseau de PC0.
 
 ::: {.callout-note title="Question 10"}
 Simulez à nouveau l'envoi d'un PDU entre PC0 et PC4. L'essai est-il concluant ? Observez où le PDU est transmis, puis où il s'arrête. Pourquoi PC4 ne peut-il pas répondre à PC0 ?

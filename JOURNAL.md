@@ -9,6 +9,16 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
+- BTS CIEL 1, chapitre 01 : le TP2 « Création de LAN » est découpé en
+  trois parties (`tp-creation-lan-1`, `-2`, `-3`, order 23 à 25, `draft:
+  true`), d'après le PDF de l'enseignant ; l'ancien TP2 unique du chapitre
+  02 est supprimé (alias dans la partie 1) ; Wireshark passe en order 26.
+  Branche `cours/bts1-reseaux-tp-creation-lan`, PR ouverte. **À faire** :
+  après fusion, branche `cours/bts1-reseaux-tp-creation-lan-publier` pour
+  passer les trois parties en `draft: false` (demande de l'enseignant du
+  2026-11-19). Tant que la publication n'est pas fusionnée, le TP2 n'est
+  plus en ligne.
+
 - BTS CIEL 1, services réseau : **un protocole = un chapitre** depuis la
   réorganisation du 2026-11-18 (`06-dhcp`, `07-http`, puis `08-dns` et
   `09-ftp`), chacun avec un diaporama beamer LaTeX (Codex, préambule de
@@ -1021,3 +1031,30 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Vérificateur, Codex : sans objet (infrastructure)
 - Pull request : #62
 - Points à relire par l'enseignant : liste des paquets TeX Live (non testée en local, la CI de la PR fait foi)
+
+### 2026-11-19 — cours/bts1-reseaux-tp-creation-lan
+
+- Demande de l'enseignant : TP « Création LAN » (PDF `TP2_(Création LAN)`)
+  à découper en trois sous-TP, « ne modifie pas le contenu », « publie les
+  trois TP découpés et supprime l'ancien ». Le vérificateur a trouvé un
+  TP2 déjà publié (`02-adressage-ip/tp-creation-lan`) : doublon, supprimé
+  à la demande de l'enseignant.
+- Ressources : `bts1/reseaux/01-introduction/tp-creation-lan-{1,2,3}/index.qmd`
+  (référence imitée : `tp-reseau-domestique`), rédigées par le sous-agent
+  `redacteur`. Parties : 1 (sections 1 à 5), 2 (6 et 7), 3 (8 et cahier des
+  charges), numérotation des questions recommencée à 1.
+- Vérificateur : CONFORME après 2 passages (1er passage À REPRENDRE :
+  chevrons `>>>>` déformés au PDF, noms de postes, texte alternatif).
+- Codex (relecture, sans réécriture) : 9 constats A (dont 4 BLOQUANT) ;
+  corrigés : A2 (câble commutateur–concentrateur à retirer avant le
+  routeur), A3 (chemin Desktop > IP Configuration) ; A9 levé (suppression
+  demandée). Non modifiés, à l'enseignant : A1 (la tablette reste en DHCP
+  alors que le point d'accès ne distribue pas d'adresses), A7 (WRT300N et
+  « un seul routeur »), A4, A5, A6, A8 (nuances).
+- Relance Codex : non.
+- Pull request : voir la branche.
+- Points à relire par l'enseignant : tableau d'adresses de la partie 1
+  (PC2 à PC6, PC7, PC8, ajoutées), durées A/B de la partie 3, référence
+  `PT-HOST-MM-1CFE` (probable coquille pour `NM`), modèle de routeur
+  « 2941 », corrigé des questions 10 et 11 de la partie 2 (retiré de
+  l'énoncé, non récrit ailleurs), tablette en DHCP.
