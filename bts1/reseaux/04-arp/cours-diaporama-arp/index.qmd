@@ -1,6 +1,6 @@
 ---
 title: "Cours — Le protocole ARP (diaporama)"
-description: "Diaporama pour comprendre la résolution ARP et choisir la destination Ethernet."
+description: "Diaporama pour comprendre la résolution ARP et savoir quelle adresse MAC utiliser : celle du destinataire local ou celle de la passerelle."
 type: cours
 domaine: reseaux
 chapitre: "04 — ARP"
@@ -22,7 +22,7 @@ lang: fr
 ## Document
 
 Ce diaporama explique comment ARP retrouve une adresse MAC sur un réseau local.
-Il présente le cache et le rôle de la passerelle. Deux questions corrigées terminent la séance.
+Il présente ensuite le cache ARP, qui évite de redemander une adresse, et le rôle de la passerelle pour joindre un autre réseau. Deux questions corrigées terminent la séance.
 
 - **[Télécharger le diaporama (PDF)](fichiers/diaporama-arp.pdf)**
 - [Source LaTeX du diaporama](fichiers/diaporama-arp.tex)

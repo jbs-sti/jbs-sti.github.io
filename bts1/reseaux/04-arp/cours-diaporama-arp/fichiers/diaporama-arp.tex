@@ -58,20 +58,20 @@
 \draw[flux] (a)--node[above,font=\normalsize]{ARP} (b);
 \end{schema}\vfill
 \end{frame}
-\begin{frame}{Trouver le bon bureau}
+\begin{frame}{Trouver une collègue}
 \question{Comment trouver une collègue dans un open space ?}
 \begin{schema}
-\begin{scope}[scale=0.8,transform shape]
-\node[boite,text width=2cm,minimum height=1.2cm] (a) at (0,0) {Vous};
-\node[boite,text width=2.5cm] (b) at (8,1.7) {Collègue 1};
+\begin{scope}[scale=0.9,transform shape]
+\node[boite,text width=2cm,minimum height=0.9cm] (a) at (0,0) {Vous};
+\node[boite,text width=2.5cm] (b) at (8,1.5) {Collègue 1};
 \node[boite,text width=2.5cm] (c) at (8,0) {Collègue recherchée};
-\node[boite,text width=2.5cm] (d) at (8,-1.7) {Collègue 3};
+\node[boite,text width=2.5cm] (d) at (8,-1.5) {Collègue 3};
 \draw[flux,densely dotted] (a.north east)--(b.west);
 \draw[flux,densely dotted] ([yshift=3mm]a.east)--([yshift=3mm]c.west);
 \draw[flux,densely dotted] (a.south east)--(d.west);
 \draw[flux,dashed] ([yshift=-3mm]c.west)--([yshift=-3mm]a.east);
-\node[font=\small,fill=creme] at (4,1.8) {1. Question à voix haute};
-\node[font=\small,fill=creme] at (4,-0.65) {2. Réponse};
+\node[font=\small,fill=creme] at (4,1.35) {1. Question à voix haute};
+\node[font=\small,fill=creme] at (4,-0.55) {2. Réponse};
 \end{scope}
 \end{schema}
 Sans réponse, vous ne savez pas où la trouver.
@@ -87,41 +87,49 @@ La trame Ethernet a besoin d'une adresse MAC de destination.
 \end{frame}
 \begin{frame}{Une recherche sur le réseau local}
 \begin{schema}
-\node[boite,text width=2cm] (a) at (0,0) {PC A};
+\node[boite,text width=3.3cm] (a) at (0,0) {PC A\\\texttt{02:00:00:00:00:A1}};
 \node[boite,text width=2.2cm] (s) at (4,0) {Commutateur};
-\node[boite,text width=2.8cm] (b) at (9,1.2) {PC B\\\texttt{192.168.10.12}};
-\node[boite,text width=2cm] (c) at (9,-1.2) {PC C\\ignore la requête};
+\node[boite,text width=2.8cm] (b) at (9,0.9) {PC B\\\texttt{192.168.10.12}};
+\node[boite,text width=2cm] (c) at (9,-0.9) {PC D\\ignore la requête};
 \draw[flux,densely dotted] ([yshift=3mm]a.east)--([yshift=3mm]s.west);
-\draw[flux,densely dotted] (s.east)--(b.west);
-\draw[flux,densely dotted] (s.east)--(c.west);
-\draw[flux,dashed] ([yshift=-3mm]b.west)--([yshift=-3mm]s.east);
+\draw[flux,densely dotted] ([yshift=3mm]s.east)--([yshift=3mm]b.west);
+\draw[flux,densely dotted] ([yshift=-3mm]s.east)--(c.west);
+\draw[flux,dashed] ([yshift=-3mm]b.west)--([yshift=1mm]s.east);
 \draw[flux,dashed] ([yshift=-3mm]s.west)--([yshift=-3mm]a.east);
-\node[align=center,font=\small] at (4,2.2) {1. Requête ARP (diffusion) :\\qui a \texttt{192.168.10.12} ?};
-\node[align=center,font=\small] at (4,-1.9) {2. Réponse ARP (unicast) :\\\texttt{192.168.10.12} est à \texttt{02:00:00:00:00:3C}};
+\node[align=center,font=\small] at (4,1.65) {1. Requête ARP à la MAC de diffusion \texttt{FF:FF:FF:FF:FF:FF} :\\qui a \texttt{192.168.10.12} ?};
+\node[align=center,font=\small] at (4,-1.25) {2. Réponse ARP (unicast) :\\\texttt{192.168.10.12} est à \texttt{02:00:00:00:00:3C}};
 \end{schema}
-\texttt{FF:FF:FF:FF:FF:FF} : adresse de diffusion. Unicast : envoyé à un seul destinataire.
-\end{frame}
-\begin{frame}{Utiliser ARP}
-\begin{schema}
-\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (a) at (0,0) {IPv4 locale\\connue};
-\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (b) at (5,0) {Requête puis réponse};
-\node[boite,text width=3cm,minimum height=2cm,font=\normalsize] (c) at (10,0) {MAC locale\\connue};
-\draw[flux] (a)--(b); \draw[flux] (b)--(c);
-\end{schema}
-\begin{block}{Méthode}
-Le cache ARP conserve les correspondances IPv4–MAC.\\
-1. Cherchez l'IPv4 dans le cache. 2. Si elle manque, émettez une requête.\\
-3. Lisez la MAC et enregistrez la correspondance dans le cache.\\
-4. Utilisez cette MAC pour la trame.
-\end{block}
+{\small La requête contient l'IPv4 et la MAC de PC A : PC B peut lui répondre.\\
+Pointillés : requête ; tirets : réponse. Unicast : un seul destinataire.\\
+Même MAC de diffusion : \texttt{FF:FF:FF:FF:FF:FF}, \texttt{ff-ff-ff-ff-ff-ff} (Windows),\\
+\texttt{FFFF.FFFF.FFFF} (Packet Tracer).}
 \end{frame}
 \begin{frame}{Le cache évite de redemander}
 \begin{schema}
+\begin{scope}[scale=1.1,transform shape]
 \node[boite,text width=4.5cm,minimum height=2.8cm,font=\normalsize] (a) at (0,0) {Cache de PC A\\\texttt{192.168.10.12}\\\texttt{02:00:00:00:00:3C}};
-\node[boite,text width=4.5cm,minimum height=2.8cm,font=\normalsize] (b) at (8,0) {Trame suivante\\MAC de destination :\\\texttt{02:00:00:00:00:3C}};
+\node[boite,text width=4.5cm,minimum height=2.8cm,font=\normalsize] (b) at (7.3,0) {Trame suivante\\MAC de destination :\\\texttt{02:00:00:00:00:3C}};
 \draw[flux] (a)--node[above]{1. réutiliser} (b);
+\end{scope}
 \end{schema}
+Le cache ARP (ou table ARP) conserve les correspondances IPv4–MAC.\\
 Les entrées dynamiques sont apprises automatiquement et s'effacent après un délai. Sous Windows, consultez-les avec \texttt{arp -a}.
+\end{frame}
+\begin{frame}{Utiliser ARP}
+\begin{schema}
+\begin{scope}[scale=0.95,transform shape]
+\node[boite,text width=3.6cm,minimum height=2cm,font=\normalsize] (a) at (0,0) {IPv4 du destinataire\\connue};
+\node[boite,text width=3.6cm,minimum height=2cm,font=\normalsize] (b) at (5.3,0) {Requête puis réponse};
+\node[boite,text width=3.6cm,minimum height=2cm,font=\normalsize] (c) at (10.6,0) {MAC du destinataire\\connue};
+\draw[flux] (a)--(b); \draw[flux] (b)--(c);
+\end{scope}
+\end{schema}
+\begin{block}{Méthode}
+1. Cherchez l'IPv4 dans le cache.\\
+2. Si elle manque, émettez une requête.\\
+3. Lisez la MAC et enregistrez la correspondance dans le cache.\\
+4. Utilisez cette MAC pour la trame.
+\end{block}
 \end{frame}
 \begin{frame}{Une destination ailleurs}
 \question{Quelle MAC utiliser pour un autre réseau ?}
@@ -140,7 +148,8 @@ PC A cherche la MAC de sa passerelle, pas celle du serveur.
 \node[boite,text width=4cm,minimum height=2cm,font=\normalsize] (b) at (8,0) {Autre réseau ?\\MAC de la passerelle};
 \end{schema}
 \begin{block}{Méthode}
-1. Comparez les réseaux avec le masque.\\
+1. Appliquez votre masque à votre IPv4 et à l'IPv4 de destination,\\
+puis comparez les deux réseaux obtenus.\\
 2. Choisissez la destination locale ou la passerelle.\\
 3. Consultez le cache ; au besoin, résolvez cette IPv4 avec ARP.
 \end{block}
@@ -155,9 +164,9 @@ PC A cherche la MAC de sa passerelle, pas celle du serveur.
 \end{frame}
 \begin{frame}{Correction : destination locale}
 \begin{schema}
-\begin{scope}[scale=1.1,transform shape]
-\node[boite,text width=4.8cm,minimum height=2.5cm] (a) at (0,0) {Masque : \texttt{255.255.255.0}\\4 ET 0 = 0\\30 ET 0 = 0};
-\node[boite,text width=4.2cm,minimum height=2.5cm] (b) at (7,0) {Même réseau :\\\texttt{192.168.20.0/24}\\Résoudre \texttt{192.168.20.30}};
+\begin{scope}[scale=1.15,transform shape]
+\node[boite,text width=4.8cm,minimum height=2.5cm] (a) at (0,0) {Masque : \texttt{255.255.255.0}\\Dernier octet : 4 ET 0 = 0\\30 ET 0 = 0};
+\node[boite,text width=4.2cm,minimum height=2.5cm] (b) at (6.8,0) {Même réseau :\\\texttt{192.168.20.0/24}\\Résoudre \texttt{192.168.20.30}};
 \draw[flux] (a)--(b);
 \end{scope}
 \end{schema}
@@ -175,9 +184,9 @@ La passerelle ne sert pas pour cette destination locale.
 \end{frame}
 \begin{frame}{Correction : choisir la passerelle}
 \begin{schema}
-\begin{scope}[scale=1.1,transform shape]
-\node[boite,text width=5cm,minimum height=2.7cm] (a) at (0,0) {Masque : \texttt{255.255.255.128}\\4 ET 128 = 0\\130 ET 128 = 128};
-\node[boite,text width=4.5cm,minimum height=2.7cm] (b) at (7.4,0) {Réseaux différents\\\texttt{192.168.20.0}\\\texttt{192.168.20.128}};
+\begin{scope}[scale=1.05,transform shape]
+\node[boite,text width=6.1cm,minimum height=2.7cm] (a) at (0,0) {Masque : \texttt{255.255.255.128}\\Dernier octet :\\\texttt{00000100 ET 10000000 = 00000000}\\\texttt{10000010 ET 10000000 = 10000000}};
+\node[boite,text width=4.5cm,minimum height=2.7cm] (b) at (7.1,0) {Réseaux différents\\\texttt{192.168.20.0}\\\texttt{192.168.20.128}};
 \draw[flux] (a)--(b);
 \end{scope}
 \end{schema}
@@ -185,13 +194,13 @@ PC C résout \texttt{192.168.20.1}, l'adresse de sa passerelle.
 \end{frame}
 \begin{frame}{À retenir}
 \begin{schema}
-\node[boite,text width=3cm,minimum height=1.8cm,font=\normalsize] (a) {IPv4 locale};
-\node[boite,text width=3cm,minimum height=1.8cm,font=\normalsize,right=1cm of a] (b) {ARP ou cache};
-\node[boite,text width=3cm,minimum height=1.8cm,font=\normalsize,right=1cm of b] (c) {MAC locale};
+\node[boite,text width=3.6cm,minimum height=1.8cm,font=\normalsize] (a) {IPv4 du destinataire};
+\node[boite,text width=3.6cm,minimum height=1.8cm,font=\normalsize,right=1cm of a] (b) {ARP ou cache};
+\node[boite,text width=3.6cm,minimum height=1.8cm,font=\normalsize,right=1cm of b] (c) {MAC du destinataire};
 \draw[flux] (a)--(b); \draw[flux] (b)--(c);
 \end{schema}
 \begin{block}{Quatre repères}
-ARP relie une IPv4 locale à une MAC.\\
+ARP relie l'IPv4 d'un voisin local à sa MAC.\\
 La requête est diffusée ; la réponse est envoyée au demandeur.\\
 Pour un réseau distant, utilisez la MAC de la passerelle.\\
 ARP n'authentifie pas les réponses : une réponse peut être falsifiée.
