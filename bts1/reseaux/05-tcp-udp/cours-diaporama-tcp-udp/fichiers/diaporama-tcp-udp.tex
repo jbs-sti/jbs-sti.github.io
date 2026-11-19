@@ -1,0 +1,253 @@
+% BTS CIEL 1 — Réseaux — 05 — TCP et UDP
+% Compiler deux fois avec XeLaTeX depuis fichiers/.
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Sans}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+\usepackage{polyglossia}
+\setmainlanguage{french}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{foret}{HTML}{1C322D}
+\definecolor{creme}{HTML}{F8F3EE}
+\definecolor{or}{HTML}{EBB552}
+\definecolor{rose}{HTML}{F1CDBE}
+\definecolor{vertclair}{HTML}{DDE9DF}
+\definecolor{encre}{HTML}{24372E}
+\setbeamercolor{normal text}{fg=creme,bg=foret}
+\setbeamercolor{frametitle}{fg=or,bg=foret}
+\setbeamercolor{title}{fg=creme}
+\setbeamercolor{block title}{fg=foret,bg=or}
+\setbeamercolor{block body}{fg=encre,bg=creme}
+\setbeamercolor{alerted text}{fg=or}
+\setbeamercolor{structure}{fg=or}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\hfill\color{or}\insertframenumber\hspace{0.5cm}\vspace{0.25cm}}
+\setbeamertemplate{frametitle}{\vspace{0.35cm}\insertframetitle\par\vspace{0.15cm}\color{or}\rule{\linewidth}{0.6pt}}
+\setlength{\parskip}{5pt}
+\lstdefinestyle{webcode}{basicstyle=\ttfamily\small\color{encre},keywordstyle=\color{foret},stringstyle=\color{foret},
+  backgroundcolor=\color{creme},frame=single,rulecolor=\color{or},framerule=1pt,
+  xleftmargin=5pt,xrightmargin=5pt,columns=fullflexible,keepspaces=true,showstringspaces=false}
+\newcommand{\question}[1]{\begin{beamercolorbox}[rounded=true,sep=12pt]{block body}\Large\textbf{#1}\end{beamercolorbox}}
+\newcommand{\questionpetite}[1]{\begin{beamercolorbox}[rounded=true,sep=8pt]{block body}\large\textbf{#1}\end{beamercolorbox}}
+\newcommand{\etiquette}[1]{{\color{or}\small\MakeUppercase{#1}}}
+% Les schémas ont une surface claire, également lisible en noir et blanc.
+\tikzset{
+  boite/.style={draw=encre,fill=creme,text=encre,rounded corners,
+    align=center,text width=2.8cm,minimum height=1cm},
+  flux/.style={-{Stealth},thick,draw=encre},
+  every node/.style={text=encre,font=\small}}
+\newenvironment{schema}{%
+  \begin{beamercolorbox}[sep=8pt,rounded=true]{block body}
+  \centering\begin{tikzpicture}[>=Stealth]
+}{\end{tikzpicture}\end{beamercolorbox}}
+
+\title{Les protocoles TCP et UDP}
+\subtitle{BTS CIEL 1 · Réseaux · 05 — TCP et UDP}
+\author{}\date{}
+\begin{document}
+\begin{frame}[plain]
+\vfill\etiquette{Trouver le bon programme}\par\bigskip
+{\Huge\bfseries Les protocoles TCP et UDP}\par\bigskip
+{\Large BTS CIEL 1 · Réseaux · 05 — TCP et UDP}\vfill
+\end{frame}
+\begin{frame}{Une machine, plusieurs destinataires}
+\question{IP atteint la machine. Quel programme reçoit les données ?}
+\begin{schema}
+\begin{scope}[scale=1.1,transform shape]
+\node[boite,text width=3.5cm,minimum height=2cm,font=\normalsize] (a) at (0,0) {Adresse de\\l'immeuble};
+\node[boite,text width=3.5cm,minimum height=2cm,font=\normalsize] (b) at (5,0) {Numéro de\\l'appartement};
+\draw[flux] (a)--(b);
+\node[font=\normalsize] at (0,-1.5) {IP : machine};
+\node[font=\normalsize,align=center] at (5,-1.6) {Port : programme\\(navigateur, messagerie, jeu)};
+\end{scope}
+\end{schema}
+\end{frame}
+\begin{frame}{Deux connexions vers le même serveur}
+\begin{schema}
+\node[boite,text width=3.5cm,minimum height=1.5cm,font=\normalsize] (a) at (0,0) {Poste\\\texttt{192.168.10.20}};
+\node[boite,text width=3.5cm,minimum height=1.5cm,font=\normalsize] (b) at (8,0) {Serveur\\\texttt{203.0.113.80}};
+\draw[flux] (1.9,0.5)--(6.1,0.5);
+\node[font=\small] at (4,1.5) {1 : source 50532 → destination 443};
+\draw[flux] (1.9,-0.5)--(6.1,-0.5);
+\node[font=\small] at (4,-1.2) {2 : source 50533 → destination 443};
+\node[font=\normalsize] at (4,-1.8) {Deux connexions TCP distinctes};
+\end{schema}
+Deux onglets utilisent ici chacun une connexion et un port source.
+\end{frame}
+\begin{frame}{Lire les ports}
+\begin{schema}
+\begin{scope}[scale=1.1,transform shape]
+\node[boite,text width=3.5cm,minimum height=1.7cm,font=\normalsize] (a) at (0,0) {Client\\port 50532};
+\node[boite,text width=3.5cm,minimum height=1.7cm,font=\normalsize] (b) at (7,0) {Serveur\\port HTTPS 443};
+\draw[flux] (a)--node[above,fill=creme,font=\small]{1 : demande} (b);
+\draw[flux,dashed] (b.south west) to[bend left=20] node[below,fill=creme,font=\small]{2 : réponse vers 50532} (a.south east);
+\end{scope}
+\end{schema}
+\begin{block}{Méthode}
+1. Repérez le port source.\\
+2. Repérez le port destination.\\
+3. Pour la réponse, inversez-les.
+\end{block}
+\end{frame}
+\begin{frame}{Quelques ports usuels}
+\begin{beamercolorbox}[sep=10pt,rounded=true]{block body}
+\centering\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{lll}
+\textbf{Service} & \textbf{Transport usuel} & \textbf{Port}\\
+DNS & UDP ou TCP & 53\\
+DHCP & UDP & 67 serveur, 68 client\\
+HTTP / HTTPS & TCP & 80 / 443\\
+FTP & TCP & 21 commandes, 20 données (mode actif)\\
+SSH & TCP & 22\\
+\end{tabular}
+\end{beamercolorbox}
+Ports bien connus : 0 à 1023. Un port éphémère est un numéro choisi par le client pour une connexion.\\
+Sa plage dépend du système.
+\end{frame}
+\begin{frame}{UDP : envoyer sans connexion}
+\question{Faut-il attendre une confirmation pour chaque image vidéo ?}
+\begin{schema}
+\node[boite,text width=3.3cm,minimum height=2cm,font=\normalsize] (a) at (0,0) {Émetteur\\appel vidéo};
+\node[boite,text width=3.3cm,minimum height=2cm,font=\normalsize] (b) at (7,0) {Destinataire\\appel vidéo};
+\draw[flux] (a)--node[above,fill=creme,font=\small]{1 : message UDP} (b);
+\node[font=\normalsize] at (3.5,-1.7) {Comme une lettre simple : livraison non garantie.};
+\end{schema}
+UDP ne fournit ni connexion ni accusé de réception. DNS utilise souvent UDP.
+\end{frame}
+\begin{frame}{TCP : vérifier la livraison}
+\questionpetite{Que se passe-t-il si 100 octets sont perdus ?}
+\begin{schema}
+\begin{scope}[scale=0.85,transform shape,every node/.style={text=encre,font=\normalsize}]
+\node[boite,text width=2.5cm,font=\normalsize] at (0,1.3) {Expéditeur};
+\node[boite,text width=2.5cm,font=\normalsize] at (8,1.3) {Destinataire};
+\draw[thick] (0,0.75)--(0,-2.6); \draw[thick] (8,0.75)--(8,-2.6);
+\draw[flux] (0,0.2)--(4,0.2);
+\node[above=2pt] at (2,0.2) {1 : 100 octets};
+\node[font=\normalsize] at (4.8,0.2) {perdu $\times$};
+\node[anchor=west] at (0.15,-0.55) {Délai écoulé sans accusé};
+\draw[flux] (0,-1.3)--node[above,fill=creme] {2 : retransmission} (8,-1.3);
+\draw[flux,dashed] (8,-2.2)--node[above,fill=creme] {3 : accusé de réception} (0,-2.2);
+\end{scope}
+\end{schema}
+Comme une lettre recommandée : accusé de réception.\\
+TCP remet les octets dans l'ordre.
+\end{frame}
+\begin{frame}{TCP : ouvrir la connexion}
+\questionpetite{Comment le serveur sait-il que le client est prêt ?}
+\begin{schema}
+\begin{scope}[scale=0.85,transform shape,every node/.style={text=encre,font=\normalsize}]
+\node[boite,text width=2.7cm,font=\normalsize] at (0,2) {Client};
+\node[boite,text width=2.7cm,font=\normalsize] at (8,2) {Serveur};
+\draw[thick] (0,1.45)--(0,-2.1); \draw[thick] (8,1.45)--(8,-2.1);
+\draw[flux] (0,0.8)--node[above,fill=creme,inner sep=2pt,font=\normalsize]{1 : SYN : demande de connexion} (8,0.8);
+\draw[flux,dashed] (8,-0.3)--node[above=2pt,fill=creme,inner sep=2pt,font=\normalsize]{2 : SYN-ACK : accord du serveur} (0,-0.3);
+\draw[flux] (0,-1.4)--node[above,fill=creme,inner sep=2pt,font=\normalsize]{3 : ACK : confirmation du client} (8,-1.4);
+\end{scope}
+\end{schema}
+ACK : accusé de réception (acquittement).
+\end{frame}
+\begin{frame}{Choisir TCP ou UDP}
+\begin{schema}
+\node[boite,text width=4.8cm] (q1) at (0,2) {Une seule question, une seule\\réponse, chacune en un message ?};
+\node[boite,text width=4.8cm] (q2) at (0,-0.3) {Une donnée en retard\\est-elle inutile ?};
+\node[boite,text width=5cm] (udp1) at (7,2) {UDP : requête DNS\\(l'application redemande\\si besoin)};
+\node[boite,text width=5cm] (udp2) at (7,-0.3) {UDP : appel vidéo,\\audio en direct};
+\node[boite,text width=5cm] (tcp) at (7,-2) {TCP :\\page Web, fichier};
+\draw[flux] (q1)--node[above,fill=creme] {oui} (udp1);
+\draw[flux] (q1)--node[right,fill=creme] {non} (q2);
+\draw[flux] (q2.east)--node[above,fill=creme] {oui} (udp2.west);
+\draw[flux] (q2.south) |- node[near end,above,fill=creme] {non} (tcp.west);
+\end{schema}
+\end{frame}
+\begin{frame}{Méthode : choisir TCP ou UDP}
+\begin{schema}
+\node[boite,text width=3.8cm,minimum height=1.6cm] (un) at (0,0) {1 : un message chacun\\UDP};
+\node[boite,text width=3.2cm,minimum height=1.6cm] (deux) at (4.3,0) {2 : retard inutile\\UDP};
+\node[boite,text width=3.2cm,minimum height=1.6cm] (trois) at (8.6,0) {3 : sinon\\TCP};
+\end{schema}
+\begin{block}{Méthode}
+1. Pour une question et une réponse en un message chacune, choisissez UDP.\\
+2. Sinon, si une donnée en retard est inutile, choisissez UDP.\\
+3. Sinon, choisissez TCP pour une livraison complète et ordonnée.
+\end{block}
+\end{frame}
+\begin{frame}{À vous : retrouver une réponse}
+\question{Quel onglet reçoit chaque réponse ?}
+Deux onglets utilisent chacun une connexion vers le même serveur.
+\begin{schema}
+\node[boite,text width=5.3cm,minimum height=3.2cm,anchor=center] (poste) at (-0.5,0) {};
+\node[font=\normalsize] at (0,1.25) {Poste};
+\node[boite,text width=3.5cm,minimum height=0.7cm] at (-0.9,0.45) {Onglet 2 : port 50533};
+\node[boite,text width=3.5cm,minimum height=0.7cm] at (-0.9,-0.8) {Onglet 1 : port 50532};
+\node[boite,text width=2.5cm,minimum height=2.6cm] (serveur) at (9,0) {Serveur Web};
+\node[boite,text width=1.5cm,minimum height=0.8cm] (carte) at (2.3,-0.15) {Carte réseau};
+\draw[flux] (7.6,0.55)--(5.2,0.55)--(carte.east);
+\node[above=4pt] at (4.9,0.55) {Réponse A : destination 50533};
+\draw[flux] (7.6,-1.1)--(5.2,-1.1)--(carte.east);
+\node[below=4pt] at (4.9,-1.1) {Réponse B : destination 50532};
+\end{schema}
+\end{frame}
+\begin{frame}{Correction : retrouver une réponse}
+\begin{schema}
+\node[boite,text width=4.3cm,minimum height=3.7cm,anchor=center] (poste) at (0,0) {};
+\node[font=\normalsize] at (0,1.45) {Poste};
+\node[boite,text width=3.5cm,minimum height=0.7cm] (onglet2) at (0,0.5) {Onglet 2 : port 50533};
+\node[boite,text width=3.5cm,minimum height=0.7cm] (onglet1) at (0,-0.9) {Onglet 1 : port 50532};
+\node[boite,text width=2.5cm,minimum height=3cm] (serveur) at (9,0) {Serveur Web};
+\draw[flux] (7.6,0.5)--(onglet2.east);
+\node[above=4pt] at (5,0.5) {Réponse A : destination 50533};
+\draw[flux] (7.6,-0.9)--(onglet1.east);
+\node[above=4pt] at (5,-0.9) {Réponse B : destination 50532};
+\end{schema}
+La réponse A arrive à l'onglet 2 ; la réponse B arrive à l'onglet 1.
+\end{frame}
+\begin{frame}{À vous : choisir un transport}
+\question{TCP ou UDP pour ce jeu en ligne ? Pourquoi ?}
+\begin{schema}
+\node[boite,text width=3cm,minimum height=1.8cm,font=\normalsize] (a) at (0,0) {Joueur};
+\node[boite,text width=3cm,minimum height=1.8cm,font=\normalsize] (b) at (7,0) {Serveur de jeu};
+\draw[flux] (a)--node[above,fill=creme] {1 : position} (b);
+\node[font=\normalsize] at (3.5,-1.7) {30 positions par seconde ; une toutes les 33 ms.};
+\end{schema}
+Une position perdue est remplacée 33 ms plus tard.
+\end{frame}
+\begin{frame}{Correction : choisir un transport}
+\begin{schema}
+\node[boite,text width=3cm,minimum height=1.8cm,font=\normalsize] (a) at (0,0) {Joueur};
+\node[boite,text width=3cm,minimum height=1.8cm,font=\normalsize] (b) at (7,0) {Serveur de jeu};
+\draw[flux] (a)--node[above,fill=creme] {1 : position UDP} (b);
+\node[font=\normalsize] at (3.5,-1.7) {Une nouvelle position arrive 33 ms plus tard.};
+\end{schema}
+\begin{block}{Choix : UDP}
+Une position en retard est inutile. Attendre sa retransmission ralentirait le jeu.
+\end{block}
+\end{frame}
+\begin{frame}{À retenir}
+\begin{schema}
+\node[boite,text width=3cm,minimum height=1.6cm,font=\normalsize] (a) at (0,0) {IP : la machine};
+\node[boite,text width=4cm,minimum height=1.6cm,font=\normalsize] (b) at (6,0) {TCP ou UDP + port :\\le programme};
+\draw[flux] (a)--(b);
+\end{schema}
+\begin{block}{Quatre repères}
+IP atteint la machine ; le port désigne le programme.\\
+UDP envoie sans connexion et sans garantie de livraison.\\
+TCP ouvre une connexion, renvoie les pertes et remet les octets dans l'ordre.\\
+Choisissez selon les besoins de l'application.
+\end{block}
+\end{frame}
+\begin{frame}{Sources}
+\begin{beamercolorbox}[sep=12pt,rounded=true]{block body}
+\textbf{RFC 768} — UDP\\
+\texttt{https://www.rfc-editor.org/rfc/rfc768}\\[5pt]
+\textbf{RFC 9293} — TCP\\
+\texttt{https://www.rfc-editor.org/rfc/rfc9293}\\[5pt]
+\textbf{IANA} — registre des ports\\
+\texttt{https://www.iana.org/assignments/service-names-port-numbers}\\[5pt]
+Support enseignant : « TP DHCP, HTTP, DNS, FTP », p. 1--3.
+\end{beamercolorbox}
+\end{frame}
+\end{document}

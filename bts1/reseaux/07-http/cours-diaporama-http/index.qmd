@@ -1,6 +1,6 @@
 ---
 title: "Cours — Le protocole HTTP (diaporama)"
-description: "Diaporama pour lire une URL, comprendre les requêtes et réponses HTTP, puis distinguer HTTP et HTTPS."
+description: "Diaporama illustré pour comprendre un échange HTTP et la protection apportée par HTTPS."
 type: cours
 domaine: reseaux
 chapitre: "07 — HTTP"
@@ -8,7 +8,7 @@ categories: [cours, reseaux]
 mots-cles: [HTTP, HTTPS, URL, TCP, GET, POST, codes d’état, TLS]
 objectifs:
   - "Décomposer une URL en protocole, hôte et chemin."
-  - "Repérer méthode, en-têtes et contenu dans un échange HTTP/1.1."
+  - "Lire une requête et une réponse HTTP/1.1."
   - "Interpréter les codes 200, 301, 404 et 500."
   - "Distinguer HTTP et HTTPS par leur protection et leur port usuel."
 prerequis:
@@ -16,7 +16,7 @@ prerequis:
   - "Diaporama : le protocole DHCP"
 duree: "1 h"
 order: 10
-date-modified: 2026-11-17
+date-modified: 2026-11-19
 draft: false
 lang: fr
 # Ancienne adresse, avant la réorganisation des chapitres (2026-11-18).
@@ -26,9 +26,9 @@ aliases:
 
 ## Document
 
-Ce diaporama explique comment un navigateur demande une page à un serveur HTTP :
-URL, connexion TCP, requête, réponse et codes d’état.
-Il présente ensuite HTTPS. Trois questions corrigées terminent la séance.
+Ce diaporama illustre la demande d’une page et la réponse du serveur.
+Il présente les codes d’état et la protection des échanges par HTTPS.
+Deux questions corrigées terminent la séance : un diagnostic de panne, puis un formulaire en HTTPS.
 
 - **[Télécharger le diaporama (PDF)](fichiers/diaporama-http.pdf)**
 - [Source LaTeX du diaporama](fichiers/diaporama-http.tex)

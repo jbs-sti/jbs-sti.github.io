@@ -1,0 +1,32 @@
+---
+title: "09 — FTP"
+description: "Le protocole FTP : transférer des fichiers entre un client et un serveur."
+format:
+  html: default
+# Une liste par type de ressource : les cours d'abord, puis les TP.
+listing:
+  - id: cours
+    contents: "*/index.qmd"
+    include:
+      type: cours
+    type: grid
+    sort: "order"
+    fields: [title, description]
+  - id: tp
+    contents: "*/index.qmd"
+    include:
+      type: tp
+    type: grid
+    sort: "order"
+    fields: [title, description]
+---
+
+## Cours
+
+::: {#cours}
+:::
+
+## Travaux pratiques
+
+::: {#tp}
+:::
