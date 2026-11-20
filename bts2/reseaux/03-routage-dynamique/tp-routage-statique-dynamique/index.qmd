@@ -1,5 +1,5 @@
 ---
-title: "Du routage statique au routage dynamique"
+title: "TP — Du routage statique au routage dynamique"
 description: "Cinq séances Packet Tracer sur le réseau HexaTech : routes statiques, limites du statique, RIPv2, redondance et convergence, puis OSPF et coût des liaisons."
 type: tp
 domaine: reseaux
@@ -17,7 +17,7 @@ prerequis:
   - "Configuration de base d'un routeur Cisco"
   - "Cours « Le routage dynamique avec OSPF »"
 duree: "9 h"
-order: 15
+order: 40
 date-modified: 2026-11-02
 draft: false
 lang: fr

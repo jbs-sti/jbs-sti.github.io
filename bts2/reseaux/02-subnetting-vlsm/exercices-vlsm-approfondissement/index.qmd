@@ -17,7 +17,7 @@ prerequis:
   - "Fiche « Le VLSM : la méthode pas à pas »"
   - "Série 1 « VLSM : exercices d’entraînement »"
 duree: "1 h 50"
-order: 23
+order: 35
 date-modified: 2026-10-25
 draft: false
 lang: fr

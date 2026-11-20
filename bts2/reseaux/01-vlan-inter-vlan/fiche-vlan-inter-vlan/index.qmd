@@ -15,7 +15,7 @@ prerequis:
   - "Adressage IPv4 : réseau, masque, passerelle"
   - "Modes de configuration d’IOS : utilisateur, privilégié, global, interface"
 duree: "30 min"
-order: 10
+order: 20
 date-modified: '2026-10-24'
 draft: true
 lang: fr

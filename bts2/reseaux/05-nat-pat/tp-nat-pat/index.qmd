@@ -20,7 +20,7 @@ prerequis:
   - "Cours « Les listes de contrôle d'accès (ACL) » : masque générique"
   - "Route par défaut et route O*E2 annoncée par OSPF"
 duree: "4 h"
-order: 20
+order: 40
 date-modified: 2026-10-25
 draft: true
 lang: fr

@@ -12,7 +12,7 @@ objectifs:
 prerequis:
   - "Cours « Découper un réseau en sous-réseaux »"
 duree: "45 min"
-order: 12
+order: 30
 date-modified: 2026-10-25
 draft: true
 lang: fr

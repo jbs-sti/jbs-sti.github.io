@@ -1,5 +1,5 @@
 ---
-title: "Comprendre le routage dynamique : du routage statique à RIP et OSPF"
+title: "Cours — Comprendre le routage dynamique : du routage statique à RIP et OSPF"
 description: "Diaporama : comment un routeur trouve son chemin, du routage statique aux protocoles RIP et OSPF."
 type: cours
 domaine: reseaux
@@ -12,7 +12,7 @@ objectifs:
 prerequis:
   - "Routage statique : table de routage et commande ip route"
 duree: "1 h"
-order: 5
+order: 10
 date-modified: 2026-11-02
 draft: true
 lang: fr

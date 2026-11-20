@@ -1,5 +1,5 @@
 ---
-title: "Les listes de contrôle d'accès (ACL)"
+title: "Cours — Les listes de contrôle d'accès (ACL)"
 description: "Filtrer le trafic IPv4 avec des ACL standard et étendues sur un routeur Cisco, les placer au bon endroit, protéger l'accès SSH et diagnostiquer les erreurs classiques sous Packet Tracer."
 type: cours
 domaine: reseaux

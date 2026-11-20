@@ -17,7 +17,7 @@ prerequis:
   - "VLAN, trunk 802.1Q, routage inter-VLAN et DHCP"
   - "Routage statique"
 duree: "4 h"
-order: 30
+order: 41
 date-modified: 2026-10-24
 draft: false
 lang: fr

@@ -1,5 +1,5 @@
 ---
-title: "La traduction d'adresses : NAT et PAT"
+title: "Cours — La traduction d'adresses : NAT et PAT"
 description: "Comprendre pourquoi un routeur traduit les adresses IPv4 privées en adresses publiques, configurer un NAT statique, un NAT dynamique et un PAT sur un routeur Cisco, puis vérifier et dépanner la traduction sous Packet Tracer."
 type: cours
 domaine: reseaux

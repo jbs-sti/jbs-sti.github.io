@@ -13,7 +13,7 @@ objectifs:
 prerequis:
   - "Cours « La traduction d'adresses : NAT et PAT » du chapitre 05"
 duree: "20 min"
-order: 15
+order: 20
 date-modified: 2026-10-25
 draft: true
 lang: fr

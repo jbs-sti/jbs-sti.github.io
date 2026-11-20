@@ -1,5 +1,5 @@
 ---
-title: "Le routage dynamique avec OSPF"
+title: "Cours — Le routage dynamique avec OSPF"
 description: "Passez du routage statique à RIPv2, puis à OSPF pour apprendre les routes et adapter les chemins après une panne."
 type: cours
 domaine: reseaux
@@ -16,7 +16,7 @@ prerequis:
   - "Routage statique : table de routage et commande ip route"
   - "Sous-réseaux et VLSM"
 duree: "2 h"
-order: 10
+order: 11
 date-modified: 2026-10-25
 draft: false
 lang: fr

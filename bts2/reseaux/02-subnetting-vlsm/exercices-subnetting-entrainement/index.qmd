@@ -16,7 +16,7 @@ prerequis:
   - "Cours « Découper un réseau en sous-réseaux » du chapitre 02"
   - "Conversion binaire d’un octet"
 duree: "1 h 40"
-order: 16
+order: 31
 date-modified: 2026-10-24
 draft: true
 lang: fr

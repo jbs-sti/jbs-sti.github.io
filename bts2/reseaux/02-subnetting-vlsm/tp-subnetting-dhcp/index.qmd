@@ -20,7 +20,7 @@ prerequis:
   - "VLAN et trunk 802.1Q"
   - "Notions de DHCP : demande diffusée, pool, passerelle"
 duree: "4 h"
-order: 18
+order: 40
 date-modified: 2026-10-24
 draft: false
 lang: fr

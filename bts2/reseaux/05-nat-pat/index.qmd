@@ -3,11 +3,54 @@ title: "05 — Traduction d'adresses (NAT et PAT)"
 description: "Ressources du chapitre : adresses privées et publiques, NAT statique, NAT dynamique et PAT sur routeur Cisco."
 format:
   html: default
+# Une liste par type de ressource, dans l'ordre : cours, fiches, exercices, TP.
 listing:
-  # Seules les ressources, pas les index de domaine ni de chapitre.
-  contents: "*/index.qmd"
-  type: grid
-  categories: true
-  sort: "order"
-  fields: [title, description, categories]
+  - id: cours
+    contents: "*/index.qmd"
+    include:
+      type: cours
+    type: grid
+    sort: "order"
+    fields: [title, description]
+  - id: fiche
+    contents: "*/index.qmd"
+    include:
+      type: fiche
+    type: grid
+    sort: "order"
+    fields: [title, description]
+  - id: exercices
+    contents: "*/index.qmd"
+    include:
+      type: exercices
+    type: grid
+    sort: "order"
+    fields: [title, description]
+  - id: tp
+    contents: "*/index.qmd"
+    include:
+      type: tp
+    type: grid
+    sort: "order"
+    fields: [title, description]
 ---
+
+## Cours
+
+::: {#cours}
+:::
+
+## Fiches
+
+::: {#fiche}
+:::
+
+## Exercices
+
+::: {#exercices}
+:::
+
+## Travaux pratiques
+
+::: {#tp}
+:::
