@@ -1,5 +1,5 @@
 ---
-title: "TP — Du routage statique au routage dynamique"
+title: "TP 4 bis — Du routage statique au routage dynamique"
 description: "Cinq séances Packet Tracer sur le réseau HexaTech : routes statiques, limites du statique, RIPv2, redondance et convergence, puis OSPF et coût des liaisons."
 type: tp
 domaine: reseaux

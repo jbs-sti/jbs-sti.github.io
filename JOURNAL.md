@@ -371,14 +371,14 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Demande : organiser les chapitres de BTS2 comme ceux de BTS1, cours et TP
   distingués dans la page du chapitre ; plan validé par l'enseignant.
 - Fait : les 5 pages de chapitre de `bts2/reseaux` en listes par type ;
-  préfixe « Cours — » sur les 6 cours et « TP — » sur le TP routage
+  préfixe « Cours — » sur les 6 cours et « TP 4 bis — » sur le TP routage
   statique/dynamique (les autres TP gardent leur numéro) ; `order` réattribués
   par tranche. Adresses inchangées, donc pas d'alias ; aucun `draft` modifié.
 - Vérification : `quarto render bts2/reseaux --to html` sans erreur, listes
   présentes dans chaque chapitre ; PDF non rendus ici (`rsvg-convert`
   absent), la CI fait foi. Vérificateur, Codex : sans objet (métadonnées).
 - Points à relire par l'enseignant : ordre des ressources dans le chapitre 02
-  (11 ressources) ; titre « TP — Du routage statique… » sans numéro.
+  (11 ressources) ; titre « TP 4 bis — Du routage statique… » (numéro choisi par l'enseignant).
 
 ### 2026-11-19 — cours/bts1-reseaux-tp-creation-lan-publier
 
