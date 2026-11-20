@@ -269,6 +269,10 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **Décisions durables**
 
+- 2026-11-20 : BTS CIEL 2, réseaux : même organisation que BTS1. Pages de
+  chapitre en listes par type (Cours, Fiches, Exercices, Travaux pratiques ;
+  seules les listes non vides), titres préfixés « Cours — » / « TP — »,
+  `order` : cours 10-19, fiches 20-29, exercices 30-39, TP 40-49.
 - 2026-11-18 : BTS CIEL 1, réseaux : le cours d'un chapitre de protocole
   est un seul diaporama beamer « premier principe » (problème, exemple,
   méthode ; une illustration par diapositive ; « À vous » corrigés), en
@@ -361,6 +365,20 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-20 — cours/bts2-reorganisation
+
+- Demande : organiser les chapitres de BTS2 comme ceux de BTS1, cours et TP
+  distingués dans la page du chapitre ; plan validé par l'enseignant.
+- Fait : les 5 pages de chapitre de `bts2/reseaux` en listes par type ;
+  préfixe « Cours — » sur les 6 cours et « TP — » sur le TP routage
+  statique/dynamique (les autres TP gardent leur numéro) ; `order` réattribués
+  par tranche. Adresses inchangées, donc pas d'alias ; aucun `draft` modifié.
+- Vérification : `quarto render bts2/reseaux --to html` sans erreur, listes
+  présentes dans chaque chapitre ; PDF non rendus ici (`rsvg-convert`
+  absent), la CI fait foi. Vérificateur, Codex : sans objet (métadonnées).
+- Points à relire par l'enseignant : ordre des ressources dans le chapitre 02
+  (11 ressources) ; titre « TP — Du routage statique… » sans numéro.
 
 ### 2026-11-19 — cours/bts1-reseaux-tp-creation-lan-publier
 

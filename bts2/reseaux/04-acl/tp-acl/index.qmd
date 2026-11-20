@@ -20,7 +20,7 @@ prerequis:
   - "Cours « Le routage dynamique avec OSPF »"
   - "Protocoles TCP, UDP et ICMP ; numéros de port"
 duree: "4 h"
-order: 20
+order: 40
 date-modified: 2026-10-24
 draft: true
 lang: fr

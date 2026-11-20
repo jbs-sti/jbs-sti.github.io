@@ -3,11 +3,54 @@ title: "02 — Subnetting et VLSM"
 description: "Ressources du chapitre : binaire, masque, taille de bloc, découpage en sous-réseaux et VLSM."
 format:
   html: default
+# Une liste par type de ressource, dans l'ordre : cours, fiches, exercices, TP.
 listing:
-  # Seules les ressources, pas les index de domaine ni de chapitre.
-  contents: "*/index.qmd"
-  type: grid
-  categories: true
-  sort: "order"
-  fields: [title, description, categories]
+  - id: cours
+    contents: "*/index.qmd"
+    include:
+      type: cours
+    type: grid
+    sort: "order"
+    fields: [title, description]
+  - id: fiche
+    contents: "*/index.qmd"
+    include:
+      type: fiche
+    type: grid
+    sort: "order"
+    fields: [title, description]
+  - id: exercices
+    contents: "*/index.qmd"
+    include:
+      type: exercices
+    type: grid
+    sort: "order"
+    fields: [title, description]
+  - id: tp
+    contents: "*/index.qmd"
+    include:
+      type: tp
+    type: grid
+    sort: "order"
+    fields: [title, description]
 ---
+
+## Cours
+
+::: {#cours}
+:::
+
+## Fiches
+
+::: {#fiche}
+:::
+
+## Exercices
+
+::: {#exercices}
+:::
+
+## Travaux pratiques
+
+::: {#tp}
+:::

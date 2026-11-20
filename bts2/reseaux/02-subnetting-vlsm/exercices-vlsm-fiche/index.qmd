@@ -12,7 +12,7 @@ objectifs:
 prerequis:
   - "Cours « Le VLSM : des sous-réseaux de tailles différentes »"
 duree: "45 min"
-order: 20
+order: 33
 date-modified: 2026-10-25
 draft: false
 lang: fr

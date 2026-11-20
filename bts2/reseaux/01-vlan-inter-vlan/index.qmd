@@ -3,11 +3,18 @@ title: "01 — VLAN et routage inter-VLAN"
 description: "Ressources du chapitre : VLAN, ports d’accès et trunk 802.1Q, routage entre VLAN."
 format:
   html: default
+# Une liste par type de ressource, dans l'ordre : cours, fiches, exercices, TP.
 listing:
-  # Seules les ressources, pas les index de domaine ni de chapitre.
-  contents: "*/index.qmd"
-  type: grid
-  categories: true
-  sort: "order"
-  fields: [title, description, categories]
+  - id: fiche
+    contents: "*/index.qmd"
+    include:
+      type: fiche
+    type: grid
+    sort: "order"
+    fields: [title, description]
 ---
+
+## Fiches
+
+::: {#fiche}
+:::

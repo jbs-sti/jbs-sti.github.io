@@ -17,7 +17,7 @@ prerequis:
   - "Cours « Le routage dynamique avec OSPF »"
   - "Routage statique"
 duree: "4 h"
-order: 20
+order: 41
 date-modified: 2026-10-24
 draft: true
 lang: fr

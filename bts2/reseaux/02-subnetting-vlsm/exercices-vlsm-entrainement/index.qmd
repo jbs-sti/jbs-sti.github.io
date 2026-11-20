@@ -17,7 +17,7 @@ prerequis:
   - "Cours « Le VLSM : des sous-réseaux de tailles différentes »"
   - "Fiche « Le VLSM : la méthode pas à pas »"
 duree: "1 h 40"
-order: 22
+order: 34
 date-modified: 2026-10-24
 draft: true
 lang: fr

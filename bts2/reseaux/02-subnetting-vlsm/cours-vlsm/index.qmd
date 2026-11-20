@@ -1,5 +1,5 @@
 ---
-title: "Le VLSM : des sous-réseaux de tailles différentes"
+title: "Cours — Le VLSM : des sous-réseaux de tailles différentes"
 description: "Adaptez la taille de chaque sous-réseau au besoin, placez les blocs et vérifiez votre plan VLSM."
 type: cours
 domaine: reseaux
@@ -16,7 +16,7 @@ prerequis:
   - "Conversion binaire d’un octet"
   - "Rôle d’un routeur et liaison entre deux routeurs"
 duree: "1 h 30"
-order: 19
+order: 11
 date-modified: 2026-10-25
 draft: false
 lang: fr

@@ -17,7 +17,7 @@ prerequis:
   - "Cours « La traduction d'adresses : NAT et PAT »"
   - "Fiche « Le NAT et le PAT : la méthode pas à pas »"
 duree: "1 h 30"
-order: 16
+order: 30
 date-modified: 2026-10-25
 draft: true
 lang: fr

@@ -17,7 +17,7 @@ prerequis:
   - "Série 1 « Subnetting : exercices d’entraînement »"
   - "Notions de VLAN et de DHCP"
 duree: "1 h 50"
-order: 17
+order: 32
 date-modified: 2026-10-24
 draft: true
 lang: fr

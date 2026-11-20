@@ -1,5 +1,5 @@
 ---
-title: "Découper un réseau en sous-réseaux"
+title: "Cours — Découper un réseau en sous-réseaux"
 description: "Apprenez à choisir un masque et à trouver les bornes de sous-réseaux IPv4 égaux."
 type: cours
 domaine: reseaux
