@@ -40,7 +40,7 @@ Il choisit **VLAN 10 PROFS : 192.168.10.0/24** et **VLAN 20 ELEVES : 192.168.20.
 
 ## Comprendre le mécanisme
 
-P1 diffuse : P2 reçoit, E1 et E2 ne reçoivent pas. Un **VLAN** découpe le commutateur en commutateurs logiques.
+Un **VLAN** découpe le commutateur en commutateurs logiques. P1 diffuse : P2 reçoit, E1 et E2 ne reçoivent pas.
 **Un VLAN = un domaine de diffusion** ; en pratique, on lui associe **un réseau IP**.
 
 ::: {tbl-colwidths="[18,82]"}

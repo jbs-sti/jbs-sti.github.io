@@ -47,9 +47,9 @@ Celtis est un bureau d'études installé sur deux niveaux. Les bureaux
 partagent aujourd'hui le même réseau. Tous les postes reçoivent donc les
 messages diffusés par tous les autres.
 
-Votre mission : séparer les bureaux et l'atelier, sans acheter de nouveau
-commutateur. Chaque service aura son propre VLAN. Les deux VLAN doivent
-exister aux deux niveaux du bâtiment.
+Votre mission : séparer les bureaux et l'atelier, sans tirer un réseau
+séparé pour chaque service. Chaque service aura son propre VLAN. Les deux
+VLAN doivent exister aux deux niveaux du bâtiment.
 
 Le résultat attendu : à la fin du TP, les postes d'un même service
 communiquent, même d'un niveau à l'autre. Les postes de services
@@ -167,8 +167,9 @@ lignes des VLAN 1002 à 1005 : ils existent par défaut et ne servent pas ici.
 | S2 | PC2 → PC4 | OK | |
 | S3 | PC1 → PC2 | ÉCHEC | |
 
-Le test S3 échoue déjà, alors qu'aucun VLAN n'existe. PC1 et PC2 ne sont
-pas dans le même réseau IP : `172.16.10.0/24` et `172.16.20.0/24`. Sans
+Le test S3 échoue déjà, alors qu'aucun VLAN n'a encore été créé : les
+quatre ports sont dans le VLAN 1. PC1 et PC2 ne sont pas dans le même
+réseau IP : `172.16.10.0/24` et `172.16.20.0/24`. Sans
 passerelle, PC1 ne sait pas joindre un autre réseau. C'est une séparation
 **par l'adressage IP**. Elle ne dit rien de ce que reçoit chaque poste.
 
@@ -275,7 +276,7 @@ dernier port de la plage, pas une interface complète.
 ports Fa0/11 à Fa0/20, en mode accès.
 
 **c) Sauvegarde.** Enregistrez la configuration de SW-RDC dans la
-`startup-config`.
+`startup-config`, la configuration chargée au démarrage du commutateur.
 
 **2.2 Vérification.** Relevez sur SW-RDC :
 
@@ -326,7 +327,8 @@ les réponses à la réflexion. Puis sauvegardez sous `TP1_P2_NOM.pkt`.
 ### Partie 3 — Deux commutateurs, un trunk 802.1Q
 
 On repart du fichier de la partie 2. Une partie des bureaux et de l'atelier
-s'installe à l'étage. PC3 et PC4 y déménagent, sur un nouveau commutateur.
+s'installe à l'étage. PC3 et PC4 y déménagent, sur un commutateur déjà
+disponible à l'étage.
 
 ::: {.callout-note}
 ## Notion — trunk 802.1Q
@@ -334,7 +336,8 @@ s'installe à l'étage. PC3 et PC4 y déménagent, sur un nouveau commutateur.
 Un seul câble relie les deux commutateurs. Il doit pourtant transporter les
 trames du VLAN 10 et celles du VLAN 20. Le commutateur qui envoie ajoute
 donc à chaque trame une **étiquette 802.1Q** : elle contient le numéro du
-VLAN. Le commutateur qui reçoit lit l'étiquette, la retire, et livre la
+VLAN. Seules les trames du VLAN natif (VLAN 1 par défaut, voir le bonus)
+passent sans étiquette. Le commutateur qui reçoit lit l'étiquette, la retire, et livre la
 trame dans le bon VLAN. Un lien qui transporte plusieurs VLAN de cette
 façon s'appelle un **trunk**.
 :::
@@ -343,8 +346,8 @@ façon s'appelle un **trunk**.
 
 **3.1 Configuration.**
 
-**a) Le nouveau commutateur.** Ajoutez un commutateur **2960-24TT**, nommé
-SW-ETAGE. Débranchez PC3 et PC4 de SW-RDC. Rebranchez-les sur SW-ETAGE :
+**a) Le commutateur de l'étage.** Il est déjà disponible : placez-le dans
+la topologie. C'est un **2960-24TT**, nommé SW-ETAGE. Débranchez PC3 et PC4 de SW-RDC. Rebranchez-les sur SW-ETAGE :
 PC3 sur Fa0/2, PC4 sur Fa0/12. Reliez Gi0/1 de SW-RDC à Gi0/1 de SW-ETAGE
 avec un câble croisé.
 
@@ -359,7 +362,7 @@ en mode accès. Les numéros, les noms et les plages sont ceux de SW-RDC.
 SW-RDC# configure terminal
 SW-RDC(config)# interface gigabitEthernet 0/1
 SW-RDC(config-if)# switchport mode trunk
-! force le port en trunk 802.1Q : il transporte plusieurs VLAN, chacun avec son étiquette
+! force le port en trunk 802.1Q : VLAN étiquetés, sauf le natif
 SW-RDC(config-if)# end
 SW-RDC# show interfaces trunk
 ```
