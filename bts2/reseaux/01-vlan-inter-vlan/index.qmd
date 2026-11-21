@@ -5,6 +5,13 @@ format:
   html: default
 # Une liste par type de ressource, dans l'ordre : cours, fiches, exercices, TP.
 listing:
+  - id: cours
+    contents: "*/index.qmd"
+    include:
+      type: cours
+    type: grid
+    sort: "order"
+    fields: [title, description]
   - id: fiche
     contents: "*/index.qmd"
     include:
@@ -12,9 +19,26 @@ listing:
     type: grid
     sort: "order"
     fields: [title, description]
+  - id: tp
+    contents: "*/index.qmd"
+    include:
+      type: tp
+    type: grid
+    sort: "order"
+    fields: [title, description]
 ---
+
+## Cours
+
+::: {#cours}
+:::
 
 ## Fiches
 
 ::: {#fiche}
+:::
+
+## Travaux pratiques
+
+::: {#tp}
 :::
