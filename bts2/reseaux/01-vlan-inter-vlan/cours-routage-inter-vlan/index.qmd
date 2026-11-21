@@ -42,10 +42,10 @@ Le **routeur sur un bâton** (*router on a stick*) utilise une seule interface p
 Une **sous-interface** est une interface logique de G0/0, une par VLAN : elle traite son étiquette (`encapsulation dot1Q`) et porte sa passerelle. De P1 vers E1 :
 
 1. P1 remet le paquet à **192.168.10.254**, via une trame du VLAN 10.
-2. R1 reçoit par **G0/0.10** et choisit le réseau de destination **192.168.20.0/24**.
+2. R1 reçoit par **G0/0.10** ; sa table associe **192.168.20.0/24** à **G0/0.20**.
 3. R1 émet une nouvelle trame par **G0/0.20**, étiquetée VLAN 20 sur le trunk ; SW1 la livre à E1.
 
-Autre solution : un **commutateur de niveau 3** assure lui-même le routage (voir la fiche).
+Autre solution : un **commutateur de niveau 3** assure le routage ; voir la fiche (autre topologie).
 
 ## Observer et appliquer
 
@@ -69,10 +69,10 @@ interface g0/0.20
 end
 ```
 
-Placez **`encapsulation dot1Q` avant `ip address`** ; **`no shutdown` sur l’interface physique**.
+Placez **`encapsulation dot1Q` avant `ip address`**, sinon IOS refuse l’adresse ; **`no shutdown` sur l’interface physique**.
 
 2. Postes (**Desktop > IP Configuration**) : passerelle **192.168.10.254** (VLAN 10) ou **192.168.20.254** (VLAN 20).
-3. R1, mode privilégié : `show ip interface brief` → `up/up` ; `show ip route` → deux réseaux **C** : ceux des VLAN 10 et 20.
+3. R1, mode privilégié : `show ip interface brief` → `up/up` ; `show ip route` → deux réseaux **C** (plus leurs lignes **L** : adresses de R1).
 4. P1 (**Command Prompt**) : `ping 192.168.20.11` (la 1re réponse peut manquer : ARP), puis `tracert 192.168.20.11` → R1, puis E1.
 
 ## Exercices de vérification
@@ -87,5 +87,5 @@ Placez **`encapsulation dot1Q` avant `ip address`** ; **`no shutdown` sur l’in
 
 ## Pour aller plus loin
 
-[Cours — Les VLAN](../cours-vlan/index.qmd) · [VLAN et routage inter-VLAN : l’aide-mémoire](../fiche-vlan-inter-vlan/index.qmd) ·
+[Cours — Les VLAN](../cours-vlan/index.qmd) · [VLAN et routage inter-VLAN : l’aide-mémoire](../fiche-vlan-inter-vlan/index.qmd) (autre topologie) ·
 [TP 2 — Faire communiquer les VLAN](../tp-routage-inter-vlan/index.qmd).

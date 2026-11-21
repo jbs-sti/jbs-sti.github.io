@@ -217,7 +217,7 @@ R1 doit être passerelle de deux VLAN, mais un seul câble le relie à
 SW-RDC. Ce câble est donc un trunk : il transporte les trames des deux
 VLAN, avec leur étiquette 802.1Q. Côté routeur, l'interface physique G0/0
 est découpée en **sous-interfaces**, une par VLAN. Chacune lit les trames
-d'un seul numéro de VLAN, et porte l'adresse de passerelle de ce VLAN. Ce
+d'un seul numéro de VLAN. Elle porte l'adresse de passerelle de ce VLAN. Ce
 montage s'appelle le **routeur sur un bâton** (*router-on-a-stick*).
 :::
 
@@ -394,9 +394,10 @@ remettez-la.
 
 a) Deux pannes ont-elles donné exactement les mêmes tests en échec ? Si
    oui, quelle commande permet de les distinguer ?
-b) La panne d ne touche qu'un seul poste. En mode Simulation, suivez le
-   ping de PC3 vers PC4 : jusqu'où va la requête ? Jusqu'où va la réponse ?
-   Expliquez le résultat du test.
+b) La panne d ne touche qu'un seul poste. Réintroduisez-la le temps de
+   l'observation. En mode Simulation, suivez le ping de PC3 vers PC4 :
+   jusqu'où va la requête ? Jusqu'où va la réponse ? Expliquez le résultat
+   du test, puis réparez de nouveau la panne d.
 c) Pour la panne c, expliquez ce que R1 reçoit encore sur G0/0. Pensez au
    VLAN d'un port d'accès et aux étiquettes 802.1Q.
 d) Proposez un ordre de vérification, du poste vers le routeur, pour
@@ -489,10 +490,14 @@ a) Sur MLS, retirez temporairement la commande `ip routing` avec
    `no ip routing`. Refaites le test M2, notez le résultat, puis remettez
    `ip routing`. Que montre cette expérience ?
 b) Comparez R1 et MLS. Citez un avantage du commutateur de niveau 3 sur le
-   routeur sur un bâton. Pensez au nombre de liens et aux performances.
-c) Citez une limite ou un inconvénient du commutateur de niveau 3. Pensez
+   routeur sur un bâton. Pensez à la vitesse de routage : le 3560 route
+   avec des circuits matériels dédiés.
+c) Dans cette topologie, MLS remplace R1 sur le même trunk. Combien de fois
+   un paquet de PC3 vers PC4 traverse-t-il chaque trunk ? Ce trajet
+   a-t-il changé par rapport à la partie 2 ?
+d) Citez une limite ou un inconvénient du commutateur de niveau 3. Pensez
    au coût, et à ce que fait un routeur en sortie vers Internet.
-d) Les postes n'ont pas changé de passerelle. Pourquoi est-ce un avantage
+e) Les postes n'ont pas changé de passerelle. Pourquoi est-ce un avantage
    lors du remplacement de R1 par MLS ?
 
 ::: {.callout-important}
@@ -509,7 +514,9 @@ Puis sauvegardez sous `TP2_BONUS_NOM.pkt`.
 Le réseau est validé quand :
 
 - les quatre postes ont leur passerelle en `.254` ;
-- les tests G1 à G3, C1 à C4 et D1 à D2 donnent le résultat attendu ;
+- les tests G1 à G3, C1 à C4 et D1 à D2 ont donné le résultat attendu,
+  au moment où leur partie a été faite : G2 et G3 échouent en partie 1,
+  avant la configuration de R1 ;
 - `show ip interface brief` sur R1 affiche G0/0, G0/0.10 et G0/0.20 à
   l'état *up* / *up* ;
 - `show ip route` sur R1 affiche les réseaux `172.16.10.0/24` et
