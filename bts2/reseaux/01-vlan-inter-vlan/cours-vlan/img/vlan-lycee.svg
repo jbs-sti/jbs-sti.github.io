@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="180" viewBox="0 0 1000 180">
+  <title>Lycée : VLAN 10 PROFS et VLAN 20 ELEVES sur deux commutateurs</title>
+  <desc>Deux commutateurs 2960 reliés par un trunk 802.1Q. Chacun dessert un professeur du VLAN 10 et un élève du VLAN 20. Tous les postes utilisent un masque /24.</desc>
+  <rect width="1000" height="180" fill="#fff"/>
+  <g fill="none" stroke="#222" stroke-width="2">
+    <path d="M150 100V72H250V62 M365 100V72H290V62 M635 100V72H710V62 M850 100V72H750V62"/>
+    <path d="M310 36H690 M310 44H690"/>
+  </g>
+  <g stroke="#222" stroke-width="2">
+    <rect x="230" y="18" width="80" height="44" rx="4" fill="#ddd"/>
+    <rect x="690" y="18" width="80" height="44" rx="4" fill="#ddd"/>
+    <rect x="42" y="100" width="216" height="66" rx="4" fill="#fff"/>
+    <rect x="260" y="100" width="210" height="66" rx="4" fill="#eee"/>
+    <rect x="527" y="100" width="216" height="66" rx="4" fill="#fff"/>
+    <rect x="745" y="100" width="210" height="66" rx="4" fill="#eee"/>
+  </g>
+  <g font-family="sans-serif" font-size="17" text-anchor="middle" fill="#111">
+    <text x="270" y="38" font-weight="bold">SW1</text><text x="270" y="55" font-size="14">2960</text>
+    <text x="730" y="38" font-weight="bold">SW2</text><text x="730" y="55" font-size="14">2960</text>
+    <text x="500" y="22" font-weight="bold">Trunk 802.1Q — VLAN 10 et 20</text>
+    <text x="342" y="64">Gi0/1</text><text x="658" y="64">Gi0/1</text>
+    <text x="195" y="85">Fa0/1</text><text x="410" y="85">Fa0/11</text>
+    <text x="590" y="85">Fa0/1</text><text x="805" y="85">Fa0/11</text>
+    <text x="150" y="120" font-weight="bold">P1 · VLAN 10 PROFS</text><text x="150" y="149">192.168.10.11/24</text>
+    <text x="365" y="120" font-weight="bold">E1 · VLAN 20 ELEVES</text><text x="365" y="149">192.168.20.11/24</text>
+    <text x="635" y="120" font-weight="bold">P2 · VLAN 10 PROFS</text><text x="635" y="149">192.168.10.12/24</text>
+    <text x="850" y="120" font-weight="bold">E2 · VLAN 20 ELEVES</text><text x="850" y="149">192.168.20.12/24</text>
+  </g>
+</svg>

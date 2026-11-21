@@ -9,6 +9,19 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
+- BTS CIEL 2, chapitre 01 « VLAN et routage inter-VLAN » : deux cours
+  d'une page A4 et deux TP Packet Tracer, demandés par l'enseignant le
+  2026-11-20. **VLAN fait** (branche `cours/bts2-vlan`) : `cours-vlan`
+  (lycée, VLAN 10 PROFS / 20 ELEVES, 192.168.10.0/24 et 192.168.20.0/24,
+  `vintage-pdf` en 9 pt pour tenir sur une page) et `tp-vlan` (TP 1,
+  Celtis, 172.16.10.0/24 BUREAUX et 172.16.20.0/24 ATELIER, SW-RDC et
+  SW-ETAGE, Gi0/2 de SW-RDC laissé libre). **À faire** :
+  `cours-routage-inter-vlan` (order 11, même lycée) et
+  `tp-routage-inter-vlan` (TP 2, order 41, repart de `TP1_P3_NOM.pkt`,
+  passerelles .254, R1 2911 sur Gi0/2), branche
+  `cours/bts2-routage-inter-vlan`. Rendu PDF impossible en local
+  (`rsvg-convert` absent) : la CI fait foi, dont la page unique.
+
 - BTS CIEL 1, chapitre 01 : TP2 « Création de LAN » en trois parties
   (`tp-creation-lan-1`, `-2`, `-3`), PR #110 fusionnée ; publication en
   cours (branche `cours/bts1-reseaux-tp-creation-lan-publier`, PR ouverte).
@@ -365,6 +378,22 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-21 — cours/bts2-vlan
+
+- Ressources : `bts2/reseaux/01-vlan-inter-vlan/cours-vlan/index.qmd`
+  (Codex, référence imitée : `cours-vlsm`) et `tp-vlan/index.qmd`
+  (redacteur, source : `TP3_VLAN_DHCP_InterVLAN_eleve.pdf`, partie 1) ;
+  listes Cours et TP ajoutées à l'index du chapitre 01.
+- Vérificateur : cours À REPRENDRE puis CONFORME (format HTML supprimé par
+  la surcharge `vintage-pdf`, lien Cisco invérifiable retiré, SVG) ; TP
+  CONFORME avec 5 corrections mineures ; CONFORME après relecture.
+- Relecture : cours par le sous-agent relecteur (R1 gardée) ; TP par Codex
+  (R1 gardée ; A1, A2 BLOQUANT et A3 corrigés par le redacteur).
+- Relance du relecteur : non.
+- Points à relire par l'enseignant : tenue du cours sur une page (police
+  9 pt, première surcharge de format du dépôt) ; commandes Packet Tracer
+  incertaines du TP (`arp -d`, Edit Filters, message CDP du VLAN natif).
 
 ### 2026-11-20 — cours/bts2-reorganisation
 

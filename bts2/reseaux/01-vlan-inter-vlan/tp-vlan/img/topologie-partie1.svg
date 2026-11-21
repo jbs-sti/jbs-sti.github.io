@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="390" viewBox="0 0 960 390" role="img" aria-labelledby="title">
+<title id="title">Topologie de la partie 1 : un seul commutateur, sans VLAN</title>
+<rect width="960" height="390" fill="white"/>
+<g fill="white" stroke="#222" stroke-width="2">
+<rect x="405" y="60" width="150" height="50" rx="6" />
+<path d="M430 110 L120 220" />
+<path d="M460 110 L340 220" />
+<path d="M500 110 L620 220" />
+<path d="M530 110 L840 220" />
+<rect x="50" y="220" width="140" height="44" rx="6" />
+<rect x="270" y="220" width="140" height="44" rx="6" />
+<rect x="550" y="220" width="140" height="44" rx="6" />
+<rect x="770" y="220" width="140" height="44" rx="6" />
+</g>
+<g font-family="sans-serif" fill="#111">
+<text x="480" y="84" font-size="17" text-anchor="middle" font-weight="bold">SW-RDC</text>
+<text x="480" y="102" font-size="12" text-anchor="middle">2960-24TT</text>
+<text x="480" y="40" font-size="14" text-anchor="middle">aucun VLAN configuré : tous les ports sont dans le VLAN 1</text>
+<text x="196" y="190" font-size="13" text-anchor="end">Fa0/1</text>
+<text x="364" y="190" font-size="13" text-anchor="end">Fa0/2</text>
+<text x="596" y="190" font-size="13" text-anchor="start">Fa0/11</text>
+<text x="764" y="190" font-size="13" text-anchor="start">Fa0/12</text>
+<text x="120" y="248" font-size="16" text-anchor="middle" font-weight="bold">PC1</text>
+<text x="120" y="286" font-size="14" text-anchor="middle">VLAN 1 (défaut)</text>
+<text x="120" y="306" font-size="14" text-anchor="middle">172.16.10.11/24</text>
+<text x="340" y="248" font-size="16" text-anchor="middle" font-weight="bold">PC3</text>
+<text x="340" y="286" font-size="14" text-anchor="middle">VLAN 1 (défaut)</text>
+<text x="340" y="306" font-size="14" text-anchor="middle">172.16.10.13/24</text>
+<text x="620" y="248" font-size="16" text-anchor="middle" font-weight="bold">PC2</text>
+<text x="620" y="286" font-size="14" text-anchor="middle">VLAN 1 (défaut)</text>
+<text x="620" y="306" font-size="14" text-anchor="middle">172.16.20.12/24</text>
+<text x="840" y="248" font-size="16" text-anchor="middle" font-weight="bold">PC4</text>
+<text x="840" y="286" font-size="14" text-anchor="middle">VLAN 1 (défaut)</text>
+<text x="840" y="306" font-size="14" text-anchor="middle">172.16.20.14/24</text>
+<text x="480" y="362" font-size="14" text-anchor="middle">Un seul domaine de diffusion : une diffusion de l'un des postes atteint les trois autres.</text>
+</g>
+</svg>
