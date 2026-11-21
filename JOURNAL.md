@@ -11,16 +11,23 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 - BTS CIEL 2, chapitre 01 « VLAN et routage inter-VLAN » : deux cours
   d'une page A4 et deux TP Packet Tracer, demandés par l'enseignant le
-  2026-11-20. **VLAN fait** (branche `cours/bts2-vlan`) : `cours-vlan`
-  (lycée, VLAN 10 PROFS / 20 ELEVES, 192.168.10.0/24 et 192.168.20.0/24,
-  `vintage-pdf` en 9 pt pour tenir sur une page) et `tp-vlan` (TP 1,
-  Celtis, 172.16.10.0/24 BUREAUX et 172.16.20.0/24 ATELIER, SW-RDC et
-  SW-ETAGE, Gi0/2 de SW-RDC laissé libre). **À faire** :
-  `cours-routage-inter-vlan` (order 11, même lycée) et
-  `tp-routage-inter-vlan` (TP 2, order 41, repart de `TP1_P3_NOM.pkt`,
-  passerelles .254, R1 2911 sur Gi0/2), branche
-  `cours/bts2-routage-inter-vlan`. Rendu PDF impossible en local
-  (`rsvg-convert` absent) : la CI fait foi, dont la page unique.
+  2026-11-20. **VLAN** : PR #116 (`cours-vlan`, lycée, VLAN 10 PROFS /
+  20 ELEVES ; `tp-vlan`, TP 1, Celtis 172.16.10.0/24 et 172.16.20.0/24).
+  **Routage inter-VLAN** : branche `cours/bts2-routage-inter-vlan`, partie
+  de `cours/bts2-vlan` (`cours-routage-inter-vlan`, même lycée, R1 2911 sur
+  Gi0/2 de SW1, passerelles .254 ; `tp-routage-inter-vlan`, TP 2, repart de
+  `TP1_P3_NOM.pkt`, R1 sur Gi0/2 de SW-RDC, pannes à diagnostiquer, bonus
+  3560). Les deux cours surchargent `vintage-pdf` en 9 pt pour tenir sur
+  une page. Rendu PDF impossible en local (`rsvg-convert` absent) : la CI
+  fait foi.
+- BTS CIEL 2, refonte conceptuelle de `cours-ospf` (demande de
+  l'enseignant du 2026-11-21, plan validé) : branche
+  `cours/bts2-ospf-conceptuel`, copie de travail `../jbs-sti-ospf`. Cours
+  sans commande IOS, 8 sections, une animation par section via un moteur
+  commun `cours-ospf/fichiers/etapes.js`. Sections 1 et 2 faites. À faire :
+  sections 3 à 8, puis annexe `fiche-ospf-commandes` (commandes retirées).
+  Codex doit être lancé avec `< /dev/null`, sinon il attend l'entrée
+  standard en arrière-plan.
 
 - BTS CIEL 1, chapitre 01 : TP2 « Création de LAN » en trois parties
   (`tp-creation-lan-1`, `-2`, `-3`), PR #110 fusionnée ; publication en
@@ -378,6 +385,23 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-21 — cours/bts2-routage-inter-vlan
+
+- Ressources : `bts2/reseaux/01-vlan-inter-vlan/cours-routage-inter-vlan`
+  (Codex, référence imitée : `cours-vlan`) et `tp-routage-inter-vlan`
+  (redacteur, source : `TP3_VLAN_DHCP_InterVLAN_eleve.pdf`, partie 3, sans
+  le relais DHCP).
+- Vérificateur : cours CONFORME (3 retouches mineures) ; TP CONFORME
+  (4 retouches) ; CONFORME après relecture.
+- Relecture : cours par le sous-agent relecteur (R1 gardée, 3 constats
+  corrigés par Codex) ; TP par Codex (R1 gardée ; A1 BLOQUANT, A2, A3
+  corrigés par le redacteur). Retouche du chef de projet : définition des
+  lignes `L` (l. 75 du cours).
+- Relance du relecteur : non.
+- Points à relire par l'enseignant : tenue du cours sur une page ; indice
+  de B.4 b du TP 2 (donne la réponse) ; comportements Packet Tracer du
+  bonus 3560.
 
 ### 2026-11-21 — cours/bts2-vlan
 
