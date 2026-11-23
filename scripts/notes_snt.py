@@ -3,35 +3,40 @@
 
 Lit le classeur de l'enseignant (une feuille par classe) et écrit
 `snt/evaluation/notes.json`, où les notes de chaque élève sont chiffrées
-(AES-256-GCM) avec une clé tirée de son prénom et de sa date de naissance
+(AES-256-GCM) avec une clé tirée de son prénom et de son code personnel
 (PBKDF2-SHA256). Le fichier ne contient aucun nom en clair : la page
 `snt/evaluation/` refait la même dérivation dans le navigateur de l'élève.
 
-Le classeur ne doit JAMAIS être versionné : il reste hors du dépôt.
+Chaque élève reçoit un code aléatoire de 8 caractères (XXXX-XXXX), gardé d'une fois
+sur l'autre dans un fichier privé (par défaut `codes_snt.csv`, à côté du
+classeur). Un élève ajouté au classeur reçoit un nouveau code ; les codes
+existants ne changent jamais. Le script écrit aussi `coupons_snt.html`
+(à côté du classeur) : un coupon par élève, à imprimer et à découper.
+
+Le classeur, les codes et les coupons ne doivent JAMAIS être versionnés :
+ils restent hors du dépôt (le script refuse un chemin dans le dépôt).
 
 Format attendu de chaque feuille :
 - une ligne d'en-têtes dont la première cellule vaut « N° » ;
-- des colonnes « Nom », « Prénom » et une colonne dont l'en-tête contient
-  « naissance » (date Excel, ou texte jj/mm/aaaa ou jjmmaaaa) ;
+- des colonnes « Nom » et « Prénom » ;
 - une colonne par évaluation, puis une colonne « Moyenne » (facultative) ;
 - une note est un nombre, « ABS », ou une cellule vide (pas encore notée).
 
 Utilisation (dépendances locales : scripts/requirements-notes.txt) :
 
     .venv/bin/python scripts/notes_snt.py ~/bulletins-notes/Notes_SNT_Secondes.xlsx
-
-Limite connue : une date de naissance n'est pas un secret (environ
-730 dates possibles pour une classe de seconde). La dérivation lente
-ralentit les essais sans les empêcher.
 """
 import argparse
 import base64
+import csv
+from datetime import date
 import hashlib
-from datetime import date, datetime
+import html
 import json
 import os
 from pathlib import Path
 import re
+import secrets
 import sys
 import unicodedata
 
@@ -43,8 +48,14 @@ except ImportError as exc:
 
 ROOT = Path(__file__).resolve().parents[1]
 SORTIE = ROOT / 'snt' / 'evaluation' / 'notes.json'
+ADRESSE = 'https://jbs-sti.github.io/snt/evaluation/'
 ITERATIONS = 600_000
 VERSION = 1
+# Sans 0/O, 1/I/L : rien qui se confonde à la lecture d'un coupon.
+# 31 caractères, 8 positions : 8,5 × 10^11 codes possibles ; avec PBKDF2 à
+# 600 000 itérations, des années de calcul sur carte graphique par élève.
+ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
+LONGUEUR_CODE = 8
 
 
 def normaliser_prenom(prenom):
@@ -54,25 +65,19 @@ def normaliser_prenom(prenom):
     return re.sub('[^a-z]', '', texte)
 
 
-def normaliser_date(valeur):
-    """Rend la date au format jjmmaaaa, ou None si illisible."""
-    if isinstance(valeur, (datetime, date)):
-        return valeur.strftime('%d%m%Y')
-    if valeur is None:
-        return None
-    chiffres = re.sub(r'\D', '', str(valeur))
-    if len(chiffres) != 8:
-        return None
-    try:
-        datetime.strptime(chiffres, '%d%m%Y')
-    except ValueError:
-        return None
-    return chiffres
+def normaliser_code(code):
+    """Même règle que evaluation.js : majuscules, lettres et chiffres seuls."""
+    return re.sub('[^A-Z0-9]', '', str(code).upper())
 
 
-def deriver(prenom, naissance, sel, iterations):
+def nouveau_code():
+    code = ''.join(secrets.choice(ALPHABET) for _ in range(LONGUEUR_CODE))
+    return f'{code[:4]}-{code[4:]}'
+
+
+def deriver(prenom, code, sel, iterations):
     """64 octets : 32 pour la clé AES, 16 pour l'identifiant de l'entrée."""
-    secret = f'{normaliser_prenom(prenom)}|{naissance}'.encode()
+    secret = f'{normaliser_prenom(prenom)}|{normaliser_code(code)}'.encode()
     bloc = hashlib.pbkdf2_hmac('sha256', secret, sel, iterations, dklen=64)
     return bloc[:32], bloc[32:48].hex()
 
@@ -97,7 +102,7 @@ def titre_colonne(valeur):
 
 
 def lire_feuille(ws):
-    """Rend (élèves, titres des évaluations, avertissements)."""
+    """Rend (élèves, titres des évaluations)."""
     lignes = list(ws.iter_rows(values_only=True))
     entete = next((i for i, l in enumerate(lignes) if l and l[0] == 'N°'), None)
     if entete is None:
@@ -108,24 +113,18 @@ def lire_feuille(ws):
         c_nom, c_prenom = bas.index('nom'), bas.index('prenom')
     except ValueError:
         raise ValueError('colonnes « Nom » et « Prénom » introuvables')
-    c_naiss = next((i for i, t in enumerate(bas) if 'naissance' in t), None)
-    if c_naiss is None:
-        raise ValueError('colonne « Date de naissance » introuvable')
     c_moy = next((i for i, t in enumerate(bas) if t.startswith('moyenne')), None)
-    c_evals = [i for i, t in enumerate(titres)
-               if t and i not in (0, c_nom, c_prenom, c_naiss, c_moy)]
+    # Une éventuelle colonne de date de naissance n'est pas une évaluation.
+    ignorees = {0, c_nom, c_prenom, c_moy} | {i for i, t in enumerate(bas) if 'naissance' in t}
+    c_evals = [i for i, t in enumerate(titres) if t and i not in ignorees]
     evaluations = [titre_colonne(lignes[entete][i]) for i in c_evals]
 
-    eleves, avert = [], []
+    eleves = []
     for numero, ligne in enumerate(lignes[entete + 1:], entete + 2):
         ligne = list(ligne) + [None] * (len(titres) - len(ligne))
         nom, prenom = ligne[c_nom], ligne[c_prenom]
         if not (isinstance(nom, str) and nom.strip() and isinstance(prenom, str) and prenom.strip()):
             continue
-        naissance = normaliser_date(ligne[c_naiss])
-        if not naissance:
-            # Gardé pour la moyenne de classe, mais sans accès à ses notes.
-            avert.append(f'ligne {numero} : date de naissance absente ou illisible, élève sans accès')
         try:
             notes = [note(ligne[i]) for i in c_evals]
         except ValueError as exc:
@@ -134,9 +133,9 @@ def lire_feuille(ws):
         moyenne = ligne[c_moy] if c_moy is not None else None
         if not isinstance(moyenne, (int, float)):
             moyenne = sum(chiffrees) / len(chiffrees) if chiffrees else None
-        eleves.append({'nom': nom.strip(), 'prenom': prenom.strip(), 'naissance': naissance,
-                       'notes': notes, 'moyenne': None if moyenne is None else round(float(moyenne), 2)})
-    return eleves, evaluations, avert
+        eleves.append({'nom': nom.strip(), 'prenom': prenom.strip(), 'notes': notes,
+                       'moyenne': None if moyenne is None else round(float(moyenne), 2)})
+    return eleves, evaluations
 
 
 def moyenne_classe(eleves, j):
@@ -144,34 +143,100 @@ def moyenne_classe(eleves, j):
     return round(sum(valeurs) / len(valeurs), 2) if valeurs else None
 
 
+def cle_eleve(classe, nom, prenom):
+    return (classe.strip(), normaliser_prenom(nom), normaliser_prenom(prenom))
+
+
+def lire_codes(chemin):
+    if not chemin.exists():
+        return {}
+    with chemin.open(encoding='utf-8-sig', newline='') as f:
+        return {cle_eleve(l['classe'], l['nom'], l['prenom']): l
+                for l in csv.DictReader(f, delimiter=';')}
+
+
+def ecrire_codes(chemin, codes):
+    lignes = sorted(codes.values(), key=lambda l: (l['classe'], l['nom'], l['prenom']))
+    with chemin.open('w', encoding='utf-8-sig', newline='') as f:
+        ecrivain = csv.DictWriter(f, fieldnames=['classe', 'nom', 'prenom', 'code'], delimiter=';',
+                                  lineterminator='\n')
+        ecrivain.writeheader()
+        ecrivain.writerows({k: l[k] for k in ('classe', 'nom', 'prenom', 'code')} for l in lignes)
+    chemin.chmod(0o600)
+
+
+def ecrire_coupons(chemin, classes):
+    """Une page imprimable : un coupon par élève, une classe par page."""
+    blocs = []
+    for classe, eleves in classes:
+        coupons = ''.join(
+            '<div class="coupon">'
+            f'<p class="nom">{html.escape(e["prenom"])} {html.escape(e["nom"])} — {html.escape(classe)}</p>'
+            '<p>Tes notes de SNT : <strong>jbs-sti.github.io</strong> › SNT › Évaluation</p>'
+            f'<p>Prénom : <strong>{html.escape(e["prenom"])}</strong> · Code : '
+            f'<strong class="code">{html.escape(e["code"])}</strong></p>'
+            '<p class="petit">Garde ce code pour toi : il ne change pas de l\'année.</p>'
+            '</div>' for e in eleves)
+        blocs.append(f'<section><h1>SNT — {html.escape(classe)}</h1>{coupons}</section>')
+    chemin.write_text(f"""<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Codes SNT</title>
+<style>
+body {{ font-family: sans-serif; margin: 1cm; }}
+section {{ page-break-after: always; }}
+h1 {{ font-size: 14pt; }}
+.coupon {{ border: 1px dashed #000; padding: 0.3cm 0.5cm; margin-bottom: 0.25cm; break-inside: avoid; }}
+.coupon p {{ margin: 0.1cm 0; }}
+.nom {{ font-weight: bold; }}
+.code {{ font-family: monospace; font-size: 15pt; letter-spacing: 0.15em; }}
+.petit {{ font-size: 8pt; }}
+</style></head><body>
+{''.join(blocs)}
+</body></html>
+""", encoding='utf-8')
+    chemin.chmod(0o600)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument('classeur', type=Path, help='classeur .xlsx des notes (hors du dépôt)')
+    parser.add_argument('--codes', type=Path, help='fichier privé des codes (défaut : codes_snt.csv à côté du classeur)')
+    parser.add_argument('--coupons', type=Path, help='coupons à imprimer (défaut : coupons_snt.html à côté du classeur)')
     parser.add_argument('--sortie', type=Path, default=SORTIE)
     parser.add_argument('--iterations', type=int, default=ITERATIONS, help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
 
     classeur = args.classeur.resolve()
-    if ROOT in classeur.parents:
-        parser.error('le classeur est dans le dépôt : déplacez-le hors du dépôt avant de lancer le script')
+    codes_csv = (args.codes or classeur.with_name('codes_snt.csv')).resolve()
+    coupons = (args.coupons or classeur.with_name('coupons_snt.html')).resolve()
+    for nom, chemin in (('le classeur', classeur), ('le fichier des codes', codes_csv), ('les coupons', coupons)):
+        if ROOT in chemin.parents:
+            parser.error(f'{nom} est dans le dépôt ({chemin}) : choisissez un chemin hors du dépôt')
 
     wb = openpyxl.load_workbook(classeur, data_only=True)
+    codes = lire_codes(codes_csv)
+    utilises = {normaliser_code(l['code']) for l in codes.values()}
     sel = os.urandom(16)
-    entrees, erreurs, total = {}, [], 0
+    entrees, erreurs, classes, nouveaux = {}, [], [], 0
     for ws in wb.worksheets:
         try:
-            eleves, evaluations, avert = lire_feuille(ws)
+            eleves, evaluations = lire_feuille(ws)
         except ValueError as exc:
             erreurs.append(f'{ws.title} : {exc}')
             continue
-        for a in avert:
-            print(f'ATTENTION {ws.title}, {a}')
         moyennes = [moyenne_classe(eleves, j) for j in range(len(evaluations))]
-        eleves_acces = [e for e in eleves if e['naissance']]
-        for e in eleves_acces:
-            cle, ident = deriver(e['prenom'], e['naissance'], sel, args.iterations)
+        for e in eleves:
+            cle = cle_eleve(ws.title, e['nom'], e['prenom'])
+            if cle not in codes:
+                code = nouveau_code()
+                while code in utilises:
+                    code = nouveau_code()
+                utilises.add(code)
+                codes[cle] = {'classe': ws.title, 'nom': e['nom'], 'prenom': e['prenom'], 'code': code}
+                nouveaux += 1
+            e['code'] = codes[cle]['code']
+            cle_aes, ident = deriver(e['prenom'], e['code'], sel, args.iterations)
             if ident in entrees:
-                erreurs.append(f'{ws.title} : deux élèves ont le même prénom et la même date de naissance ({e["prenom"]})')
+                erreurs.append(f'{ws.title} : identifiant en double pour {e["prenom"]} {e["nom"]}')
                 continue
             contenu = {
                 'classe': ws.title, 'nom': e['nom'], 'prenom': e['prenom'],
@@ -180,25 +245,29 @@ def main(argv=None):
                 'moyenne': e['moyenne'],
             }
             iv = os.urandom(12)
-            donnees = AESGCM(cle).encrypt(iv, json.dumps(contenu, ensure_ascii=False).encode(), ident.encode())
+            donnees = AESGCM(cle_aes).encrypt(iv, json.dumps(contenu, ensure_ascii=False).encode(), ident.encode())
             entrees[ident] = {'iv': base64.b64encode(iv).decode(), 'donnees': base64.b64encode(donnees).decode()}
-            total += 1
-        print(f'{ws.title} : {len(eleves_acces)} élève(s) chiffré(s) sur {len(eleves)}')
+        classes.append((ws.title, eleves))
+        print(f'{ws.title} : {len(eleves)} élève(s) chiffré(s)')
     if erreurs:
         for e in erreurs:
             print(f'ERREUR {e}', file=sys.stderr)
         return 1
 
+    ecrire_codes(codes_csv, codes)
+    ecrire_coupons(coupons, classes)
     # Entrées triées par identifiant (pseudo-aléatoire) : leur position ne
     # révèle ni la classe ni l'ordre alphabétique du classeur.
-    melange = dict(sorted(entrees.items()))
     sortie = {'version': VERSION, 'mise_a_jour': date.today().isoformat(),
               'kdf': {'nom': 'PBKDF2-SHA256', 'iterations': args.iterations,
                       'sel': base64.b64encode(sel).decode()},
-              'entrees': melange}
+              'entrees': dict(sorted(entrees.items()))}
     args.sortie.parent.mkdir(parents=True, exist_ok=True)
     args.sortie.write_text(json.dumps(sortie, indent=1) + '\n', encoding='utf-8')
-    print(f'{total} élève(s) au total → {args.sortie.relative_to(ROOT) if ROOT in args.sortie.resolve().parents else args.sortie}')
+    print(f'{len(entrees)} élève(s) au total, dont {nouveaux} nouveau(x) code(s).')
+    print(f'Notes chiffrées : {args.sortie}')
+    print(f'Codes (privé)   : {codes_csv}')
+    print(f'Coupons         : {coupons}')
     return 0
 
 

@@ -1,5 +1,5 @@
 // Rubrique « Évaluation » : déchiffre, dans le navigateur, les notes de
-// l'élève à partir de son prénom et de sa date de naissance. Le fichier
+// l'élève à partir de son prénom et de son code personnel. Le fichier
 // notes.json est produit par scripts/notes_snt.py ; la dérivation de clé
 // et la normalisation du prénom doivent rester identiques des deux côtés.
 (function () {
@@ -17,9 +17,8 @@
       .toLowerCase().replace(/[^a-z]/g, '');
   }
 
-  function normaliserDate(texte) {
-    const chiffres = texte.replace(/\D/g, '');
-    return chiffres.length === 8 ? chiffres : null;
+  function normaliserCode(texte) {
+    return texte.toUpperCase().replace(/[^A-Z0-9]/g, '');
   }
 
   function base64(texte) {
@@ -49,10 +48,10 @@
     return donnees;
   }
 
-  async function dechiffrer(prenom, naissance) {
+  async function dechiffrer(prenom, code) {
     const d = await chargerDonnees();
     if (!Object.keys(d.entrees).length) throw new Error('aucune note publiée');
-    const secret = new TextEncoder().encode(normaliserPrenom(prenom) + '|' + naissance);
+    const secret = new TextEncoder().encode(normaliserPrenom(prenom) + '|' + code);
     const base = await crypto.subtle.importKey('raw', secret, 'PBKDF2', false, ['deriveBits']);
     const bits = new Uint8Array(await crypto.subtle.deriveBits(
       { name: 'PBKDF2', hash: 'SHA-256', salt: base64(d.kdf.sel), iterations: d.kdf.iterations },
@@ -109,9 +108,9 @@
     evenement.preventDefault();
     resultat.replaceChildren();
     const prenom = form.elements.prenom.value;
-    const naissance = normaliserDate(form.elements.naissance.value);
-    if (!normaliserPrenom(prenom) || !naissance) {
-      afficherMessage('Indique ton prénom et ta date de naissance sur 8 chiffres (jjmmaaaa).', true);
+    const code = normaliserCode(form.elements.code.value);
+    if (!normaliserPrenom(prenom) || code.length !== 8) {
+      afficherMessage('Indique ton prénom et ton code personnel de 8 caractères.', true);
       return;
     }
     if (!window.crypto || !crypto.subtle) {
@@ -121,13 +120,13 @@
     bouton.disabled = true;
     afficherMessage('Recherche en cours…', false);
     try {
-      const eleve = await dechiffrer(prenom, naissance);
+      const eleve = await dechiffrer(prenom, code);
       if (!eleve) {
-        afficherMessage('Prénom ou date de naissance incorrects.', true);
+        afficherMessage('Prénom ou code incorrect.', true);
       } else {
         afficherMessage('', false);
         afficherNotes(eleve, donnees.mise_a_jour);
-        form.elements.naissance.value = '';
+        form.elements.code.value = '';
       }
     } catch (erreur) {
       afficherMessage('Les notes ne sont pas disponibles pour le moment.', true);
