@@ -9,6 +9,20 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
+- SNT, rubrique « Évaluation » (`snt/evaluation/`, branche
+  `infra/snt-evaluation`) : chaque élève voit ses notes en tapant son
+  prénom et sa date de naissance (jjmmaaaa), comme l'a choisi l'enseignant
+  le 2026-11-23. Je lui avais conseillé un code personnel à la place.
+  `scripts/notes_snt.py` chiffre le classeur (AES-GCM, PBKDF2 600 000
+  itérations) dans `snt/evaluation/notes.json`, sans aucun nom en clair.
+  Le classeur reste **hors du dépôt** (déplacé dans `~/bulletins-notes/`,
+  `Notes_*.xlsx` ignoré par git). **À faire** : l'enseignant ajoute une
+  colonne « Date de naissance » dans chaque feuille, puis on relance le
+  script et on fait une PR qui ne change que `notes.json`. Tant que ce
+  n'est pas fait, `notes.json` est vide et la page affiche « notes pas
+  encore disponibles ». Limite assumée : une date de naissance se devine
+  (environ 730 dates possibles).
+
 - BTS CIEL 2, chapitre 01 « VLAN et routage inter-VLAN » : deux cours
   d'une page A4 et deux TP Packet Tracer, demandés par l'enseignant le
   2026-11-20. **VLAN** : PR #116 (`cours-vlan`, lycée, VLAN 10 PROFS /
@@ -385,6 +399,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-23 — infra/snt-evaluation
+
+- Ressource : aucune (infrastructure : `snt/evaluation/`, `scripts/notes_snt.py`, `scripts/requirements-notes.txt`, `.gitignore`)
+- Demande : nouvelle rubrique SNT « Évaluation », accès aux notes protégé par prénom + date de naissance jjmmaaaa (choix explicite de l'enseignant après mise en garde ; je recommandais un code personnel)
+- Fait : page HTML seule (sans PDF, `search: false`, `noindex`), déchiffrement WebCrypto dans `evaluation.js` ; script local de chiffrement (openpyxl, cryptography : dépendances hors CI) ; `notes.json` vide en attendant les dates de naissance ; classeur sorti du dépôt et `Notes_*.xlsx` ignoré par git
+- Vérification : test de bout en bout sur un classeur fictif (Python chiffre, `evaluation.js` déchiffre sous Node) ; `quarto render` complet sans erreur ; `verifier_sources.py` et `verifier_site.py` OK ; tests des scripts OK
+- Vérificateur, Codex : sans objet (infrastructure)
+- Points à relire par l'enseignant : faiblesse de la clé date de naissance ; colonne « Date de naissance » à ajouter au classeur ; place de « Évaluation » en tête du menu SNT
 
 ### 2026-11-21 — cours/bts2-routage-inter-vlan
 

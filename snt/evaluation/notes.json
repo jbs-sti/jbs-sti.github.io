@@ -1,0 +1,10 @@
+{
+ "version": 1,
+ "mise_a_jour": "2026-11-23",
+ "kdf": {
+  "nom": "PBKDF2-SHA256",
+  "iterations": 600000,
+  "sel": "hxLGEFC5BqUUFabPs1eb/w=="
+ },
+ "entrees": {}
+}
