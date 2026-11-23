@@ -1,0 +1,44 @@
+---
+title: "Évaluation"
+description: "Consulter ses notes d'évaluation de SNT."
+# Page web seulement : pas de PDF (comme les index de section).
+format:
+  html:
+    toc: false
+# Hors de la recherche du site et des moteurs de recherche.
+search: false
+include-in-header:
+  text: '<meta name="robots" content="noindex, nofollow">'
+# Notes chiffrées (scripts/notes_snt.py) et script de déchiffrement.
+resources:
+  - notes.json
+  - evaluation.js
+---
+
+Entre ton **prénom** et ton **code personnel** : les 8 caractères du
+coupon que ton professeur t'a remis (majuscules ou minuscules, avec
+ou sans tiret, peu importe).
+
+Tes notes sont déchiffrées sur ton appareil : rien de ce que tu tapes
+n'est envoyé sur Internet. Garde ton code pour toi. Si tu l'as perdu,
+demande-le à ton professeur.
+
+```{=html}
+<form id="eval-form" class="my-4" autocomplete="off" style="max-width: 24rem;">
+  <div class="mb-3">
+    <label for="eval-prenom" class="form-label">Prénom</label>
+    <input id="eval-prenom" name="prenom" class="form-control" type="text" required
+           autocapitalize="words" spellcheck="false">
+  </div>
+  <div class="mb-3">
+    <label for="eval-code" class="form-label">Code personnel</label>
+    <input id="eval-code" name="code" class="form-control" type="text" required
+           autocapitalize="characters" spellcheck="false" maxlength="12"
+           placeholder="ex. : K7MP-Q3XZ" style="text-transform: uppercase; letter-spacing: 0.15em;">
+  </div>
+  <button type="submit" class="btn btn-primary">Voir mes notes</button>
+  <p id="eval-message" class="mt-3" role="status" aria-live="polite"></p>
+</form>
+<div id="eval-resultat"></div>
+<script src="evaluation.js"></script>
+```

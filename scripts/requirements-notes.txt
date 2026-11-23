@@ -1,0 +1,4 @@
+# Dépendances locales de scripts/notes_snt.py (rubrique « Évaluation » de SNT).
+# Non installées par la CI : le script tourne sur le poste de l'enseignant.
+openpyxl==3.1.5
+cryptography==46.0.3

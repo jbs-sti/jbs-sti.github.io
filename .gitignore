@@ -14,3 +14,11 @@ __pycache__/
 
 # Métadonnées Windows de provenance des téléchargements (vues depuis WSL)
 *:Zone.Identifier
+
+# Classeurs de notes des élèves : données personnelles, jamais dans le dépôt
+# (la rubrique SNT « Évaluation » n'en publie qu'une version chiffrée).
+Notes_*.xlsx
+NOTES_*.xlsx
+notes.xlsx
+codes_snt.csv
+coupons_snt.html

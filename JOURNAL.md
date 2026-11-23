@@ -9,6 +9,21 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 
 **En cours**
 
+- SNT, rubrique « Évaluation » (`snt/evaluation/`, branche
+  `infra/snt-evaluation`, PR #119) : chaque élève voit ses notes en tapant
+  son prénom et un **code personnel** de 8 caractères (`XXXX-XXXX`). Le
+  2026-11-23, l'enseignant a d'abord demandé la date de naissance, puis a
+  préféré le code. `scripts/notes_snt.py` chiffre le classeur (AES-GCM,
+  PBKDF2 600 000 itérations) dans `snt/evaluation/notes.json`, sans aucun
+  nom en clair. Les 127 élèves des quatre classes y sont. Codes et coupons
+  sont dans `~/bulletins-notes/` (`codes_snt.csv`, `coupons_snt.html`) :
+  ils sont privés, jamais dans le dépôt, et les codes restent les mêmes
+  d'une mise à jour à l'autre. Le classeur
+  `Notes_SNT_Secondes(2).xlsx` a été sorti du dépôt et git ignore les
+  fichiers `Notes_*.xlsx`. **À faire** : après fusion, imprimer et
+  distribuer les coupons. À chaque nouvelle note, relancer le script et
+  faire une PR qui ne change que `notes.json`.
+
 - BTS CIEL 2, chapitre 01 « VLAN et routage inter-VLAN » : deux cours
   d'une page A4 et deux TP Packet Tracer, demandés par l'enseignant le
   2026-11-20. **VLAN** : PR #116 (`cours-vlan`, lycée, VLAN 10 PROFS /
@@ -385,6 +400,15 @@ Une entrée par tâche, la plus récente en haut. Voir le protocole dans
 - Points à relire par l'enseignant : …
 
 -->
+
+### 2026-11-23 — infra/snt-evaluation
+
+- Ressource : aucune (infrastructure : `snt/evaluation/`, `scripts/notes_snt.py`, `scripts/requirements-notes.txt`, `.gitignore`)
+- Demande : nouvelle rubrique SNT « Évaluation », les notes de chaque élève protégées. L'enseignant a demandé prénom + date de naissance, puis a choisi prénom + code personnel après ma mise en garde (une date de naissance se devine : environ 730 dates possibles)
+- Fait : page HTML seule (sans PDF, `search: false`, `noindex`), déchiffrement WebCrypto dans `evaluation.js` ; script local (openpyxl, cryptography : dépendances hors CI) qui donne un code de 8 caractères à chaque élève (alphabet sans 0/O/1/I/L), garde les codes dans un CSV privé et produit des coupons à imprimer ; `notes.json` réel : 127 élèves ; classeur sorti du dépôt, classeurs, codes et coupons ignorés par git
+- Vérification : test complet sur un classeur fictif et sondage de 5 vrais codes (Python chiffre, `evaluation.js` déchiffre sous Node, le code d'un autre élève est refusé) ; aucun nom en clair dans `notes.json` ; `quarto render` sans erreur ; `verifier_sources.py`, `verifier_site.py` et tests des scripts OK
+- Vérificateur, Codex : sans objet (infrastructure)
+- Points à relire par l'enseignant : coupons (`~/bulletins-notes/coupons_snt.html`) ; place de « Évaluation » en tête du menu SNT ; page à essayer sur téléphone
 
 ### 2026-11-21 — cours/bts2-routage-inter-vlan
 
