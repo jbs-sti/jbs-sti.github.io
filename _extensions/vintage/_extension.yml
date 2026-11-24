@@ -26,8 +26,8 @@ contributes:
         - includeheadfoot
       fig-pos: "htbp"
       colorlinks: true
-      linkcolor: vertprofond
-      urlcolor: vertprofond
+      linkcolor: encre
+      urlcolor: encre
       include-in-header:
         - vintage.tex
         - tikz-vintage.tex
